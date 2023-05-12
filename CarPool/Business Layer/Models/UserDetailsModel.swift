@@ -54,7 +54,7 @@ struct UserDetailsModel {
             ],
             // array for gender field
             [
-                (gender, Constants.Placeholders.gender[0], InputFieldIdentifier.gender, UIKeyboardType.default)
+                (gender, Constants.Placeholders.genders[0], InputFieldIdentifier.gender, UIKeyboardType.default)
             ]
         ]
         

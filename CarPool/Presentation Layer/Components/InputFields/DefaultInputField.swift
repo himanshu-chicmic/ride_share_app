@@ -13,7 +13,11 @@ struct DefaultInputField: View {
     
     // variable to check the type
     // of input field
-    var inputFieldType: InputFieldIdentifier
+    var inputFieldType: InputFieldIdentifier {
+        didSet {
+            
+        }
+    }
     // placeholder text for input field
     var placeholder: String
     
@@ -29,9 +33,9 @@ struct DefaultInputField: View {
     // true - password is visisble
     // false - password is not visible
     @State var isPasswordVisible: Bool = false
-    
-//    @Binding var showDatePicker: Bool
-//    @Binding var showGenderPicker: Bool
+
+    // environment object for signInViewModel
+    @EnvironmentObject var signInViewModel: SignInViewModel
     
     // MARK: - body
     
@@ -41,16 +45,39 @@ struct DefaultInputField: View {
             // swift for input field type
             switch inputFieldType {
                 
-                case .dateOfBirth :
-                    TextField(placeholder, text: $text)
+                // text field for date of birth
+                // show date picker when tapped
+                case .dateOfBirth:
+                    HStack{
+                        Text(
+                            Globals.dateFormatter.string(from: signInViewModel.date)
+                        )
+                        Spacer()
+                    }
                     .onTapGesture {
-//                        showDatePicker.toggle()
+                        withAnimation {
+                            signInViewModel.showDatePicker.toggle()
+                        }
+                    }
+                    .onAppear{
+                        signInViewModel.showHideGenderPicker(show: false)
                     }
                 
-                case .gender :
-                    TextField(placeholder, text: $text)
+                // show gender text field
+                // which on tap shows a gender picker
+                case .gender:
+                    HStack{
+                        Text(signInViewModel.gender)
+                            .foregroundColor(signInViewModel.gender == Constants.Placeholders.selectGender ? .gray.opacity(0.7) : .black)
+                        Spacer()
+                    }
                     .onTapGesture {
-//                        showGenderPicker.toggle()
+                        withAnimation {
+                            signInViewModel.showGenderPicker.toggle()
+                        }
+                    }
+                    .onAppear{
+                        signInViewModel.showHideDatePicker(show: false)
                     }
                 
                 // show simple text field for
@@ -103,5 +130,6 @@ struct DefaultInputField: View {
 struct DefaultTextField_Previews: PreviewProvider {
     static var previews: some View {
         DefaultInputField(inputFieldType: .dateOfBirth, placeholder: Constants.Placeholders.dateOfBirth, text: .constant(""), keyboard: .default)
+            .environmentObject(SignInViewModel())
     }
 }

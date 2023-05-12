@@ -8,13 +8,34 @@
 import SwiftUI
 
 struct PlaceholderView: View {
+    
+    var image: String
+    var title: String
+    var caption: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            Image(image)
+                .resizable()
+                .frame(width: 240, height: 194)
+                .padding()
+            
+            Text(title)
+                .font(.system(size: 22, weight: .semibold, design: .rounded))
+                .padding(.top, 14)
+            
+            Text(caption)
+                .font(.system(size: 14, design: .rounded))
+                .padding(.top, 2)
+                .foregroundColor(.gray)
+        }
+        .multilineTextAlignment(.center)
+        .padding(.horizontal, 44)
     }
 }
 
 struct PlaceholderView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaceholderView()
+        PlaceholderView(image: "empty-inbox-view", title: "Your inbox is empty.", caption: "No messages right now. Book or offer a ride to contact someone")
     }
 }

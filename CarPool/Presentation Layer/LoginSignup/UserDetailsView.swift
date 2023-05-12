@@ -11,6 +11,9 @@ struct UserDetailsView: View {
     
     // MARK: - properties
     
+    // environment object for view model
+    @EnvironmentObject var signInViewModel: SignInViewModel
+    
     // userDetailsModel for first name,
     // last name, date of birth and,
     // gender properties
@@ -35,13 +38,8 @@ struct UserDetailsView: View {
     // environment variable to dismiss the view
     @Environment(\.dismiss) var dismiss
     
-//    // variable to store date
-//    @State var date: Date = Date.now
-//    @State var gender: String = ""
-//
-//    // picker variables
-//    @State var showDatePicker = false
-//    @State var showGenderPicker = false
+    // state var for confirmation
+    @State var popViewConfirmation: Bool = false
     
     // MARK: - body
     
@@ -56,13 +54,22 @@ struct UserDetailsView: View {
                     Button(action: {
                         // navigate back
                         // dismiss after asking a confirmation
-                        // after dismiss don't go to
-                        // sign up page
-                        // got to home view instead
-                        dismiss()
+                        popViewConfirmation.toggle()
                     }, label: {
                         Image(systemName: Constants.Icon.back)
                     })
+                    // ask a confirmation before exiting
+                    .confirmationDialog(
+                        Constants.AlertDialog.exitCompleteProfile,
+                        isPresented     : $popViewConfirmation,
+                        titleVisibility : .visible
+                    ) {
+                        Button(Constants.Others.yes, role: .destructive) {
+                            dismiss()
+                        }
+                        Button(Constants.Others.no, role: .cancel) {}
+                    }
+
                     
                     // title for app bar
                     Text(Constants.UserDetails.title)
@@ -111,13 +118,15 @@ struct UserDetailsView: View {
                             // back button
                             BackAndContinueButtons(
                                 completion  : $profileCompletion,
-                                increment   : false
+                                increment   : false,
+                                textFields  : $textFieldValues[0]
                             )
                         }
                         // continue button
                         BackAndContinueButtons(
                             completion  : $profileCompletion,
-                            increment   : true
+                            increment   : true,
+                            textFields  : $textFieldValues[0]
                         )
                     }
                     .padding()
@@ -135,41 +144,29 @@ struct UserDetailsView: View {
                 // populate text field values
                 // array when the view appears
                 textFieldValues = userDetailsModel.getInputFields()
-        }
+            }
+            .onDisappear{
+                // func to reset picker data
+                signInViewModel.resetPickerData()
+            }
             
-//            if showDatePicker {
-//                VStack (alignment: .trailing){
-//
-//                    Button(action: {
-//                        withAnimation{
-//                            showDatePicker.toggle()
-//                        }
-//                    }, label: {
-//                        Text("Done")
-//                    })
-//
-//                    DatePicker(
-//                        "",
-//                        selection            : $date,
-//                        in                   : ...Date.now,
-//                        displayedComponents  : .date
-//                    )
-//                    .datePickerStyle(.wheel)
-//                    .labelsHidden()
-//                }
-//                .frame(maxWidth: .infinity)
-//                .padding(.horizontal)
-//            }
-//
-//            if showGenderPicker {
-//                Picker("", selection: $gender) {
-//                    ForEach(Constants.Placeholders.gender, id: \.self) {
-//                        Text($0)
-//                            .font(.system(size: 15))
-//                    }
-//                }
-//                .pickerStyle(.wheel)
-//            }
+            // if show gender is set to true
+            if signInViewModel.showGenderPicker {
+                DefaultPickers()
+                .padding(.horizontal, 34)
+            }
+            
+            // if show date is set to true
+            if signInViewModel.showDatePicker {
+                DefaultPickers()
+            }
+            
+            // show toast message
+            // if any validation or verificatioin
+            // message exists
+            if !signInViewModel.toastMessage.isEmpty {
+                ToastMessageView()
+            }
         }
     }
 }
@@ -177,5 +174,6 @@ struct UserDetailsView: View {
 struct UserDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         UserDetailsView()
+            .environmentObject(SignInViewModel())
     }
 }

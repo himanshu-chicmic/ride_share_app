@@ -2,14 +2,20 @@
 //  YourRidesView.swift
 //  CarPool
 //
-//  Created by Nitin on 5/12/23.
+//  Created by Himanshu on 5/12/23.
 //
 
 import SwiftUI
 
 struct YourRidesView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        // if no data in inbox
+        PlaceholderView(
+            image   : Constants.EmptyRidesView.image,
+            title   : Constants.EmptyRidesView.title,
+            caption : Constants.EmptyRidesView.caption
+        )
     }
 }
 
