@@ -2,14 +2,20 @@
 //  ProfileView.swift
 //  CarPool
 //
-//  Created by Nitin on 5/12/23.
+//  Created by Himanshu on 5/12/23.
 //
 
 import SwiftUI
 
 struct ProfileView: View {
+    
+        
+    // MARK: body
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        ProfileTabViewAbout()
+        
     }
 }
 

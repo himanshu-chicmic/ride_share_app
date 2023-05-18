@@ -2,7 +2,19 @@
 //  SearchViewModel.swift
 //  CarPool
 //
-//  Created by Nitin on 5/18/23.
+//  Created by Himanshu on 5/18/23.
 //
 
 import Foundation
+
+class SearchViewModel: ObservableObject {
+    
+    // MARK: properties
+    
+    // search properties
+    @Published var startLocation: String = Constants.Placeholders.leavingFrom
+    @Published var endLocation: String = Constants.Placeholders.goingTo
+    @Published var dateOfDeparture: String = Constants.Placeholders.today
+    @Published var numberOfPersons: String = Constants.Placeholders.one
+    
+}

@@ -36,6 +36,10 @@ struct PlaceholderView: View {
 
 struct PlaceholderView_Previews: PreviewProvider {
     static var previews: some View {
-        PlaceholderView(image: "empty-inbox-view", title: "Your inbox is empty.", caption: "No messages right now. Book or offer a ride to contact someone")
+        PlaceholderView(
+            image: "empty-inbox-view",
+            title: "Your inbox is empty.",
+            caption: "No messages right now. Book or offer a ride to contact someone"
+        )
     }
 }

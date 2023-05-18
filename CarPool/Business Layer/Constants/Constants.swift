@@ -74,6 +74,11 @@ struct Constants {
         // select name prefix
         static let selectGender     = "Select name prefix"
         static let genders          = ["", "Mr.", "Ms/Mrs.", "Id' prefer not to say"]
+        
+        static let leavingFrom      = "Leaving from"
+        static let goingTo          = "Going to"
+        static let today            = "Today"
+        static let one              = "1"
     }
     
     // MARK: - empty inbox view
@@ -160,11 +165,55 @@ struct Constants {
         
         static let eye      = "eye"
         static let eyeSlash = "eye.slash"
+        
+        static let startLocation = "circle.circle"
+        static let endLocation = "mappin.and.ellipse"
+        
+        static let star = "star.fill"
+        
+        static let person = "person"
+        
+        static let calendar = "calendar"
+        
+        static let plusCircle = "plus.circle"
+        
+        static let edit = "square.and.pencil"
+    }
+    
+    // MARK: - search view
+    struct Search {
+        
+        static let title = "Where To?"
+        
+        static let search = "Search"
     }
     
     // MARK: - type aliases
     struct TypeAliases {
         
         typealias InputFieldArrayType = [(String, String, InputFieldIdentifier, UIKeyboardType)]
+    }
+    
+    // MARK: - rides data
+    struct RidesData {
+        
+        static let info = "%@ | %@ Seats"
+    }
+    
+    // MARK: - profile buttons
+    struct ProfileButtons {
+        
+        static let verify = "Verify your profile"
+        static let verifyProfile = ["Vefiry my ID", "Confirm email %@", "Confirm phone number"]
+        
+        static let about = "About you"
+        static let aboutYou = ["Add a mini bio", "Add my preferences"]
+        
+        static let vehicle = "Vehicles"
+        static let vehicles = ["Add vehicle"]
+        
+        static let edit = "Edit profile"
+        
+        static let account = "Account"
     }
 }

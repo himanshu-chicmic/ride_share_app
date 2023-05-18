@@ -27,7 +27,7 @@ struct ContactItem: View {
             Image(image)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 54, height: 54)
+                .frame(width: 44, height: 44)
                 .clipShape(Circle())
             
             // horizontal stack for name, message and time
@@ -63,6 +63,11 @@ struct ContactItem: View {
 
 struct ContactItem_Previews: PreviewProvider {
     static var previews: some View {
-        ContactItem(image: "intro-image", name: "Himanshu", message: "message message message...", time: "12:38")
+        ContactItem(
+            image   : Constants.Images.introImage,
+            name    : "Himanshu",
+            message : "message message message...",
+            time    : "12:38"
+        )
     }
 }

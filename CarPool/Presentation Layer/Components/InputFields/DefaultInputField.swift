@@ -13,11 +13,7 @@ struct DefaultInputField: View {
     
     // variable to check the type
     // of input field
-    var inputFieldType: InputFieldIdentifier {
-        didSet {
-            
-        }
-    }
+    var inputFieldType: InputFieldIdentifier
     // placeholder text for input field
     var placeholder: String
     

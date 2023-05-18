@@ -135,7 +135,8 @@ struct LoginSignupView: View {
                         .navigationBarBackButtonHidden(true)
                 }
                 else {
-                    // go to home view
+                    DashboardView()
+                        .navigationBarBackButtonHidden(true)
                 }
             }
             
