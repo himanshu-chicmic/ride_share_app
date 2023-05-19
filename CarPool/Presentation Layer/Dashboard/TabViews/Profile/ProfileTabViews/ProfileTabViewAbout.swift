@@ -13,9 +13,17 @@ struct ProfileTabViewAbout: View {
     // MARK: - properties
     
     // array for buttons
-    private var buttonsArray: [[String]]
+    @State var buttonsArray: [[EditProfileIdentifier]] = [
+        [.email, .mobile],
+        [.bio],
+        [.vehicles]
+    ]
     // array for title
-    private var titles: [String]
+    @State var titles: [String] = [
+        Constants.ProfileButtons.verify,
+        Constants.ProfileButtons.about,
+        Constants.ProfileButtons.vehicle
+    ]
     
     // photos picker item
     @State private var photosPicker: PhotosPickerItem?
@@ -32,28 +40,6 @@ struct ProfileTabViewAbout: View {
     @State var editPhoto = false
     // open image picker
     @State var openImagePicker = false
-    
-    // MARK: - initializers
-    
-    // initialize the empty values for buttons and titles array
-    init() {
-        // populate buttons array
-        // for text values
-        buttonsArray = [
-            Constants.ProfileButtons.verifyProfile,
-            Constants.ProfileButtons.aboutYou,
-            Constants.ProfileButtons.vehicles
-        ]
-        
-        // poplate title array for headings of
-        // each profile section
-        titles = [
-            Constants.ProfileButtons.verify,
-            Constants.ProfileButtons.about,
-            Constants.ProfileButtons.vehicle
-        ]
-    }
-
     
     // MARK: - body
     
@@ -130,11 +116,11 @@ struct ProfileTabViewAbout: View {
                 
                 ForEach(0..<3) { i in
                     
-                    // profiel view item to show profile
+                    // profile view item to show profile
                     // section with different buttons
                     ProfileViewItem(
-                        title   : titles[i],
-                        array   : buttonsArray[i]
+                        title   : $titles[i],
+                        array   : $buttonsArray[i]
                     )
                     
                     Divider()

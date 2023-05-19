@@ -15,8 +15,14 @@ struct ProfileViewItem: View {
     // MARK: - properties
     
     // title and buttons text array
-    var title: String
-    var array: [String]
+    @Binding var title: String
+    @Binding var array: [EditProfileIdentifier]
+    
+    // boolean value to open edit view
+    @State var openEditView = false
+    
+    // state var to check the clicked item
+    @State var clickedItem: EditProfileIdentifier = .email
     
     // MARK: - body
     
@@ -28,9 +34,11 @@ struct ProfileViewItem: View {
                 .fontWeight(.semibold)
             
             // buttons
-            ForEach(array, id: \.self) { val in
+            
+            ForEach(array) { val in
                 Button {
-                    //
+                    openEditView.toggle()
+                    clickedItem = val
                 } label: {
                     
                     HStack{
@@ -38,7 +46,7 @@ struct ProfileViewItem: View {
                         Image(systemName: Constants.Icon.plusCircle)
                         
                         // text value of button
-                        Text(val)
+                        Text(val.rawValue)
                             .font(.system(size: 18))
                         
                         // spacer to occupy extra space
@@ -48,7 +56,9 @@ struct ProfileViewItem: View {
                 }
                 .padding(.vertical, 8)
             }
-
+            .fullScreenCover(isPresented: $openEditView) {
+                clickedItem.view
+            }
         }
     }
 }
@@ -56,8 +66,8 @@ struct ProfileViewItem: View {
 struct ProfileViewItem_Previews: PreviewProvider {
     static var previews: some View {
         ProfileViewItem(
-            title   : "Title",
-            array   : Constants.ProfileButtons.verifyProfile
+            title   : .constant("Title"),
+            array   : .constant([.email, .mobile])
         )
     }
 }

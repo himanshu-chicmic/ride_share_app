@@ -19,6 +19,8 @@
 		6A32BAD02A174CB500866706 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACF2A174CB500866706 /* EditProfileView.swift */; };
 		6A32BAD82A17775A00866706 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */; };
 		6A32BADA2A1777FF00866706 /* ValidationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */; };
+		6A32BADC2A17940C00866706 /* AddProfileOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */; };
+		6A32BADE2A17963300866706 /* EditProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BADD2A17963300866706 /* EditProfileIdentifier.swift */; };
 		6A33EAC92A0E0F4000620993 /* DefaultPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A33EAC82A0E0F4000620993 /* DefaultPickers.swift */; };
 		6A33EACC2A0E198900620993 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A33EACB2A0E198900620993 /* Globals.swift */; };
 		6A33EACF2A0E1AB300620993 /* Validations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A33EACE2A0E1AB300620993 /* Validations.swift */; };
@@ -59,6 +61,8 @@
 		6A32BACF2A174CB500866706 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
 		6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationsViewModel.swift; sourceTree = "<group>"; };
+		6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileOptionView.swift; sourceTree = "<group>"; };
+		6A32BADD2A17963300866706 /* EditProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileIdentifier.swift; sourceTree = "<group>"; };
 		6A33EAC82A0E0F4000620993 /* DefaultPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPickers.swift; sourceTree = "<group>"; };
 		6A33EACB2A0E198900620993 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		6A33EACE2A0E1AB300620993 /* Validations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validations.swift; sourceTree = "<group>"; };
@@ -257,6 +261,7 @@
 				6AAB53ED2A0BBD7600138024 /* Buttons */,
 				6A33EAD02A0E294700620993 /* ToastMessageView.swift */,
 				6A12E85B2A0E62CA0061333A /* PlaceholderView.swift */,
+				6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -294,6 +299,7 @@
 			children = (
 				6AAB53F52A0BC14400138024 /* InputFieldIdentifier.swift */,
 				6A12E84E2A0E51830061333A /* TabViewIdentifier.swift */,
+				6A32BADD2A17963300866706 /* EditProfileIdentifier.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -406,7 +412,9 @@
 				6A33EACF2A0E1AB300620993 /* Validations.swift in Sources */,
 				6A32BAD82A17775A00866706 /* UserDetailsViewModel.swift in Sources */,
 				6ACCFFA12A0CA7BE00524F17 /* UserDetailsModel.swift in Sources */,
+				6A32BADE2A17963300866706 /* EditProfileIdentifier.swift in Sources */,
 				6A12E8522A0E57EF0061333A /* YourRidesView.swift in Sources */,
+				6A32BADC2A17940C00866706 /* AddProfileOptionView.swift in Sources */,
 				6A12E8582A0E58310061333A /* InboxView.swift in Sources */,
 				6AAB53CC2A0B82EF00138024 /* LoginSignupView.swift in Sources */,
 				6A12E8562A0E58210061333A /* SearchView.swift in Sources */,

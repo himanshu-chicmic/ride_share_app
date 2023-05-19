@@ -89,6 +89,14 @@ struct Constants {
         
         static let mobile           = "Enter phone number"
         static let bio              = "Add bio"
+        
+    }
+    
+    struct Headings {
+        
+        static let email = "What's your email?"
+        static let mobile = "What's your mobile number?"
+        static let bio = "What would you like other members to know about you?"
     }
     
     struct UserInfo {
@@ -232,13 +240,10 @@ struct Constants {
     struct ProfileButtons {
         
         static let verify           = "Verify your profile"
-        static let verifyProfile    = ["Confirm email %@", "Confirm phone number"]
         
         static let about            = "About you"
-        static let aboutYou         = ["Add a mini bio"]
         
         static let vehicle          = "Vehicles"
-        static let vehicles         = ["Add vehicle"]
         
         static let edit             = "Edit profile"
         
