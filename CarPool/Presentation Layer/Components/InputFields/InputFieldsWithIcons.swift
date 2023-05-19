@@ -2,31 +2,39 @@
 //  InputFieldsWithIcons.swift
 //  CarPool
 //
-//  Created by Nitin on 5/18/23.
+//  Created by Himanshu on 5/18/23.
 //
 
 import SwiftUI
 
+/// struct view to create input fields with icons
+/// no text field is used in this view
+/// it's only used for search function in this ap
+/// where no text fields are required
 struct InputFieldsWithIcons: View {
     
-    // MARK: properties
+    // MARK: - properties
     
     // icon and placeholder fot input field
     var icon: String
     var placeholder: String
     
+    // binding variable for text in the field
     @Binding var text: String
     
-    // MARK: body
+    // MARK: - body
     
     var body: some View {
         HStack{
-            
+            // icon
             Image(systemName: icon)
                 .foregroundColor(.gray)
-            
+            // text value
             Text(text)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(
+                    maxWidth    : .infinity,
+                    alignment   : .leading
+                )
                 .foregroundColor(.gray)
         }
         .padding()
@@ -34,7 +42,7 @@ struct InputFieldsWithIcons: View {
         .cornerRadius(4)
         .font(.system(size: 14))
         .onTapGesture {
-            //
+            //TODO: activate search view
         }
     }
 }
@@ -44,6 +52,7 @@ struct InputFieldsWithIcons_Previews: PreviewProvider {
         InputFieldsWithIcons(
             icon        : Constants.Icon.startLocation,
             placeholder : Constants.Placeholders.leavingFrom,
-            text        : .constant(""))
+            text        : .constant("")
+        )
     }
 }

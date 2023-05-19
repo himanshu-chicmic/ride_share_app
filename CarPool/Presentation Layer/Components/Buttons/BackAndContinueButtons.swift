@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// view for back and continue buttons
+/// used in progress of profile completion
+/// during creating a new account
 struct BackAndContinueButtons: View {
     
     // MARK: - properties
@@ -18,8 +21,9 @@ struct BackAndContinueButtons: View {
     // or decrement the value of completion
     var increment: Bool = true
 
-    // environment object for signInViewModel
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    // environment object for validationsViewModel
+    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
     
     // text field values
     @Binding var textFields: Constants.TypeAliases.InputFieldArrayType
@@ -37,20 +41,28 @@ struct BackAndContinueButtons: View {
                 // check for name
                 if completion == 30 && increment {
                     // check for textfield validations
-                    signInViewModel.toastMessage = signInViewModel.validationsInstance.validateTextFields(textFields: textFields)
+                    validationsViewModel.toastMessage = validationsViewModel
+                        .validationsInstance
+                        .validateTextFields(
+                            textFields: textFields
+                        )
                 }
                 
                 // check for gender
                 else if completion == 90 && increment {
                     // check for name prefix validations
-                    signInViewModel.toastMessage = signInViewModel.validationsInstance.validateNamePrefix(value: signInViewModel.gender)
+                    validationsViewModel.toastMessage = validationsViewModel
+                        .validationsInstance
+                        .validateNamePrefix(
+                            value: userDetailsViewModel.gender
+                        )
                 }
                 
                 // increment button is pressed
                 if increment {
                     // check if toast message empty
                     // and compeltion value's between 30 and 90
-                    if signInViewModel.toastMessage.isEmpty
+                    if validationsViewModel.toastMessage.isEmpty
                        && completion >= 30 && completion < 90 {
                         // then increment
                         completion += 30
@@ -60,7 +72,7 @@ struct BackAndContinueButtons: View {
                         // show if for 3 seconds and
                         // then make it disappear
                         DispatchQueue.main.asyncAfter(deadline: .now()+3){
-                            signInViewModel.toastMessage = ""
+                            validationsViewModel.toastMessage = ""
                         }
                     }
                     
@@ -85,6 +97,9 @@ struct BackAndContinueButtons: View {
 
 struct BackAndContinueButtons_Previews: PreviewProvider {
     static var previews: some View {
-        BackAndContinueButtons(completion: .constant(0.0), textFields: .constant([]))
+        BackAndContinueButtons(
+            completion  : .constant(0.0),
+            textFields  : .constant([])
+        )
     }
 }

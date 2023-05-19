@@ -7,12 +7,15 @@
 
 import SwiftUI
 
+/// default picker for application
+/// contains date and gender picker
+/// the picker are styled as wheel type
 struct DefaultPickers: View {
     
     // MARK: - properties
     
     // environment object for signInViewModel
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
     
     // MARK: - body
     
@@ -27,46 +30,50 @@ struct DefaultPickers: View {
                 // to text binding
                 
                 // if date picker is shown
-                if signInViewModel.showDatePicker {
-                    signInViewModel.showHideDatePicker(show: false)
+                if userDetailsViewModel.showDatePicker {
+                    userDetailsViewModel.showHideDatePicker(show: false)
                 }
                 // if gender picker is shown
-                else if signInViewModel.showGenderPicker {
-                    signInViewModel.showHideGenderPicker(show: false)
+                else if userDetailsViewModel.showGenderPicker {
+                    userDetailsViewModel.showHideGenderPicker(show: false)
                 }
                 
             }, label: {
                 // button label
                 Text(Constants.Others.done)
+                    .padding(.top)
             })
 
             Group{
                 // show date picker when showDatePicker
                 // is set to true
-                if signInViewModel.showDatePicker {
+                if userDetailsViewModel.showDatePicker {
                     DatePicker(
                         "",
-                        selection            : $signInViewModel.date,
-                        in                   : ...Date.now,
+                        selection            : $userDetailsViewModel.date,
+                        in                   : ...Globals.defaultDate,
                         displayedComponents  : .date
                     )
                     .datePickerStyle(.wheel)
                 }
                 // show gender picker when showGenderPicker
                 // is set to true
-                else if signInViewModel.showGenderPicker {
+                else if userDetailsViewModel.showGenderPicker {
                     Picker(
                         "",
-                        selection: $signInViewModel.gender
+                        selection: $userDetailsViewModel.gender
                     ) {
-                        ForEach(Constants.Placeholders.genders, id: \.self) {
+                        ForEach(
+                            Constants.Placeholders.genders,
+                            id: \.self
+                        ) {
                             Text($0)
                         }
                     }
                     .pickerStyle(.wheel)
-                    .onChange(of: signInViewModel.gender) { value in
+                    .onChange(of: userDetailsViewModel.gender) { value in
                         if value.isEmpty{
-                            signInViewModel.gender = Constants.Placeholders.selectGender
+                            userDetailsViewModel.gender = Constants.Placeholders.selectGender
                         }
                     }
                 }
@@ -80,6 +87,6 @@ struct DefaultPickers: View {
 struct DefaultPickeres_Previews: PreviewProvider {
     static var previews: some View {
         DefaultPickers()
-            .environmentObject(SignInViewModel())
+            .environmentObject(UserDetailsViewModel())
     }
 }

@@ -7,22 +7,29 @@
 
 import SwiftUI
 
+/// message box used to show any error,
+/// success, or warning messages
 struct ToastMessageView: View {
     
-    // MARK: - property
+    // MARK: - properties
     
     // string for validation message
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    
+    // background color
+    var backgroundColor: Color = .red
     
     // MARK: - body
     
     var body: some View {
         HStack{
-            Text(signInViewModel.toastMessage)
+            // message text
+            Text(validationsViewModel.toastMessage)
             Spacer()
+            // button to dismiss
             Button {
                 withAnimation {
-                    signInViewModel.toastMessage = ""
+                    validationsViewModel.toastMessage = ""
                 }
             } label: {
                 Image(systemName: Constants.Icon.close)
@@ -35,7 +42,7 @@ struct ToastMessageView: View {
         .fontWeight(.semibold)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(.red.opacity(0.75))
+        .background(backgroundColor.opacity(0.75))
         .foregroundColor(.white)
         .cornerRadius(12)
         .padding()
@@ -45,6 +52,6 @@ struct ToastMessageView: View {
 struct ToastMessageView_Previews: PreviewProvider {
     static var previews: some View {
         ToastMessageView()
-            .environmentObject(SignInViewModel())
+            .environmentObject(ValidationsViewModel())
     }
 }

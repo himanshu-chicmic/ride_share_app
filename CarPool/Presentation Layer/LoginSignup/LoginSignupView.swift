@@ -11,8 +11,9 @@ struct LoginSignupView: View {
     
     // MARK: - properties
     
-    // environment object for view model
+    // environment object for view models
     @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var validationsViewModel: ValidationsViewModel
     
     // signInModel for email, password and,
     // confirm password properties
@@ -28,7 +29,12 @@ struct LoginSignupView: View {
     // navigate boolean
     // navigate to new view if
     // set to true
-    @State var navigate: Bool = false
+    @State var navigateToDashboard: Bool = false
+    
+    // open forgot password view
+    @State var openForgotPasswordView: Bool = false
+    // open view for user detials
+    @State var openUserDetailsView: Bool = false
     
     // MARK: - body
     
@@ -63,13 +69,31 @@ struct LoginSignupView: View {
                         keyboard        : textFieldValues[i].3
                     )
                 }
+                
+                // forgot password for login field
+                if !signInViewModel.isNewUser {
+                    Button {
+                        openForgotPasswordView.toggle()
+                    } label: {
+                        Text(Constants.LogIn.forgotPassword)
+                            .font(.system(size: 14))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.top, 6)
+                    .padding(.horizontal, 20)
+                }
 
                 // button for navigation to a new view
                 Button {
                     
                     withAnimation{
                         // check for textfield validations
-                        signInViewModel.toastMessage = signInViewModel.validationsInstance
+                        validationsViewModel.toastMessage = signInViewModel.isNewUser
+                        ?
+                        validationsViewModel.validationsInstance
+                            .validateTextFields(textFields: textFieldValues, count: textFieldValues.count - 2)
+                        :
+                        validationsViewModel.validationsInstance
                                        .validateTextFields(textFields: textFieldValues)
                         
                         // check for email/password verification
@@ -78,15 +102,19 @@ struct LoginSignupView: View {
                     // if toast message is empty
                     // there no error in validations and verification
                     // then navigate to new view
-                    if signInViewModel.toastMessage.isEmpty {
-                        navigate.toggle()
+                    if validationsViewModel.toastMessage.isEmpty {
+                        if signInViewModel.isNewUser {
+                            openUserDetailsView.toggle()
+                        }else {
+                            navigateToDashboard.toggle()
+                        }
                     }
                     else {
                         // if any error is shown
                         // show if for 3 seconds and
                         // then make it disappear
                         DispatchQueue.main.asyncAfter(deadline: .now()+3){
-                            signInViewModel.toastMessage = ""
+                            validationsViewModel.toastMessage = ""
                         }
                     }
                     
@@ -126,24 +154,22 @@ struct LoginSignupView: View {
             // navigate to specified
             // destination view when the
             // navigate bool is set to true
-            .navigationDestination(isPresented: $navigate) {
-                
-                // if the user is new
-                // go to complete profile view
-                if signInViewModel.isNewUser {
-                    UserDetailsView()
-                        .navigationBarBackButtonHidden(true)
-                }
-                else {
-                    DashboardView()
-                        .navigationBarBackButtonHidden(true)
-                }
+            .navigationDestination(isPresented: $navigateToDashboard) {
+                // navigate to dashboard view
+                DashboardView()
+                    .navigationBarBackButtonHidden(true)
+            }
+            .fullScreenCover(isPresented: $openUserDetailsView) {
+                UserDetailsView()
+            }
+            .fullScreenCover(isPresented: $openForgotPasswordView) {
+                ForgotPasswordView()
             }
             
             // show toast message
             // if any validation or verificatioin
             // message exists
-            if !signInViewModel.toastMessage.isEmpty {
+            if !validationsViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }
         }
@@ -154,5 +180,6 @@ struct LoginSignupView_Previews: PreviewProvider {
     static var previews: some View {
         LoginSignupView()
             .environmentObject(SignInViewModel())
+            .environmentObject(ValidationsViewModel())
     }
 }

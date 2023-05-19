@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// struct containing valiation methods for all kinds
+/// of input fields used in the appliacation
 struct Validations {
     
     // MARK: - methods
@@ -146,9 +148,13 @@ struct Validations {
     
     
     /// main method to check for input field validations
-    /// - Parameter textFields: array of text fields that need to be validated
+    /// - Parameters:
+    ///   - textFields: array of text fields that need to be validated
+    ///   - count: an optional value used in checking confirm password against original password
+    ///   the count is the index of the text field where original password is stored and it is always one index
+    ///   ahead of the confirm password
     /// - Returns: a string value for toast message
-    func validateTextFields(textFields: Constants.TypeAliases.InputFieldArrayType) -> String {
+    func validateTextFields(textFields: Constants.TypeAliases.InputFieldArrayType, count: Int? = 0) -> String {
         
         // initialize toast message string with empty string
         var toastMessage = ""
@@ -179,7 +185,7 @@ struct Validations {
                 
                 // match confirm password with the first password
                 case .confirmPassword:
-                    toastMessage = matchConfirmPassword(reEntered: value.0, password: textFields[1].0)
+                    toastMessage = matchConfirmPassword(reEntered: value.0, password: textFields[count!].0)
                 
                 // validate name
                 case .firstName, .lastName:

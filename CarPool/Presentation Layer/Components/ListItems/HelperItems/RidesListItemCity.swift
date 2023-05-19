@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+/// component to be displayed
+/// on list item view in rides view
 struct RidesListItemCity: View {
     
-    // MARK: properties
+    // MARK: - properties
     
     // list item properties
     var icon: String
@@ -17,7 +19,7 @@ struct RidesListItemCity: View {
     var location: String
     var time: String
     
-    // MARK: body
+    // MARK: - body
     
     var body: some View {
         HStack(alignment: .firstTextBaseline) {

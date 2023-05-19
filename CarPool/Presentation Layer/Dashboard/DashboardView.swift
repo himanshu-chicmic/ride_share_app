@@ -25,26 +25,28 @@ struct DashboardView: View {
     var body: some View {
         
         // tab view
-        TabView(selection: $selection) {
-            // loop over array  to display all
-            // the five tabs
-            ForEach(tabViewData, id: \.self) { value in
-                
-                Group{
-                    // root of of tab
-                    switch value {
-                        case .search    : SearchView()
-                        case .rides     : YourRidesView()
-                        case .inbox     : InboxView()
-                        case .profile   : ProfileView()
+        NavigationStack {
+            TabView(selection: $selection) {
+                // loop over array  to display all
+                // the five tabs
+                ForEach(tabViewData, id: \.self) { value in
+                    
+                    Group{
+                        // root of of tab
+                        switch value {
+                            case .search    : SearchView()
+                            case .rides     : YourRidesView()
+                            case .inbox     : InboxView()
+                            case .profile   : ProfileView()
+                        }
                     }
+                    // associated tab item
+                    .tabItem {
+                        Image(systemName: value.rawValue.image)
+                        Text(value.rawValue.text)
+                    }
+                    .tag(value)
                 }
-                // associated tab item
-                .tabItem {
-                    Image(systemName: value.rawValue.image)
-                    Text(value.rawValue.text)
-                }
-                .tag(value)
             }
         }
     }

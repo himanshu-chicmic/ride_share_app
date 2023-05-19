@@ -8,22 +8,14 @@
 import Foundation
 import SwiftUI
 
+/// view model for signin properties and methods
 class SignInViewModel: ObservableObject {
     
     // MARK: - properties
     
     // published variable for isNewUser
     // determines sign up or log in
-    @Published var isNewUser: Bool = true
-    
-    // picker variables
-    @Published var showDatePicker = false
-    @Published var showGenderPicker = false
-    
-    // variable to store date
-    @Published var date: Date = Date.now
-    // variable to store gender
-    @Published var gender: String = Constants.Placeholders.selectGender
+    @Published var isNewUser: Bool = false
     
     // returns appbar title
     // for sign in view
@@ -52,36 +44,4 @@ class SignInViewModel: ObservableObject {
         isNewUser ? Constants.LogIn.logIn : Constants.SignUp.signUp
     }
     
-    // validations struct instance
-    var validationsInstance = Validations()
-    
-    // published var for error/validaton messages
-    @Published var toastMessage: String = ""
-    
-    // MARK: - methods
-    
-    /// method to reset properties
-    /// associated with date and gender pickers
-    func resetPickerData() {
-        showDatePicker = false
-        showGenderPicker = false
-        date = Date.now
-        gender = Constants.Placeholders.selectGender
-    }
-    
-    /// method to show/hide gender picker
-    /// - Parameter show: boolean value, show when true and hide when false
-    func showHideGenderPicker(show: Bool) {
-        withAnimation {
-            showGenderPicker = show
-        }
-    }
-    
-    /// method to show/hide date picker
-    /// - Parameter show: boolean value, show when true and hide when false
-    func showHideDatePicker(show: Bool) {
-        withAnimation {
-            showDatePicker = show
-        }
-    }
 }

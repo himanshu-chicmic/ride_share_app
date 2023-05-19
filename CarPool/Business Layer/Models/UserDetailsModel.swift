@@ -20,8 +20,11 @@ struct UserDetailsModel {
     
     var firstName: String
     var lastName: String
-    var dateOfBirth: String
     var gender: String
+    var dateOfBirth: String
+    var email: String
+    var mobile: String
+    var bio: String
   
     // MARK: - initializers
     
@@ -29,8 +32,11 @@ struct UserDetailsModel {
     init() {
         self.firstName = ""
         self.lastName = ""
-        self.dateOfBirth = ""
         self.gender = ""
+        self.dateOfBirth = ""
+        self.email = ""
+        self.mobile = ""
+        self.bio = ""
     }
     
     // MARK: - methods
@@ -38,7 +44,7 @@ struct UserDetailsModel {
     /// method to get the textFieldValues with input value, placeholder value,
     /// input field identifier, and keyboard type
     /// - Returns: return a 2d array containg all the data of input fields
-    func getInputFields() -> [Constants.TypeAliases.InputFieldArrayType] {
+    func getInputFields2dArray() -> [Constants.TypeAliases.InputFieldArrayType] {
         
         // return the array with necessary
         // values of input fields
@@ -56,6 +62,54 @@ struct UserDetailsModel {
             [
                 (gender, Constants.Placeholders.genders[0], InputFieldIdentifier.gender, UIKeyboardType.default)
             ]
+        ]
+        
+    }
+    
+    /// method to get the textFieldValues with input value, placeholder value,
+    /// input field identifier, and keyboard type
+    /// - Returns: return an array containg all the data of input fields
+    func getInputFields() -> Constants.TypeAliases.InputFieldArrayType {
+        
+        // return the array with necessary
+        // values of input fields
+        return [
+            (
+                firstName,
+                Constants.Placeholders.firstname,
+                InputFieldIdentifier.firstName,
+                UIKeyboardType.default
+            ),
+            (
+                lastName,
+                Constants.Placeholders.lastname,
+                InputFieldIdentifier.lastName,
+                UIKeyboardType.default
+            ),
+            (
+                gender,
+                Constants.Placeholders.selectGender,
+                InputFieldIdentifier.gender,
+                UIKeyboardType.default
+            ),
+            (
+                dateOfBirth,
+                Constants.Placeholders.dateOfBirth,
+                InputFieldIdentifier.dateOfBirth,
+                UIKeyboardType.default
+            ),
+            (
+                email,
+                Constants.Placeholders.email,
+                InputFieldIdentifier.email,
+                UIKeyboardType.emailAddress
+            ),
+            (
+                mobile,
+                Constants.Placeholders.mobile,
+                InputFieldIdentifier.mobile,
+                UIKeyboardType.numberPad
+            )
         ]
         
     }

@@ -25,10 +25,17 @@ struct Constants {
     // MARK: - login
     struct LogIn {
         
-        static let logIn        = "Log In"
-        static let login        = "Log in"
+        static let logIn                    = "Log In"
+        static let login                    = "Log in"
         
-        static let notAMember   = "Not a member yet?"
+        static let forgotPassword           = "Forgot password?"
+        static let resetPassword            = "Reset Password"
+        static let resetPasswordDescription = "Please enter the email you signed up with to confirm reset password"
+        static let enterNewPassword         = "Enter a new password"
+        
+        static let notAMember               = "Not a member yet?"
+        
+        static let submit                   = "Submit"
     }
     
     // MARK: - signup
@@ -69,7 +76,7 @@ struct Constants {
         static let lastname         = "Enter last name"
         
         // date of birth picker
-        static let dateOfBirth      = "dd/mm/yyyy"
+        static let dateOfBirth      = "dd/MM/yyyy"
         
         // select name prefix
         static let selectGender     = "Select name prefix"
@@ -79,6 +86,22 @@ struct Constants {
         static let goingTo          = "Going to"
         static let today            = "Today"
         static let one              = "1"
+        
+        static let mobile           = "Enter phone number"
+        static let bio              = "Add bio"
+    }
+    
+    struct UserInfo {
+        
+        static let title        = "Personal details"
+        
+        static let firstname    = "First name"
+        static let lastname     = "Last name"
+        static let gender       = "Gender"
+        static let dateOfBirth  = "Date of birth"
+        static let email        = "Email address"
+        static let mobile       = "Mobile phone"
+        static let bio          = "Bio"
     }
     
     // MARK: - empty inbox view
@@ -104,7 +127,7 @@ struct Constants {
     // MARK: - regular expressions
     struct ValidationRegex {
         
-        static let email        = "^[a-zA-Z0-9.!$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$"
+        static let email        = "^[a-zA-Z0-9.!$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*$"
         static let password     = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&/,`^()-+=_~;:'.])[A-Za-z\\d@$!%*#?&/,`^()-+=_~;:'.]{8,16}$"
         static let name         = "[A-Za-z]+"
     }
@@ -143,12 +166,18 @@ struct Constants {
         static let done         = "Done"
         static let yes          = "Yes"
         static let no           = "No"
+        static let save         = "Save"
+        static let cancel       = "Cancel"
     }
     
     // MARK: - alert dialog strings
     struct AlertDialog {
         
-        static let exitCompleteProfile = "Your account won't be created. Are you sure to exit?"
+        static let exitCompleteProfile  = "Your account won't be created. Are you sure to exit?"
+        
+        static let exitPasswordReset    = "You didn't reset your password. Are you sure to go back?"
+        
+        static let areYouSure           = "Are you sure to exit?"
     }
     
     // MARK: - images names
@@ -160,32 +189,31 @@ struct Constants {
     // MARK: - default icons
     struct Icon {
         
-        static let close    = "xmark"
-        static let back     = "chevron.left"
+        static let close            = "xmark"
+        static let back             = "chevron.left"
+        static let next             = "chevron.right"
+        static let check            = "checkmark"
         
-        static let eye      = "eye"
-        static let eyeSlash = "eye.slash"
+        static let edit             = "square.and.pencil"
+        static let plusCircle       = "plus.circle"
         
-        static let startLocation = "circle.circle"
-        static let endLocation = "mappin.and.ellipse"
+        static let eye              = "eye"
+        static let eyeSlash         = "eye.slash"
         
-        static let star = "star.fill"
+        static let startLocation    = "circle.circle"
+        static let endLocation      = "mappin.and.ellipse"
         
-        static let person = "person"
+        static let star             = "star.fill"
         
-        static let calendar = "calendar"
-        
-        static let plusCircle = "plus.circle"
-        
-        static let edit = "square.and.pencil"
+        static let person           = "person"
+        static let calendar         = "calendar"
     }
     
     // MARK: - search view
     struct Search {
         
-        static let title = "Where To?"
-        
-        static let search = "Search"
+        static let title    = "Where To?"
+        static let search   = "Search"
     }
     
     // MARK: - type aliases
@@ -203,17 +231,35 @@ struct Constants {
     // MARK: - profile buttons
     struct ProfileButtons {
         
-        static let verify = "Verify your profile"
-        static let verifyProfile = ["Vefiry my ID", "Confirm email %@", "Confirm phone number"]
+        static let verify           = "Verify your profile"
+        static let verifyProfile    = ["Confirm email %@", "Confirm phone number"]
         
-        static let about = "About you"
-        static let aboutYou = ["Add a mini bio", "Add my preferences"]
+        static let about            = "About you"
+        static let aboutYou         = ["Add a mini bio"]
         
-        static let vehicle = "Vehicles"
-        static let vehicles = ["Add vehicle"]
+        static let vehicle          = "Vehicles"
+        static let vehicles         = ["Add vehicle"]
         
-        static let edit = "Edit profile"
+        static let edit             = "Edit profile"
         
-        static let account = "Account"
+        static let account          = "Account"
+    }
+    
+    // MARK: - profile account
+    struct ProfileAccount {
+        
+        static let ratings              = ["Ratings"]
+        static let additionalOptions    = ["Help", "Terms & Conditions", "Data protection", "Licences"]
+        static let details              = ["Change password"]
+        
+        static let logOut               = "Log out"
+        
+        static let headings             = ["First name", "Last name", "Gender", "Date of birth", "Email address", "Mobile number"]
+    }
+    
+    struct ImagePicker {
+        
+        static let selectFromGallery = "Select from gallery"
+        static let takePicture = "Take picture"
     }
 }

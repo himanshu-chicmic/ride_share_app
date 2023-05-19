@@ -11,8 +11,10 @@ struct UserDetailsView: View {
     
     // MARK: - properties
     
-    // environment object for view model
+    // environment object for view models
     @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
     
     // userDetailsModel for first name,
     // last name, date of birth and,
@@ -56,7 +58,7 @@ struct UserDetailsView: View {
                         // dismiss after asking a confirmation
                         popViewConfirmation.toggle()
                     }, label: {
-                        Image(systemName: Constants.Icon.back)
+                        Image(systemName: Constants.Icon.close)
                     })
                     // ask a confirmation before exiting
                     .confirmationDialog(
@@ -143,28 +145,31 @@ struct UserDetailsView: View {
                 
                 // populate text field values
                 // array when the view appears
-                textFieldValues = userDetailsModel.getInputFields()
+                textFieldValues = userDetailsModel.getInputFields2dArray()
             }
             .onDisappear{
                 // func to reset picker data
-                signInViewModel.resetPickerData()
+                userDetailsViewModel.resetPickerData()
             }
             
-            // if show gender is set to true
-            if signInViewModel.showGenderPicker {
-                DefaultPickers()
-                .padding(.horizontal, 34)
+            Group{
+                // if show gender is set to true
+                if userDetailsViewModel.showGenderPicker {
+                    DefaultPickers()
+                    .padding(.horizontal, 34)
+                }
+                
+                // if show date is set to true
+                if userDetailsViewModel.showDatePicker {
+                    DefaultPickers()
+                }
             }
-            
-            // if show date is set to true
-            if signInViewModel.showDatePicker {
-                DefaultPickers()
-            }
+            .background(.gray.opacity(0.15))
             
             // show toast message
             // if any validation or verificatioin
             // message exists
-            if !signInViewModel.toastMessage.isEmpty {
+            if !validationsViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }
         }
@@ -175,5 +180,7 @@ struct UserDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         UserDetailsView()
             .environmentObject(SignInViewModel())
+            .environmentObject(ValidationsViewModel())
+            .environmentObject(UserDetailsViewModel())
     }
 }

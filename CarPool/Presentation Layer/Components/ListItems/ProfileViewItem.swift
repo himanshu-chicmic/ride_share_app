@@ -7,15 +7,18 @@
 
 import SwiftUI
 
+/// item view for profile page
+/// the item view has title and button
+/// that is used in profile about view
 struct ProfileViewItem: View {
     
-    // MARK: properties
+    // MARK: - properties
     
     // title and buttons text array
     var title: String
     var array: [String]
     
-    // MARK: body
+    // MARK: - body
     
     var body: some View {
         VStack (alignment: .leading){
@@ -29,12 +32,17 @@ struct ProfileViewItem: View {
                 Button {
                     //
                 } label: {
+                    
                     HStack{
+                        // plus circle image
                         Image(systemName: Constants.Icon.plusCircle)
                         
+                        // text value of button
                         Text(val)
                             .font(.system(size: 18))
                         
+                        // spacer to occupy extra space
+                        // at the trailing of hstack
                         Spacer()
                     }
                 }
@@ -48,7 +56,8 @@ struct ProfileViewItem: View {
 struct ProfileViewItem_Previews: PreviewProvider {
     static var previews: some View {
         ProfileViewItem(
-            title: "Title",
-            array: Constants.ProfileButtons.verifyProfile)
+            title   : "Title",
+            array   : Constants.ProfileButtons.verifyProfile
+        )
     }
 }

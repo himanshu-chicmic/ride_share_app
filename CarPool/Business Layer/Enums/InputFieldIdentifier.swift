@@ -17,4 +17,5 @@ enum InputFieldIdentifier {
     case lastName
     case dateOfBirth
     case gender
+    case mobile
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// default button for the application
 struct DefaultButtonLabel: View {
     
     // MARK: - properties
@@ -54,6 +55,8 @@ struct DefaultButtonLabel: View {
 
 struct PrimaryButtonLabel_Previews: PreviewProvider {
     static var previews: some View {
-        DefaultButtonLabel(text: Constants.SignUp.createAccount)
+        DefaultButtonLabel(
+            text: Constants.SignUp.createAccount
+        )
     }
 }

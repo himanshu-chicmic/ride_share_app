@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// the default input field to be used
+/// in the application
 struct DefaultInputField: View {
     
     // MARK: - properties
@@ -31,7 +33,9 @@ struct DefaultInputField: View {
     @State var isPasswordVisible: Bool = false
 
     // environment object for signInViewModel
-    @EnvironmentObject var signInViewModel: SignInViewModel
+    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    
+    var background: Color = .gray
     
     // MARK: - body
     
@@ -46,41 +50,48 @@ struct DefaultInputField: View {
                 case .dateOfBirth:
                     HStack{
                         Text(
-                            Globals.dateFormatter.string(from: signInViewModel.date)
+                            Globals
+                                .dateFormatter
+                                .string(from: userDetailsViewModel.date)
                         )
                         Spacer()
                     }
                     .onTapGesture {
                         withAnimation {
-                            signInViewModel.showDatePicker.toggle()
+                            userDetailsViewModel.showDatePicker.toggle()
                         }
                     }
                     .onAppear{
-                        signInViewModel.showHideGenderPicker(show: false)
+                        userDetailsViewModel.showHideGenderPicker(show: false)
                     }
                 
                 // show gender text field
                 // which on tap shows a gender picker
                 case .gender:
                     HStack{
-                        Text(signInViewModel.gender)
-                            .foregroundColor(signInViewModel.gender == Constants.Placeholders.selectGender ? .gray.opacity(0.7) : .black)
+                        Text(userDetailsViewModel.gender)
+                            .foregroundColor(
+                                userDetailsViewModel.gender == Constants.Placeholders.selectGender
+                                ? .gray.opacity(0.7)
+                                : .black
+                            )
                         Spacer()
                     }
                     .onTapGesture {
                         withAnimation {
-                            signInViewModel.showGenderPicker.toggle()
+                            userDetailsViewModel.showGenderPicker.toggle()
                         }
                     }
                     .onAppear{
-                        signInViewModel.showHideDatePicker(show: false)
+                        userDetailsViewModel.showHideDatePicker(show: false)
                     }
                 
                 // show simple text field for
                 // email, firstname, lastname and dob
                 case .email,
                      .firstName,
-                     .lastName:
+                     .lastName,
+                     .mobile:
                     TextField(placeholder, text: $text)
                 
                 // show secure field for
@@ -117,15 +128,32 @@ struct DefaultInputField: View {
         .keyboardType(keyboard)
         .padding()
         .frame(height: 50)
-        .background(.gray.opacity(0.15))
+        .background(background.opacity(0.15))
         .cornerRadius(4)
         .padding(.horizontal)
+        .overlay {
+            // show an overlay
+            // when the background color is set to white
+            // this overlay adds border to the white background
+            // input field
+            if background == .white {
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(lineWidth: 0.5)
+                    .foregroundColor(.gray.opacity(0.5))
+                    .padding(.horizontal)
+            }
+        }
     }
 }
 
 struct DefaultTextField_Previews: PreviewProvider {
     static var previews: some View {
-        DefaultInputField(inputFieldType: .dateOfBirth, placeholder: Constants.Placeholders.dateOfBirth, text: .constant(""), keyboard: .default)
-            .environmentObject(SignInViewModel())
+        DefaultInputField(
+            inputFieldType  : .dateOfBirth,
+            placeholder     : Constants.Placeholders.dateOfBirth,
+            text            : .constant(""),
+            keyboard        : .default
+        )
+        .environmentObject(UserDetailsViewModel())
     }
 }

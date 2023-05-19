@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// contact list item for inbox
+/// message view
 struct ContactItem: View {
     
     // MARK: - properties
@@ -27,7 +29,10 @@ struct ContactItem: View {
             Image(image)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 44, height: 44)
+                .frame(
+                    width   : 44,
+                    height  : 44
+                )
                 .clipShape(Circle())
             
             // horizontal stack for name, message and time

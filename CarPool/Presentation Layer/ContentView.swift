@@ -10,8 +10,6 @@ import SwiftUI
 struct ContentView: View {
     
     // MARK: - properties
-    
-    // state object of sign in view model
     @StateObject var signInViewModel = SignInViewModel()
     
     // navigate boolean
@@ -70,15 +68,14 @@ struct ContentView: View {
                         .navigationBarBackButtonHidden(true)
             }
             .padding()
+            .environmentObject(signInViewModel)
         }
-        // set signInViewModel in the environment
-        // object for later use
-        .environmentObject(signInViewModel)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(SignInViewModel())
     }
 }

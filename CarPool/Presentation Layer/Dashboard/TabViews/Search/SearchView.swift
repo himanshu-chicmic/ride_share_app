@@ -9,12 +9,12 @@ import SwiftUI
 
 struct SearchView: View {
     
-    // MARK: properties
+    // MARK: - properties
     
     // search view model
     @State var searchViewModel = SearchViewModel()
     
-    // MARK: body
+    // MARK: - body
     
     var body: some View {
         VStack{

@@ -15,6 +15,10 @@
 		6A12E85C2A0E62CA0061333A /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E85B2A0E62CA0061333A /* PlaceholderView.swift */; };
 		6A12E85F2A0E6A630061333A /* ContactItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E85E2A0E6A630061333A /* ContactItem.swift */; };
 		6A12E8612A0E6D550061333A /* RidesListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E8602A0E6D550061333A /* RidesListItem.swift */; };
+		6A32BACC2A17414800866706 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACB2A17414800866706 /* ForgotPasswordView.swift */; };
+		6A32BAD02A174CB500866706 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACF2A174CB500866706 /* EditProfileView.swift */; };
+		6A32BAD82A17775A00866706 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */; };
+		6A32BADA2A1777FF00866706 /* ValidationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */; };
 		6A33EAC92A0E0F4000620993 /* DefaultPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A33EAC82A0E0F4000620993 /* DefaultPickers.swift */; };
 		6A33EACC2A0E198900620993 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A33EACB2A0E198900620993 /* Globals.swift */; };
 		6A33EACF2A0E1AB300620993 /* Validations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A33EACE2A0E1AB300620993 /* Validations.swift */; };
@@ -51,6 +55,10 @@
 		6A12E85B2A0E62CA0061333A /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
 		6A12E85E2A0E6A630061333A /* ContactItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactItem.swift; sourceTree = "<group>"; };
 		6A12E8602A0E6D550061333A /* RidesListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidesListItem.swift; sourceTree = "<group>"; };
+		6A32BACB2A17414800866706 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
+		6A32BACF2A174CB500866706 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
+		6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationsViewModel.swift; sourceTree = "<group>"; };
 		6A33EAC82A0E0F4000620993 /* DefaultPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPickers.swift; sourceTree = "<group>"; };
 		6A33EACB2A0E198900620993 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		6A33EACE2A0E1AB300620993 /* Validations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validations.swift; sourceTree = "<group>"; };
@@ -93,10 +101,10 @@
 		6A12E8502A0E57E40061333A /* TabViews */ = {
 			isa = PBXGroup;
 			children = (
-				6A12E8512A0E57EF0061333A /* YourRidesView.swift */,
-				6A12E8552A0E58210061333A /* SearchView.swift */,
-				6A12E8572A0E58310061333A /* InboxView.swift */,
-				6A12E8592A0E58380061333A /* ProfileView.swift */,
+				6A32BACA2A173EE000866706 /* Rides */,
+				6A32BAC92A173ED400866706 /* Messaging */,
+				6A32BAC82A173EC700866706 /* Search */,
+				6A32BAC62A173EB100866706 /* Profile */,
 			);
 			path = TabViews;
 			sourceTree = "<group>";
@@ -112,6 +120,40 @@
 			path = ListItems;
 			sourceTree = "<group>";
 		};
+		6A32BAC62A173EB100866706 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				6A32BACF2A174CB500866706 /* EditProfileView.swift */,
+				6A12E8592A0E58380061333A /* ProfileView.swift */,
+				6AEEF4012A16553C0012FE65 /* ProfileTabViews */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		6A32BAC82A173EC700866706 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				6A12E8552A0E58210061333A /* SearchView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		6A32BAC92A173ED400866706 /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				6A12E8572A0E58310061333A /* InboxView.swift */,
+			);
+			path = Messaging;
+			sourceTree = "<group>";
+		};
+		6A32BACA2A173EE000866706 /* Rides */ = {
+			isa = PBXGroup;
+			children = (
+				6A12E8512A0E57EF0061333A /* YourRidesView.swift */,
+			);
+			path = Rides;
+			sourceTree = "<group>";
+		};
 		6A33EACA2A0E197800620993 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,7 +166,6 @@
 		6A33EAD22A0E4D7900620993 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				6AEEF4012A16553C0012FE65 /* ProfileTabViews */,
 				6A12E8502A0E57E40061333A /* TabViews */,
 				6A33EAD32A0E4D9700620993 /* DashboardView.swift */,
 			);
@@ -183,6 +224,7 @@
 			children = (
 				6AAB53CB2A0B82EF00138024 /* LoginSignupView.swift */,
 				6AAB53E02A0BA32F00138024 /* UserDetailsView.swift */,
+				6A32BACB2A17414800866706 /* ForgotPasswordView.swift */,
 			);
 			path = LoginSignup;
 			sourceTree = "<group>";
@@ -261,6 +303,8 @@
 			children = (
 				6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */,
 				6AEEF3FD2A161ACD0012FE65 /* SearchViewModel.swift */,
+				6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */,
+				6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -355,10 +399,12 @@
 				6ACCFFA32A0CD78400524F17 /* BackAndContinueButtons.swift in Sources */,
 				6A12E84F2A0E51830061333A /* TabViewIdentifier.swift in Sources */,
 				6AD6CDF92A160175002B7548 /* InputFieldsWithIcons.swift in Sources */,
+				6A32BAD02A174CB500866706 /* EditProfileView.swift in Sources */,
 				6AAB53E12A0BA32F00138024 /* UserDetailsView.swift in Sources */,
 				6AAB53D02A0B839A00138024 /* Constants.swift in Sources */,
 				6AAB53DF2A0B9CC200138024 /* DefaultInputField.swift in Sources */,
 				6A33EACF2A0E1AB300620993 /* Validations.swift in Sources */,
+				6A32BAD82A17775A00866706 /* UserDetailsViewModel.swift in Sources */,
 				6ACCFFA12A0CA7BE00524F17 /* UserDetailsModel.swift in Sources */,
 				6A12E8522A0E57EF0061333A /* YourRidesView.swift in Sources */,
 				6A12E8582A0E58310061333A /* InboxView.swift in Sources */,
@@ -370,6 +416,8 @@
 				6AAB53BE2A0B7C5800138024 /* ContentView.swift in Sources */,
 				6A33EAD42A0E4D9700620993 /* DashboardView.swift in Sources */,
 				6A12E85F2A0E6A630061333A /* ContactItem.swift in Sources */,
+				6A32BADA2A1777FF00866706 /* ValidationsViewModel.swift in Sources */,
+				6A32BACC2A17414800866706 /* ForgotPasswordView.swift in Sources */,
 				6AEEF4032A1655550012FE65 /* ProfileTabViewAbout.swift in Sources */,
 				6AB0DA4C2A0D0832001F7B9C /* SignInViewModel.swift in Sources */,
 				6A12E85A2A0E58380061333A /* ProfileView.swift in Sources */,
