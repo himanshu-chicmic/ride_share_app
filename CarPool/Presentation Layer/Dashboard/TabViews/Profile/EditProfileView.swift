@@ -34,7 +34,7 @@ struct EditProfileView: View {
     var body: some View {
         
         ZStack(alignment: .bottom) {
-            VStack{
+            VStack {
                 
                 // app bar at the top
                 HStack {
@@ -51,7 +51,7 @@ struct EditProfileView: View {
                     .frame(maxWidth: .infinity)
                     
                     Button {
-                        withAnimation{
+                        withAnimation {
                             // check for textfield validations
                             validationsViewModel.toastMessage = validationsViewModel.validationsInstance
                                            .validateTextFields(textFields: textFieldValues)
@@ -64,12 +64,11 @@ struct EditProfileView: View {
                         // then navigate to new view
                         if validationsViewModel.toastMessage.isEmpty {
                             dismiss()
-                        }
-                        else {
+                        } else {
                             // if any error is shown
                             // show if for 3 seconds and
                             // then make it disappear
-                            DispatchQueue.main.asyncAfter(deadline: .now()+3){
+                            DispatchQueue.main.asyncAfter(deadline: .now()+3) {
                                 validationsViewModel.toastMessage = ""
                             }
                         }
@@ -81,24 +80,24 @@ struct EditProfileView: View {
                 .padding()
                 .padding(.bottom)
                 
-                ScrollView{
+                ScrollView {
                     // for each loop to put
                     // input fields to the view
                     // the for each loop works for the array textFieldValue[]
                     // which contains necessary information of the fields to add
-                    ForEach($textFieldValues.indices, id: \.self) { i in
+                    ForEach($textFieldValues.indices, id: \.self) { index in
                         
-                        Text(Constants.ProfileAccount.headings[i])
+                        Text(Constants.ProfileAccount.headings[index])
                             .foregroundColor(.gray)
                             .font(.system(size: 15))
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding([.horizontal, .top])
                         
                         DefaultInputField(
-                            inputFieldType  : textFieldValues[i].2,
-                            placeholder     : textFieldValues[i].1,
-                            text            : $textFieldValues[i].0,
-                            keyboard        : textFieldValues[i].3,
+                            inputFieldType  : textFieldValues[index].2,
+                            placeholder     : textFieldValues[index].1,
+                            text            : $textFieldValues[index].0,
+                            keyboard        : textFieldValues[index].3,
                             background: .white
                         )
                         
@@ -106,7 +105,7 @@ struct EditProfileView: View {
 
                 }
                 
-                Group{
+                Group {
                     // if show gender is set to true
                     if userDetailsViewModel.showGenderPicker {
                         DefaultPickers()
@@ -131,12 +130,12 @@ struct EditProfileView: View {
                 }
                 Button(Constants.Others.no, role: .cancel) {}
             }
-            .onAppear{
+            .onAppear {
                 // populate text field values
                 // array when the view appears
                 textFieldValues = userDetailsModel.getInputFields()
             }
-            .onDisappear{
+            .onDisappear {
                 // func to reset picker data
                 userDetailsViewModel.resetPickerData()
             }

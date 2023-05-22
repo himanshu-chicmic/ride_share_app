@@ -39,12 +39,11 @@ struct RidesListItem: View {
     // MARK: - body
     
     var body: some View {
-        HStack (alignment: .top){
-            
-            VStack (
+        HStack(alignment: .top) {
+            VStack(
                 alignment   : .leading,
                 spacing     : 40
-            ){
+            ) {
                 // helper layout for city name
                 RidesListItemCity(
                     icon        : Constants.Icon.startLocation,
@@ -66,7 +65,7 @@ struct RidesListItem: View {
             )
             .layoutPriority(1)
             
-            VStack(){
+            VStack {
                 // price of ride
                 Text(price)
                     .font(.system(size: 16))
@@ -85,7 +84,7 @@ struct RidesListItem: View {
                 .fontWeight(.light)
                 
                 // driver info
-                VStack (spacing: 2){
+                VStack(spacing: 2) {
                     
                     // driver profile image
                     Image(driverImage)
@@ -102,10 +101,10 @@ struct RidesListItem: View {
                         .font(.system(size: 12))
                     
                     // ratings received by driver
-                    HStack (
+                    HStack(
                         alignment   : .firstTextBaseline,
                         spacing     : 2
-                    ){
+                    ) {
                         Text(driverRating)
                         
                         Image(systemName: Constants.Icon.star)

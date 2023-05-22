@@ -38,16 +38,16 @@ struct ForgotPasswordView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            VStack{
+            VStack {
                 
                 // app bar at the top
-                ZStack (alignment: .leading){
+                ZStack(alignment: .leading) {
                     
                     // button to pop view
                     Button(action: {
                         if navigate {
                             popViewConfirmation.toggle()
-                        }else {
+                        } else {
                             dismiss()
                         }
                     }, label: {
@@ -84,19 +84,19 @@ struct ForgotPasswordView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 // text fields for user input
-                ForEach($textFieldValues.indices, id: \.self) { i in
+                ForEach($textFieldValues.indices, id: \.self) { index in
                     DefaultInputField(
-                        inputFieldType  : textFieldValues[i].2,
-                        placeholder     : textFieldValues[i].1,
-                        text            : $textFieldValues[i].0,
-                        keyboard        : textFieldValues[i].3
+                        inputFieldType  : textFieldValues[index].2,
+                        placeholder     : textFieldValues[index].1,
+                        text            : $textFieldValues[index].0,
+                        keyboard        : textFieldValues[index].3
                     )
                 }
 
                 // button for navigation to a new view
                 Button {
                     
-                    withAnimation{
+                    withAnimation {
                         // check for textfield validations
                         validationsViewModel.toastMessage = navigate
                         ? validationsViewModel
@@ -123,15 +123,14 @@ struct ForgotPasswordView: View {
                             // if new password is set
                             // then dismiss the view
                             dismiss()
-                        }else {
+                        } else {
                             navigate.toggle()
                         }
-                    }
-                    else {
+                    } else {
                         // if any error is shown
                         // show if for 3 seconds and
                         // then make it disappear
-                        DispatchQueue.main.asyncAfter(deadline: .now()+3){
+                        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
                             validationsViewModel.toastMessage = ""
                         }
                     }
@@ -144,10 +143,10 @@ struct ForgotPasswordView: View {
                 // space to occupy extra space
                 Spacer()
             }
-            .onAppear{
+            .onAppear {
                 navigate = false
             }
-            .onChange(of: navigate){ val in
+            .onChange(of: navigate) { val in
                 if val {
                     // populate text field values
                     // array when the view appears
@@ -155,8 +154,7 @@ struct ForgotPasswordView: View {
                     // removing first value email
                     // we only need password and confirm password
                     textFieldValues.removeFirst()
-                }
-                else {
+                } else {
                     // populate text field values
                     // array when the view appears
                     textFieldValues = signInModel.getInputFields(isNewUser: false)

@@ -20,7 +20,7 @@ struct ContentView: View {
     // MARK: - body
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack {
                 
                 Spacer()
@@ -68,8 +68,8 @@ struct ContentView: View {
                         .navigationBarBackButtonHidden(true)
             }
             .padding()
-            .environmentObject(signInViewModel)
         }
+        .environmentObject(signInViewModel)
     }
 }
 

@@ -89,7 +89,16 @@ struct Constants {
         
         static let mobile           = "Enter phone number"
         static let bio              = "Add bio"
-        
+    }
+    
+    struct Vehicle {
+        static let country          = "Select country"
+        static let number           = "Vehicle number"
+        static let brand            = "Vehicle brand"
+        static let name             = "Vehicle name"
+        static let type             = "Type of vehicle"
+        static let color            = "Select color"
+        static let modelYear        = "Select year"
     }
     
     struct Headings {
@@ -97,6 +106,7 @@ struct Constants {
         static let email = "What's your email?"
         static let mobile = "What's your mobile number?"
         static let bio = "What would you like other members to know about you?"
+        static let vehicle = "Let's add your vehicle"
     }
     
     struct UserInfo {
@@ -135,7 +145,7 @@ struct Constants {
     // MARK: - regular expressions
     struct ValidationRegex {
         
-        static let email        = "^[a-zA-Z0-9.!$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*$"
+        static let email        = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
         static let password     = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&/,`^()-+=_~;:'.])[A-Za-z\\d@$!%*#?&/,`^()-+=_~;:'.]{8,16}$"
         static let name         = "[A-Za-z]+"
     }

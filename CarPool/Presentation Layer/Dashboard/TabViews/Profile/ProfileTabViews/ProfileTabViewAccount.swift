@@ -14,6 +14,9 @@ struct ProfileTabViewAccount: View {
     // array for buttons
     private var navigationLinks: [[String]]
     
+    // open forgot password view
+    @State var openForgotPasswordView: Bool = false
+    
     // MARK: - initializers
     
     // initialize the empty values for buttons and titles array
@@ -29,7 +32,7 @@ struct ProfileTabViewAccount: View {
     
     var body: some View {
        
-        ScrollView{
+        ScrollView {
             
             // nested for each loops for getting
             // data out of 2d array and display
@@ -38,7 +41,7 @@ struct ProfileTabViewAccount: View {
                 
                 ForEach(link, id: \.self) { value in
                     // content view
-                    HStack{
+                    HStack {
                         // value of the text
                         Text(value)
                         Spacer()
@@ -46,11 +49,17 @@ struct ProfileTabViewAccount: View {
                         Image(systemName: Constants.Icon.next)
                     }
                     .padding()
+                    .onTapGesture {
+                        openForgotPasswordView.toggle()
+                    }
                 }
                 
                 // divider for sections
                 Divider()
                     .padding(.horizontal)
+            }
+            .fullScreenCover(isPresented: $openForgotPasswordView) {
+                ForgotPasswordView()
             }
             
             Button {
@@ -65,8 +74,6 @@ struct ProfileTabViewAccount: View {
             .padding()
 
         }
-            
-
     }
 }
 

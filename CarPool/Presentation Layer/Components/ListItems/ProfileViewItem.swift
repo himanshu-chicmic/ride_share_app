@@ -27,7 +27,7 @@ struct ProfileViewItem: View {
     // MARK: - body
     
     var body: some View {
-        VStack (alignment: .leading){
+        VStack(alignment: .leading) {
             // title
             Text(title)
                 .font(.system(size: 20))
@@ -41,7 +41,7 @@ struct ProfileViewItem: View {
                     clickedItem = val
                 } label: {
                     
-                    HStack{
+                    HStack {
                         // plus circle image
                         Image(systemName: Constants.Icon.plusCircle)
                         

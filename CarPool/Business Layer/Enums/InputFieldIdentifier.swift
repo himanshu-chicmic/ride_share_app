@@ -18,4 +18,8 @@ enum InputFieldIdentifier {
     case dateOfBirth
     case gender
     case mobile
+    case country
+    case color
+    case model
+    case text
 }

@@ -40,88 +40,95 @@ struct DefaultInputField: View {
     // MARK: - body
     
     var body: some View {
-        Group{
+        Group {
             
             // swift for input field type
             switch inputFieldType {
                 
-                // text field for date of birth
-                // show date picker when tapped
-                case .dateOfBirth:
-                    HStack{
-                        Text(
-                            Globals
-                                .dateFormatter
-                                .string(from: userDetailsViewModel.date)
+            case .country:
+                ShowPickerText(
+                    text        : $userDetailsViewModel.country,
+                    placeholder : Constants.Vehicle.country,
+                    showPicker  : $userDetailsViewModel.showCountryPicker
+                )
+            case .color:
+                ShowPickerText(
+                    text        : $userDetailsViewModel.color,
+                    placeholder : Constants.Vehicle.color,
+                    showPicker  : $userDetailsViewModel.showColorPicker
+                )
+            case .model:
+                ShowPickerText(
+                    text        : $userDetailsViewModel.year,
+                    placeholder : Constants.Vehicle.modelYear,
+                    showPicker  : $userDetailsViewModel.showYearPicker
+                )
+                
+            // text field for date of birth
+            // show date picker when tapped
+            case .dateOfBirth:
+                HStack {
+                    Text(
+                        Globals
+                            .dateFormatter
+                            .string(from: userDetailsViewModel.date)
+                    )
+                    Spacer()
+                }
+                .onTapGesture {
+                    withAnimation {
+                        userDetailsViewModel.showDatePicker.toggle()
+                    }
+                }
+                .onAppear {
+                    userDetailsViewModel.showHideGenderPicker(show: false)
+                }
+            
+            // show gender text field
+            // which on tap shows a gender picker
+            case .gender:
+                ShowPickerText(
+                    text        : $userDetailsViewModel.gender,
+                    placeholder : Constants.Placeholders.selectGender,
+                    showPicker  : $userDetailsViewModel.showGenderPicker
+                )
+            
+            // show simple text field for
+            // email, firstname, lastname and dob
+            case .email,
+                 .firstName,
+                 .lastName,
+                 .mobile, .text:
+                TextField(placeholder, text: $text)
+            
+            // show secure field for
+            // password
+            case .password,
+                 .confirmPassword:
+                HStack {
+                    // is password is visible
+                    // show text field
+                    if isPasswordVisible {
+                        TextField(placeholder, text: $text)
+                    }
+                    // if not visible
+                    // show secure field
+                    else {
+                        SecureField(placeholder, text: $text)
+                    }
+                    
+                    // button to toggle password
+                    // show/hide
+                    Button(action: {
+                        isPasswordVisible.toggle()
+                    }, label: {
+                        Image(
+                            systemName: isPasswordVisible
+                                        ? Constants.Icon.eye
+                                        : Constants.Icon.eyeSlash
                         )
-                        Spacer()
-                    }
-                    .onTapGesture {
-                        withAnimation {
-                            userDetailsViewModel.showDatePicker.toggle()
-                        }
-                    }
-                    .onAppear{
-                        userDetailsViewModel.showHideGenderPicker(show: false)
-                    }
-                
-                // show gender text field
-                // which on tap shows a gender picker
-                case .gender:
-                    HStack{
-                        Text(userDetailsViewModel.gender)
-                            .foregroundColor(
-                                userDetailsViewModel.gender == Constants.Placeholders.selectGender
-                                ? .gray.opacity(0.7)
-                                : .black
-                            )
-                        Spacer()
-                    }
-                    .onTapGesture {
-                        withAnimation {
-                            userDetailsViewModel.showGenderPicker.toggle()
-                        }
-                    }
-                    .onAppear{
-                        userDetailsViewModel.showHideDatePicker(show: false)
-                    }
-                
-                // show simple text field for
-                // email, firstname, lastname and dob
-                case .email,
-                     .firstName,
-                     .lastName,
-                     .mobile:
-                    TextField(placeholder, text: $text)
-                
-                // show secure field for
-                // password
-                case .password,
-                     .confirmPassword:
-                    HStack{
-                        // is password is visible
-                        // show text field
-                        if isPasswordVisible {
-                            TextField(placeholder, text: $text)
-                        }
-                        // if not visible
-                        // show secure field
-                        else {
-                            SecureField(placeholder, text: $text)
-                        }
-                        
-                        // button to toggle password
-                        // show/hide
-                        Button(action: {
-                            isPasswordVisible.toggle()
-                        }, label: {
-                            Image(
-                                systemName: isPasswordVisible
-                                            ? Constants.Icon.eye
-                                            : Constants.Icon.eyeSlash
-                            )
-                        })
-                    }
+                    })
+                }
             }
         }
         .font(.system(size: 15))

@@ -20,10 +20,11 @@ struct BackAndContinueButtons: View {
     // bool to check wheter to increment
     // or decrement the value of completion
     var increment: Bool = true
-
-    // environment object for validationsViewModel
+    
+    // environment object for view models
     @EnvironmentObject var validationsViewModel: ValidationsViewModel
     @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    @EnvironmentObject var signInViewModel: SignInViewModel
     
     // text field values
     @Binding var textFields: Constants.TypeAliases.InputFieldArrayType
@@ -66,24 +67,31 @@ struct BackAndContinueButtons: View {
                        && completion >= 30 && completion < 90 {
                         // then increment
                         completion += 30
-                    }
-                    else {
+                    } else if !validationsViewModel.toastMessage.isEmpty {
                         // if any error is shown
                         // show if for 3 seconds and
                         // then make it disappear
-                        DispatchQueue.main.asyncAfter(deadline: .now()+3){
+                        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
                             validationsViewModel.toastMessage = ""
                         }
+                    } else {
+                        // set the view in progress
+                        validationsViewModel.inProgess = true
+                        // call signin method
+                        signInViewModel.signIn(
+                            data        : [:],
+                            httpMethod  : .POST,
+                            requestType : .LogIn
+                        )
                     }
                     
-                }else {
+                } else {
                     // when decrement button (back) is pressed
                     completion -= 30
                 }
                 
             }
-
-            
+  
         }, label: {
             DefaultButtonLabel(
                 text        : increment

@@ -19,7 +19,7 @@ class SignInViewModel: ObservableObject {
     
     // returns appbar title
     // for sign in view
-    var appBarTitle: String{
+    var appBarTitle: String {
         isNewUser ? Constants.SignUp.signUp : Constants.LogIn.logIn
     }
     
@@ -44,4 +44,17 @@ class SignInViewModel: ObservableObject {
         isNewUser ? Constants.LogIn.logIn : Constants.SignUp.signUp
     }
     
+    // MARK: - methods
+    
+    func signIn(data: [String: Any], httpMethod: HttpMethod, requestType: RequestType) {
+        // set in progress to true for showing loader
+        ValidationsViewModel.shared.inProgess = true
+        
+        if requestType == .SignUp {
+            ValidationsViewModel.shared.dismiss = true
+        }
+        
+        // set in progress to false for hiding loader - on response received
+        ValidationsViewModel.shared.inProgess = false
+    }
 }

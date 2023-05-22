@@ -18,10 +18,10 @@ enum TabViewIdentifier: RawRepresentable {
     /// value of the enum
     var rawValue: (text: String, image: String) {
         switch self {
-            case .search    : return (text: "Search", image: "magnifyingglass")
-            case .rides     : return (text: "Your Rides", image: "quote.opening")
-            case .inbox     : return (text: "Inbox", image: "message")
-            case .profile   : return (text: "Profile", image: "person.crop.circle")
+        case .search    : return (text: "Search", image: "magnifyingglass")
+        case .rides     : return (text: "Your Rides", image: "quote.opening")
+        case .inbox     : return (text: "Inbox", image: "message")
+        case .profile   : return (text: "Profile", image: "person.crop.circle")
         }
     }
     
@@ -29,11 +29,11 @@ enum TabViewIdentifier: RawRepresentable {
     /// - Parameter rawValue: value containing tuple of (String, String)
     init?(rawValue: (text: String, image: String)) {
         switch rawValue {
-            case ("Search", "magnifyingglass")      : self = .search
-            case ("Your Rides", "quote.opening")    : self = .rides
-            case ("Inbox", "message")               : self = .inbox
-            case ("Profile", "person.crop.circle")  : self = .profile
-            default: return nil
+        case ("Search", "magnifyingglass")      : self = .search
+        case ("Your Rides", "quote.opening")    : self = .rides
+        case ("Inbox", "message")               : self = .inbox
+        case ("Profile", "person.crop.circle")  : self = .profile
+        default: return nil
         }
     }
 }

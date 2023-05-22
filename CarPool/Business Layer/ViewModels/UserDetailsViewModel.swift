@@ -15,6 +15,9 @@ class UserDetailsViewModel: ObservableObject {
     // picker variables
     @Published var showDatePicker = false
     @Published var showGenderPicker = false
+    @Published var showCountryPicker = false
+    @Published var showColorPicker = false
+    @Published var showYearPicker = false
     
     // variable to store date
     // set the default date by
@@ -22,6 +25,10 @@ class UserDetailsViewModel: ObservableObject {
     @Published var date: Date = Globals.defaultDate
     // variable to store gender
     @Published var gender: String = Constants.Placeholders.selectGender
+    
+    @Published var country: String = Constants.Vehicle.country
+    @Published var color: String = Constants.Vehicle.color
+    @Published var year: String = Constants.Vehicle.modelYear
     
     // MARK: - methods
     

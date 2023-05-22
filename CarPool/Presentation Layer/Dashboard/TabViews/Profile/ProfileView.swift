@@ -18,12 +18,12 @@ struct ProfileView: View {
     
     var body: some View {
 
-        VStack(spacing: 0){
+        VStack(spacing: 0) {
             
             // top bar for changing
             // the tab views
-            HStack{
-                Group{
+            HStack {
+                Group {
                     // about view
                     Text(Constants.ProfileButtons.about)
                         .onTapGesture {

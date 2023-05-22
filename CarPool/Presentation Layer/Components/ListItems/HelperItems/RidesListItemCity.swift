@@ -28,7 +28,7 @@ struct RidesListItemCity: View {
             Image(systemName: icon)
                 .foregroundColor(color)
             
-            VStack (alignment: .leading){
+            VStack(alignment: .leading) {
                     
                 // location
                 Text(location)

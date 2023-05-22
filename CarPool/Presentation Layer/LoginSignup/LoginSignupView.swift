@@ -26,11 +26,6 @@ struct LoginSignupView: View {
     // environment variable to dismiss the view
     @Environment(\.dismiss) var dismiss
     
-    // navigate boolean
-    // navigate to new view if
-    // set to true
-    @State var navigateToDashboard: Bool = false
-    
     // open forgot password view
     @State var openForgotPasswordView: Bool = false
     // open view for user detials
@@ -40,10 +35,10 @@ struct LoginSignupView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            VStack{
+            VStack {
                 
                 // app bar at the top
-                ZStack (alignment: .leading){
+                ZStack(alignment: .leading) {
                     
                     // button to pop view
                     Button(action: {
@@ -61,12 +56,12 @@ struct LoginSignupView: View {
                 .padding(.bottom)
                 
                 // text fields for user input
-                ForEach($textFieldValues.indices, id: \.self) { i in
+                ForEach($textFieldValues.indices, id: \.self) { index in
                     DefaultInputField(
-                        inputFieldType  : textFieldValues[i].2,
-                        placeholder     : textFieldValues[i].1,
-                        text            : $textFieldValues[i].0,
-                        keyboard        : textFieldValues[i].3
+                        inputFieldType  : textFieldValues[index].2,
+                        placeholder     : textFieldValues[index].1,
+                        text            : $textFieldValues[index].0,
+                        keyboard        : textFieldValues[index].3
                     )
                 }
                 
@@ -86,7 +81,7 @@ struct LoginSignupView: View {
                 // button for navigation to a new view
                 Button {
                     
-                    withAnimation{
+                    withAnimation {
                         // check for textfield validations
                         validationsViewModel.toastMessage = signInViewModel.isNewUser
                         ?
@@ -95,8 +90,6 @@ struct LoginSignupView: View {
                         :
                         validationsViewModel.validationsInstance
                                        .validateTextFields(textFields: textFieldValues)
-                        
-                        // check for email/password verification
                     }
                     
                     // if toast message is empty
@@ -104,16 +97,27 @@ struct LoginSignupView: View {
                     // then navigate to new view
                     if validationsViewModel.toastMessage.isEmpty {
                         if signInViewModel.isNewUser {
+                            // for signup directly go to next
+                            // view after validations
+                            // because for signup we need more
+                            // user data before making the call
+                            // to api
                             openUserDetailsView.toggle()
-                        }else {
-                            navigateToDashboard.toggle()
+                        } else {
+                            // set the view in progress
+                            validationsViewModel.inProgess = true
+                            // call api for login
+                            signInViewModel.signIn(
+                                data        : signInModel.getData(),
+                                httpMethod  : HttpMethod.POST,
+                                requestType : .LogIn
+                            )
                         }
-                    }
-                    else {
+                    } else {
                         // if any error is shown
                         // show if for 3 seconds and
                         // then make it disappear
-                        DispatchQueue.main.asyncAfter(deadline: .now()+3){
+                        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
                             validationsViewModel.toastMessage = ""
                         }
                     }
@@ -124,7 +128,7 @@ struct LoginSignupView: View {
                 .padding()
                 
                 // if user already/not a member
-                HStack{
+                HStack {
                     Text(signInViewModel.alreadyOrNotAMember)
                     
                     // button to toggle between
@@ -146,7 +150,12 @@ struct LoginSignupView: View {
                 // space to occupy extra space
                 Spacer()
             }
-            .onAppear{
+            .overlay {
+                if validationsViewModel.inProgess {
+                    CircleProgressView()
+                }
+            }
+            .onAppear {
                 // populate text field values
                 // array when the view appears
                 textFieldValues = signInModel.getInputFields(isNewUser: signInViewModel.isNewUser)
@@ -154,7 +163,7 @@ struct LoginSignupView: View {
             // navigate to specified
             // destination view when the
             // navigate bool is set to true
-            .navigationDestination(isPresented: $navigateToDashboard) {
+            .navigationDestination(isPresented: $validationsViewModel.navigateToDashboard) {
                 // navigate to dashboard view
                 DashboardView()
                     .navigationBarBackButtonHidden(true)

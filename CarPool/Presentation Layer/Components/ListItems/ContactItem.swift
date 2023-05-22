@@ -23,7 +23,7 @@ struct ContactItem: View {
     
     var body: some View {
         
-        HStack (spacing: 12){
+        HStack(spacing: 12) {
             
             // person profile
             Image(image)
@@ -37,7 +37,7 @@ struct ContactItem: View {
             
             // horizontal stack for name, message and time
             HStack(alignment: .top) {
-                VStack (alignment: .leading){
+                VStack(alignment: .leading) {
                     
                     // person name
                     Text(name)

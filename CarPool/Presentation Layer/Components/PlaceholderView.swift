@@ -20,7 +20,7 @@ struct PlaceholderView: View {
     // MARK: - body
     
     var body: some View {
-        VStack{
+        VStack {
             // image view
             Image(image)
                 .resizable()

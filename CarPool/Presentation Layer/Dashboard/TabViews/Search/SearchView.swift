@@ -17,7 +17,7 @@ struct SearchView: View {
     // MARK: - body
     
     var body: some View {
-        VStack{
+        VStack {
             Text(Constants.Search.title)
                 .font(.system(size: 18))
                 .fontWeight(.bold)
@@ -48,7 +48,6 @@ struct SearchView: View {
                     placeholder : String(Constants.Placeholders.one),
                     text        : $searchViewModel.numberOfPersons
                 )
-                
                 
             }
             

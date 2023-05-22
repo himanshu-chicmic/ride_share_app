@@ -25,7 +25,7 @@ struct InputFieldsWithIcons: View {
     // MARK: - body
     
     var body: some View {
-        HStack{
+        HStack {
             // icon
             Image(systemName: icon)
                 .foregroundColor(.gray)
@@ -42,7 +42,7 @@ struct InputFieldsWithIcons: View {
         .cornerRadius(4)
         .font(.system(size: 14))
         .onTapGesture {
-            //TODO: activate search view
+            // TODO: activate search view
         }
     }
 }

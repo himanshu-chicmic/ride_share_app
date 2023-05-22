@@ -33,6 +33,15 @@ struct SignInModel {
     
     // MARK: - methods
     
+    func getData() -> [String : Any] {
+        return [
+            "user": [
+                "email" : self.email,
+                "password" : self.password
+            ]
+        ]
+    }
+    
     /// method to get the textFieldValues with input value, placeholder value,
     /// input field identifier, and keyboard type
     /// - Parameter isNewUser: bool to check if the user is new or existing

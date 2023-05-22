@@ -48,9 +48,9 @@ enum EditProfileIdentifier: String, Identifiable {
             )
         case .vehicles:
             AddProfileOptionView(
-                heading         : Constants.Headings.bio,
-                placeholder     : Constants.Placeholders.bio,
-                inputField      : .firstName,
+                heading         : Constants.Headings.vehicle,
+                placeholder     : "",
+                inputField      : .country,
                 keyboardType    : .default
             )
         }

@@ -44,8 +44,8 @@ struct ProfileTabViewAbout: View {
     // MARK: - body
     
     var body: some View {
-        ScrollView{
-            VStack{
+        ScrollView {
+            VStack {
                 
                 // profile can be changed
                 // by clicking on it
@@ -92,7 +92,7 @@ struct ProfileTabViewAbout: View {
                     // toggle edit profile button
                     editProfile.toggle()
                 } label: {
-                    HStack (alignment: .firstTextBaseline, spacing: 5){
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
                         // edit profile text
                         Text(Constants.ProfileButtons.edit)
                         
@@ -114,13 +114,13 @@ struct ProfileTabViewAbout: View {
                 
                 // additional buttons for profile editing
                 
-                ForEach(0..<3) { i in
+                ForEach(0..<3) { index in
                     
                     // profile view item to show profile
                     // section with different buttons
                     ProfileViewItem(
-                        title   : $titles[i],
-                        array   : $buttonsArray[i]
+                        title   : $titles[index],
+                        array   : $buttonsArray[index]
                     )
                     
                     Divider()

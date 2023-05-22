@@ -22,7 +22,7 @@ struct ToastMessageView: View {
     // MARK: - body
     
     var body: some View {
-        HStack{
+        HStack {
             // message text
             Text(validationsViewModel.toastMessage)
             Spacer()

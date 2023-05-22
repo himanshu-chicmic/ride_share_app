@@ -47,10 +47,10 @@ struct UserDetailsView: View {
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            VStack{
+            VStack {
                 
                 // app bar at the top
-                ZStack (alignment: .leading){
+                ZStack(alignment: .leading) {
                     
                     // button to pop view
                     Button(action: {
@@ -71,8 +71,7 @@ struct UserDetailsView: View {
                         }
                         Button(Constants.Others.no, role: .cancel) {}
                     }
-
-                    
+    
                     // title for app bar
                     Text(Constants.UserDetails.title)
                         .frame(maxWidth: .infinity)
@@ -104,18 +103,18 @@ struct UserDetailsView: View {
                     // input fields to the view
                     // the for each loop works for the 2d array textFieldValue[[]]
                     // which contains necessary information of the fields to add
-                    ForEach($textFieldValues[index].indices, id: \.self) { i in
+                    ForEach($textFieldValues[index].indices, id: \.self) { value in
                         DefaultInputField(
-                            inputFieldType  : textFieldValues[index][i].2,
-                            placeholder     : textFieldValues[index][i].1,
-                            text            : $textFieldValues[index][i].0,
-                            keyboard        : textFieldValues[index][i].3
+                            inputFieldType  : textFieldValues[index][value].2,
+                            placeholder     : textFieldValues[index][value].1,
+                            text            : $textFieldValues[index][value].0,
+                            keyboard        : textFieldValues[index][value].3
                         )
                     }
                     
                     // button for back and continue
                     // complete profile steps
-                    HStack{
+                    HStack {
                         if index > 0 {
                             // back button
                             BackAndContinueButtons(
@@ -138,7 +137,7 @@ struct UserDetailsView: View {
                 // spacer to occupy extra space
                 Spacer()
             }
-            .onAppear{
+            .onAppear {
                 // increase the profile completion with +30 increment
                 // to set the first step for complete profile
                 profileCompletion += Constants.UserDetails.progressIncrements
@@ -147,12 +146,17 @@ struct UserDetailsView: View {
                 // array when the view appears
                 textFieldValues = userDetailsModel.getInputFields2dArray()
             }
-            .onDisappear{
+            .onDisappear {
                 // func to reset picker data
                 userDetailsViewModel.resetPickerData()
             }
+            .overlay {
+                if validationsViewModel.inProgess {
+                    CircleProgressView()
+                }
+            }
             
-            Group{
+            Group {
                 // if show gender is set to true
                 if userDetailsViewModel.showGenderPicker {
                     DefaultPickers()
@@ -171,6 +175,12 @@ struct UserDetailsView: View {
             // message exists
             if !validationsViewModel.toastMessage.isEmpty {
                 ToastMessageView()
+            }
+        }
+        .onChange(of: validationsViewModel.dismiss) { val in
+            if val {
+                dismiss()
+                validationsViewModel.navigateToDashboard = true
             }
         }
     }

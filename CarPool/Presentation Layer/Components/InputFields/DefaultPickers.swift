@@ -20,7 +20,7 @@ struct DefaultPickers: View {
     // MARK: - body
     
     var body: some View {
-        VStack (alignment: .trailing){
+        VStack(alignment: .trailing) {
             
             // button to dismiss the picker
             Button(action: {
@@ -37,6 +37,24 @@ struct DefaultPickers: View {
                 else if userDetailsViewModel.showGenderPicker {
                     userDetailsViewModel.showHideGenderPicker(show: false)
                 }
+                // if country picker is shown
+                else if userDetailsViewModel.showCountryPicker {
+                    withAnimation {
+                        userDetailsViewModel.showCountryPicker = false
+                    }
+                }
+                // if color picker is shown
+                else if userDetailsViewModel.showColorPicker {
+                    withAnimation {
+                        userDetailsViewModel.showColorPicker = false
+                    }
+                }
+                // if year picker is shown
+                else if userDetailsViewModel.showYearPicker {
+                    withAnimation {
+                        userDetailsViewModel.showYearPicker = false
+                    }
+                }
                 
             }, label: {
                 // button label
@@ -44,7 +62,7 @@ struct DefaultPickers: View {
                     .padding(.top)
             })
 
-            Group{
+            Group {
                 // show date picker when showDatePicker
                 // is set to true
                 if userDetailsViewModel.showDatePicker {
@@ -72,8 +90,33 @@ struct DefaultPickers: View {
                     }
                     .pickerStyle(.wheel)
                     .onChange(of: userDetailsViewModel.gender) { value in
-                        if value.isEmpty{
+                        if value.isEmpty {
                             userDetailsViewModel.gender = Constants.Placeholders.selectGender
+                        }
+                    }
+                } else if userDetailsViewModel.showCountryPicker {
+                    Picker(
+                        "",
+                        selection: $userDetailsViewModel.country
+                    ) {
+                        ForEach(
+                            CountriesList.countries,
+                            id: \.self
+                        ) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .onChange(of: userDetailsViewModel.country) { value in
+                        if value.isEmpty {
+                            userDetailsViewModel.country = Constants.Vehicle.country
+                        }
+                    }
+                } else if userDetailsViewModel.showColorPicker {
+                    ColorPicker("Set the background color", selection: $userDetailsViewModel.color, supportsOpacity: false)
+                    .onChange(of: userDetailsViewModel.color) { value in
+                        if value.isEmpty {
+                            userDetailsViewModel.country = Constants.Vehicle.country
                         }
                     }
                 }

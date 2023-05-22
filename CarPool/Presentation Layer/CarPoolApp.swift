@@ -13,7 +13,7 @@ struct CarPoolApp: App {
     // MARK: - properties
     
     // state object of validations view model
-    @StateObject var validationsViewModel = ValidationsViewModel()
+    @StateObject var validationsViewModel = ValidationsViewModel.shared
     @StateObject var userDetailsViewModel = UserDetailsViewModel()
     
     // MARK: - body

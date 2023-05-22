@@ -31,13 +31,13 @@ struct DashboardView: View {
                 // the five tabs
                 ForEach(tabViewData, id: \.self) { value in
                     
-                    Group{
+                    Group {
                         // root of of tab
                         switch value {
-                            case .search    : SearchView()
-                            case .rides     : YourRidesView()
-                            case .inbox     : InboxView()
-                            case .profile   : ProfileView()
+                        case .search    : SearchView()
+                        case .rides     : YourRidesView()
+                        case .inbox     : InboxView()
+                        case .profile   : ProfileView()
                         }
                     }
                     // associated tab item

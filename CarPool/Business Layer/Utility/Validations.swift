@@ -27,10 +27,10 @@ struct Validations {
         
         // switch type of input field identifier
         switch type {
-            case .email: regEx = validationRegex.email
-            case .password: regEx = validationRegex.password
-            case .firstName, .lastName: regEx = validationRegex.name
-            default: regEx = ""
+        case .email: regEx = validationRegex.email
+        case .password: regEx = validationRegex.password
+        case .firstName, .lastName: regEx = validationRegex.name
+        default: regEx = ""
         }
         
         // return the predicate
@@ -65,8 +65,7 @@ struct Validations {
         // check validation conditions
         if type == .firstName && value.isEmpty {
             return Constants.ValidationMessages.nameIsEmpty
-        }
-        else if !value.isEmpty && !predicate.evaluate(with: value){
+        } else if !value.isEmpty && !predicate.evaluate(with: value) {
             return Constants.ValidationMessages.invalidName
         }
         
@@ -85,8 +84,7 @@ struct Validations {
         // check validation conditions
         if reEntered.isEmpty {
             return Constants.ValidationMessages.reEnterPasswordEmpty
-        }
-        else if reEntered.elementsEqual(password) {
+        } else if reEntered.elementsEqual(password) {
             return ""
         }
         
@@ -110,11 +108,9 @@ struct Validations {
         }
         if value.count < 8 {
             return Constants.ValidationMessages.passwordUnderflow
-        }
-        else if value.count > 16 {
+        } else if value.count > 16 {
             return Constants.ValidationMessages.passwordOverflow
-        }
-        else if !predicate.evaluate(with: value){
+        } else if !predicate.evaluate(with: value) {
             return Constants.ValidationMessages.passwordMustContains
         }
         
@@ -136,8 +132,7 @@ struct Validations {
         // check validation conditions
         if value.isEmpty {
             return Constants.ValidationMessages.emailIsEmpty
-        }
-        else if !predicate.evaluate(with: value){
+        } else if !predicate.evaluate(with: value) {
             return Constants.ValidationMessages.invalidEmail
         }
         
@@ -145,7 +140,6 @@ struct Validations {
         // all validations are correct
         return ""
     }
-    
     
     /// main method to check for input field validations
     /// - Parameters:
@@ -174,26 +168,26 @@ struct Validations {
             // value.1 - placeholder value of the field (not used for validations)
             // value.2 - input field type identifier (.email, .password etc.)
             // value.3 - keyboard type (not used for validations)
-            switch value.2{
-                // validate for email
-                case .email:
-                toastMessage = validateEmail(value: value.0, type: value.2)
-                
-                // valdidate for password
-                case .password:
-                    toastMessage = validatePassword(value: value.0, type: value.2)
-                
-                // match confirm password with the first password
-                case .confirmPassword:
-                    toastMessage = matchConfirmPassword(reEntered: value.0, password: textFields[count!].0)
-                
-                // validate name
-                case .firstName, .lastName:
-                    toastMessage = validateName(value: value.0, type: value.2)
-                
-                // default
-                default:
-                    toastMessage = ""
+            switch value.2 {
+            // validate for email
+            case .email:
+            toastMessage = validateEmail(value: value.0, type: value.2)
+            
+            // valdidate for password
+            case .password:
+                toastMessage = validatePassword(value: value.0, type: value.2)
+            
+            // match confirm password with the first password
+            case .confirmPassword:
+                toastMessage = matchConfirmPassword(reEntered: value.0, password: textFields[count!].0)
+            
+            // validate name
+            case .firstName, .lastName:
+                toastMessage = validateName(value: value.0, type: value.2)
+            
+            // default
+            default:
+                toastMessage = ""
             }
             
         }
