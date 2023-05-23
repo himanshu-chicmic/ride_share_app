@@ -69,6 +69,7 @@ struct ContentView: View {
             }
             .padding()
         }
+        // set environment object for signin view model
         .environmentObject(signInViewModel)
     }
 }

@@ -28,6 +28,11 @@ struct ProfileViewItem: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            
+            if title == Constants.Headings.vehicle {
+                // TODO: show a list of vehicles added
+            }
+            
             // title
             Text(title)
                 .font(.system(size: 20))

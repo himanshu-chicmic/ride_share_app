@@ -43,7 +43,7 @@ enum EditProfileIdentifier: String, Identifiable {
             AddProfileOptionView(
                 heading         : Constants.Headings.bio,
                 placeholder     : Constants.Placeholders.bio,
-                inputField      : .firstName,
+                inputField      : .bio,
                 keyboardType    : .default
             )
         case .vehicles:

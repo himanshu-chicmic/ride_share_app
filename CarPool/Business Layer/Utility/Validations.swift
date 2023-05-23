@@ -30,6 +30,7 @@ struct Validations {
         case .email: regEx = validationRegex.email
         case .password: regEx = validationRegex.password
         case .firstName, .lastName: regEx = validationRegex.name
+        case .mobile: regEx = validationRegex.phone
         default: regEx = ""
         }
         
@@ -40,11 +41,11 @@ struct Validations {
     /// method to check if name prefix value is not selected
     /// - Parameter value: value of the name prefix
     /// - Returns: a string value containing toast message
-    func validateNamePrefix(value: String) -> String {
+    func validatePickerSelectedValue(value: String, placeholder: String, error: String) -> String {
         
         // check validation conditions
-        if value == Constants.Placeholders.selectGender {
-            return Constants.ValidationMessages.invalidNamePrefix
+        if value == placeholder {
+            return error
         }
         
         // return empty string is
@@ -119,21 +120,41 @@ struct Validations {
         return ""
     }
     
+    
+    /// method to check if text field are not empty
+    /// - Parameter value: string value containing email
+    /// - Returns: a string value for toast message
+    func validateText(value: String) -> String {
+        
+        // check validation condition
+        if value.isEmpty {
+            return Constants.ValidationMessages.inputFieldsEmpty
+        }
+        
+        // return empty string is
+        // all validations are correct
+        return ""
+    }
+    
     /// method to validate email input by user
     /// - Parameters:
     ///   - value: string value containing email
     ///   - type: type of the input field
     /// - Returns: a string value for toast message
-    func validateEmail(value: String, type: InputFieldIdentifier) -> String {
+    func validateEmailorPhone(value: String, type: InputFieldIdentifier) -> String {
         
         // get the predicate
         let predicate = getPredicate(type: type)
         
         // check validation conditions
         if value.isEmpty {
-            return Constants.ValidationMessages.emailIsEmpty
+            return type == .email
+            ? Constants.ValidationMessages.emailIsEmpty
+            : Constants.ValidationMessages.phoneIsEmpty
         } else if !predicate.evaluate(with: value) {
-            return Constants.ValidationMessages.invalidEmail
+            return type == .email
+            ? Constants.ValidationMessages.invalidEmail
+            : Constants.ValidationMessages.invalidPhone
         }
         
         // return empty string is
@@ -169,23 +190,26 @@ struct Validations {
             // value.2 - input field type identifier (.email, .password etc.)
             // value.3 - keyboard type (not used for validations)
             switch value.2 {
-            // validate for email
-            case .email:
-            toastMessage = validateEmail(value: value.0, type: value.2)
-            
-            // valdidate for password
+                // validate for email or phone
+            case .email, .mobile:
+                toastMessage = validateEmailorPhone(value: value.0, type: value.2)
+                
+                // valdidate for password
             case .password:
                 toastMessage = validatePassword(value: value.0, type: value.2)
-            
-            // match confirm password with the first password
+                
+                // match confirm password with the first password
             case .confirmPassword:
                 toastMessage = matchConfirmPassword(reEntered: value.0, password: textFields[count!].0)
-            
-            // validate name
+                
+                // validate name
             case .firstName, .lastName:
                 toastMessage = validateName(value: value.0, type: value.2)
-            
-            // default
+                
+                // vehicle validations
+            case .text:
+                toastMessage = validateText(value: value.0)
+                
             default:
                 toastMessage = ""
             }

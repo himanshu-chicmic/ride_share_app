@@ -42,6 +42,12 @@ struct SignInModel {
         ]
     }
     
+    func getEmail() -> [String: String] {
+        return [
+            "email" : self.email
+        ]
+    }
+    
     /// method to get the textFieldValues with input value, placeholder value,
     /// input field identifier, and keyboard type
     /// - Parameter isNewUser: bool to check if the user is new or existing

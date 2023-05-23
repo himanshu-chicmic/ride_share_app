@@ -12,30 +12,8 @@ struct UserDetailsView: View {
     // MARK: - properties
     
     // environment object for view models
-    @EnvironmentObject var signInViewModel: SignInViewModel
     @EnvironmentObject var validationsViewModel: ValidationsViewModel
     @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
-    
-    // userDetailsModel for first name,
-    // last name, date of birth and,
-    // gender properties
-    var userDetailsModel = UserDetailsModel()
-    
-    // state array to store the values
-    // neccessary for the input fields
-    @State var textFieldValues: [Constants.TypeAliases.InputFieldArrayType] = []
-    
-    // progress value for profile completion
-    // increments by 30 points
-    @State private var profileCompletion = 0.0
-    
-    // property to get the index value
-    // from profileCompletion state var
-    // this index is used to get the value
-    // from titles array in Constants
-    private var index: Int {
-        Int(profileCompletion/Constants.UserDetails.progressIncrements) - 1
-    }
     
     // environment variable to dismiss the view
     @Environment(\.dismiss) var dismiss
@@ -81,8 +59,8 @@ struct UserDetailsView: View {
                 
                 // progress bar
                 ProgressView(
-                    String(format: Constants.UserDetails.progress, index+1),
-                    value   : profileCompletion,
+                    String(format: Constants.UserDetails.progress, userDetailsViewModel.index+1),
+                    value   : userDetailsViewModel.profileCompletion,
                     total   : Constants.UserDetails.progressCompletion
                 )
                 .padding()
@@ -90,10 +68,10 @@ struct UserDetailsView: View {
                 
                 // if profileCompletion value is greater
                 // than 0 then show the content of this page
-                if profileCompletion > 0 {
+                if userDetailsViewModel.profileCompletion > 0 {
                     
                     // title
-                    Text(Constants.UserDetails.titles[index])
+                    Text(Constants.UserDetails.titles[userDetailsViewModel.index])
                         .font(.system(size: 22))
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -103,31 +81,33 @@ struct UserDetailsView: View {
                     // input fields to the view
                     // the for each loop works for the 2d array textFieldValue[[]]
                     // which contains necessary information of the fields to add
-                    ForEach($textFieldValues[index].indices, id: \.self) { value in
+                    ForEach(
+                        $userDetailsViewModel
+                        .textFieldValues[userDetailsViewModel.index]
+                        .indices, id: \.self
+                    ) { value in
                         DefaultInputField(
-                            inputFieldType  : textFieldValues[index][value].2,
-                            placeholder     : textFieldValues[index][value].1,
-                            text            : $textFieldValues[index][value].0,
-                            keyboard        : textFieldValues[index][value].3
+                            inputFieldType  : userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].2,
+                            placeholder     : userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].1,
+                            text            : $userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].0,
+                            keyboard        : userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].3
                         )
                     }
                     
                     // button for back and continue
                     // complete profile steps
                     HStack {
-                        if index > 0 {
+                        if userDetailsViewModel.index > 0 {
                             // back button
                             BackAndContinueButtons(
-                                completion  : $profileCompletion,
                                 increment   : false,
-                                textFields  : $textFieldValues[0]
+                                textFields  : $userDetailsViewModel.textFieldValues[0]
                             )
                         }
                         // continue button
                         BackAndContinueButtons(
-                            completion  : $profileCompletion,
                             increment   : true,
-                            textFields  : $textFieldValues[0]
+                            textFields  : $userDetailsViewModel.textFieldValues[0]
                         )
                     }
                     .padding()
@@ -140,35 +120,25 @@ struct UserDetailsView: View {
             .onAppear {
                 // increase the profile completion with +30 increment
                 // to set the first step for complete profile
-                profileCompletion += Constants.UserDetails.progressIncrements
+                userDetailsViewModel.profileCompletion += Constants.UserDetails.progressIncrements
                 
-                // populate text field values
-                // array when the view appears
-                textFieldValues = userDetailsModel.getInputFields2dArray()
+                // reset text fields array
+                userDetailsViewModel.resetTextFields()
             }
             .onDisappear {
                 // func to reset picker data
                 userDetailsViewModel.resetPickerData()
             }
+            // overlay for progress bar view
             .overlay {
-                if validationsViewModel.inProgess {
-                    CircleProgressView()
-                }
+                CircleProgressView()
             }
-            
-            Group {
-                // if show gender is set to true
-                if userDetailsViewModel.showGenderPicker {
-                    DefaultPickers()
-                    .padding(.horizontal, 34)
-                }
-                
-                // if show date is set to true
-                if userDetailsViewModel.showDatePicker {
-                    DefaultPickers()
-                }
+            // bottom sheet for pickers
+            .sheet(isPresented: $userDetailsViewModel.showPicker) {
+                DefaultPickers(
+                    pickerType: userDetailsViewModel.pickerType
+                )
             }
-            .background(.gray.opacity(0.15))
             
             // show toast message
             // if any validation or verificatioin
@@ -177,9 +147,13 @@ struct UserDetailsView: View {
                 ToastMessageView()
             }
         }
+        // on change of dismiss variable in validationsViewModel
+        // dismiss this view and set navigateToDashboard to true
         .onChange(of: validationsViewModel.dismiss) { val in
             if val {
+                // dismiss current view
                 dismiss()
+                // set navigateToDashboard to true
                 validationsViewModel.navigateToDashboard = true
             }
         }
@@ -189,7 +163,6 @@ struct UserDetailsView: View {
 struct UserDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         UserDetailsView()
-            .environmentObject(SignInViewModel())
             .environmentObject(ValidationsViewModel())
             .environmentObject(UserDetailsViewModel())
     }

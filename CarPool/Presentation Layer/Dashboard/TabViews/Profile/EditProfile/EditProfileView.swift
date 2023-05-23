@@ -56,7 +56,15 @@ struct EditProfileView: View {
                             validationsViewModel.toastMessage = validationsViewModel.validationsInstance
                                            .validateTextFields(textFields: textFieldValues)
                             
-                            // check for verification
+                            // TODO: optimize these lines of code
+                            if validationsViewModel.toastMessage.isEmpty {
+                                validationsViewModel.toastMessage = validationsViewModel.validationsInstance
+                                    .validatePickerSelectedValue(
+                                        value       : userDetailsViewModel.gender,
+                                        placeholder : Constants.Placeholders.selectGender,
+                                        error       : Constants.ValidationMessages.invalidNamePrefix
+                                    )
+                            }
                         }
                         
                         // if toast message is empty
@@ -104,20 +112,6 @@ struct EditProfileView: View {
                     }
 
                 }
-                
-                Group {
-                    // if show gender is set to true
-                    if userDetailsViewModel.showGenderPicker {
-                        DefaultPickers()
-                        .padding(.horizontal, 34)
-                    }
-                    
-                    // if show date is set to true
-                    if userDetailsViewModel.showDatePicker {
-                        DefaultPickers()
-                    }
-                }
-                .background(.gray.opacity(0.15))
             }
             // ask a confirmation before exiting
             .confirmationDialog(
@@ -138,6 +132,11 @@ struct EditProfileView: View {
             .onDisappear {
                 // func to reset picker data
                 userDetailsViewModel.resetPickerData()
+            }
+            .sheet(isPresented: $userDetailsViewModel.showPicker) {
+                DefaultPickers(
+                    pickerType: userDetailsViewModel.pickerType
+                )
             }
             
             // show toast message

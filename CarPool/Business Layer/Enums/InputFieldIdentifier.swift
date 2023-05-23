@@ -22,4 +22,5 @@ enum InputFieldIdentifier {
     case color
     case model
     case text
+    case bio
 }

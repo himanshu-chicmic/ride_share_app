@@ -124,7 +124,11 @@ struct ForgotPasswordView: View {
                             // then dismiss the view
                             dismiss()
                         } else {
+                            // set the view in progress
+                            // TODO: password reset api
+                            validationsViewModel.inProgess = true
                             navigate.toggle()
+                            validationsViewModel.inProgess = true
                         }
                     } else {
                         // if any error is shown
@@ -162,6 +166,10 @@ struct ForgotPasswordView: View {
                     // we only need email
                     textFieldValues.removeLast()
                 }
+            }
+            // overlay for progress bar view
+            .overlay {
+                CircleProgressView()
             }
             
             // show toast message

@@ -15,21 +15,11 @@ struct LoginSignupView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
     @EnvironmentObject var validationsViewModel: ValidationsViewModel
     
-    // signInModel for email, password and,
-    // confirm password properties
-    var signInModel = SignInModel()
-    
-    // state array to store the values
-    // neccessary for the input fields
-    @State var textFieldValues: Constants.TypeAliases.InputFieldArrayType = []
-    
     // environment variable to dismiss the view
     @Environment(\.dismiss) var dismiss
     
     // open forgot password view
     @State var openForgotPasswordView: Bool = false
-    // open view for user detials
-    @State var openUserDetailsView: Bool = false
     
     // MARK: - body
     
@@ -56,12 +46,12 @@ struct LoginSignupView: View {
                 .padding(.bottom)
                 
                 // text fields for user input
-                ForEach($textFieldValues.indices, id: \.self) { index in
+                ForEach($signInViewModel.textFieldValues.indices, id: \.self) { index in
                     DefaultInputField(
-                        inputFieldType  : textFieldValues[index].2,
-                        placeholder     : textFieldValues[index].1,
-                        text            : $textFieldValues[index].0,
-                        keyboard        : textFieldValues[index].3
+                        inputFieldType  : signInViewModel.textFieldValues[index].2,
+                        placeholder     : signInViewModel.textFieldValues[index].1,
+                        text            : $signInViewModel.textFieldValues[index].0,
+                        keyboard        : signInViewModel.textFieldValues[index].3
                     )
                 }
                 
@@ -80,48 +70,8 @@ struct LoginSignupView: View {
 
                 // button for navigation to a new view
                 Button {
-                    
-                    withAnimation {
-                        // check for textfield validations
-                        validationsViewModel.toastMessage = signInViewModel.isNewUser
-                        ?
-                        validationsViewModel.validationsInstance
-                            .validateTextFields(textFields: textFieldValues, count: textFieldValues.count - 2)
-                        :
-                        validationsViewModel.validationsInstance
-                                       .validateTextFields(textFields: textFieldValues)
-                    }
-                    
-                    // if toast message is empty
-                    // there no error in validations and verification
-                    // then navigate to new view
-                    if validationsViewModel.toastMessage.isEmpty {
-                        if signInViewModel.isNewUser {
-                            // for signup directly go to next
-                            // view after validations
-                            // because for signup we need more
-                            // user data before making the call
-                            // to api
-                            openUserDetailsView.toggle()
-                        } else {
-                            // set the view in progress
-                            validationsViewModel.inProgess = true
-                            // call api for login
-                            signInViewModel.signIn(
-                                data        : signInModel.getData(),
-                                httpMethod  : HttpMethod.POST,
-                                requestType : .LogIn
-                            )
-                        }
-                    } else {
-                        // if any error is shown
-                        // show if for 3 seconds and
-                        // then make it disappear
-                        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-                            validationsViewModel.toastMessage = ""
-                        }
-                    }
-                    
+                    // initialize signin
+                    signInViewModel.initiateSignIn()
                 } label: {
                     DefaultButtonLabel(text: signInViewModel.signInButtonText)
                 }
@@ -135,10 +85,10 @@ struct LoginSignupView: View {
                     // login and signup
                     Button {
                         withAnimation {
+                            // switch view state
                             signInViewModel.isNewUser.toggle()
-                            // update text field values
-                            // array when isNewUser toggles
-                            textFieldValues = signInModel.getInputFields(isNewUser: signInViewModel.isNewUser)
+                            // update text fields
+                            signInViewModel.resetTextFields()
                         }
                     } label: {
                         Text(signInViewModel.signUpOrLogIn)
@@ -150,15 +100,9 @@ struct LoginSignupView: View {
                 // space to occupy extra space
                 Spacer()
             }
+            // overlay for progress bar
             .overlay {
-                if validationsViewModel.inProgess {
-                    CircleProgressView()
-                }
-            }
-            .onAppear {
-                // populate text field values
-                // array when the view appears
-                textFieldValues = signInModel.getInputFields(isNewUser: signInViewModel.isNewUser)
+                CircleProgressView()
             }
             // navigate to specified
             // destination view when the
@@ -168,11 +112,14 @@ struct LoginSignupView: View {
                 DashboardView()
                     .navigationBarBackButtonHidden(true)
             }
-            .fullScreenCover(isPresented: $openUserDetailsView) {
+            .fullScreenCover(isPresented: $signInViewModel.openUserDetailsView) {
                 UserDetailsView()
             }
             .fullScreenCover(isPresented: $openForgotPasswordView) {
                 ForgotPasswordView()
+            }
+            .onAppear {
+                signInViewModel.resetTextFields()
             }
             
             // show toast message

@@ -20,7 +20,7 @@ struct CarPoolApp: App {
     
     var body: some Scene {
         WindowGroup {
-            DashboardView()
+            ContentView()
                 // set validationViewModel and userDetailsViewModel
                 // in environment object for later use
                 .environmentObject(validationsViewModel)

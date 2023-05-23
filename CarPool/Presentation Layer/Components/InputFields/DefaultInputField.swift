@@ -48,20 +48,17 @@ struct DefaultInputField: View {
             case .country:
                 ShowPickerText(
                     text        : $userDetailsViewModel.country,
-                    placeholder : Constants.Vehicle.country,
-                    showPicker  : $userDetailsViewModel.showCountryPicker
+                    placeholder : Constants.Vehicle.country
                 )
             case .color:
                 ShowPickerText(
                     text        : $userDetailsViewModel.color,
-                    placeholder : Constants.Vehicle.color,
-                    showPicker  : $userDetailsViewModel.showColorPicker
+                    placeholder : Constants.Vehicle.color
                 )
             case .model:
                 ShowPickerText(
                     text        : $userDetailsViewModel.year,
-                    placeholder : Constants.Vehicle.modelYear,
-                    showPicker  : $userDetailsViewModel.showYearPicker
+                    placeholder : Constants.Vehicle.modelYear
                 )
                 
             // text field for date of birth
@@ -77,11 +74,12 @@ struct DefaultInputField: View {
                 }
                 .onTapGesture {
                     withAnimation {
-                        userDetailsViewModel.showDatePicker.toggle()
+                        userDetailsViewModel.pickerType = .date
+                        userDetailsViewModel.showPicker.toggle()
                     }
                 }
                 .onAppear {
-                    userDetailsViewModel.showHideGenderPicker(show: false)
+                    userDetailsViewModel.showPicker = false
                 }
             
             // show gender text field
@@ -89,8 +87,7 @@ struct DefaultInputField: View {
             case .gender:
                 ShowPickerText(
                     text        : $userDetailsViewModel.gender,
-                    placeholder : Constants.Placeholders.selectGender,
-                    showPicker  : $userDetailsViewModel.showGenderPicker
+                    placeholder : Constants.Placeholders.selectGender
                 )
             
             // show simple text field for
@@ -98,7 +95,7 @@ struct DefaultInputField: View {
             case .email,
                  .firstName,
                  .lastName,
-                 .mobile, .text:
+                 .mobile, .text, .bio:
                 TextField(placeholder, text: $text)
             
             // show secure field for

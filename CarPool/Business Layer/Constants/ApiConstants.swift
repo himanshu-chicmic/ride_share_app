@@ -19,6 +19,9 @@ struct ApiConstants {
     // Put - to update information of user
     static let commonEndpoint = "users"
     
+    // check if email exists on signup
+    static let checkEmail = "check_email"
+    
     // sign in existing user
     static let signIn = "users/sign_in"
     

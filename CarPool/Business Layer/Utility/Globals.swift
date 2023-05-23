@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// this struct contains globally used
 /// utility methods or properties
@@ -29,4 +30,28 @@ struct Globals {
             to      : Date()
         )!
     }()
+    
+    private static let numberFormatter: NumberFormatter = {
+        let nf = NumberFormatter()
+        nf.usesGroupingSeparator = false
+        return nf
+    }()
+
+    static func yearString(at index: Int) -> String {
+        let selectedYear = index
+        return numberFormatter.string(for: selectedYear) ?? selectedYear.description
+    }
+    
+    static func getYearsList() -> [String] {
+        
+        var years: [String] = []
+        
+        let start = 1940
+        let current = Calendar.current.component(.year, from: Date())
+        for year in start...current {
+            years.append(Globals.yearString(at: year))
+        }
+        
+        return years.reversed()
+    }
 }

@@ -80,7 +80,7 @@ struct Constants {
         
         // select name prefix
         static let selectGender     = "Select name prefix"
-        static let genders          = ["", "Mr.", "Ms/Mrs.", "Id' prefer not to say"]
+        static let genders          = ["Mr.", "Ms/Mrs.", "I'd prefer not to say"]
         
         static let leavingFrom      = "Leaving from"
         static let goingTo          = "Going to"
@@ -89,14 +89,16 @@ struct Constants {
         
         static let mobile           = "Enter phone number"
         static let bio              = "Add bio"
+        
+        static let vehicleTitles    = ["Country", "Number", "Brand", "Name of Vehicle", "Vehicle Type", "Color", "Model Year"]
     }
     
     struct Vehicle {
         static let country          = "Select country"
-        static let number           = "Vehicle number"
-        static let brand            = "Vehicle brand"
-        static let name             = "Vehicle name"
-        static let type             = "Type of vehicle"
+        static let number           = "Registration number"
+        static let brand            = "Ex: Toyota"
+        static let name             = "Ex: Etios"
+        static let type             = "Ex: Sedan, Hatchback etc."
         static let color            = "Select color"
         static let modelYear        = "Select year"
     }
@@ -148,6 +150,7 @@ struct Constants {
         static let email        = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
         static let password     = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&/,`^()-+=_~;:'.])[A-Za-z\\d@$!%*#?&/,`^()-+=_~;:'.]{8,16}$"
         static let name         = "[A-Za-z]+"
+        static let phone        = "^[6-9]\\d{9}$"
     }
     
     // MARK: - validation messages
@@ -156,6 +159,10 @@ struct Constants {
         // email
         static let emailIsEmpty         = "Please enter your email address."
         static let invalidEmail         = "The email address you've entered is invalid."
+        
+        // phone
+        static let phoneIsEmpty         = "Please enter your phone number."
+        static let invalidPhone         = "The phone number you've entered is invalid."
         
         // password
         static let passwordIsEmpty      = "Please enter a password."
@@ -171,8 +178,14 @@ struct Constants {
         static let nameIsEmpty          = "Please enter your name."
         static let invalidName          = "Digits and special characters are not allowed."
         
-        // name prefix
+        // invalid picker selection
         static let invalidNamePrefix    = "Please select your name prefix."
+        static let noCountrySelection    = "Please select a country."
+        static let noYearSelected    = "Please select build year of your vehicle."
+        static let noColorSelected    = "Please select color of your vehicle."
+        
+        // all input fields required
+        static let inputFieldsEmpty = "All input fields are required to be filled for adding a vehicle."
     }
     
     // MARK: - other common strings
@@ -236,7 +249,7 @@ struct Constants {
     
     // MARK: - type aliases
     struct TypeAliases {
-        
+        //                                  value, placeholde, identifier, keyboard type
         typealias InputFieldArrayType = [(String, String, InputFieldIdentifier, UIKeyboardType)]
     }
     

@@ -41,6 +41,19 @@ struct UserDetailsModel {
     
     // MARK: - methods
     
+    func getData(emailPassword: Constants.TypeAliases.InputFieldArrayType) -> [String : Any] {
+        return [
+            "user": [
+                "email"         : emailPassword[0].0,
+                "password"      : emailPassword[1].0,
+                "first_name"    : self.firstName,
+                "last_name"     : self.lastName,
+                "dob"           : self.dateOfBirth,
+                "title"         : self.gender
+            ]
+        ]
+    }
+    
     /// method to get the textFieldValues with input value, placeholder value,
     /// input field identifier, and keyboard type
     /// - Returns: return a 2d array containg all the data of input fields
