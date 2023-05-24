@@ -148,7 +148,7 @@ struct Constants {
     struct ValidationRegex {
         
         static let email        = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
-        static let password     = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&/,`^()-+=_~;:'.])[A-Za-z\\d@$!%*#?&/,`^()-+=_~;:'.]{8,16}$"
+        static let password     = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
         static let name         = "[A-Za-z]+"
         static let phone        = "^[6-9]\\d{9}$"
     }
@@ -168,7 +168,7 @@ struct Constants {
         static let passwordIsEmpty      = "Please enter a password."
         static let passwordUnderflow    = "Password must contain 8 characters."
         static let passwordOverflow     = "Password length exceeds max allowed 16 characters."
-        static let passwordMustContains = "Password must contain at least one letter, one number and one special character."
+        static let passwordMustContains = "Password must contain at least one uppercase, one lowercase letter, one digit and one special character."
         
         // confirm password
         static let reEnterPasswordEmpty = "Please re-enter your password."

@@ -12,6 +12,7 @@ import SwiftUI
 /// when editing profile
 enum EditProfileIdentifier: String, Identifiable {
     
+    // id for identifiable confirmation
     var id: Self {
         self
     }

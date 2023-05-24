@@ -12,6 +12,8 @@ struct ProfileTabViewAbout: View {
     
     // MARK: - properties
     
+    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    
     // array for buttons
     @State var buttonsArray: [[EditProfileIdentifier]] = [
         [.email, .mobile],
@@ -83,7 +85,9 @@ struct ProfileTabViewAbout: View {
                     }
                 
                 // user name
-                Text("Himanshu Goyal")
+                Text(
+                    userDetailsViewModel.getResponse?.getName() ?? ""
+                )
                     .font(.title2)
                     .fontWeight(.semibold)
                 
@@ -128,6 +132,9 @@ struct ProfileTabViewAbout: View {
                 }
             }
             .padding()
+            .onAppear {
+                userDetailsViewModel.callApi(httpMethod: .GET, requestType: .getDetails)
+            }
         }
     }
 }

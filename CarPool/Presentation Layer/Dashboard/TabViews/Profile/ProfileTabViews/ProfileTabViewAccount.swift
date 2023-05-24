@@ -11,6 +11,8 @@ struct ProfileTabViewAccount: View {
     
     // MARK: - properties
     
+    @EnvironmentObject var userDetialsViewModel: UserDetailsViewModel
+    
     // array for buttons
     private var navigationLinks: [[String]]
     
@@ -63,7 +65,7 @@ struct ProfileTabViewAccount: View {
             }
             
             Button {
-                // TODO: add logout function
+                userDetialsViewModel.callApi(httpMethod: .DELETE, requestType: .logOut)
             } label: {
                 Text(Constants.ProfileAccount.logOut)
                     .frame(

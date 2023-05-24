@@ -10,7 +10,7 @@ import Foundation
 struct ApiConstants {
     
     // base url for api
-    static let baseURL = "https://5087-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "https://12d8-112-196-113-2.ngrok-free.app/%@"
     
     // this endpoint is used for following type of reques
     // Post - to sign up
@@ -20,7 +20,7 @@ struct ApiConstants {
     static let commonEndpoint = "users"
     
     // check if email exists on signup
-    static let checkEmail = "check_email"
+    static let checkEmail = "email_check"
     
     // sign in existing user
     static let signIn = "users/sign_in"

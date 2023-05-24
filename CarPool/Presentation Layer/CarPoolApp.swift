@@ -20,7 +20,13 @@ struct CarPoolApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                if validationsViewModel.loggedInStatus {
+                    DashboardView()
+                } else {
+                    ContentView()
+                }
+            }
                 // set validationViewModel and userDetailsViewModel
                 // in environment object for later use
                 .environmentObject(validationsViewModel)

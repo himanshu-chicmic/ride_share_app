@@ -7,9 +7,10 @@
 
 import Foundation
 
+/// enum for checking http method for api request
 enum HttpMethod: String {
-    case POST = "POST"
-    case GET = "GET"
-    case PUT = "PUT"
-    case DELETE = "DELETE"
+    case POST
+    case GET
+    case PUT
+    case DELETE
 }

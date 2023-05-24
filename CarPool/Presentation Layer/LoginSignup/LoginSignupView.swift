@@ -112,7 +112,7 @@ struct LoginSignupView: View {
                 DashboardView()
                     .navigationBarBackButtonHidden(true)
             }
-            .fullScreenCover(isPresented: $signInViewModel.openUserDetailsView) {
+            .fullScreenCover(isPresented: $validationsViewModel.openUserDetailsView) {
                 UserDetailsView()
             }
             .fullScreenCover(isPresented: $openForgotPasswordView) {

@@ -130,13 +130,6 @@ struct ForgotPasswordView: View {
                             navigate.toggle()
                             validationsViewModel.inProgess = true
                         }
-                    } else {
-                        // if any error is shown
-                        // show if for 3 seconds and
-                        // then make it disappear
-                        DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-                            validationsViewModel.toastMessage = ""
-                        }
                     }
                     
                 } label: {

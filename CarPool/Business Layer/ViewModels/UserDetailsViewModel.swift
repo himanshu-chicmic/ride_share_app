@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class UserDetailsViewModel: ObservableObject {
     
@@ -15,6 +16,11 @@ class UserDetailsViewModel: ObservableObject {
     // picker variables
     @Published var showPicker = false
     @Published var pickerType: PickerType = .date
+    
+    private var cancellables: AnyCancellable?
+    
+    // varible to get response from api
+    @Published var getResponse: SignInLogInModel?
     
     // variable to store date
     // set the default date by
@@ -96,18 +102,11 @@ class UserDetailsViewModel: ObservableObject {
                    && profileCompletion >= 30 && profileCompletion < 90 {
                     // then increment
                     profileCompletion += 30
-                } else if !validationsViewModel.toastMessage.isEmpty {
-                    // if any error is shown
-                    // show if for 3 seconds and
-                    // then make it disappear
-                    DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-                        self.validationsViewModel.toastMessage = ""
-                    }
-                } else {
+                } else if validationsViewModel.toastMessage.isEmpty && profileCompletion == 90 {
                     // call signin method
-                    createUser(
+                    callApi(
                         httpMethod      : .POST,
-                        requestType     : .LogIn,
+                        requestType     : .signUp,
                         emailPassword   : emailPassword
                     )
                 }
@@ -124,24 +123,69 @@ class UserDetailsViewModel: ObservableObject {
     /// - Parameters:
     ///   - httpMethod: http method for sending api request
     ///   - requestType: type of request ex .login, .signup etc.
-    func createUser(httpMethod: HttpMethod, requestType: RequestType, emailPassword: Constants.TypeAliases.InputFieldArrayType) {
+    func callApi(httpMethod: HttpMethod, requestType: RequestType, emailPassword: Constants.TypeAliases.InputFieldArrayType? = []) {
         // set in progress to true for showing loader
         validationsViewModel.inProgess = true
         
-        // get data from model
-        let data = userDetailsModel.getData(emailPassword: emailPassword)
-        
-        if requestType == .SignUp {
-            validationsViewModel.dismiss = true
+        // set data for sending
+        var data: [String: Any] = [:]
+        // set endpoint for api
+        var endPoint = ApiConstants.commonEndpoint
+
+        // switch over request type
+        // to set data variable with correct
+        // values and set endpoints based on
+        // the type of request
+        switch requestType {
+        case .signUp:
+            data = userDetailsModel.getData(
+                emailPassword   : emailPassword!,
+                values          : textFieldValues,
+                viewModel       : self
+            )
+        case .getDetails:
+            break
+        case .logOut:
+            endPoint = ApiConstants.signOut
+        default:
+            break
         }
         
-        // set in progress to false for hiding loader - on response received
-        validationsViewModel.inProgess = false
+        // call signInUserMethod in ApiManager class
+        cancellables = ApiManager.shared.signInUser(
+            httpMethod      : httpMethod,
+            dataDictionary  : data,
+            endPoint        : endPoint,
+            requestType     : requestType
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .failure(let error):
+                self.validationsViewModel.toastMessage = error.localizedDescription
+                print("ERROR: \(error.localizedDescription)")
+            case .finished:
+                print("success")
+            }
+            
+            self.validationsViewModel.disableProgress()
+        } receiveValue: { [weak self] data in
+            self?.getResponse = data
+            print(data)
+            switch requestType {
+            case .signUp:
+                self?.validationsViewModel.dismiss = true
+                self?.validationsViewModel.goToDashboard()
+            default:
+                break
+            }
+        }
     }
     
     /// method to reset properties
     /// associated with date and gender pickers
     func resetPickerData() {
+        profileCompletion = 0.0
         showPicker = false
         date = Globals.defaultDate
         gender = Constants.Placeholders.selectGender

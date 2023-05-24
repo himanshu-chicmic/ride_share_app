@@ -1,22 +1,34 @@
 //
-//  CreateNewUser.swift
+//  SignInLoginModel.swift
 //  CarPool
 //
-//  Created by Himanshu on 5/22/23.
+//  Created by Himanshu on 5/24/23.
 //
 
 import Foundation
 
-// MARK: - CreateNewUser
-struct CreateNewUser: Codable {
+// MARK: - SignInLogInModel
+struct SignInLogInModel: Codable {
     let status: Status
+    
+    /// method to return full name
+    /// - Returns: a string value containig name
+    func getName() -> String {
+        // check if data exists
+        guard let data = status.data else {
+            return ""
+        }
+        // return full name of user
+        return "\(data.firstName) \(data.lastName)"
+    }
 }
 
 // MARK: - Status
 struct Status: Codable {
     let code: Int
-    let message: String
-    let data: DataClass
+    let error: String?
+    let message: String?
+    let data: DataClass?
 }
 
 // MARK: - DataClass
@@ -26,9 +38,11 @@ struct DataClass: Codable {
     let firstName, lastName, dob, title: String
     let phoneNumber, bio, travelPreferences, postalAddress: String?
     let activationDigest: String
-    let activated, activatedAt: String?
+    let activated: String?
+    let activatedAt: String?
     let activateToken: String
-    let sessionKey, averageRating: String?
+    let sessionKey: String?
+    let averageRating: String?
 
     enum CodingKeys: String, CodingKey {
         case id, email

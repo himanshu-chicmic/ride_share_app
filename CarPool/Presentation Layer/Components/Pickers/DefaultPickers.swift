@@ -29,7 +29,7 @@ struct DefaultPickers: View {
             Button {
                 dismiss()
             } label: {
-                Image(systemName: Constants.Icon.close)
+                Image(systemName: pickerType == .date ? Constants.Icon.check : Constants.Icon.close)
             }
             .padding([.trailing, .top])
             .padding(.bottom, 8)

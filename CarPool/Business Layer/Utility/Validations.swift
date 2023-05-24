@@ -64,7 +64,7 @@ struct Validations {
         let predicate = getPredicate(type: type)
         
         // check validation conditions
-        if type == .firstName && value.isEmpty {
+        if value.isEmpty {
             return Constants.ValidationMessages.nameIsEmpty
         } else if !value.isEmpty && !predicate.evaluate(with: value) {
             return Constants.ValidationMessages.invalidName
@@ -119,7 +119,6 @@ struct Validations {
         // all validations are correct
         return ""
     }
-    
     
     /// method to check if text field are not empty
     /// - Parameter value: string value containing email

@@ -8,104 +8,185 @@
 import Foundation
 import Combine
 
+/// api manager class for handling api calls and responses
 class ApiManager {
     
+    // static shared instance of api manageer class
     static let shared = ApiManager()
     
-    func signInUser(httpMethod: HttpMethod, data: [String: Any], endPoint: String) -> AnyPublisher<GetResponse, Error> {
+    /// method to set up api request and return it as url request
+    /// - Parameters:
+    ///   - endPoint: string value of api endpoint. used with base api url to form a valid url
+    ///   - httpMethod: method of api request i.e. get, post, delete, put
+    ///   - data: dictionary for sending some json data alog with api
+    ///   - requestType: type of request i.e. signup, login, email check etc.
+    /// - Returns: a url request which is used to for url session
+    func setUpApiRequest(endPoint: String, httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> URLRequest? {
         
-        let baseURL = String(format: ApiConstants.baseURL, endPoint)
+        // create a base url
+        var baseURL = String(format: ApiConstants.baseURL, endPoint)
         
-        guard let url = URL(string: baseURL) else {
-            print("error")
-            return Fail(error: AuthenticateError.badURL)
-                .eraseToAnyPublisher()
+        // if request typ if of type email check
+        // then our url need to be changed
+        // to handle the get request
+        // in get request the data needs to be sent
+        // with the url
+        if requestType == .emailCheck {
+            baseURL += "?email=\(String(describing: data["email"]!).lowercased())"
         }
         
+        // get the url from base url string
+        guard let url = URL(string: baseURL) else {
+            // return nil if url is invalid
+            return nil
+        }
+        
+        // initialize url request
         var request = URLRequest(url: url)
         
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: data) else {
-            return Fail(error: AuthenticateError.badURL)
+        // set the http method
+        request.httpMethod = httpMethod.rawValue.trimmingCharacters(in: .whitespaces)
+        
+        // if request is of type logout
+        if requestType == .logOut {
+            // set the token value to request headers by fetching
+            // it from user defaults
+            if let tokenValue = UserDefaults.standard.string(forKey: "SessionAuthToken") {
+                request.setValue(tokenValue, forHTTPHeaderField: "Authorization")
+            }
+        }
+        // for request type signup and login
+        else if requestType == .signUp || requestType == .logIn {
+            // convert dictionary data to json
+            let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .fragmentsAllowed)
+            // set content type
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            // set json data in request http body
+            request.httpBody = jsonData
+        }
+        
+        // return url request
+        return request
+    }
+    
+    /// method to handle signin, login, create user, logout and get user details
+    /// - Parameters:
+    ///   - httpMethod: method of api request i.e. get, post, delete, put
+    ///   - dataDictionary: dictionary for sending some json data alog with api
+    ///   - endPoint: string value of api endpoint. used with base api url to form a valid url
+    ///   - requestType: type of request i.e. signup, login, email check etc.
+    /// - Returns: any published with either response as SignInLogInModel or Error
+    func signInUser(httpMethod: HttpMethod, dataDictionary: [String: Any], endPoint: String, requestType: RequestType) -> AnyPublisher<SignInLogInModel, Error> {
+        
+        // get url request from setUpApiRequest method
+        guard let request = setUpApiRequest(
+            endPoint    : endPoint,
+            httpMethod  : httpMethod,
+            data        : dataDictionary,
+            requestType : requestType
+        ) else {
+            // return error if request is nil
+            return Fail(error: APIError.invalidRequestError("URL Invalid"))
                 .eraseToAnyPublisher()
         }
         
-        request.httpMethod = httpMethod.rawValue.trimmingCharacters(in: .whitespaces)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type") // the request is JSON
-        request.httpBody = jsonData
-        
+        // use dataTaskPublisher to call the api for url request
         return URLSession.shared.dataTaskPublisher(for: request)
-            .mapError { error -> AuthenticateError in
-                print(error.localizedDescription)
-                return AuthenticateError.badResponse
+            // mapping error related to invalid format or key values or data limitations
+            .mapError { error -> Error in
+                return APIError.transportError(error)
             }
-        
+            // map data and reponse and return
+            // after getting response as HTTPURLResponse
             .tryMap { (data, response) -> (data: Data, response: URLResponse) in
                 
+                // get reponse as HTTPURLResponse
                 guard let response = response as? HTTPURLResponse else {
-                    throw AuthenticateError.badConversion
+                    // else throw error as invalid response
+                    throw APIError.invalidResponse
                 }
-                print(response)
                 
-                if response.statusCode == 422 {
-                    throw AuthenticateError.userExists
-                    
-                } else if response.statusCode == 401 {
-                    throw AuthenticateError.noUserExists
-                    
-                } else if !((200..<299) ~= response.statusCode) {
-                    throw AuthenticateError.badConversion
+                // if sign out it attempted
+                // the clear the user defaults
+                // by setting the authoriztion value of
+                // SessionAuthToken to empty ""
+                if endPoint == ApiConstants.signOut {
+                    UserDefaults.standard.set("", forKey: "SessionAuthToken")
                 }
-
+                // else get the bearer token from the reponse and
+                // set the user default for SessionAuthToken
+                else {
+                    // get token from response header
+                    let bearer = response.value(forHTTPHeaderField: "Authorization")
+                    if let bearer {
+                        // store in user defaults
+                        UserDefaults.standard.set(bearer, forKey: "SessionAuthToken")
+                    }
+                }
+                
+                // return data and response
                 return (data, response)
-                
             }
+            // mapping data
             .map(\.data)
-        
+            // decoding data
             .tryMap { data in
+                // initialize json decoder
                 let decoder = JSONDecoder()
                 do {
-                    return try decoder.decode(GetResponse.self, from: data)
-                }
-                catch {
-                    throw AuthenticateError.badResponse
+                    // if request type is of email check
+                    // do not decode with SignInLogInModel directly
+                    // set it up manually
+                    // to avoid decoding error on. we need to avoid it
+                    // because the api returns success with empty body
+                    // which cannot be decoded thus check with data.count
+                    // which gives the value of data
+                    if requestType == .emailCheck {
+                        // set the status instance
+                        let status = Status(code: data.count, error: "", message: "", data: nil)
+                        // return signinlogin model with status instance
+                        return SignInLogInModel(status: status)
+                    }
+                    
+                    // else normally return the decoded data
+                    return try decoder.decode(SignInLogInModel.self, from: data)
+                } catch {
+                    throw APIError.decodingError(error)
                 }
             }
             .eraseToAnyPublisher()
     }
 }
 
-enum AuthenticateError: LocalizedError{
-    case badURL
-    case badResponse
-    case url(URLError?)
-    case unknown
-    case badConversion
-    case noData
-    case parsing(DecodingError?)
-    case userExists
-    case noUserExists
-    
-    //MARK: custom error description for errors
-    var errorDescription: String?{
-        switch self{
-        case .badConversion:
-            return "Cannot convert to json data"
-        case .badURL:
-            return "URL not found"
-        case .badResponse:
-            return "Something went wrong, Please check"
-        case .url(let error):
-            return "\(error?.localizedDescription ?? "")"
-        case .unknown:
-            return "Sorry, something went wrong."
-        case .noData:
-            return "No data found"
-        case .parsing(let error):
-            return "Parsing Error \n\(error?.localizedDescription ?? "")"
-        case .userExists:
-            return "User Already Exists,\n Log In to continue"
-        case .noUserExists:
-            return "No Such User Exists,\n Sign Up to continue"
+/// enum for handling errors
+enum APIError: LocalizedError {
+      /// Invalid request, e.g. invalid URL
+      case invalidRequestError(String)
+      
+      /// Indicates an error on the transport layer, e.g. not being able to connect to the server
+      case transportError(Error)
+      
+      /// Received an invalid response, e.g. non-HTTP result
+      case invalidResponse
+      
+      /// Server-side validation error
+      case validationError(String)
+      
+      /// The server sent data in an unexpected format
+      case decodingError(Error)
+
+      var errorDescription: String? {
+        switch self {
+        case .invalidRequestError(let message):
+          return "Invalid request: \(message)"
+        case .transportError(let error):
+          return "Transport error: \(error)"
+        case .invalidResponse:
+          return "Invalid response"
+        case .validationError(let reason):
+          return "Validation Error: \(reason)"
+        case .decodingError:
+          return "The server returned data in an unexpected format. Try updating the app."
         }
-    }
+      }
 }

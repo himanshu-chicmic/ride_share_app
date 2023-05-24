@@ -9,14 +9,14 @@ import Foundation
 
 /// contains cases to identify
 /// the type of input field
-enum InputFieldIdentifier {
+enum InputFieldIdentifier: String {
     case email
     case password
     case confirmPassword
-    case firstName
-    case lastName
-    case dateOfBirth
-    case gender
+    case firstName = "first_name"
+    case lastName = "last_name"
+    case dateOfBirth = "dob"
+    case gender = "title"
     case mobile
     case country
     case color

@@ -72,13 +72,6 @@ struct EditProfileView: View {
                         // then navigate to new view
                         if validationsViewModel.toastMessage.isEmpty {
                             dismiss()
-                        } else {
-                            // if any error is shown
-                            // show if for 3 seconds and
-                            // then make it disappear
-                            DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-                                validationsViewModel.toastMessage = ""
-                            }
                         }
                     } label: {
                         Image(systemName: Constants.Icon.check)

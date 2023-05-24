@@ -18,9 +18,6 @@ struct GetPickers: View {
     // environment object of user details view model
     @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
     
-    // TODO: remove this and add suitable method for a color picker
-    @State var color: Color = Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
-    
     // MARK: - body
     
     var body: some View {
@@ -47,12 +44,16 @@ struct GetPickers: View {
             case .country:
                 PickerView(
                     value           : $userDetailsViewModel.country,
-                    selectableValues: CountriesList.countries,
+                    selectableValues: ListConstants.countries,
                     placeholder     : Constants.Vehicle.country
                 )
             // color picker
             case .color:
-                ColorPicker("", selection: $color)
+                PickerView(
+                    value           : $userDetailsViewModel.color,
+                    selectableValues: ListConstants.vehicleColors,
+                    placeholder     : Constants.Vehicle.color
+                )
             // year picker
             case .modelYear:
                 PickerView(

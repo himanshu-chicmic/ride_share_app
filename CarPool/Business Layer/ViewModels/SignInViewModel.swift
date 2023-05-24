@@ -13,18 +13,11 @@ import Combine
 class SignInViewModel: ObservableObject {
     
     // MARK: - properties
-    
     private var cancellables: AnyCancellable?
-    
-    // varible to get response from api
-    @Published var getResponse: GetResponse?
     
     // signInModel for email, password and,
     // confirm password properties
     @Published var signInModel = SignInModel()
-    
-    // open view for user detials
-    @Published var openUserDetailsView: Bool = false
     
     // array to store the values
     // neccessary for the input fields
@@ -101,21 +94,14 @@ class SignInViewModel: ObservableObject {
                 // call api for sign up
                 signIn(
                     httpMethod  : HttpMethod.GET,
-                    requestType : .SignUp
+                    requestType : .emailCheck
                 )
             } else {
                 // call api for login
                 signIn(
                     httpMethod  : HttpMethod.POST,
-                    requestType : .LogIn
+                    requestType : .logIn
                 )
-            }
-        } else {
-            // if any error is shown
-            // show if for 3 seconds and
-            // then make it disappear
-            DispatchQueue.main.asyncAfter(deadline: .now()+3) {
-                self.validationsViewModel.toastMessage = ""
             }
         }
     }
@@ -126,49 +112,60 @@ class SignInViewModel: ObservableObject {
     ///   - requestType: type of request ex .login, .signup etc.
     func signIn(httpMethod: HttpMethod, requestType: RequestType) {
         
-        // get data from model
+        // start progess view
+        // by setting in Progress to true
+        validationsViewModel.inProgess = true
+        
+        // set data for sending
         var data: [String: Any] = [:]
-        var endPoint = ApiConstants.commonEndpoint
+        // set endpoint for api
+        var endPoint = ApiConstants.signIn
 
+        // switch over request type
+        // to set data variable with correct
+        // values and set endpoints based on
+        // the type of request
         switch requestType {
-        case .SignUp:
-            data = signInModel.getEmail()
+        case .logIn:
+            data = signInModel.getData(values: textFieldValues)
+        case .emailCheck:
+            data = signInModel.getEmail(email: textFieldValues[0].0)
             endPoint = ApiConstants.checkEmail
-        case .LogIn:
-            data = signInModel.getData()
-        case .LogOut:
-            data = [:]
-            endPoint = ApiConstants.signOut
+        default:
+            break
         }
         
-        cancellables = ApiManager.shared.signInUser(httpMethod: httpMethod, data: data, endPoint: endPoint)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    print(error)
-                case .finished:
-                    print("success")
-                }
-            } receiveValue: { [weak self] data in
-                self?.getResponse = data
-                self?.goToUserDetails()
+        // call signInUserMethod in ApiManager class
+        cancellables = ApiManager.shared.signInUser(
+            httpMethod      : httpMethod,
+            dataDictionary  : data,
+            endPoint        : endPoint,
+            requestType     : requestType
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .failure(let error):
+                self.validationsViewModel.toastMessage = error.localizedDescription
+                print("ERROR: \(error.localizedDescription)")
+            case .finished:
+                print("success")
             }
-    }
-    
-    
-    func disableProgress() {
-        // set in progress to false for hiding loader - on response received
-        validationsViewModel.inProgess = false
-    }
-    
-    func goToUserDetails() {
-        disableProgress()
-        // for signup directly go to next
-        // view after validations
-        // because for signup we need more
-        // user data before making the call
-        // to api
-        openUserDetailsView.toggle()
+            
+            self.validationsViewModel.disableProgress()
+        } receiveValue: { [weak self] response in
+            switch requestType {
+            case .logIn:
+                self?.validationsViewModel.goToUserDetails()
+            case .emailCheck:
+                if response.status.code == 0 {
+                    self?.validationsViewModel.goToUserDetails()
+                } else {
+                    self?.validationsViewModel.toastMessage = "Email already exists."
+                }
+            default:
+                break
+            }
+        }
     }
 }
