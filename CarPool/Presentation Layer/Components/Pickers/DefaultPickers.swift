@@ -14,10 +14,7 @@ struct DefaultPickers: View {
     
     // MARK: - properties
     
-    // environment object for signInViewModel
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
-    
-    var pickerType: PickerType
+    var pickerType: PickerFieldIdentifier
     
     @Environment(\.dismiss) var dismiss
     
@@ -45,6 +42,5 @@ struct DefaultPickers: View {
 struct DefaultPickeres_Previews: PreviewProvider {
     static var previews: some View {
         DefaultPickers(pickerType: .modelYear)
-            .environmentObject(UserDetailsViewModel())
     }
 }

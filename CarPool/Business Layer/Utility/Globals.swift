@@ -16,7 +16,7 @@ struct Globals {
     static let dateFormatter: DateFormatter = {
         // initialized data formatter class
         let formatter = DateFormatter()
-        // set the date format as "dd/MM/yyyy" as stored
+        // set the date format as "yyyy-MM-dd" as stored
         // in constants's placeholder struct as dateOfBirth
         formatter.dateFormat = Constants.Placeholders.dateOfBirth
         // return the formatter

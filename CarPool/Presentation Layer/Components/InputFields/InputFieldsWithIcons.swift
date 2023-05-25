@@ -32,8 +32,8 @@ struct InputFieldsWithIcons: View {
             // text value
             Text(text)
                 .frame(
-                    maxWidth    : .infinity,
-                    alignment   : .leading
+                    maxWidth  : .infinity,
+                    alignment : .leading
                 )
                 .foregroundColor(.gray)
         }

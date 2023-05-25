@@ -21,18 +21,18 @@ class ApiManager {
     ///   - data: dictionary for sending some json data alog with api
     ///   - requestType: type of request i.e. signup, login, email check etc.
     /// - Returns: a url request which is used to for url session
-    func setUpApiRequest(endPoint: String, httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> URLRequest? {
+    func setUpApiRequest(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> URLRequest? {
         
         // create a base url
-        var baseURL = String(format: ApiConstants.baseURL, endPoint)
+        var baseURL = String(format: ApiConstants.baseURL, requestType.rawValue)
         
         // if request typ if of type email check
         // then our url need to be changed
         // to handle the get request
         // in get request the data needs to be sent
         // with the url
-        if requestType == .emailCheck {
-            baseURL += "?email=\(String(describing: data["email"]!).lowercased())"
+        if requestType == .emailCheck, let email = data[InputFieldIdentifier.email.rawValue] as? String {
+            baseURL += String(format: ApiConstants.getRequestEmailCheck, email.lowercased())
         }
         
         // get the url from base url string
@@ -51,8 +51,8 @@ class ApiManager {
         if requestType == .logOut {
             // set the token value to request headers by fetching
             // it from user defaults
-            if let tokenValue = UserDefaults.standard.string(forKey: "SessionAuthToken") {
-                request.setValue(tokenValue, forHTTPHeaderField: "Authorization")
+            if let tokenValue = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.session) {
+                request.setValue(tokenValue, forHTTPHeaderField: ApiConstants.authorization)
             }
         }
         // for request type signup and login
@@ -60,7 +60,7 @@ class ApiManager {
             // convert dictionary data to json
             let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .fragmentsAllowed)
             // set content type
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(ApiConstants.json, forHTTPHeaderField: ApiConstants.contentType)
             // set json data in request http body
             request.httpBody = jsonData
         }
@@ -76,11 +76,10 @@ class ApiManager {
     ///   - endPoint: string value of api endpoint. used with base api url to form a valid url
     ///   - requestType: type of request i.e. signup, login, email check etc.
     /// - Returns: any published with either response as SignInLogInModel or Error
-    func signInUser(httpMethod: HttpMethod, dataDictionary: [String: Any], endPoint: String, requestType: RequestType) -> AnyPublisher<SignInLogInModel, Error> {
+    func createApiRequest(httpMethod: HttpMethod, dataDictionary: [String: Any], requestType: RequestType) -> AnyPublisher<SignInAndProfileModel, Error> {
         
         // get url request from setUpApiRequest method
         guard let request = setUpApiRequest(
-            endPoint    : endPoint,
             httpMethod  : httpMethod,
             data        : dataDictionary,
             requestType : requestType
@@ -110,17 +109,17 @@ class ApiManager {
                 // the clear the user defaults
                 // by setting the authoriztion value of
                 // SessionAuthToken to empty ""
-                if endPoint == ApiConstants.signOut {
-                    UserDefaults.standard.set("", forKey: "SessionAuthToken")
+                if requestType == .logOut {
+                    UserDefaults.standard.set("", forKey: Constants.UserDefaultKeys.session)
                 }
                 // else get the bearer token from the reponse and
                 // set the user default for SessionAuthToken
-                else {
+                else if requestType == .signUp || requestType == .logIn {
                     // get token from response header
-                    let bearer = response.value(forHTTPHeaderField: "Authorization")
+                    let bearer = response.value(forHTTPHeaderField: ApiConstants.authorization)
                     if let bearer {
                         // store in user defaults
-                        UserDefaults.standard.set(bearer, forKey: "SessionAuthToken")
+                        UserDefaults.standard.set(bearer, forKey: Constants.UserDefaultKeys.session)
                     }
                 }
                 
@@ -141,15 +140,16 @@ class ApiManager {
                     // because the api returns success with empty body
                     // which cannot be decoded thus check with data.count
                     // which gives the value of data
-                    if requestType == .emailCheck {
+                    switch requestType {
+                    case .emailCheck:
                         // set the status instance
-                        let status = Status(code: data.count, error: "", message: "", data: nil)
+                        let status = Status(code: data.count, error: nil, message: nil, data: nil, imageURL: nil)
                         // return signinlogin model with status instance
-                        return SignInLogInModel(status: status)
+                        return SignInAndProfileModel(status: status)
+                    default:
+                        UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.profileData)
                     }
-                    
-                    // else normally return the decoded data
-                    return try decoder.decode(SignInLogInModel.self, from: data)
+                    return try decoder.decode(SignInAndProfileModel.self, from: data)
                 } catch {
                     throw APIError.decodingError(error)
                 }

@@ -41,22 +41,22 @@ struct RidesListItem: View {
     var body: some View {
         HStack(alignment: .top) {
             VStack(
-                alignment   : .leading,
-                spacing     : 40
+                alignment : .leading,
+                spacing   : 40
             ) {
                 // helper layout for city name
-                RidesListItemCity(
-                    icon        : Constants.Icon.startLocation,
-                    color       : .green,
-                    location    : startLoction,
-                    time        : startTime
+                LocationTextViewComponent(
+                    icon     : Constants.Icon.startLocation,
+                    color    : .green,
+                    location : startLoction,
+                    time     : startTime
                 )
                 // helper layout for city name
-                RidesListItemCity(
-                    icon        : Constants.Icon.endLocation,
-                    color       : .red,
-                    location    : endLocation,
-                    time        : endTime
+                LocationTextViewComponent(
+                    icon     : Constants.Icon.endLocation,
+                    color    : .red,
+                    location : endLocation,
+                    time     : endTime
                 )
                 
             }
@@ -77,7 +77,7 @@ struct RidesListItem: View {
                 Text(
                     String(
                         format: Constants.RidesData.info,
-                        [dateOfDeparture, numberOfSeats]
+                        dateOfDeparture, numberOfSeats
                     )
                 )
                 .font(.system(size: 10))
@@ -91,8 +91,8 @@ struct RidesListItem: View {
                         .resizable()
                         .scaledToFill()
                         .frame(
-                            width   : 38,
-                            height  : 38
+                            width  : 38,
+                            height : 38
                         )
                         .clipShape(Circle())
                     
@@ -102,16 +102,16 @@ struct RidesListItem: View {
                     
                     // ratings received by driver
                     HStack(
-                        alignment   : .firstTextBaseline,
-                        spacing     : 2
+                        alignment : .firstTextBaseline,
+                        spacing   : 2
                     ) {
                         Text(driverRating)
                         
                         Image(systemName: Constants.Icon.star)
                             .resizable()
                             .frame(
-                                width   : 10,
-                                height  : 10
+                                width  : 10,
+                                height : 10
                             )
                             .foregroundColor(.yellow)
                     }

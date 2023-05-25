@@ -16,8 +16,8 @@ struct AddProfileOptionView: View {
     @Environment(\.dismiss) var dismiss
     
     // environment object of validations view model
-    @EnvironmentObject var validationsViewModel: ValidationsViewModel
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
     // text field variable
     @State var textField: String = ""
@@ -108,35 +108,34 @@ struct AddProfileOptionView: View {
                     withAnimation {
                         if heading == Constants.Headings.vehicle {
                             // check for textfield validations
-                            validationsViewModel.toastMessage = validationsViewModel
+                            baseViewModel.toastMessage = baseViewModel
                                 .validationsInstance
                                 .validateTextFields(
                                     textFields: textFieldValues
                                 )
                             
-                            // TODO: optimize these lines of code
-                            if validationsViewModel.toastMessage.isEmpty {
-                                validationsViewModel.toastMessage = validationsViewModel.validationsInstance
+                            if baseViewModel.toastMessage.isEmpty {
+                                baseViewModel.toastMessage = baseViewModel.validationsInstance
                                     .validatePickerSelectedValue(
-                                        value       : userDetailsViewModel.country,
+                                        value       : detailsViewModel.country,
                                         placeholder : Constants.Vehicle.country,
                                         error       : Constants.ValidationMessages.noCountrySelection
                                     )
                             }
                             
-                            if validationsViewModel.toastMessage.isEmpty {
-                                validationsViewModel.toastMessage = validationsViewModel.validationsInstance
+                            if baseViewModel.toastMessage.isEmpty {
+                                baseViewModel.toastMessage = baseViewModel.validationsInstance
                                     .validatePickerSelectedValue(
-                                        value       : userDetailsViewModel.color,
+                                        value       : detailsViewModel.color,
                                         placeholder : Constants.Vehicle.color,
                                         error       : Constants.ValidationMessages.noColorSelected
                                     )
                             }
                             
-                            if validationsViewModel.toastMessage.isEmpty {
-                                validationsViewModel.toastMessage = validationsViewModel.validationsInstance
+                            if baseViewModel.toastMessage.isEmpty {
+                                baseViewModel.toastMessage = baseViewModel.validationsInstance
                                     .validatePickerSelectedValue(
-                                        value       : userDetailsViewModel.year,
+                                        value       : detailsViewModel.year,
                                         placeholder : Constants.Vehicle.modelYear,
                                         error       : Constants.ValidationMessages.noYearSelected
                                     )
@@ -144,7 +143,7 @@ struct AddProfileOptionView: View {
                             
                         } else {
                             // check for textfield validations
-                            validationsViewModel.toastMessage = validationsViewModel
+                            baseViewModel.toastMessage = baseViewModel
                                 .validationsInstance
                                 .validateTextFields(
                                     textFields: [(
@@ -159,11 +158,25 @@ struct AddProfileOptionView: View {
                     
                     // if toast message is empty
                     // there no error in validations and verification
-                    if validationsViewModel.toastMessage.isEmpty {
+                    if baseViewModel.toastMessage.isEmpty {
                         // set new password
                         // if new password is set
                         // then dismiss the view
-                        dismiss()
+                        
+                        if !textField.isEmpty {
+                            switch inputField {
+                            case .email:
+                                baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmEmail, data: [inputField.rawValue : textField])
+                            case .phoneNumber:
+                                baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmPhone, data: [inputField.rawValue : textField])
+                            case .bio:
+                                baseViewModel.sendRequestToApi(httpMethod: .PUT, requestType: .updateProfile, data: [Constants.JsonKeys.user:[inputField.rawValue : textField]])
+                            default:
+                                break
+                            }
+                        } else {
+                            dismiss()
+                        }
                     }
                     
                 } label: {
@@ -187,20 +200,34 @@ struct AddProfileOptionView: View {
                 Button(Constants.Others.no, role: .cancel) {}
             }
             .onAppear {
-                if heading == Constants.Headings.vehicle {
-                    textFieldValues = VehiclesModel().getInputFields()
+                switch heading {
+                case Constants.Headings.vehicle:
+                    textFieldValues = VehicleModel().getInputFields()
+                case Constants.Headings.email:
+                    textField = baseViewModel.userData?.status.data?.email ?? ""
+                case Constants.Headings.mobile:
+                    textField = baseViewModel.userData?.status.data?.phoneNumber ?? ""
+                case Constants.Headings.bio:
+                    textField = baseViewModel.userData?.status.data?.bio ?? ""
+                default:
+                    textField = ""
                 }
             }
-            .sheet(isPresented: $userDetailsViewModel.showPicker) {
+            .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
-                    pickerType: userDetailsViewModel.pickerType
+                    pickerType: detailsViewModel.pickerType
                 )
+            }
+            .onChange(of: baseViewModel.dismiss) { newValue in
+                if newValue {
+                    dismiss()
+                }
             }
             
             // show toast message
             // if any validation or verificatioin
             // message exists
-            if !validationsViewModel.toastMessage.isEmpty {
+            if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }
         }
@@ -215,7 +242,7 @@ struct AddProfileOptionView_Previews: PreviewProvider {
             inputField  : .email,
             keyboardType: .default
         )
-        .environmentObject(ValidationsViewModel())
-        .environmentObject(UserDetailsViewModel())
+        .environmentObject(BaseViewModel())
+        .environmentObject(DetailsViewModel())
     }
 }

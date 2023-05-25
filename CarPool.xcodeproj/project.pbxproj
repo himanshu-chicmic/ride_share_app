@@ -14,12 +14,12 @@
 		6A12E8582A0E58310061333A /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E8572A0E58310061333A /* InboxView.swift */; };
 		6A12E85A2A0E58380061333A /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E8592A0E58380061333A /* ProfileView.swift */; };
 		6A12E85C2A0E62CA0061333A /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E85B2A0E62CA0061333A /* PlaceholderView.swift */; };
-		6A12E85F2A0E6A630061333A /* ContactItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E85E2A0E6A630061333A /* ContactItem.swift */; };
+		6A12E85F2A0E6A630061333A /* MessagesListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E85E2A0E6A630061333A /* MessagesListItem.swift */; };
 		6A12E8612A0E6D550061333A /* RidesListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A12E8602A0E6D550061333A /* RidesListItem.swift */; };
 		6A32BACC2A17414800866706 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACB2A17414800866706 /* ForgotPasswordView.swift */; };
 		6A32BAD02A174CB500866706 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACF2A174CB500866706 /* EditProfileView.swift */; };
-		6A32BAD82A17775A00866706 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */; };
-		6A32BADA2A1777FF00866706 /* ValidationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */; };
+		6A32BAD82A17775A00866706 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD72A17775A00866706 /* DetailsViewModel.swift */; };
+		6A32BADA2A1777FF00866706 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD92A1777FF00866706 /* BaseViewModel.swift */; };
 		6A32BADC2A17940C00866706 /* AddProfileOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */; };
 		6A32BADE2A17963300866706 /* EditProfileIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BADD2A17963300866706 /* EditProfileIdentifier.swift */; };
 		6A33EAC92A0E0F4000620993 /* DefaultPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A33EAC82A0E0F4000620993 /* DefaultPickers.swift */; };
@@ -32,7 +32,7 @@
 		6A3FB3322A1B48550069673A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3312A1B48550069673A /* ApiManager.swift */; };
 		6A3FB33D2A1B611F0069673A /* CircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB33C2A1B611F0069673A /* CircleProgressView.swift */; };
 		6A3FB3412A1B76F80069673A /* RequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3402A1B76F80069673A /* RequestType.swift */; };
-		6A3FB3432A1B891F0069673A /* VehiclesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3422A1B891F0069673A /* VehiclesModel.swift */; };
+		6A3FB3432A1B891F0069673A /* VehicleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3422A1B891F0069673A /* VehicleModel.swift */; };
 		6A3FB3452A1B8DB80069673A /* ListConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3442A1B8DB80069673A /* ListConstants.swift */; };
 		6A3FB3472A1B9B0B0069673A /* ShowPickerText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3462A1B9B0B0069673A /* ShowPickerText.swift */; };
 		6A6280F62A1B2BCA00A15287 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 6A6280F52A1B2BCA00A15287 /* .swiftlint.yml */; };
@@ -47,15 +47,15 @@
 		6AAB53E12A0BA32F00138024 /* UserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB53E02A0BA32F00138024 /* UserDetailsView.swift */; };
 		6AAB53F62A0BC14400138024 /* InputFieldIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB53F52A0BC14400138024 /* InputFieldIdentifier.swift */; };
 		6AAB53FA2A0BCB6500138024 /* SignInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB53F92A0BCB6500138024 /* SignInModel.swift */; };
-		6AAE83C52A1C76D2000CD679 /* PickerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAE83C42A1C76D2000CD679 /* PickerType.swift */; };
+		6AAE83C52A1C76D2000CD679 /* PickerFieldIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAE83C42A1C76D2000CD679 /* PickerFieldIdentifier.swift */; };
 		6AAE83C72A1C7AAD000CD679 /* GetPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAE83C62A1C7AAD000CD679 /* GetPickers.swift */; };
 		6AAE83CC2A1CA0A9000CD679 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAE83CB2A1CA0A9000CD679 /* PickerView.swift */; };
 		6AB0DA4C2A0D0832001F7B9C /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */; };
-		6ACCFFA12A0CA7BE00524F17 /* UserDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCFFA02A0CA7BE00524F17 /* UserDetailsModel.swift */; };
+		6ACCFFA12A0CA7BE00524F17 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCFFA02A0CA7BE00524F17 /* UserModel.swift */; };
 		6ACCFFA32A0CD78400524F17 /* BackAndContinueButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCFFA22A0CD78400524F17 /* BackAndContinueButtons.swift */; };
 		6AD6CDF92A160175002B7548 /* InputFieldsWithIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD6CDF82A160175002B7548 /* InputFieldsWithIcons.swift */; };
-		6AD6CDFC2A160505002B7548 /* RidesListItemCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD6CDFB2A160505002B7548 /* RidesListItemCity.swift */; };
-		6AE69CE42A1DF06300E91D6F /* SignInLogInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE69CE32A1DF06300E91D6F /* SignInLogInModel.swift */; };
+		6AD6CDFC2A160505002B7548 /* LocationTextViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD6CDFB2A160505002B7548 /* LocationTextViewComponent.swift */; };
+		6AE69CE42A1DF06300E91D6F /* SignInAndProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE69CE32A1DF06300E91D6F /* SignInAndProfileModel.swift */; };
 		6AEEF3FE2A161ACD0012FE65 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEF3FD2A161ACD0012FE65 /* SearchViewModel.swift */; };
 		6AEEF4002A164AA70012FE65 /* ProfileViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEF3FF2A164AA70012FE65 /* ProfileViewItem.swift */; };
 		6AEEF4032A1655550012FE65 /* ProfileTabViewAbout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AEEF4022A1655550012FE65 /* ProfileTabViewAbout.swift */; };
@@ -71,12 +71,12 @@
 		6A12E8572A0E58310061333A /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		6A12E8592A0E58380061333A /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		6A12E85B2A0E62CA0061333A /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
-		6A12E85E2A0E6A630061333A /* ContactItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactItem.swift; sourceTree = "<group>"; };
+		6A12E85E2A0E6A630061333A /* MessagesListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesListItem.swift; sourceTree = "<group>"; };
 		6A12E8602A0E6D550061333A /* RidesListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidesListItem.swift; sourceTree = "<group>"; };
 		6A32BACB2A17414800866706 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		6A32BACF2A174CB500866706 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
-		6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
-		6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationsViewModel.swift; sourceTree = "<group>"; };
+		6A32BAD72A17775A00866706 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
+		6A32BAD92A1777FF00866706 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileOptionView.swift; sourceTree = "<group>"; };
 		6A32BADD2A17963300866706 /* EditProfileIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileIdentifier.swift; sourceTree = "<group>"; };
 		6A33EAC82A0E0F4000620993 /* DefaultPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPickers.swift; sourceTree = "<group>"; };
@@ -89,7 +89,7 @@
 		6A3FB3312A1B48550069673A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		6A3FB33C2A1B611F0069673A /* CircleProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleProgressView.swift; sourceTree = "<group>"; };
 		6A3FB3402A1B76F80069673A /* RequestType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestType.swift; sourceTree = "<group>"; };
-		6A3FB3422A1B891F0069673A /* VehiclesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehiclesModel.swift; sourceTree = "<group>"; };
+		6A3FB3422A1B891F0069673A /* VehicleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleModel.swift; sourceTree = "<group>"; };
 		6A3FB3442A1B8DB80069673A /* ListConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListConstants.swift; sourceTree = "<group>"; };
 		6A3FB3462A1B9B0B0069673A /* ShowPickerText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPickerText.swift; sourceTree = "<group>"; };
 		6A6280F52A1B2BCA00A15287 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -105,15 +105,15 @@
 		6AAB53E02A0BA32F00138024 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
 		6AAB53F52A0BC14400138024 /* InputFieldIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldIdentifier.swift; sourceTree = "<group>"; };
 		6AAB53F92A0BCB6500138024 /* SignInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInModel.swift; sourceTree = "<group>"; };
-		6AAE83C42A1C76D2000CD679 /* PickerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerType.swift; sourceTree = "<group>"; };
+		6AAE83C42A1C76D2000CD679 /* PickerFieldIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerFieldIdentifier.swift; sourceTree = "<group>"; };
 		6AAE83C62A1C7AAD000CD679 /* GetPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPickers.swift; sourceTree = "<group>"; };
 		6AAE83CB2A1CA0A9000CD679 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
-		6ACCFFA02A0CA7BE00524F17 /* UserDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsModel.swift; sourceTree = "<group>"; };
+		6ACCFFA02A0CA7BE00524F17 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		6ACCFFA22A0CD78400524F17 /* BackAndContinueButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackAndContinueButtons.swift; sourceTree = "<group>"; };
 		6AD6CDF82A160175002B7548 /* InputFieldsWithIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldsWithIcons.swift; sourceTree = "<group>"; };
-		6AD6CDFB2A160505002B7548 /* RidesListItemCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidesListItemCity.swift; sourceTree = "<group>"; };
-		6AE69CE32A1DF06300E91D6F /* SignInLogInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInLogInModel.swift; sourceTree = "<group>"; };
+		6AD6CDFB2A160505002B7548 /* LocationTextViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTextViewComponent.swift; sourceTree = "<group>"; };
+		6AE69CE32A1DF06300E91D6F /* SignInAndProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAndProfileModel.swift; sourceTree = "<group>"; };
 		6AEEF3FD2A161ACD0012FE65 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		6AEEF3FF2A164AA70012FE65 /* ProfileViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewItem.swift; sourceTree = "<group>"; };
 		6AEEF4022A1655550012FE65 /* ProfileTabViewAbout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabViewAbout.swift; sourceTree = "<group>"; };
@@ -155,8 +155,8 @@
 		6A12E85D2A0E6A0B0061333A /* ListItems */ = {
 			isa = PBXGroup;
 			children = (
-				6AD6CDFB2A160505002B7548 /* RidesListItemCity.swift */,
-				6A12E85E2A0E6A630061333A /* ContactItem.swift */,
+				6A64A6802A1F51AC001E48F9 /* CommonComponents */,
+				6A12E85E2A0E6A630061333A /* MessagesListItem.swift */,
 				6A12E8602A0E6D550061333A /* RidesListItem.swift */,
 				6AEEF3FF2A164AA70012FE65 /* ProfileViewItem.swift */,
 			);
@@ -223,6 +223,70 @@
 			path = "Network Layer";
 			sourceTree = "<group>";
 		};
+		6A64A6802A1F51AC001E48F9 /* CommonComponents */ = {
+			isa = PBXGroup;
+			children = (
+				6AD6CDFB2A160505002B7548 /* LocationTextViewComponent.swift */,
+			);
+			path = CommonComponents;
+			sourceTree = "<group>";
+		};
+		6A64A6812A1F557B001E48F9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6A33EAD22A0E4D7900620993 /* Dashboard */,
+				6AAB53CA2A0B82DD00138024 /* LoginSignup */,
+				6AAB53BB2A0B7C5800138024 /* CarPoolApp.swift */,
+				6AAB53BD2A0B7C5800138024 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6A64A6822A1F5A54001E48F9 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				6AAB53F92A0BCB6500138024 /* SignInModel.swift */,
+				6ACCFFA02A0CA7BE00524F17 /* UserModel.swift */,
+				6A3FB3422A1B891F0069673A /* VehicleModel.swift */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
+		6A64A6842A1F5A69001E48F9 /* ResponseDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				6AE69CE32A1DF06300E91D6F /* SignInAndProfileModel.swift */,
+			);
+			path = ResponseDataModels;
+			sourceTree = "<group>";
+		};
+		6A64A6852A1F605A001E48F9 /* ForInputFields */ = {
+			isa = PBXGroup;
+			children = (
+				6AAE83C42A1C76D2000CD679 /* PickerFieldIdentifier.swift */,
+				6AAB53F52A0BC14400138024 /* InputFieldIdentifier.swift */,
+			);
+			path = ForInputFields;
+			sourceTree = "<group>";
+		};
+		6A64A6862A1F60DD001E48F9 /* ForViews */ = {
+			isa = PBXGroup;
+			children = (
+				6A12E84E2A0E51830061333A /* TabViewIdentifier.swift */,
+				6A32BADD2A17963300866706 /* EditProfileIdentifier.swift */,
+			);
+			path = ForViews;
+			sourceTree = "<group>";
+		};
+		6A64A6872A1F60EE001E48F9 /* ForApiRequest */ = {
+			isa = PBXGroup;
+			children = (
+				6A3FB32D2A1B3D500069673A /* HttpMethod.swift */,
+				6A3FB3402A1B76F80069673A /* RequestType.swift */,
+			);
+			path = ForApiRequest;
+			sourceTree = "<group>";
+		};
 		6AAB53AF2A0B7C5800138024 = {
 			isa = PBXGroup;
 			children = (
@@ -266,10 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				6AAB53D52A0B8AC100138024 /* Components */,
-				6A33EAD22A0E4D7900620993 /* Dashboard */,
-				6AAB53CA2A0B82DD00138024 /* LoginSignup */,
-				6AAB53BB2A0B7C5800138024 /* CarPoolApp.swift */,
-				6AAB53BD2A0B7C5800138024 /* ContentView.swift */,
+				6A64A6812A1F557B001E48F9 /* Views */,
 			);
 			path = "Presentation Layer";
 			sourceTree = "<group>";
@@ -287,11 +348,11 @@
 		6AAB53CD2A0B837000138024 /* Business Layer */ = {
 			isa = PBXGroup;
 			children = (
+				6AAB53CE2A0B838900138024 /* Constants */,
 				6A33EACA2A0E197800620993 /* Utility */,
 				6AB0DA4D2A0D0836001F7B9C /* ViewModels */,
 				6AAB53F42A0BC12C00138024 /* Enums */,
 				6AAB53EF2A0BBE4300138024 /* Models */,
-				6AAB53CE2A0B838900138024 /* Constants */,
 			);
 			path = "Business Layer";
 			sourceTree = "<group>";
@@ -310,8 +371,8 @@
 			isa = PBXGroup;
 			children = (
 				6AAE83C92A1C9FE3000CD679 /* CommonViews */,
-				6AAE83C82A1C9FC8000CD679 /* Pickers */,
 				6A12E85D2A0E6A0B0061333A /* ListItems */,
+				6AAE83C82A1C9FC8000CD679 /* Pickers */,
 				6AAB53EE2A0BBDF400138024 /* InputFields */,
 				6AAB53ED2A0BBD7600138024 /* Buttons */,
 			);
@@ -339,10 +400,8 @@
 		6AAB53EF2A0BBE4300138024 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				6AE69CE22A1DF02100E91D6F /* ResponseMoels */,
-				6AAB53F92A0BCB6500138024 /* SignInModel.swift */,
-				6ACCFFA02A0CA7BE00524F17 /* UserDetailsModel.swift */,
-				6A3FB3422A1B891F0069673A /* VehiclesModel.swift */,
+				6A64A6842A1F5A69001E48F9 /* ResponseDataModels */,
+				6A64A6822A1F5A54001E48F9 /* DataModels */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -350,12 +409,9 @@
 		6AAB53F42A0BC12C00138024 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				6AAB53F52A0BC14400138024 /* InputFieldIdentifier.swift */,
-				6A12E84E2A0E51830061333A /* TabViewIdentifier.swift */,
-				6A32BADD2A17963300866706 /* EditProfileIdentifier.swift */,
-				6A3FB32D2A1B3D500069673A /* HttpMethod.swift */,
-				6A3FB3402A1B76F80069673A /* RequestType.swift */,
-				6AAE83C42A1C76D2000CD679 /* PickerType.swift */,
+				6A64A6872A1F60EE001E48F9 /* ForApiRequest */,
+				6A64A6862A1F60DD001E48F9 /* ForViews */,
+				6A64A6852A1F605A001E48F9 /* ForInputFields */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -363,10 +419,10 @@
 		6AAE83C82A1C9FC8000CD679 /* Pickers */ = {
 			isa = PBXGroup;
 			children = (
-				6AAE83C62A1C7AAD000CD679 /* GetPickers.swift */,
 				6A33EAC82A0E0F4000620993 /* DefaultPickers.swift */,
-				6A3FB3462A1B9B0B0069673A /* ShowPickerText.swift */,
+				6AAE83C62A1C7AAD000CD679 /* GetPickers.swift */,
 				6AAE83CB2A1CA0A9000CD679 /* PickerView.swift */,
+				6A3FB3462A1B9B0B0069673A /* ShowPickerText.swift */,
 			);
 			path = Pickers;
 			sourceTree = "<group>";
@@ -394,19 +450,11 @@
 			isa = PBXGroup;
 			children = (
 				6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */,
+				6A32BAD72A17775A00866706 /* DetailsViewModel.swift */,
+				6A32BAD92A1777FF00866706 /* BaseViewModel.swift */,
 				6AEEF3FD2A161ACD0012FE65 /* SearchViewModel.swift */,
-				6A32BAD72A17775A00866706 /* UserDetailsViewModel.swift */,
-				6A32BAD92A1777FF00866706 /* ValidationsViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		6AE69CE22A1DF02100E91D6F /* ResponseMoels */ = {
-			isa = PBXGroup;
-			children = (
-				6AE69CE32A1DF06300E91D6F /* SignInLogInModel.swift */,
-			);
-			path = ResponseMoels;
 			sourceTree = "<group>";
 		};
 		6AEEF4012A16553C0012FE65 /* ProfileTabViews */ = {
@@ -546,7 +594,7 @@
 			files = (
 				6A3FB3412A1B76F80069673A /* RequestType.swift in Sources */,
 				6ACCFFA32A0CD78400524F17 /* BackAndContinueButtons.swift in Sources */,
-				6A3FB3432A1B891F0069673A /* VehiclesModel.swift in Sources */,
+				6A3FB3432A1B891F0069673A /* VehicleModel.swift in Sources */,
 				6A12E84F2A0E51830061333A /* TabViewIdentifier.swift in Sources */,
 				6AD6CDF92A160175002B7548 /* InputFieldsWithIcons.swift in Sources */,
 				6A32BAD02A174CB500866706 /* EditProfileView.swift in Sources */,
@@ -554,9 +602,9 @@
 				6AAB53D02A0B839A00138024 /* Constants.swift in Sources */,
 				6AAB53DF2A0B9CC200138024 /* DefaultInputField.swift in Sources */,
 				6A33EACF2A0E1AB300620993 /* Validations.swift in Sources */,
-				6A32BAD82A17775A00866706 /* UserDetailsViewModel.swift in Sources */,
+				6A32BAD82A17775A00866706 /* DetailsViewModel.swift in Sources */,
 				6AAE83CC2A1CA0A9000CD679 /* PickerView.swift in Sources */,
-				6ACCFFA12A0CA7BE00524F17 /* UserDetailsModel.swift in Sources */,
+				6ACCFFA12A0CA7BE00524F17 /* UserModel.swift in Sources */,
 				6A32BADE2A17963300866706 /* EditProfileIdentifier.swift in Sources */,
 				6A12E8522A0E57EF0061333A /* YourRidesView.swift in Sources */,
 				6A3FB3322A1B48550069673A /* ApiManager.swift in Sources */,
@@ -564,16 +612,16 @@
 				6A3FB32C2A1B3CA70069673A /* ApiConstants.swift in Sources */,
 				6A12E8582A0E58310061333A /* InboxView.swift in Sources */,
 				6AAB53CC2A0B82EF00138024 /* LoginSignupView.swift in Sources */,
-				6AAE83C52A1C76D2000CD679 /* PickerType.swift in Sources */,
+				6AAE83C52A1C76D2000CD679 /* PickerFieldIdentifier.swift in Sources */,
 				6A12E8562A0E58210061333A /* SearchView.swift in Sources */,
-				6AE69CE42A1DF06300E91D6F /* SignInLogInModel.swift in Sources */,
+				6AE69CE42A1DF06300E91D6F /* SignInAndProfileModel.swift in Sources */,
 				6A33EAC92A0E0F4000620993 /* DefaultPickers.swift in Sources */,
-				6AD6CDFC2A160505002B7548 /* RidesListItemCity.swift in Sources */,
+				6AD6CDFC2A160505002B7548 /* LocationTextViewComponent.swift in Sources */,
 				6AAB53FA2A0BCB6500138024 /* SignInModel.swift in Sources */,
 				6AAB53BE2A0B7C5800138024 /* ContentView.swift in Sources */,
 				6A33EAD42A0E4D9700620993 /* DashboardView.swift in Sources */,
-				6A12E85F2A0E6A630061333A /* ContactItem.swift in Sources */,
-				6A32BADA2A1777FF00866706 /* ValidationsViewModel.swift in Sources */,
+				6A12E85F2A0E6A630061333A /* MessagesListItem.swift in Sources */,
+				6A32BADA2A1777FF00866706 /* BaseViewModel.swift in Sources */,
 				6AAE83C72A1C7AAD000CD679 /* GetPickers.swift in Sources */,
 				6A32BACC2A17414800866706 /* ForgotPasswordView.swift in Sources */,
 				6AEEF4032A1655550012FE65 /* ProfileTabViewAbout.swift in Sources */,

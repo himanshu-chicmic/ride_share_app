@@ -10,6 +10,20 @@ import UIKit
 
 struct Constants {
     
+    struct TabView {
+        static let search = "Search"
+        static let searchIcon = "magnifyingglass"
+        
+        static let rides = "Your Rides"
+        static let ridesIcon = "quote.opening"
+        
+        static let inbox = "Inbox"
+        static let inboxIcon = "message"
+        
+        static let profile = "Profile"
+        static let profileIcon = "person.crop.circle"
+    }
+    
     // MARK: - onboarding
     struct Onboarding {
         
@@ -76,7 +90,7 @@ struct Constants {
         static let lastname         = "Enter last name"
         
         // date of birth picker
-        static let dateOfBirth      = "dd/MM/yyyy"
+        static let dateOfBirth      = "yyyy-MM-dd"
         
         // select name prefix
         static let selectGender     = "Select name prefix"
@@ -149,7 +163,7 @@ struct Constants {
         
         static let email        = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
         static let password     = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
-        static let name         = "[A-Za-z]+"
+        static let name         = "[A-Za-z, ]+"
         static let phone        = "^[6-9]\\d{9}$"
     }
     
@@ -201,12 +215,23 @@ struct Constants {
         static let cancel       = "Cancel"
     }
     
+    struct JsonKeys {
+        static let user = "user"
+    }
+    
+    struct UserDefaultKeys {
+        static let session = "SessionAuthToken"
+        static let profileData = "UserProfileData"
+    }
+    
     // MARK: - alert dialog strings
     struct AlertDialog {
         
         static let exitCompleteProfile  = "Your account won't be created. Are you sure to exit?"
         
         static let exitPasswordReset    = "You didn't reset your password. Are you sure to go back?"
+        
+        static let logout    = "Are you sure you want to log out?"
         
         static let areYouSure           = "Are you sure to exit?"
     }

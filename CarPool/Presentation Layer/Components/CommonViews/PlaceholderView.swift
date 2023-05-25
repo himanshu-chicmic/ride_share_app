@@ -29,10 +29,12 @@ struct PlaceholderView: View {
             
             // title text
             Text(title)
-                .font(.system(
-                    size    : 22,
-                    weight  : .semibold,
-                    design  : .rounded)
+                .font(
+                    .system(
+                        size   : 22,
+                        weight : .semibold,
+                        design : .rounded
+                    )
                 )
                 .padding(.top, 14)
             
@@ -50,9 +52,9 @@ struct PlaceholderView: View {
 struct PlaceholderView_Previews: PreviewProvider {
     static var previews: some View {
         PlaceholderView(
-            image   : "empty-inbox-view",
-            title   : "Your inbox is empty.",
-            caption : "No messages right now. Book or offer a ride to contact someone"
+            image   : Constants.EmptyInboxView.image,
+            title   : Constants.EmptyInboxView.title,
+            caption : Constants.EmptyInboxView.caption
         )
     }
 }

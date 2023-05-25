@@ -1,5 +1,5 @@
 //
-//  VehiclesModel.swift
+//  VehicleModel.swift
 //  CarPool
 //
 //  Created by Nitin on 5/22/23.
@@ -8,28 +8,23 @@
 import Foundation
 import UIKit
 
-struct VehiclesModel {
+struct VehicleModel {
     
     // MARK: - properties
     
-    var country: String
     var number: String
     var brand: String
     var name: String
     var type: String
-    var color: String
-    var modelYear: String
     
     // MARK: - initializers
     
+    /// default initializer to assign values to properties
     init() {
-        self.country = ""
         self.number = ""
         self.brand = ""
         self.name = ""
         self.type = ""
-        self.color = ""
-        self.modelYear = ""
     }
     
     // MARK: - methods
@@ -40,7 +35,7 @@ struct VehiclesModel {
         // values of input fields
         return [
             (
-                country,
+                "",
                 Constants.Vehicle.country,
                 InputFieldIdentifier.country,
                 UIKeyboardType.default
@@ -70,13 +65,13 @@ struct VehiclesModel {
                 UIKeyboardType.default
             ),
             (
-                color,
+                "",
                 Constants.Vehicle.color,
                 InputFieldIdentifier.color,
                 UIKeyboardType.default
             ),
             (
-                modelYear,
+                "",
                 Constants.Vehicle.modelYear,
                 InputFieldIdentifier.model,
                 UIKeyboardType.default

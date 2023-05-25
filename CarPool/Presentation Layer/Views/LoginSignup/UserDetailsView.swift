@@ -12,8 +12,8 @@ struct UserDetailsView: View {
     // MARK: - properties
     
     // environment object for view models
-    @EnvironmentObject var validationsViewModel: ValidationsViewModel
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
     // environment variable to dismiss the view
     @Environment(\.dismiss) var dismiss
@@ -59,8 +59,8 @@ struct UserDetailsView: View {
                 
                 // progress bar
                 ProgressView(
-                    String(format: Constants.UserDetails.progress, userDetailsViewModel.index+1),
-                    value   : userDetailsViewModel.profileCompletion,
+                    String(format: Constants.UserDetails.progress, detailsViewModel.index+1),
+                    value   : detailsViewModel.profileCompletion,
                     total   : Constants.UserDetails.progressCompletion
                 )
                 .padding()
@@ -68,10 +68,10 @@ struct UserDetailsView: View {
                 
                 // if profileCompletion value is greater
                 // than 0 then show the content of this page
-                if userDetailsViewModel.profileCompletion > 0 {
+                if detailsViewModel.profileCompletion > 0 {
                     
                     // title
-                    Text(Constants.UserDetails.titles[userDetailsViewModel.index])
+                    Text(Constants.UserDetails.titles[detailsViewModel.index])
                         .font(.system(size: 22))
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -82,32 +82,30 @@ struct UserDetailsView: View {
                     // the for each loop works for the 2d array textFieldValue[[]]
                     // which contains necessary information of the fields to add
                     ForEach(
-                        $userDetailsViewModel
-                        .textFieldValues[userDetailsViewModel.index]
+                        $detailsViewModel
+                        .textFieldValues[detailsViewModel.index]
                         .indices, id: \.self
                     ) { value in
                         DefaultInputField(
-                            inputFieldType  : userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].2,
-                            placeholder     : userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].1,
-                            text            : $userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].0,
-                            keyboard        : userDetailsViewModel.textFieldValues[userDetailsViewModel.index][value].3
+                            inputFieldType : detailsViewModel.textFieldValues[detailsViewModel.index][value].2,
+                            placeholder    : detailsViewModel.textFieldValues[detailsViewModel.index][value].1,
+                            text           : $detailsViewModel.textFieldValues[detailsViewModel.index][value].0,
+                            keyboard       : detailsViewModel.textFieldValues[detailsViewModel.index][value].3
                         )
                     }
                     
                     // button for back and continue
                     // complete profile steps
                     HStack {
-                        if userDetailsViewModel.index > 0 {
+                        if detailsViewModel.index > 0 {
                             // back button
                             BackAndContinueButtons(
-                                increment   : false,
-                                textFields  : $userDetailsViewModel.textFieldValues[0]
+                                increment : false
                             )
                         }
                         // continue button
                         BackAndContinueButtons(
-                            increment   : true,
-                            textFields  : $userDetailsViewModel.textFieldValues[0]
+                            increment : true
                         )
                     }
                     .padding()
@@ -120,41 +118,41 @@ struct UserDetailsView: View {
             .onAppear {
                 // increase the profile completion with +30 increment
                 // to set the first step for complete profile
-                userDetailsViewModel.profileCompletion += Constants.UserDetails.progressIncrements
+                detailsViewModel.profileCompletion += Constants.UserDetails.progressIncrements
                 
                 // reset text fields array
-                userDetailsViewModel.resetTextFields()
+                detailsViewModel.resetTextFields()
             }
             .onDisappear {
                 // func to reset picker data
-                userDetailsViewModel.resetPickerData()
+                detailsViewModel.resetPickerData()
             }
             // overlay for progress bar view
             .overlay {
                 CircleProgressView()
             }
             // bottom sheet for pickers
-            .sheet(isPresented: $userDetailsViewModel.showPicker) {
+            .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
-                    pickerType: userDetailsViewModel.pickerType
+                    pickerType: detailsViewModel.pickerType
                 )
             }
             
             // show toast message
             // if any validation or verificatioin
             // message exists
-            if !validationsViewModel.toastMessage.isEmpty {
+            if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }
         }
-        // on change of dismiss variable in validationsViewModel
+        // on change of dismiss variable in baseViewModel
         // dismiss this view and set navigateToDashboard to true
-        .onChange(of: validationsViewModel.dismiss) { val in
+        .onChange(of: baseViewModel.dismiss) { val in
             if val {
                 // dismiss current view
                 dismiss()
-                // set navigateToDashboard to true
-                validationsViewModel.navigateToDashboard = true
+                // close details and set navigate to dashboard true
+                baseViewModel.toggleDetailsViewAndNavigate()
             }
         }
     }
@@ -163,7 +161,7 @@ struct UserDetailsView: View {
 struct UserDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         UserDetailsView()
-            .environmentObject(ValidationsViewModel())
-            .environmentObject(UserDetailsViewModel())
+            .environmentObject(BaseViewModel())
+            .environmentObject(DetailsViewModel())
     }
 }

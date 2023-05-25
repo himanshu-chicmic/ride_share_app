@@ -13,13 +13,10 @@ struct LoginSignupView: View {
     
     // environment object for view models
     @EnvironmentObject var signInViewModel: SignInViewModel
-    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     // environment variable to dismiss the view
     @Environment(\.dismiss) var dismiss
-    
-    // open forgot password view
-    @State var openForgotPasswordView: Bool = false
     
     // MARK: - body
     
@@ -48,17 +45,17 @@ struct LoginSignupView: View {
                 // text fields for user input
                 ForEach($signInViewModel.textFieldValues.indices, id: \.self) { index in
                     DefaultInputField(
-                        inputFieldType  : signInViewModel.textFieldValues[index].2,
-                        placeholder     : signInViewModel.textFieldValues[index].1,
-                        text            : $signInViewModel.textFieldValues[index].0,
-                        keyboard        : signInViewModel.textFieldValues[index].3
+                        inputFieldType : signInViewModel.textFieldValues[index].2,
+                        placeholder    : signInViewModel.textFieldValues[index].1,
+                        text           : $signInViewModel.textFieldValues[index].0,
+                        keyboard       : signInViewModel.textFieldValues[index].3
                     )
                 }
                 
                 // forgot password for login field
                 if !signInViewModel.isNewUser {
                     Button {
-                        openForgotPasswordView.toggle()
+                        baseViewModel.openForgotPasswordView.toggle()
                     } label: {
                         Text(Constants.LogIn.forgotPassword)
                             .font(.system(size: 14))
@@ -107,15 +104,15 @@ struct LoginSignupView: View {
             // navigate to specified
             // destination view when the
             // navigate bool is set to true
-            .navigationDestination(isPresented: $validationsViewModel.navigateToDashboard) {
+            .navigationDestination(isPresented: $baseViewModel.navigateToDashboard) {
                 // navigate to dashboard view
                 DashboardView()
                     .navigationBarBackButtonHidden(true)
             }
-            .fullScreenCover(isPresented: $validationsViewModel.openUserDetailsView) {
+            .fullScreenCover(isPresented: $baseViewModel.openUserDetailsView) {
                 UserDetailsView()
             }
-            .fullScreenCover(isPresented: $openForgotPasswordView) {
+            .fullScreenCover(isPresented: $baseViewModel.openForgotPasswordView) {
                 ForgotPasswordView()
             }
             .onAppear {
@@ -125,7 +122,7 @@ struct LoginSignupView: View {
             // show toast message
             // if any validation or verificatioin
             // message exists
-            if !validationsViewModel.toastMessage.isEmpty {
+            if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }
         }
@@ -136,6 +133,6 @@ struct LoginSignupView_Previews: PreviewProvider {
     static var previews: some View {
         LoginSignupView()
             .environmentObject(SignInViewModel())
-            .environmentObject(ValidationsViewModel())
+            .environmentObject(BaseViewModel())
     }
 }

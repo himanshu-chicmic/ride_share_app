@@ -30,7 +30,7 @@ struct Validations {
         case .email: regEx = validationRegex.email
         case .password: regEx = validationRegex.password
         case .firstName, .lastName: regEx = validationRegex.name
-        case .mobile: regEx = validationRegex.phone
+        case .phoneNumber: regEx = validationRegex.phone
         default: regEx = ""
         }
         
@@ -190,8 +190,12 @@ struct Validations {
             // value.3 - keyboard type (not used for validations)
             switch value.2 {
                 // validate for email or phone
-            case .email, .mobile:
+            case .email:
                 toastMessage = validateEmailorPhone(value: value.0, type: value.2)
+            case .phoneNumber:
+                if !value.0.isEmpty {
+                    toastMessage = validateEmailorPhone(value: value.0, type: value.2)
+                }
                 
                 // valdidate for password
             case .password:

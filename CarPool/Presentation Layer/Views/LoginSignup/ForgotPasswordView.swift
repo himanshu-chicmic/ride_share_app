@@ -12,8 +12,7 @@ struct ForgotPasswordView: View {
     // MARK: - properties
     
     // environment object for view model
-    @EnvironmentObject var signInViewModel: SignInViewModel
-    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     // environment variable to dismiss the view
     @Environment(\.dismiss) var dismiss
@@ -98,14 +97,14 @@ struct ForgotPasswordView: View {
                     
                     withAnimation {
                         // check for textfield validations
-                        validationsViewModel.toastMessage = navigate
-                        ? validationsViewModel
+                        baseViewModel.toastMessage = navigate
+                        ? baseViewModel
                             .validationsInstance
                             .validateTextFields(
                                 textFields: textFieldValues,
                                 count: textFieldValues.count - 2
                             )
-                        : validationsViewModel
+                        : baseViewModel
                             .validationsInstance
                             .validateTextFields(
                                 textFields: textFieldValues
@@ -117,18 +116,18 @@ struct ForgotPasswordView: View {
                     // if toast message is empty
                     // there no error in validations and verification
                     // then navigate to new view
-                    if validationsViewModel.toastMessage.isEmpty {
+                    if baseViewModel.toastMessage.isEmpty {
                         if navigate {
                             // set new password
                             // if new password is set
                             // then dismiss the view
-                            dismiss()
+                            // call api
+                            let data = baseViewModel.getDataInDictionary(values: textFieldValues, type: .resetPassword)
+                            baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .forgotPassword, data: data)
                         } else {
-                            // set the view in progress
-                            // TODO: password reset api
-                            validationsViewModel.inProgess = true
-                            navigate.toggle()
-                            validationsViewModel.inProgess = true
+                            // call api
+                            let data = baseViewModel.getDataInDictionary(values: textFieldValues, type: .forgotPassword)
+                            baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .forgotPassword, data: data)
                         }
                     }
                     
@@ -144,17 +143,15 @@ struct ForgotPasswordView: View {
                 navigate = false
             }
             .onChange(of: navigate) { val in
+                
+                // populate text field values
+                // array when the view appears
+                textFieldValues = signInModel.getInputFields(isNewUser: val)
                 if val {
-                    // populate text field values
-                    // array when the view appears
-                    textFieldValues = signInModel.getInputFields(isNewUser: true)
                     // removing first value email
                     // we only need password and confirm password
                     textFieldValues.removeFirst()
                 } else {
-                    // populate text field values
-                    // array when the view appears
-                    textFieldValues = signInModel.getInputFields(isNewUser: false)
                     // removing last value of password
                     // we only need email
                     textFieldValues.removeLast()
@@ -168,7 +165,7 @@ struct ForgotPasswordView: View {
             // show toast message
             // if any validation or verificatioin
             // message exists
-            if !validationsViewModel.toastMessage.isEmpty {
+            if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }
         }
@@ -178,7 +175,6 @@ struct ForgotPasswordView: View {
 struct ForgotPasswordView_Previews: PreviewProvider {
     static var previews: some View {
         ForgotPasswordView()
-            .environmentObject(SignInViewModel())
-            .environmentObject(ValidationsViewModel())
+            .environmentObject(BaseViewModel())
     }
 }

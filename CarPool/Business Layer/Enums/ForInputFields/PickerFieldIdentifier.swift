@@ -8,7 +8,7 @@
 import Foundation
 
 /// enum to check type of picker
-enum PickerType {
+enum PickerFieldIdentifier {
     case date
     case country
     case color

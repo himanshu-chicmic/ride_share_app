@@ -13,10 +13,8 @@ struct ToastMessageView: View {
     
     // MARK: - properties
     
-    // string for validation message
-    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
-    // background color
     var backgroundColor: Color = .red
     
     // MARK: - body
@@ -24,12 +22,12 @@ struct ToastMessageView: View {
     var body: some View {
         HStack {
             // message text
-            Text(validationsViewModel.toastMessage)
+            Text(baseViewModel.toastMessage)
             Spacer()
             // button to dismiss
             Button {
                 withAnimation {
-                    validationsViewModel.toastMessage = ""
+                    baseViewModel.toastMessage = ""
                 }
             } label: {
                 Image(systemName: Constants.Icon.close)
@@ -52,6 +50,6 @@ struct ToastMessageView: View {
 struct ToastMessageView_Previews: PreviewProvider {
     static var previews: some View {
         ToastMessageView()
-            .environmentObject(ValidationsViewModel())
+            .environmentObject(BaseViewModel())
     }
 }

@@ -13,16 +13,15 @@ struct CircleProgressView: View {
     
     // MARK: - properties
 
-    // valdatinos view model object
-    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     // MARK: - body
     
     var body: some View {
     
         // show progress view if inProgress in
-        // validationsViewModel is set to true
-        if validationsViewModel.inProgess {
+        // baseViewModel is set to true
+        if baseViewModel.inProgess {
             VStack {
                 Spacer()
                 ProgressView()
@@ -37,6 +36,6 @@ struct CircleProgressView: View {
 struct CircleProgressView_Previews: PreviewProvider {
     static var previews: some View {
         CircleProgressView()
-            .environmentObject(ValidationsViewModel())
+            .environmentObject(BaseViewModel())
     }
 }

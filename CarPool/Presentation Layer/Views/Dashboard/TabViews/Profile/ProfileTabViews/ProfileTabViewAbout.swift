@@ -12,7 +12,7 @@ struct ProfileTabViewAbout: View {
     
     // MARK: - properties
     
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     // array for buttons
     @State var buttonsArray: [[EditProfileIdentifier]] = [
@@ -86,10 +86,10 @@ struct ProfileTabViewAbout: View {
                 
                 // user name
                 Text(
-                    userDetailsViewModel.getResponse?.getName() ?? ""
+                    "\(baseViewModel.userData?.status.data?.firstName ?? "") \(baseViewModel.userData?.status.data?.lastName ?? "")"
                 )
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                .font(.title2)
+                .fontWeight(.semibold)
                 
                 // edit profile button
                 Button {
@@ -132,9 +132,6 @@ struct ProfileTabViewAbout: View {
                 }
             }
             .padding()
-            .onAppear {
-                userDetailsViewModel.callApi(httpMethod: .GET, requestType: .getDetails)
-            }
         }
     }
 }
@@ -142,5 +139,6 @@ struct ProfileTabViewAbout: View {
 struct ProfileTabViewAbout_Previews: PreviewProvider {
     static var previews: some View {
         ProfileTabViewAbout()
+            .environmentObject(BaseViewModel())
     }
 }

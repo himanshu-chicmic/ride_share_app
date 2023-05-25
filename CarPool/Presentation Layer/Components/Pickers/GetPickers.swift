@@ -14,9 +14,9 @@ struct GetPickers: View {
     // MARK: - properties
     
     // type of picker
-    var pickerType: PickerType
+    var pickerType: PickerFieldIdentifier
     // environment object of user details view model
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
     // MARK: - body
     
@@ -28,38 +28,38 @@ struct GetPickers: View {
             case .date:
                 DatePicker(
                     "",
-                    selection            : $userDetailsViewModel.date,
-                    in                   : ...Globals.defaultDate,
-                    displayedComponents  : .date
+                    selection           : $detailsViewModel.date,
+                    in                  : ...Globals.defaultDate,
+                    displayedComponents : .date
                 )
                 .datePickerStyle(.graphical)
             // gender picker
             case .gender:
                 PickerView(
-                    value           : $userDetailsViewModel.gender,
-                    selectableValues: Constants.Placeholders.genders,
-                    placeholder     : Constants.Placeholders.selectGender
+                    value            : $detailsViewModel.gender,
+                    selectableValues : Constants.Placeholders.genders,
+                    placeholder      : Constants.Placeholders.selectGender
                 )
             // country picker
             case .country:
                 PickerView(
-                    value           : $userDetailsViewModel.country,
-                    selectableValues: ListConstants.countries,
-                    placeholder     : Constants.Vehicle.country
+                    value            : $detailsViewModel.country,
+                    selectableValues : ListConstants.countries,
+                    placeholder      : Constants.Vehicle.country
                 )
             // color picker
             case .color:
                 PickerView(
-                    value           : $userDetailsViewModel.color,
-                    selectableValues: ListConstants.vehicleColors,
-                    placeholder     : Constants.Vehicle.color
+                    value            : $detailsViewModel.color,
+                    selectableValues : ListConstants.vehicleColors,
+                    placeholder      : Constants.Vehicle.color
                 )
             // year picker
             case .modelYear:
                 PickerView(
-                    value           : $userDetailsViewModel.year,
-                    selectableValues: Globals.getYearsList(),
-                    placeholder     : Constants.Vehicle.modelYear
+                    value            : $detailsViewModel.year,
+                    selectableValues : Globals.getYearsList(),
+                    placeholder      : Constants.Vehicle.modelYear
                 )
             }
         }
@@ -69,6 +69,6 @@ struct GetPickers: View {
 struct GetPickers_Previews: PreviewProvider {
     static var previews: some View {
         GetPickers(pickerType: .modelYear)
-            .environmentObject(UserDetailsViewModel())
+            .environmentObject(DetailsViewModel())
     }
 }

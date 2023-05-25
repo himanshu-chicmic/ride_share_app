@@ -32,8 +32,8 @@ struct DefaultInputField: View {
     // false - password is not visible
     @State var isPasswordVisible: Bool = false
 
-    // environment object for signInViewModel
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    // environment object for detailsViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
     var background: Color = .gray
     
@@ -47,17 +47,17 @@ struct DefaultInputField: View {
                 
             case .country:
                 ShowPickerText(
-                    text        : $userDetailsViewModel.country,
+                    text        : $detailsViewModel.country,
                     placeholder : Constants.Vehicle.country
                 )
             case .color:
                 ShowPickerText(
-                    text        : $userDetailsViewModel.color,
+                    text        : $detailsViewModel.color,
                     placeholder : Constants.Vehicle.color
                 )
             case .model:
                 ShowPickerText(
-                    text        : $userDetailsViewModel.year,
+                    text        : $detailsViewModel.year,
                     placeholder : Constants.Vehicle.modelYear
                 )
                 
@@ -68,25 +68,22 @@ struct DefaultInputField: View {
                     Text(
                         Globals
                             .dateFormatter
-                            .string(from: userDetailsViewModel.date)
+                            .string(from: detailsViewModel.date)
                     )
                     Spacer()
                 }
                 .onTapGesture {
-                    withAnimation {
-                        userDetailsViewModel.pickerType = .date
-                        userDetailsViewModel.showPicker.toggle()
-                    }
+                    detailsViewModel.setPickerTypeAndTogglePicker(placeholder: placeholder)
                 }
                 .onAppear {
-                    userDetailsViewModel.showPicker = false
+                    detailsViewModel.showPicker = false
                 }
             
             // show gender text field
             // which on tap shows a gender picker
             case .gender:
                 ShowPickerText(
-                    text        : $userDetailsViewModel.gender,
+                    text        : $detailsViewModel.gender,
                     placeholder : Constants.Placeholders.selectGender
                 )
             
@@ -95,7 +92,9 @@ struct DefaultInputField: View {
             case .email,
                  .firstName,
                  .lastName,
-                 .mobile, .text, .bio:
+                 .phoneNumber,
+                 .text,
+                 .bio:
                 TextField(placeholder, text: $text)
             
             // show secure field for
@@ -153,11 +152,11 @@ struct DefaultInputField: View {
 struct DefaultTextField_Previews: PreviewProvider {
     static var previews: some View {
         DefaultInputField(
-            inputFieldType  : .dateOfBirth,
-            placeholder     : Constants.Placeholders.dateOfBirth,
-            text            : .constant(""),
-            keyboard        : .default
+            inputFieldType : .dateOfBirth,
+            placeholder    : Constants.Placeholders.dateOfBirth,
+            text           : .constant(""),
+            keyboard       : .default
         )
-        .environmentObject(UserDetailsViewModel())
+        .environmentObject(DetailsViewModel())
     }
 }

@@ -10,7 +10,9 @@ import Foundation
 struct ApiConstants {
     
     // base url for api
-    static let baseURL = "https://12d8-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "https://95df-112-196-113-2.ngrok-free.app/%@"
+    
+    static let getRequestEmailCheck = "?email=%@"
     
     // this endpoint is used for following type of reques
     // Post - to sign up
@@ -45,5 +47,9 @@ struct ApiConstants {
     
     // add image to user profile
     static let addImage = "user_images"
+    
+    static let authorization = "Authorization"
+    static let contentType = "Content-Type"
+    static let json = "application/json"
     
 }

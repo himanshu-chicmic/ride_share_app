@@ -9,7 +9,7 @@ import SwiftUI
 
 /// component to be displayed
 /// on list item view in rides view
-struct RidesListItemCity: View {
+struct LocationTextViewComponent: View {
     
     // MARK: - properties
     
@@ -47,11 +47,11 @@ struct RidesListItemCity: View {
 
 struct RidesListItemCity_Previews: PreviewProvider {
     static var previews: some View {
-        RidesListItemCity(
-            icon        : Constants.Icon.startLocation,
-            color       : .green,
-            location    : "Chandigarh",
-            time        : "5:00 pm"
+        LocationTextViewComponent(
+            icon     : Constants.Icon.startLocation,
+            color    : .green,
+            location : "Chandigarh",
+            time     : "5:00 pm"
         )
     }
 }

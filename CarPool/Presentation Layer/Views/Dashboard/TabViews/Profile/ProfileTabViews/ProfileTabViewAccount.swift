@@ -11,13 +11,13 @@ struct ProfileTabViewAccount: View {
     
     // MARK: - properties
     
-    @EnvironmentObject var userDetialsViewModel: UserDetailsViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     // array for buttons
     private var navigationLinks: [[String]]
     
-    // open forgot password view
-    @State var openForgotPasswordView: Bool = false
+    @State var logOutConfirmation: Bool = false
     
     // MARK: - initializers
     
@@ -52,7 +52,7 @@ struct ProfileTabViewAccount: View {
                     }
                     .padding()
                     .onTapGesture {
-                        openForgotPasswordView.toggle()
+                        baseViewModel.openForgotPasswordView.toggle()
                     }
                 }
                 
@@ -60,12 +60,12 @@ struct ProfileTabViewAccount: View {
                 Divider()
                     .padding(.horizontal)
             }
-            .fullScreenCover(isPresented: $openForgotPasswordView) {
+            .fullScreenCover(isPresented: $baseViewModel.openForgotPasswordView) {
                 ForgotPasswordView()
             }
             
             Button {
-                userDetialsViewModel.callApi(httpMethod: .DELETE, requestType: .logOut)
+                logOutConfirmation.toggle()
             } label: {
                 Text(Constants.ProfileAccount.logOut)
                     .frame(
@@ -76,6 +76,20 @@ struct ProfileTabViewAccount: View {
             .padding()
 
         }
+        .confirmationDialog(
+            Constants.AlertDialog.logout,
+            isPresented     : $logOutConfirmation,
+            titleVisibility : .visible
+        ) {
+            Button(Constants.Others.yes, role: .destructive) {
+                baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .logOut, data: [:])
+            }
+            Button(Constants.Others.no, role: .cancel) {}
+        }
+        
+        // title of app bar
+        Text(Constants.LogIn.resetPassword)
+        .frame(maxWidth: .infinity)
     }
 }
 

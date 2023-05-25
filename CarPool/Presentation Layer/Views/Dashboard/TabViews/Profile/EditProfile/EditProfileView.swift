@@ -15,13 +15,13 @@ struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
     
     // environment objects of view models
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
-    @EnvironmentObject var validationsViewModel: ValidationsViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
-    // userDetailsModel for first name,
+    // userModel for first name,
     // last name, date of birth and,
     // gender properties
-    var userDetailsModel = UserDetailsModel()
+    var userModel = UserModel()
     
     // state variable array for textfield values
     @State var textFieldValues: Constants.TypeAliases.InputFieldArrayType = []
@@ -51,28 +51,7 @@ struct EditProfileView: View {
                     .frame(maxWidth: .infinity)
                     
                     Button {
-                        withAnimation {
-                            // check for textfield validations
-                            validationsViewModel.toastMessage = validationsViewModel.validationsInstance
-                                           .validateTextFields(textFields: textFieldValues)
-                            
-                            // TODO: optimize these lines of code
-                            if validationsViewModel.toastMessage.isEmpty {
-                                validationsViewModel.toastMessage = validationsViewModel.validationsInstance
-                                    .validatePickerSelectedValue(
-                                        value       : userDetailsViewModel.gender,
-                                        placeholder : Constants.Placeholders.selectGender,
-                                        error       : Constants.ValidationMessages.invalidNamePrefix
-                                    )
-                            }
-                        }
-                        
-                        // if toast message is empty
-                        // there no error in validations and verification
-                        // then navigate to new view
-                        if validationsViewModel.toastMessage.isEmpty {
-                            dismiss()
-                        }
+                        detailsViewModel.validateCompleteProfile(textFieldValues: textFieldValues)
                     } label: {
                         Image(systemName: Constants.Icon.check)
                     }
@@ -117,25 +96,29 @@ struct EditProfileView: View {
                 }
                 Button(Constants.Others.no, role: .cancel) {}
             }
+            .overlay {
+                CircleProgressView()
+            }
             .onAppear {
                 // populate text field values
                 // array when the view appears
-                textFieldValues = userDetailsModel.getInputFields()
+                textFieldValues = userModel.getInputFields(data: baseViewModel.userData)
+                detailsViewModel.setPickerData()
             }
             .onDisappear {
                 // func to reset picker data
-                userDetailsViewModel.resetPickerData()
+                detailsViewModel.resetPickerData()
             }
-            .sheet(isPresented: $userDetailsViewModel.showPicker) {
+            .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
-                    pickerType: userDetailsViewModel.pickerType
+                    pickerType: detailsViewModel.pickerType
                 )
             }
             
             // show toast message
             // if any validation or verificatioin
             // message exists
-            if !validationsViewModel.toastMessage.isEmpty {
+            if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }
         }
@@ -146,7 +129,7 @@ struct EditProfileView: View {
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
         EditProfileView()
-            .environmentObject(UserDetailsViewModel())
-            .environmentObject(ValidationsViewModel())
+            .environmentObject(DetailsViewModel())
+            .environmentObject(BaseViewModel())
     }
 }

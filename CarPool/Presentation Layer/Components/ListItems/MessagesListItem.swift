@@ -9,7 +9,7 @@ import SwiftUI
 
 /// contact list item for inbox
 /// message view
-struct ContactItem: View {
+struct MessagesListItem: View {
     
     // MARK: - properties
     
@@ -30,8 +30,8 @@ struct ContactItem: View {
                 .resizable()
                 .scaledToFill()
                 .frame(
-                    width   : 44,
-                    height  : 44
+                    width  : 44,
+                    height : 44
                 )
                 .clipShape(Circle())
             
@@ -68,7 +68,7 @@ struct ContactItem: View {
 
 struct ContactItem_Previews: PreviewProvider {
     static var previews: some View {
-        ContactItem(
+        MessagesListItem(
             image   : Constants.Images.introImage,
             name    : "Himanshu",
             message : "message message message...",

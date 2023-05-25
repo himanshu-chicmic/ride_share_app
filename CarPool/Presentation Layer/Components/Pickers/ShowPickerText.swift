@@ -18,8 +18,8 @@ struct ShowPickerText: View {
     // placeholder text
     var placeholder: String
     
-    // environment object for userDetailsViewModel
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    // environment object for detailsViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
     // MARK: - body
     var body: some View {
@@ -42,28 +42,10 @@ struct ShowPickerText: View {
             // and set the picker type
             // accordingly to open/show the
             // picker of the clicked item
-            withAnimation {
-                
-                switch placeholder {
-                case Constants.Placeholders.selectGender:
-                    userDetailsViewModel.pickerType = .gender
-                case Constants.Vehicle.country:
-                    userDetailsViewModel.pickerType = .country
-                case Constants.Vehicle.color:
-                    userDetailsViewModel.pickerType = .color
-                case Constants.Vehicle.modelYear:
-                    userDetailsViewModel.pickerType = .modelYear
-                default:
-                    userDetailsViewModel.pickerType = .date
-                }
-                
-                // toggle show picker
-                // to open/show
-                userDetailsViewModel.showPicker.toggle()
-            }
+            detailsViewModel.setPickerTypeAndTogglePicker(placeholder: placeholder)
         }
         .onAppear {
-            userDetailsViewModel.showPicker = false
+            detailsViewModel.showPicker = false
         }
     }
 }
@@ -71,8 +53,9 @@ struct ShowPickerText: View {
 struct ShowPickerText_Previews: PreviewProvider {
     static var previews: some View {
         ShowPickerText(
-            text: .constant(""), placeholder: ""
+            text        : .constant(""),
+            placeholder : ""
         )
-        .environmentObject(UserDetailsViewModel())
+        .environmentObject(DetailsViewModel())
     }
 }

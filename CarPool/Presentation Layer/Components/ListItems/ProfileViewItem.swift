@@ -71,8 +71,8 @@ struct ProfileViewItem: View {
 struct ProfileViewItem_Previews: PreviewProvider {
     static var previews: some View {
         ProfileViewItem(
-            title   : .constant("Title"),
-            array   : .constant([.email, .mobile])
+            title : .constant("Title"),
+            array : .constant([.email, .mobile])
         )
     }
 }

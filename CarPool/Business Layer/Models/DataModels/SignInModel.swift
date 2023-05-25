@@ -33,34 +33,6 @@ struct SignInModel {
     
     // MARK: - methods
     
-    /// method to get data in dictionary format
-    /// this data is sent to api
-    /// - Parameter values: an array containing required values for generating a dictionary data
-    /// - Returns: a dictionary of type [String: Any]
-    func getData(values: Constants.TypeAliases.InputFieldArrayType) -> [String : Any] {
-        // initialize empty dictionary
-        var data: [String: Any] = [:]
-        
-        // loop over values and create dictionary data
-        for value in values {
-            if value.2 == .email || value.2 == .password {
-                data[value.2.rawValue] = value.0
-            }
-        }
-        
-        // return final result
-        return ["user" : data]
-    }
-    
-    /// method to get only email in dictionary format
-    /// - Parameter email: a string value containg email
-    /// - Returns: a dicionary of type [String: Any]
-    func getEmail(email: String) -> [String: Any] {
-        return [
-            "email" : email
-        ]
-    }
-    
     /// method to get the textFieldValues with input value, placeholder value,
     /// input field identifier, and keyboard type
     /// - Parameter isNewUser: bool to check if the user is new or existing

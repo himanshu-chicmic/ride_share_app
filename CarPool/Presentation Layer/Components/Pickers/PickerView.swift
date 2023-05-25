@@ -19,7 +19,7 @@ struct PickerView: View {
     // placholder/default text
     var placeholder: String
     
-    @EnvironmentObject var userDetailsViewModel: UserDetailsViewModel
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
     // MARK: - body
     
@@ -38,7 +38,7 @@ struct PickerView: View {
                 value = placeholder
             }
             
-            userDetailsViewModel.showPicker = false
+            detailsViewModel.showPicker = false
         }
     }
 }
