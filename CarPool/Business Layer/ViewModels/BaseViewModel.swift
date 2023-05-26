@@ -56,29 +56,13 @@ class BaseViewModel: ObservableObject {
     // open forgot password view
     @Published var openForgotPasswordView: Bool = false
     
+    @Published var switchToDashboard = false
+    
     // MARK: variable instances
     // instance for validations struct
     var validationsInstance = Validations()
     
     // MARK: computed properties
-    // check logged in status
-    // to let the view switch
-    // between dashboard or content view
-    var loggedInStatus: Bool {
-        // get session authorization token from user defaults
-        guard let token = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.session) as? String else {
-            // return false if not found
-            return false
-        }
-        
-        // return false in empty
-        if token.isEmpty {
-            return false
-        }
-        
-        // return true if found
-        return true
-    }
     var userData: SignInAndProfileModel? {
         // get session authorization token from user defaults
         guard let data = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.profileData) as? Data else {
@@ -105,7 +89,7 @@ class BaseViewModel: ObservableObject {
     func sendRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         // set in progress to true for showing loader
         inProgess = true
-        
+        print(data)
         // call signInUserMethod in ApiManager class
         cancellables = ApiManager.shared.createApiRequest(
             httpMethod      : httpMethod,
@@ -131,10 +115,12 @@ class BaseViewModel: ObservableObject {
             
             switch requestType {
             case .logIn:
-                self?.goToDashboard()
+                self?.switchDashboardLogin()
             case .signUp:
-                self?.dismiss = true
-                self?.goToDashboard()
+                self?.dismiss.toggle()
+                self?.switchDashboardLogin()
+            case .logOut:
+                self?.switchDashboardLogin()
             case .emailCheck:
                 switch dataResponse.status.code {
                 case 0:
@@ -149,7 +135,7 @@ class BaseViewModel: ObservableObject {
             case .resetPassword:
                 break
             case .updateProfile:
-                break
+                self?.dismiss.toggle()
             case .confirmEmail:
                 break
             case .confirmPhone:
@@ -178,11 +164,10 @@ class BaseViewModel: ObservableObject {
             return [Constants.JsonKeys.user : [
                 "reset_password_token": "returned from api",
                 values[1].2.rawValue : values[1].0,
-                "password_confirmation" : values[1].0,
+                "password_confirmation" : values[1].0
             ]]
 
-        }
-        else if type == .emailCheck || type == .forgotPassword {
+        } else if type == .emailCheck || type == .forgotPassword {
             // if type is email check
             // then we only need email
             // in format:
@@ -228,6 +213,7 @@ class BaseViewModel: ObservableObject {
         for value in array {
             // inner loop get the value from array
             for innerValue in value where innerValue.2 != .confirmPassword {
+                print(innerValue.2.rawValue)
                 // swift over the type of input field
                 // some input fields are pickers and their
                 // values are stored in user details view model
@@ -266,6 +252,22 @@ class BaseViewModel: ObservableObject {
     }
     
     // MARK: change navigation methods
+    func switchDashboardLogin() {
+        // get session authorization token from user defaults
+        guard let token = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.session) as? String else {
+            // return false if not found
+            switchToDashboard = false
+            return
+        }
+        
+        // return false in empty
+        if token.isEmpty {
+            switchToDashboard = false
+        }
+        
+        // return true if found
+        switchToDashboard = true
+    }
     /// method to close user details view and
     /// navigate to dashboard by setting the value
     /// of naviate to dashboard to true

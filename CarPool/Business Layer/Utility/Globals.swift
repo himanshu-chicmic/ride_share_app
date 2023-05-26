@@ -33,6 +33,32 @@ struct Globals {
         )!
     }()
     
+    static let defaultDateMax: Date = {
+        return Calendar.current.date(
+            byAdding: .year,
+            value   : 1,
+            to      : Date()
+        )!
+    }()
+    
+    static let defaultDateMin: Date = {
+        return Calendar.current.date(
+            byAdding: .year,
+            value   : -100,
+            to      : Date()
+        )!
+    }()
+    
+    // get default dat for date picker
+    // set the date back 18 years from today
+    static let defaultDateCurrent: Date = {
+        return Calendar.current.date(
+            byAdding: .year,
+            value   : 0,
+            to      : Date()
+        )!
+    }()
+    
     // number formatter for showing years without
     // separating commas ex. (200,1 is shown as 2001)
     private static let numberFormatter: NumberFormatter = {

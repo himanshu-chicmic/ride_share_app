@@ -29,6 +29,10 @@ struct EditProfileView: View {
     // state var for confirmation
     @State var popViewConfirmation: Bool = false
     
+    var title: String
+    
+    var isProfile: Bool = true
+    
     // MARK: - body
     
     var body: some View {
@@ -47,11 +51,47 @@ struct EditProfileView: View {
                     })
                     
                     // title of app bar
-                    Text(Constants.UserInfo.title)
+                    Text(title)
                     .frame(maxWidth: .infinity)
                     
                     Button {
-                        detailsViewModel.validateCompleteProfile(textFieldValues: textFieldValues)
+                        if isProfile {
+                            detailsViewModel.validateCompleteProfile(textFieldValues: textFieldValues)
+                        } else {
+                            // check for textfield validations
+                            baseViewModel.toastMessage = baseViewModel
+                                .validationsInstance
+                                .validateTextFields(
+                                    textFields: textFieldValues
+                                )
+                            
+                            if baseViewModel.toastMessage.isEmpty {
+                                baseViewModel.toastMessage = baseViewModel.validationsInstance
+                                    .validatePickerSelectedValue(
+                                        value       : detailsViewModel.country,
+                                        placeholder : Constants.Vehicle.country,
+                                        error       : Constants.ValidationMessages.noCountrySelection
+                                    )
+                            }
+                            
+                            if baseViewModel.toastMessage.isEmpty {
+                                baseViewModel.toastMessage = baseViewModel.validationsInstance
+                                    .validatePickerSelectedValue(
+                                        value       : detailsViewModel.color,
+                                        placeholder : Constants.Vehicle.color,
+                                        error       : Constants.ValidationMessages.noColorSelected
+                                    )
+                            }
+                            
+                            if baseViewModel.toastMessage.isEmpty {
+                                baseViewModel.toastMessage = baseViewModel.validationsInstance
+                                    .validatePickerSelectedValue(
+                                        value       : detailsViewModel.year,
+                                        placeholder : Constants.Vehicle.modelYear,
+                                        error       : Constants.ValidationMessages.noYearSelected
+                                    )
+                            }
+                        }
                     } label: {
                         Image(systemName: Constants.Icon.check)
                     }
@@ -102,8 +142,13 @@ struct EditProfileView: View {
             .onAppear {
                 // populate text field values
                 // array when the view appears
-                textFieldValues = userModel.getInputFields(data: baseViewModel.userData)
-                detailsViewModel.setPickerData()
+                if isProfile {
+                    textFieldValues = userModel.getInputFields(data: baseViewModel.userData)
+                    
+                    detailsViewModel.setPickerData()
+                } else {
+                    textFieldValues = VehicleModel().getInputFields()
+                }
             }
             .onDisappear {
                 // func to reset picker data
@@ -111,8 +156,13 @@ struct EditProfileView: View {
             }
             .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
-                    pickerType: detailsViewModel.pickerType
+                    pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date
                 )
+            }
+            .onChange(of: baseViewModel.dismiss) { newValue in
+                if newValue {
+                    dismiss()
+                }
             }
             
             // show toast message
@@ -128,7 +178,7 @@ struct EditProfileView: View {
 
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfileView()
+        EditProfileView(title: Constants.UserInfo.title)
             .environmentObject(DetailsViewModel())
             .environmentObject(BaseViewModel())
     }

@@ -141,7 +141,8 @@ class DetailsViewModel: ObservableObject {
         // then navigate to new view
         if baseViewModel.toastMessage.isEmpty {
             // get data in dictionary
-            let data = baseViewModel.getDataInDictionary(values: textFieldValues, type: .updateProfile)
+           
+            let data = baseViewModel.getDataInDictionary(emailPassword: [], values: [textFieldValues], viewModel: self)
             
             // call signin method
             baseViewModel.sendRequestToApi(

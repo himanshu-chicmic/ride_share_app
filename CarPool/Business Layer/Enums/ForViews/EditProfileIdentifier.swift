@@ -48,12 +48,7 @@ enum EditProfileIdentifier: String, Identifiable {
                 keyboardType : .default
             )
         case .vehicles:
-            AddProfileOptionView(
-                heading      : Constants.Headings.vehicle,
-                placeholder  : "",
-                inputField   : .country,
-                keyboardType : .default
-            )
+            EditProfileView(title: Constants.Headings.vehicle, isProfile: false)
         }
     }
 }

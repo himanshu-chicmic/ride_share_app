@@ -15,7 +15,7 @@ struct LocationTextViewComponent: View {
     
     // list item properties
     var icon: String
-    var color: Color
+    var color: Color = .gray
     var location: String
     var time: String
     
@@ -26,7 +26,6 @@ struct LocationTextViewComponent: View {
             
             // icon
             Image(systemName: icon)
-                .foregroundColor(color)
             
             VStack(alignment: .leading) {
                     

@@ -143,11 +143,13 @@ class ApiManager {
                     switch requestType {
                     case .emailCheck:
                         // set the status instance
-                        let status = Status(code: data.count, error: nil, message: nil, data: nil, imageURL: nil)
+                        let status = Status(code: data.count, error: nil, errors: nil, message: nil, data: nil, imageURL: nil)
                         // return signinlogin model with status instance
                         return SignInAndProfileModel(status: status)
-                    default:
+                    case .signUp, .logIn:
                         UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.profileData)
+                    default:
+                        break
                     }
                     return try decoder.decode(SignInAndProfileModel.self, from: data)
                 } catch {

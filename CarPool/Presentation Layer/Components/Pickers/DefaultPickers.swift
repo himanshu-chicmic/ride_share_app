@@ -18,6 +18,10 @@ struct DefaultPickers: View {
     
     @Environment(\.dismiss) var dismiss
     
+    var dateRange: ClosedRange<Date> = Globals.defaultDateMin...Globals.defaultDate
+    
+    @Binding var date: Date
+    
     // MARK: - body
     
     var body: some View {
@@ -31,7 +35,7 @@ struct DefaultPickers: View {
             .padding([.trailing, .top])
             .padding(.bottom, 8)
 
-            GetPickers(pickerType: pickerType)
+            GetPickers(pickerType: pickerType, dateRange: dateRange, date: $date)
                 .labelsHidden()
         }
         .frame(maxWidth: .infinity)
@@ -41,6 +45,6 @@ struct DefaultPickers: View {
 
 struct DefaultPickeres_Previews: PreviewProvider {
     static var previews: some View {
-        DefaultPickers(pickerType: .modelYear)
+        DefaultPickers(pickerType: .modelYear, date: .constant(.now))
     }
 }

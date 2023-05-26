@@ -21,7 +21,7 @@ struct CarPoolApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if baseViewModel.loggedInStatus {
+                if baseViewModel.switchToDashboard {
                     DashboardView()
                 } else {
                     ContentView()
@@ -31,6 +31,9 @@ struct CarPoolApp: App {
             // in environment object for later use
             .environmentObject(baseViewModel)
             .environmentObject(detailsViewModel)
+            .onAppear {
+                baseViewModel.switchDashboardLogin()
+            }
         }
     }
 }

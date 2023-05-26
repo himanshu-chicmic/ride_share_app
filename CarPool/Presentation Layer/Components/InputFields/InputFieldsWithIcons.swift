@@ -22,6 +22,21 @@ struct InputFieldsWithIcons: View {
     // binding variable for text in the field
     @Binding var text: String
     
+    // variable for search input type
+    var inputType: SearchInputsIdentifier
+    
+    // search view model environment object
+    @EnvironmentObject var searchViewModel: SearchViewModel
+    
+    var foregroundColor: Color {
+        switch inputType {
+        case .startLocation, .endLocation:
+            return text.isEmpty ? .gray : .black
+        case .date, .numberOfPersons:
+            return .black
+        }
+    }
+    
     // MARK: - body
     
     var body: some View {
@@ -30,19 +45,20 @@ struct InputFieldsWithIcons: View {
             Image(systemName: icon)
                 .foregroundColor(.gray)
             // text value
-            Text(text)
+            Text(inputType == .date ? Globals.dateFormatter.string(from: searchViewModel.dateOfDeparture) : text.isEmpty ? placeholder : text)
                 .frame(
                     maxWidth  : .infinity,
                     alignment : .leading
                 )
-                .foregroundColor(.gray)
+                .foregroundColor(foregroundColor)
         }
         .padding()
         .background(.gray.opacity(0.05))
         .cornerRadius(4)
         .font(.system(size: 14))
         .onTapGesture {
-            // TODO: activate search view
+            searchViewModel.searchComponentType = inputType
+            searchViewModel.activeSearchView.toggle()
         }
     }
 }
@@ -52,7 +68,9 @@ struct InputFieldsWithIcons_Previews: PreviewProvider {
         InputFieldsWithIcons(
             icon        : Constants.Icon.startLocation,
             placeholder : Constants.Placeholders.leavingFrom,
-            text        : .constant("")
+            text        : .constant(""),
+            inputType   : .startLocation
         )
+        .environmentObject(SearchViewModel())
     }
 }

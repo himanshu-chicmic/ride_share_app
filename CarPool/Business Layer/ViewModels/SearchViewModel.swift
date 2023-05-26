@@ -12,13 +12,31 @@ class SearchViewModel: ObservableObject {
     
     // MARK: - properties
     
-    // search properties
+    // MARK: published properties
+    @Published var startLocation: String = ""
+    @Published var endLocation: String = ""
     
-    @Published var startLocation: String = Constants.Placeholders.leavingFrom
-    @Published var endLocation: String = Constants.Placeholders.goingTo
-    
-    @Published var dateOfDeparture: String = Constants.Placeholders.today
+    @Published var dateOfDeparture: Date = Globals.defaultDateCurrent
     
     @Published var numberOfPersons: String = Constants.Placeholders.one
     
+    @Published var activeSearchView: Bool = false
+    @Published var searchComponentType: SearchInputsIdentifier = .numberOfPersons
+    
+    @Published var showSearchResults: Bool = false
+    
+    var baseViewModel = BaseViewModel.shared
+    
+    // MARK: - method
+    
+    // MARK: utility method
+    func validateSearchInput() {
+//        if startLocation.isEmpty {
+//            baseViewModel.toastMessage = "Enter a start location"
+//        } else if endLocation.isEmpty {
+//            baseViewModel.toastMessage = "Enter an end location"
+//        } else {
+            showSearchResults.toggle()
+//        }
+    }
 }

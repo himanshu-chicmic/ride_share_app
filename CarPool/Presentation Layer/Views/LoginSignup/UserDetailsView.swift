@@ -134,7 +134,8 @@ struct UserDetailsView: View {
             // bottom sheet for pickers
             .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
-                    pickerType: detailsViewModel.pickerType
+                    pickerType: detailsViewModel.pickerType,
+                    date: $detailsViewModel.date
                 )
             }
             

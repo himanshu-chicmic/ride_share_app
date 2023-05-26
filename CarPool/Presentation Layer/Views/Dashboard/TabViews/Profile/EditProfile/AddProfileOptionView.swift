@@ -32,9 +32,6 @@ struct AddProfileOptionView: View {
     
     @State var textFieldValues: Constants.TypeAliases.InputFieldArrayType = []
     
-    // state var for confirmation
-    @State var popViewConfirmation: Bool = false
-    
     // MARK: - body
     
     var body: some View {
@@ -46,11 +43,7 @@ struct AddProfileOptionView: View {
                     
                     // button to pop view
                     Button(action: {
-                        if heading == Constants.Headings.vehicle {
-                            popViewConfirmation.toggle()
-                        } else {
-                            dismiss()
-                        }
+                        dismiss()
                     }, label: {
                         Image(systemName: Constants.Icon.close)
                     })
@@ -69,91 +62,29 @@ struct AddProfileOptionView: View {
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                if heading == Constants.Headings.vehicle {
-                    
-                    ScrollView {
-                        // text fields for user input
-                        ForEach($textFieldValues.indices, id: \.self) { index in
-                            
-                            // title
-                            Text(Constants.Placeholders.vehicleTitles[index])
-                                .foregroundColor(.gray)
-                                .font(.system(size: 15))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding([.horizontal, .top])
-                            
-                            DefaultInputField(
-                                inputFieldType  : textFieldValues[index].2,
-                                placeholder     : textFieldValues[index].1,
-                                text            : $textFieldValues[index].0,
-                                keyboard        : textFieldValues[index].3,
-                                background: .white
-                            )
-                        }
-                    }
-                    
-                } else {
-                    // text field for user input
-                    DefaultInputField(
-                        inputFieldType  : inputField,
-                        placeholder     : placeholder,
-                        text            : $textField,
-                        keyboard        : keyboardType
-                    )
-                }
+                // text field for user input
+                DefaultInputField(
+                    inputFieldType  : inputField,
+                    placeholder     : placeholder,
+                    text            : $textField,
+                    keyboard        : keyboardType
+                )
 
                 // button for saving details
                 Button {
                     
                     withAnimation {
-                        if heading == Constants.Headings.vehicle {
-                            // check for textfield validations
-                            baseViewModel.toastMessage = baseViewModel
-                                .validationsInstance
-                                .validateTextFields(
-                                    textFields: textFieldValues
-                                )
-                            
-                            if baseViewModel.toastMessage.isEmpty {
-                                baseViewModel.toastMessage = baseViewModel.validationsInstance
-                                    .validatePickerSelectedValue(
-                                        value       : detailsViewModel.country,
-                                        placeholder : Constants.Vehicle.country,
-                                        error       : Constants.ValidationMessages.noCountrySelection
-                                    )
-                            }
-                            
-                            if baseViewModel.toastMessage.isEmpty {
-                                baseViewModel.toastMessage = baseViewModel.validationsInstance
-                                    .validatePickerSelectedValue(
-                                        value       : detailsViewModel.color,
-                                        placeholder : Constants.Vehicle.color,
-                                        error       : Constants.ValidationMessages.noColorSelected
-                                    )
-                            }
-                            
-                            if baseViewModel.toastMessage.isEmpty {
-                                baseViewModel.toastMessage = baseViewModel.validationsInstance
-                                    .validatePickerSelectedValue(
-                                        value       : detailsViewModel.year,
-                                        placeholder : Constants.Vehicle.modelYear,
-                                        error       : Constants.ValidationMessages.noYearSelected
-                                    )
-                            }
-                            
-                        } else {
-                            // check for textfield validations
-                            baseViewModel.toastMessage = baseViewModel
-                                .validationsInstance
-                                .validateTextFields(
-                                    textFields: [(
-                                        textField,
-                                        placeholder,
-                                        inputField,
-                                        keyboardType
-                                    )]
-                                )
-                        }
+                        // check for textfield validations
+                        baseViewModel.toastMessage = baseViewModel
+                            .validationsInstance
+                            .validateTextFields(
+                                textFields: [(
+                                    textField,
+                                    placeholder,
+                                    inputField,
+                                    keyboardType
+                                )]
+                            )
                     }
                     
                     // if toast message is empty
@@ -188,21 +119,8 @@ struct AddProfileOptionView: View {
                 Spacer()
                 
             }
-            // ask a confirmation before exiting
-            .confirmationDialog(
-                Constants.AlertDialog.areYouSure,
-                isPresented     : $popViewConfirmation,
-                titleVisibility : .visible
-            ) {
-                Button(Constants.Others.yes, role: .destructive) {
-                    dismiss()
-                }
-                Button(Constants.Others.no, role: .cancel) {}
-            }
             .onAppear {
                 switch heading {
-                case Constants.Headings.vehicle:
-                    textFieldValues = VehicleModel().getInputFields()
                 case Constants.Headings.email:
                     textField = baseViewModel.userData?.status.data?.email ?? ""
                 case Constants.Headings.mobile:
@@ -215,7 +133,7 @@ struct AddProfileOptionView: View {
             }
             .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
-                    pickerType: detailsViewModel.pickerType
+                    pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date
                 )
             }
             .onChange(of: baseViewModel.dismiss) { newValue in

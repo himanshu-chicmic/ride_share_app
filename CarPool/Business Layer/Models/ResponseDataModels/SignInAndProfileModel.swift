@@ -16,12 +16,14 @@ struct SignInAndProfileModel: Codable {
 struct Status: Codable {
     let code: Int
     let error: String?
+    let errors: [String]?
     let message: String?
     let data: DataClass?
     let imageURL: URL?
     
     enum CodingKeys: String, CodingKey {
         case code, error, message, data
+        case errors
         case imageURL = "image_url"
     }
 }

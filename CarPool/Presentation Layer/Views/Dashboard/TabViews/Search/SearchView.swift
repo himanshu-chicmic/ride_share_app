@@ -12,53 +12,78 @@ struct SearchView: View {
     // MARK: - properties
     
     // search view model
-    @State var searchViewModel = SearchViewModel()
+    @StateObject var searchViewModel = SearchViewModel()
+    
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     // MARK: - body
     
     var body: some View {
-        VStack {
-            Text(Constants.Search.title)
-                .font(.system(size: 18))
-                .fontWeight(.bold)
-                .padding(.bottom)
-            
-            InputFieldsWithIcons(
-                icon        : Constants.Icon.startLocation,
-                placeholder : Constants.Placeholders.leavingFrom,
-                text        : $searchViewModel.startLocation
-            )
-            
-            InputFieldsWithIcons(
-                icon        : Constants.Icon.endLocation,
-                placeholder : Constants.Placeholders.goingTo,
-                text        : $searchViewModel.endLocation
-            )
-            
-            HStack {
+        ZStack(alignment: .bottom) {
+            VStack {
+                
+                Spacer()
+                
+                Text(Constants.Search.title)
+                    .font(.system(size: 18))
+                    .fontWeight(.bold)
+                    .padding(.bottom)
                 
                 InputFieldsWithIcons(
-                    icon        : Constants.Icon.calendar,
-                    placeholder : Constants.Placeholders.today,
-                    text        : $searchViewModel.dateOfDeparture
+                    icon        : Constants.Icon.startLocation,
+                    placeholder : Constants.Placeholders.leavingFrom,
+                    text        : $searchViewModel.startLocation,
+                    inputType   : .startLocation
                 )
                 
                 InputFieldsWithIcons(
-                    icon        : Constants.Icon.person,
-                    placeholder : String(Constants.Placeholders.one),
-                    text        : $searchViewModel.numberOfPersons
+                    icon        : Constants.Icon.endLocation,
+                    placeholder : Constants.Placeholders.goingTo,
+                    text        : $searchViewModel.endLocation,
+                    inputType   : .endLocation
                 )
                 
+                HStack {
+                    
+                    InputFieldsWithIcons(
+                        icon        : Constants.Icon.calendar,
+                        placeholder : Constants.Placeholders.today,
+                        text        : .constant(""),
+                        inputType   : .date
+                    )
+                    
+                    InputFieldsWithIcons(
+                        icon        : Constants.Icon.person,
+                        placeholder : String(Constants.Placeholders.one),
+                        text        : $searchViewModel.numberOfPersons,
+                        inputType   : .numberOfPersons
+                    )
+                    
+                }
+                
+                Button(action: {
+                    searchViewModel.validateSearchInput()
+                }, label: {
+                    DefaultButtonLabel(text: Constants.Search.search)
+                })
+                .padding(.vertical)
+                
+                Spacer()
             }
-            
-            Button(action: {
-                // go to search page
-            }, label: {
-                DefaultButtonLabel(text: Constants.Search.search)
+            .padding()
+            .fullScreenCover(isPresented: $searchViewModel.activeSearchView) {
+                SearchInputFieldView()
+            }
+            .navigationDestination(isPresented: $searchViewModel.showSearchResults, destination: {
+                SearchResultsView()
+                    .navigationBarBackButtonHidden()
             })
-            .padding(.vertical)
+            
+            if !baseViewModel.toastMessage.isEmpty {
+                ToastMessageView()
+            }
         }
-        .padding()
+        .environmentObject(searchViewModel)
     }
 }
 

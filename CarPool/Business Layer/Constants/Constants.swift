@@ -101,6 +101,8 @@ struct Constants {
         static let today            = "Today"
         static let one              = "1"
         
+        static let fullAddress      = "Enter full address"
+        
         static let mobile           = "Enter phone number"
         static let bio              = "Add bio"
         
@@ -123,6 +125,11 @@ struct Constants {
         static let mobile = "What's your mobile number?"
         static let bio = "What would you like other members to know about you?"
         static let vehicle = "Let's add your vehicle"
+        
+        static let pickUp = "Pick-up"
+        static let dropOff = "Drop-off"
+        static let seatsToBook = "Number of seats to book"
+        static let whenAreYouGoing = "When are you going?"
     }
     
     struct UserInfo {
@@ -252,12 +259,13 @@ struct Constants {
         
         static let edit             = "square.and.pencil"
         static let plusCircle       = "plus.circle"
+        static let minusCircle      = "minus.circle"
         
         static let eye              = "eye"
         static let eyeSlash         = "eye.slash"
         
-        static let startLocation    = "circle.circle"
-        static let endLocation      = "mappin.and.ellipse"
+        static let startLocation    = "circle"
+        static let endLocation      = "circle"
         
         static let star             = "star.fill"
         

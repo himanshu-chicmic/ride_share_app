@@ -18,6 +18,10 @@ struct GetPickers: View {
     // environment object of user details view model
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     
+    // date range for picker
+    var dateRange: ClosedRange<Date>
+    @Binding var date: Date
+    
     // MARK: - body
     
     var body: some View {
@@ -28,8 +32,8 @@ struct GetPickers: View {
             case .date:
                 DatePicker(
                     "",
-                    selection           : $detailsViewModel.date,
-                    in                  : ...Globals.defaultDate,
+                    selection           : $date,
+                    in                  : dateRange,
                     displayedComponents : .date
                 )
                 .datePickerStyle(.graphical)
@@ -68,7 +72,10 @@ struct GetPickers: View {
 
 struct GetPickers_Previews: PreviewProvider {
     static var previews: some View {
-        GetPickers(pickerType: .modelYear)
-            .environmentObject(DetailsViewModel())
+        GetPickers(
+            pickerType : .modelYear,
+            dateRange  : Globals.defaultDateMin...Globals.defaultDate, date: .constant(.now)
+        )
+        .environmentObject(DetailsViewModel())
     }
 }

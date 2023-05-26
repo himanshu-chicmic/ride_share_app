@@ -110,7 +110,7 @@ struct ProfileTabViewAbout: View {
                 // open new view as a full screen
                 // bottom sheet to edit profile details
                 .fullScreenCover(isPresented: $editProfile) {
-                    EditProfileView()
+                    EditProfileView(title: Constants.UserInfo.title)
                 }
                 
                 Divider()

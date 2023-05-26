@@ -19,12 +19,13 @@ struct ProfileTabViewAccount: View {
     
     @State var logOutConfirmation: Bool = false
     
+    @State var openExternalLink = false
+    
     // MARK: - initializers
     
     // initialize the empty values for buttons and titles array
     init() {
         navigationLinks = [
-            Constants.ProfileAccount.ratings,
             Constants.ProfileAccount.details,
             Constants.ProfileAccount.additionalOptions
         ]
@@ -52,7 +53,11 @@ struct ProfileTabViewAccount: View {
                     }
                     .padding()
                     .onTapGesture {
-                        baseViewModel.openForgotPasswordView.toggle()
+                        if value == Constants.ProfileAccount.details[0] {
+                            baseViewModel.openForgotPasswordView.toggle()
+                        } else if link == Constants.ProfileAccount.additionalOptions {
+                            openExternalLink.toggle()
+                        }
                     }
                 }
                 
@@ -86,6 +91,15 @@ struct ProfileTabViewAccount: View {
             }
             Button(Constants.Others.no, role: .cancel) {}
         }
+        .confirmationDialog(
+            "",
+            isPresented     : $openExternalLink,
+            titleVisibility : .hidden
+        ) {
+            Button("Open in Browser", role: nil) {
+                UIApplication.shared.open(URL(string: "https://stackoverflow.com")!)
+            }
+        }
         
         // title of app bar
         Text(Constants.LogIn.resetPassword)
@@ -96,5 +110,7 @@ struct ProfileTabViewAccount: View {
 struct ProfileTabViewAccount_Previews: PreviewProvider {
     static var previews: some View {
         ProfileTabViewAccount()
+            .environmentObject(BaseViewModel())
+            .environmentObject(DetailsViewModel())
     }
 }
