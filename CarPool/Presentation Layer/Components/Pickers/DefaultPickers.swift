@@ -16,7 +16,7 @@ struct DefaultPickers: View {
     
     var pickerType: PickerFieldIdentifier
     
-    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
     var dateRange: ClosedRange<Date> = Globals.defaultDateMin...Globals.defaultDate
     
@@ -28,7 +28,7 @@ struct DefaultPickers: View {
         VStack(alignment: .trailing) {
             
             Button {
-                dismiss()
+                detailsViewModel.showPicker.toggle()
             } label: {
                 Image(systemName: pickerType == .date ? Constants.Icon.check : Constants.Icon.close)
             }

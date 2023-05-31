@@ -40,6 +40,8 @@ struct DataClass: Codable {
     let activateToken: String
     let sessionKey: String?
     let averageRating: String?
+    let customToken: String?
+    let otp: Int? = 0
 
     enum CodingKeys: String, CodingKey {
         case id, email
@@ -59,5 +61,7 @@ struct DataClass: Codable {
         case activateToken     = "activate_token"
         case sessionKey        = "session_key"
         case averageRating     = "average_rating"
+        case customToken       = "custom_token"
+        case otp          
     }
 }

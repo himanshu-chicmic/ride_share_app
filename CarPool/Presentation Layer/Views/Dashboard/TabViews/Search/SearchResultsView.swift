@@ -30,7 +30,7 @@ struct SearchResultsView: View {
     var list = [RidesListData(price: "3000 Rs."), RidesListData(price: "300 Rs."), RidesListData(price: "3300 Rs."), RidesListData(price: "3050 Rs."), RidesListData(price: "300 Rs."), RidesListData(price: "3300 Rs."), RidesListData(price: "3050 Rs.")]
     
     var body: some View {
-        VStack{
+        VStack {
             // app bar at the top
             ZStack(alignment: .leading) {
                 

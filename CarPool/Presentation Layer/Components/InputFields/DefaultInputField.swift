@@ -137,6 +137,7 @@ struct DefaultInputField: View {
                 // the auto capitalize is sets the password's first letter as
                 // capital letter. the password is case sensitive
                 .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
             }
         }
         .font(.system(size: 15))

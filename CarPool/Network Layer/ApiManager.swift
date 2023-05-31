@@ -26,6 +26,9 @@ class ApiManager {
         // create a base url
         var baseURL = String(format: ApiConstants.baseURL, requestType.rawValue)
         
+        print(httpMethod)
+        print(data)
+        
         // if request typ if of type email check
         // then our url need to be changed
         // to handle the get request
@@ -47,20 +50,22 @@ class ApiManager {
         // set the http method
         request.httpMethod = httpMethod.rawValue.trimmingCharacters(in: .whitespaces)
         
-        // if request is of type logout
-        if requestType == .logOut {
-            // set the token value to request headers by fetching
-            // it from user defaults
-            if let tokenValue = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.session) {
+        // set the token value to request headers by fetching
+        // it from user defaults
+        if let tokenValue = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.session) {
+            if !tokenValue.isEmpty {
+                
                 request.setValue(tokenValue, forHTTPHeaderField: ApiConstants.authorization)
             }
         }
-        // for request type signup and login
-        else if requestType == .signUp || requestType == .logIn {
-            // convert dictionary data to json
-            let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .fragmentsAllowed)
+        
+        if httpMethod != .GET {
             // set content type
             request.setValue(ApiConstants.json, forHTTPHeaderField: ApiConstants.contentType)
+            
+            // convert dictionary data to json
+            let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .fragmentsAllowed)
+            
             // set json data in request http body
             request.httpBody = jsonData
         }
@@ -105,6 +110,8 @@ class ApiManager {
                     throw APIError.invalidResponse
                 }
                 
+                print(response)
+                
                 // if sign out it attempted
                 // the clear the user defaults
                 // by setting the authoriztion value of
@@ -146,11 +153,19 @@ class ApiManager {
                         let status = Status(code: data.count, error: nil, errors: nil, message: nil, data: nil, imageURL: nil)
                         // return signinlogin model with status instance
                         return SignInAndProfileModel(status: status)
-                    case .signUp, .logIn:
-                        UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.profileData)
+                    case .logOut, .confirmEmail:
+                        // make sure this JSON is in the format we expect
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            // set the status instance
+                            print(json)
+                            let status = Status(code: json["status"] as? Int ?? 0, error: nil, errors: nil, message: json["message"] as? String, data: nil, imageURL: nil)
+                            // return signinlogin model with status instance
+                            return SignInAndProfileModel(status: status)
+                        }
                     default:
-                        break
+                        UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.profileData)
                     }
+                    
                     return try decoder.decode(SignInAndProfileModel.self, from: data)
                 } catch {
                     throw APIError.decodingError(error)

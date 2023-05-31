@@ -53,6 +53,9 @@ class BaseViewModel: ObservableObject {
     // open forgot password view
     @Published var openForgotPasswordView: Bool = false
     
+    // update single profile item
+    @Published var openAddProfile: Bool = false
+    
     // navigate boolean
     // navigate to new view if
     // set to true
@@ -111,9 +114,16 @@ class BaseViewModel: ObservableObject {
             // disable the progress view once the completion has received
             self.disableProgress()
         } receiveValue: { [weak self] dataResponse in
-            // initialize baseDataModel with response returned from api request
-            self?.baseDataModel = dataResponse
-            print(dataResponse)
+            switch requestType {
+            case .logIn, .signUp, .updateProfile:
+                // initialize baseDataModel with response returned from api request
+                self?.baseDataModel = dataResponse
+                print(dataResponse)
+            case .confirmEmail:
+                self?.toastMessage = "Verification email sent at your email address"
+            default:
+                print(dataResponse)
+            }
             
             // call function handleDataRespones to handle
             // the result returned from api

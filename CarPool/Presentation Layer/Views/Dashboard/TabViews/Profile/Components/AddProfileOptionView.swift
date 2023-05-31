@@ -105,9 +105,8 @@ struct AddProfileOptionView: View {
                             default:
                                 break
                             }
-                        } else {
-                            dismiss()
                         }
+                        dismiss()
                     }
                     
                 } label: {

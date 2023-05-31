@@ -66,10 +66,18 @@ struct ProfileTabViewAbout: View {
                 
                 // user name
                 Text(
-                    "\(baseViewModel.userData?.status.data?.firstName ?? "") \(baseViewModel.userData?.status.data?.lastName ?? "")"
+                    "\(baseViewModel.userData?.status.data?.firstName ?? "No") \(baseViewModel.userData?.status.data?.lastName ?? "Name")"
                 )
-                .font(.title2)
+                .font(.system(size: 20))
                 .fontWeight(.semibold)
+                .padding(.bottom, 1)
+                
+                if let bio = baseViewModel.userData?.status.data?.bio {
+                    Text(bio)
+                        .font(.system(size: 14))
+                        .padding(.bottom)
+                    
+                }
                 
                 // edit profile button
                 Button {
@@ -90,7 +98,7 @@ struct ProfileTabViewAbout: View {
                 // open new view as a full screen
                 // bottom sheet to edit profile details
                 .fullScreenCover(isPresented: $baseViewModel.editDetailsVehiclesProfile) {
-                    EditDetailsView(title: Constants.UserInfo.title)
+                    EditDetailsView(textFieldValues: detailsViewModel.userModel.getInputFields(data: baseViewModel.userData), title: Constants.UserInfo.title)
                 }
                 
                 Divider()
