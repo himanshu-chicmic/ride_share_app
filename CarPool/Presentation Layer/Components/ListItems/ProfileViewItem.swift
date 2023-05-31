@@ -13,8 +13,11 @@ import SwiftUI
 struct ProfileViewItem: View {
     
     // MARK: - properties
-    
+    // environment object for base view model
     @EnvironmentObject var baseViewModel: BaseViewModel
+    
+    // boolean value to open edit view
+    @State var openEditView = false
     
     // title and buttons text array
     @Binding var title: String
@@ -41,9 +44,8 @@ struct ProfileViewItem: View {
             
             ForEach(array) { val in
                 Button {
-                    print(val)
+                    openEditView.toggle()
                     clickedItem = val
-                    baseViewModel.editProfileOption.toggle()
                 } label: {
                     
                     HStack {
@@ -61,7 +63,7 @@ struct ProfileViewItem: View {
                 }
                 .padding(.vertical, 8)
             }
-            .fullScreenCover(isPresented: $baseViewModel.editProfileOption) {
+            .fullScreenCover(isPresented: $openEditView) {
                 clickedItem.view
             }
         }

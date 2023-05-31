@@ -16,6 +16,9 @@ struct EditDetailsView: View {
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
+    // environment variable
+    @Environment(\.dismiss) var dismiss
+    
     // MARK: state variables
     // state variable array for textfield values
     @State var textFieldValues: Constants.TypeAliases.InputFieldArrayType = []
@@ -157,7 +160,11 @@ struct EditDetailsView: View {
                 titleVisibility : .visible
             ) {
                 Button(Constants.Others.close, role: .destructive) {
-                    baseViewModel.editDetailsVehiclesProfile = false
+                    if isProfile {
+                        baseViewModel.editDetailsVehiclesProfile = false
+                    } else {
+                        dismiss()
+                    }
                 }
                 Button(Constants.Others.dismiss, role: .cancel) {}
             }
