@@ -13,6 +13,10 @@ struct ProfileView: View {
     
     // state variable to get the current tab
     @State var currentTab = 0
+    
+    // state variable for alignment of bottom line
+    // on the tab bars
+    @State var lineAlignment: Alignment = .bottomLeading
         
     // MARK: - body
     
@@ -44,11 +48,7 @@ struct ProfileView: View {
                 .padding()
             }
             .fontWeight(.semibold)
-            .overlay(
-                alignment: currentTab == 0
-                ? .bottomLeading
-                : .bottomTrailing
-            ) {
+            .overlay(alignment: lineAlignment) {
                 // overlay for bottom line
                 // that indicates which tab
                 // is currenlty active
@@ -69,6 +69,15 @@ struct ProfileView: View {
                     .tag(1)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            .onChange(of: currentTab) { value in
+                withAnimation {
+                    if value == 1 {
+                        lineAlignment = .bottomTrailing
+                    } else {
+                        lineAlignment = .bottomLeading
+                    }
+                }
+            }
         }
     }
 }

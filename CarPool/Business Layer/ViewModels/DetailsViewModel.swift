@@ -42,6 +42,11 @@ class DetailsViewModel: ObservableObject {
     // neccessary for the input fields
     @Published var textFieldValues: [Constants.TypeAliases.InputFieldArrayType] = []
     
+    // open image picker confirmation
+    @Published var editPhoto = false
+    // open image picker
+    @Published var openPhotosPicker = false
+    
     // MARK: computed properties
     // property to get the index value
     // from profileCompletion state var
@@ -50,6 +55,21 @@ class DetailsViewModel: ObservableObject {
     var index: Int {
         Int(profileCompletion/Constants.UserDetails.progressIncrements) - 1
     }
+    
+    // MARK: arrays
+    // array for buttons
+    var buttonsArray: [[EditProfileIdentifier]] = [
+        [.email, .mobile],
+        [.bio],
+        [.vehicles]
+    ]
+    
+    // array for title
+    var titles: [String] = [
+        Constants.ProfileButtons.verify,
+        Constants.ProfileButtons.about,
+        Constants.ProfileButtons.vehicle
+    ]
     
     // MARK: instance variables
     var baseViewModel = BaseViewModel.shared
@@ -66,8 +86,8 @@ class DetailsViewModel: ObservableObject {
             // check validations while incrementing
             // the complete profile steps
             
-            // check for name
-            if profileCompletion == 30 && increment {
+            // check for name and phone number validation
+            if profileCompletion == 25 || profileCompletion == 50 && increment {
                 // check for textfield validations
                 baseViewModel.toastMessage = baseViewModel
                     .validationsInstance
@@ -77,7 +97,7 @@ class DetailsViewModel: ObservableObject {
             }
             
             // check for gender
-            else if profileCompletion == 90 && increment {
+            else if profileCompletion == 100 && increment {
                 // check for name prefix validations
                 baseViewModel.toastMessage = baseViewModel
                     .validationsInstance
@@ -91,12 +111,12 @@ class DetailsViewModel: ObservableObject {
             // increment button is pressed
             if increment {
                 // check if toast message empty
-                // and compeltion value's between 30 and 90
+                // and compeltion value's between 25 and 100
                 if baseViewModel.toastMessage.isEmpty
-                   && profileCompletion >= 30 && profileCompletion < 90 {
+                   && profileCompletion >= 25 && profileCompletion < 100 {
                     // then increment
-                    profileCompletion += 30
-                } else if baseViewModel.toastMessage.isEmpty && profileCompletion == 90 {
+                    profileCompletion += 25
+                } else if baseViewModel.toastMessage.isEmpty && profileCompletion == 100 {
                     
                     // get data in dictionary
                     let data = baseViewModel.getDataInDictionary(
@@ -113,7 +133,7 @@ class DetailsViewModel: ObservableObject {
                 
             } else {
                 // when decrement button (back) is pressed
-                profileCompletion -= 30
+                profileCompletion -= 25
             }
             
         }

@@ -15,9 +15,6 @@ struct LoginSignupView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    // environment variable to dismiss the view
-    @Environment(\.dismiss) var dismiss
-    
     // MARK: - body
     
     var body: some View {
@@ -29,7 +26,7 @@ struct LoginSignupView: View {
                     
                     // button to pop view
                     Button(action: {
-                        dismiss()
+                        signInViewModel.navigate.toggle()
                     }, label: {
                         Image(systemName: Constants.Icon.back)
                     })
@@ -42,81 +39,83 @@ struct LoginSignupView: View {
                 .padding()
                 .padding(.bottom)
                 
-                // text fields for user input
-                ForEach($signInViewModel.textFieldValues.indices, id: \.self) { index in
-                    DefaultInputField(
-                        inputFieldType : signInViewModel.textFieldValues[index].2,
-                        placeholder    : signInViewModel.textFieldValues[index].1,
-                        text           : $signInViewModel.textFieldValues[index].0,
-                        keyboard       : signInViewModel.textFieldValues[index].3
-                    )
-                }
-                
-                // forgot password for login field
-                if !signInViewModel.isNewUser {
-                    Button {
-                        baseViewModel.openForgotPasswordView.toggle()
-                    } label: {
-                        Text(Constants.LogIn.forgotPassword)
-                            .font(.system(size: 14))
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                ScrollView {
+                    // text fields for user input
+                    ForEach($signInViewModel.textFieldValues.indices, id: \.self) { index in
+                        DefaultInputField(
+                            inputFieldType : signInViewModel.textFieldValues[index].2,
+                            placeholder    : signInViewModel.textFieldValues[index].1,
+                            text           : $signInViewModel.textFieldValues[index].0,
+                            keyboard       : signInViewModel.textFieldValues[index].3
+                        )
                     }
-                    .padding(.top, 6)
-                    .padding(.horizontal, 20)
-                }
-
-                // button for navigation to a new view
-                Button {
-                    // initialize signin
-                    signInViewModel.initiateSignIn()
-                } label: {
-                    DefaultButtonLabel(text: signInViewModel.signInButtonText)
-                }
-                .padding()
-                
-                // if user already/not a member
-                HStack {
-                    Text(signInViewModel.alreadyOrNotAMember)
                     
-                    // button to toggle between
-                    // login and signup
-                    Button {
-                        withAnimation {
-                            // switch view state
-                            signInViewModel.isNewUser.toggle()
-                            // update text fields
-                            signInViewModel.resetTextFields()
+                    // forgot password for login field
+                    if !signInViewModel.isNewUser {
+                        Button {
+                            baseViewModel.openForgotPasswordView.toggle()
+                        } label: {
+                            Text(Constants.LogIn.forgotPassword)
+                                .font(.system(size: 14))
+                                .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                    } label: {
-                        Text(signInViewModel.signUpOrLogIn)
-                        .fontWeight(.semibold)
+                        .padding(.top, 6)
+                        .padding(.horizontal, 20)
                     }
+
+                    // button for navigation to a new view
+                    Button {
+                        // initialize signin
+                        signInViewModel.initiateSignIn()
+                    } label: {
+                        DefaultButtonLabel(text: signInViewModel.signInButtonText)
+                    }
+                    .padding()
+                    
+                    // if user already/not a member
+                    HStack {
+                        Text(signInViewModel.alreadyOrNotAMember)
+                        
+                        // button to toggle between
+                        // login and signup
+                        Button {
+                            withAnimation {
+                                // switch view state
+                                signInViewModel.isNewUser.toggle()
+                                // update text fields
+                                signInViewModel.resetTextFields()
+                            }
+                        } label: {
+                            Text(signInViewModel.signUpOrLogIn)
+                            .fontWeight(.semibold)
+                        }
+                    }
+                    .font(.system(size: 14))
                 }
-                .font(.system(size: 14))
-                
-                // space to occupy extra space
-                Spacer()
             }
+            // hides default back button in navigation
+            .navigationBarBackButtonHidden()
             // overlay for progress bar
             .overlay {
                 CircleProgressView()
             }
-            // navigate to specified
-            // destination view when the
-            // navigate bool is set to true
-            .navigationDestination(isPresented: $baseViewModel.navigateToDashboard) {
-                // navigate to dashboard view
-                DashboardView()
-                    .navigationBarBackButtonHidden(true)
-            }
+            // full screen cover view for presenting
+            // views appearing from bottom
+            // used for details view and forgot password view
             .fullScreenCover(isPresented: $baseViewModel.openUserDetailsView) {
                 UserDetailsView()
             }
             .fullScreenCover(isPresented: $baseViewModel.openForgotPasswordView) {
                 ForgotPasswordView()
             }
+            // reset text field values when the view appears
             .onAppear {
                 signInViewModel.resetTextFields()
+            }
+            // when the view disappears clear the toast Message
+            // if any is shown in the view
+            .onDisappear {
+                baseViewModel.toastMessage = ""
             }
             
             // show toast message

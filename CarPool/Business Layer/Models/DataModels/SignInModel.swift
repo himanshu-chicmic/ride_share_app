@@ -52,7 +52,7 @@ struct SignInModel {
                 password,
                 Constants.Placeholders.password,
                 InputFieldIdentifier.password,
-                UIKeyboardType.default
+                UIKeyboardType.twitter
             )
         ]
         
@@ -65,7 +65,7 @@ struct SignInModel {
                         reEnterPassword,
                         Constants.Placeholders.reEnterPassword,
                         InputFieldIdentifier.confirmPassword,
-                        UIKeyboardType.default
+                        UIKeyboardType.twitter
                     )
                 )
         }

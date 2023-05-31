@@ -10,7 +10,7 @@ import Foundation
 struct ApiConstants {
     
     // base url for api
-    static let baseURL = "https://7cb9-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "https://940e-112-196-113-2.ngrok-free.app/%@"
     
     static let getRequestEmailCheck = "?email=%@"
     

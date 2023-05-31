@@ -15,10 +15,7 @@ struct UserDetailsView: View {
     @EnvironmentObject var baseViewModel: BaseViewModel
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     
-    // environment variable to dismiss the view
-    @Environment(\.dismiss) var dismiss
-    
-    // state var for confirmation
+    // state var for close view confirmation
     @State var popViewConfirmation: Bool = false
     
     // MARK: - body
@@ -45,7 +42,7 @@ struct UserDetailsView: View {
                         titleVisibility : .visible
                     ) {
                         Button(Constants.Others.yes, role: .destructive) {
-                            dismiss()
+                            baseViewModel.openUserDetailsView.toggle()
                         }
                         Button(Constants.Others.no, role: .cancel) {}
                     }
@@ -70,50 +67,54 @@ struct UserDetailsView: View {
                 // than 0 then show the content of this page
                 if detailsViewModel.profileCompletion > 0 {
                     
-                    // title
-                    Text(Constants.UserDetails.titles[detailsViewModel.index])
-                        .font(.system(size: 22))
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
-                    
-                    // for each loop to put
-                    // input fields to the view
-                    // the for each loop works for the 2d array textFieldValue[[]]
-                    // which contains necessary information of the fields to add
-                    ForEach(
-                        $detailsViewModel
-                        .textFieldValues[detailsViewModel.index]
-                        .indices, id: \.self
-                    ) { value in
-                        DefaultInputField(
-                            inputFieldType : detailsViewModel.textFieldValues[detailsViewModel.index][value].2,
-                            placeholder    : detailsViewModel.textFieldValues[detailsViewModel.index][value].1,
-                            text           : $detailsViewModel.textFieldValues[detailsViewModel.index][value].0,
-                            keyboard       : detailsViewModel.textFieldValues[detailsViewModel.index][value].3
-                        )
-                    }
-                    
-                    // button for back and continue
-                    // complete profile steps
-                    HStack {
-                        if detailsViewModel.index > 0 {
-                            // back button
-                            BackAndContinueButtons(
-                                increment : false
+                    ScrollView {
+                        // title
+                        Text(Constants.UserDetails.titles[detailsViewModel.index])
+                            .font(.system(size: 22))
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                        
+                        // for each loop to put
+                        // input fields to the view
+                        // the for each loop works for the 2d array textFieldValue[[]]
+                        // which contains necessary information of the fields to add
+                        ForEach(
+                            $detailsViewModel
+                            .textFieldValues[detailsViewModel.index]
+                            .indices, id: \.self
+                        ) { value in
+                            DefaultInputField(
+                                inputFieldType : detailsViewModel.textFieldValues[detailsViewModel.index][value].2,
+                                placeholder    : detailsViewModel.textFieldValues[detailsViewModel.index][value].1,
+                                text           : $detailsViewModel.textFieldValues[detailsViewModel.index][value].0,
+                                keyboard       : detailsViewModel.textFieldValues[detailsViewModel.index][value].3
                             )
                         }
-                        // continue button
-                        BackAndContinueButtons(
-                            increment : true
-                        )
+                        
+                        // button for back and continue
+                        // complete profile steps
+                        HStack {
+                            if detailsViewModel.index > 0 {
+                                // back button
+                                BackAndContinueButtons(
+                                    increment : false
+                                )
+                            }
+                            // continue button
+                            BackAndContinueButtons(
+                                increment : true
+                            )
+                        }
+                        .padding()
                     }
-                    .padding()
                     
                 }
                 
-                // spacer to occupy extra space
-                Spacer()
+            }
+            // overlay for progress bar view
+            .overlay {
+                CircleProgressView()
             }
             .onAppear {
                 // increase the profile completion with +30 increment
@@ -126,10 +127,8 @@ struct UserDetailsView: View {
             .onDisappear {
                 // func to reset picker data
                 detailsViewModel.resetPickerData()
-            }
-            // overlay for progress bar view
-            .overlay {
-                CircleProgressView()
+                // empty toast message
+                baseViewModel.toastMessage = ""
             }
             // bottom sheet for pickers
             .sheet(isPresented: $detailsViewModel.showPicker) {
@@ -144,16 +143,6 @@ struct UserDetailsView: View {
             // message exists
             if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
-            }
-        }
-        // on change of dismiss variable in baseViewModel
-        // dismiss this view and set navigateToDashboard to true
-        .onChange(of: baseViewModel.dismiss) { val in
-            if val {
-                // dismiss current view
-                dismiss()
-                // close details and set navigate to dashboard true
-                baseViewModel.toggleDetailsViewAndNavigate()
             }
         }
     }

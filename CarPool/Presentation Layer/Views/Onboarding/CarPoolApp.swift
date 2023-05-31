@@ -16,16 +16,24 @@ struct CarPoolApp: App {
     @StateObject var baseViewModel = BaseViewModel.shared
     @StateObject var detailsViewModel = DetailsViewModel()
     
+    // state variable to change the views
+    @State var toggleDashboardContentView: Bool = false
+    
     // MARK: - body
     
     var body: some Scene {
         WindowGroup {
             Group {
-                if baseViewModel.switchToDashboard {
+                // if toggleDashboardContentView is set to true
+                // then show dashboard else show onboarding
+                if toggleDashboardContentView {
                     DashboardView()
                 } else {
-                    ContentView()
+                    OnboardingView()
                 }
+            }
+            .onChange(of: baseViewModel.switchToDashboard) { value in
+                toggleDashboardContentView = value
             }
             // set baseViewModel and detailsViewModel
             // in environment object for later use

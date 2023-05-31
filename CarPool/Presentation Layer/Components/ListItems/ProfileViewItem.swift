@@ -14,12 +14,11 @@ struct ProfileViewItem: View {
     
     // MARK: - properties
     
+    @EnvironmentObject var baseViewModel: BaseViewModel
+    
     // title and buttons text array
     @Binding var title: String
     @Binding var array: [EditProfileIdentifier]
-    
-    // boolean value to open edit view
-    @State var openEditView = false
     
     // state var to check the clicked item
     @State var clickedItem: EditProfileIdentifier = .email
@@ -42,8 +41,9 @@ struct ProfileViewItem: View {
             
             ForEach(array) { val in
                 Button {
-                    openEditView.toggle()
+                    print(val)
                     clickedItem = val
+                    baseViewModel.editProfileOption.toggle()
                 } label: {
                     
                     HStack {
@@ -61,7 +61,7 @@ struct ProfileViewItem: View {
                 }
                 .padding(.vertical, 8)
             }
-            .fullScreenCover(isPresented: $openEditView) {
+            .fullScreenCover(isPresented: $baseViewModel.editProfileOption) {
                 clickedItem.view
             }
         }
@@ -74,5 +74,6 @@ struct ProfileViewItem_Previews: PreviewProvider {
             title : .constant("Title"),
             array : .constant([.email, .mobile])
         )
+        .environmentObject(BaseViewModel())
     }
 }

@@ -86,7 +86,7 @@ struct ProfileTabViewAccount: View {
             isPresented     : $logOutConfirmation,
             titleVisibility : .visible
         ) {
-            Button(Constants.Others.yes, role: .destructive) {
+            Button(Constants.ProfileAccount.logOut, role: .destructive) {
                 baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .logOut, data: [:])
             }
             Button(Constants.Others.no, role: .cancel) {}

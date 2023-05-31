@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  OnboardingView.swift
 //  CarPool
 //
 //  Created by Himanshu on 5/10/23.
@@ -7,15 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct OnboardingView: View {
     
     // MARK: - properties
     @StateObject var signInViewModel = SignInViewModel()
-    
-    // navigate boolean
-    // navigate to new view if
-    // set to true
-    @State var navigate: Bool = false
     
     // MARK: - body
     
@@ -43,7 +38,7 @@ struct ContentView: View {
                 // sign up button
                 Button {
                     signInViewModel.isNewUser = true
-                    navigate.toggle()
+                    signInViewModel.navigate.toggle()
                 } label: {
                     DefaultButtonLabel(text: Constants.SignUp.signUp)
                 }
@@ -51,7 +46,7 @@ struct ContentView: View {
                 // log in button
                 Button {
                     signInViewModel.isNewUser = false
-                    navigate.toggle()
+                    signInViewModel.navigate.toggle()
                 } label: {
                     DefaultButtonLabel(
                         text        : Constants.LogIn.logIn,
@@ -63,9 +58,8 @@ struct ContentView: View {
             // navigate to specified
             // destination view when the
             // navigate bool is set to true
-            .navigationDestination(isPresented: $navigate) {
-                    LoginSignupView()
-                        .navigationBarBackButtonHidden(true)
+            .navigationDestination(isPresented: $signInViewModel.navigate) {
+                LoginSignupView()
             }
             .padding()
         }
@@ -74,9 +68,9 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        OnboardingView()
             .environmentObject(SignInViewModel())
     }
 }

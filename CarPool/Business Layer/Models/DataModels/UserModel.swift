@@ -48,6 +48,10 @@ struct UserModel {
                 (firstName, Constants.Placeholders.firstname, InputFieldIdentifier.firstName, UIKeyboardType.default),
                 (lastName, Constants.Placeholders.lastname, InputFieldIdentifier.lastName, UIKeyboardType.default)
             ],
+            // array for phone number
+            [
+                (mobile, Constants.Placeholders.mobile, InputFieldIdentifier.phoneNumber, UIKeyboardType.numberPad)
+            ],
             // array for date of birth field
             [
                 ("", Constants.Placeholders.dateOfBirth, InputFieldIdentifier.dateOfBirth, UIKeyboardType.numberPad)

@@ -136,11 +136,6 @@ struct AddProfileOptionView: View {
                     pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date
                 )
             }
-            .onChange(of: baseViewModel.dismiss) { newValue in
-                if newValue {
-                    dismiss()
-                }
-            }
             
             // show toast message
             // if any validation or verificatioin

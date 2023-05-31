@@ -12,36 +12,18 @@ struct ProfileTabViewAbout: View {
     
     // MARK: - properties
     
+    // MARK: environment objects
+    // environment object for base view model
     @EnvironmentObject var baseViewModel: BaseViewModel
+    // details view model object
+    @EnvironmentObject var detailsViewModel: DetailsViewModel
     
-    // array for buttons
-    @State var buttonsArray: [[EditProfileIdentifier]] = [
-        [.email, .mobile],
-        [.bio],
-        [.vehicles]
-    ]
-    // array for title
-    @State var titles: [String] = [
-        Constants.ProfileButtons.verify,
-        Constants.ProfileButtons.about,
-        Constants.ProfileButtons.vehicle
-    ]
-    
+    // MARK: private state variables
     // photos picker item
     @State private var photosPicker: PhotosPickerItem?
     // by default intialize to a default image
     // or the image set by user
     @State private var image = Image(Constants.Images.introImage)
-    
-    // booleans for opening diffrent view
-    // and confirmation
-    
-    // open edit profile
-    @State var editProfile = false
-    // open image picker confirmation
-    @State var editPhoto = false
-    // open image picker
-    @State var openImagePicker = false
     
     // MARK: - body
     
@@ -58,9 +40,9 @@ struct ProfileTabViewAbout: View {
                     .clipShape(Circle())
                     .onTapGesture {
                         // toggle edit profile button
-                        editPhoto.toggle()
+                        detailsViewModel.editPhoto.toggle()
                     }
-                    .photosPicker(isPresented: $openImagePicker, selection: $photosPicker)
+                    .photosPicker(isPresented: $detailsViewModel.openPhotosPicker, selection: $photosPicker)
                     .onChange(of: photosPicker) { _ in
                         Task {
                             // update the image of the user here
@@ -76,11 +58,9 @@ struct ProfileTabViewAbout: View {
                     // prompting user with options
                     // to get image from galler
                     // to click a picture
-                    .confirmationDialog("",
-                        isPresented     : $editPhoto
-                    ) {
+                    .confirmationDialog("", isPresented : $detailsViewModel.editPhoto) {
                         Button(Constants.ImagePicker.selectFromGallery) {
-                            openImagePicker.toggle()
+                            detailsViewModel.openPhotosPicker.toggle()
                         }
                     }
                 
@@ -94,7 +74,7 @@ struct ProfileTabViewAbout: View {
                 // edit profile button
                 Button {
                     // toggle edit profile button
-                    editProfile.toggle()
+                    baseViewModel.editDetailsVehiclesProfile.toggle()
                 } label: {
                     HStack(alignment: .firstTextBaseline, spacing: 5) {
                         // edit profile text
@@ -109,8 +89,8 @@ struct ProfileTabViewAbout: View {
                 }
                 // open new view as a full screen
                 // bottom sheet to edit profile details
-                .fullScreenCover(isPresented: $editProfile) {
-                    EditProfileView(title: Constants.UserInfo.title)
+                .fullScreenCover(isPresented: $baseViewModel.editDetailsVehiclesProfile) {
+                    EditDetailsView(title: Constants.UserInfo.title)
                 }
                 
                 Divider()
@@ -118,13 +98,13 @@ struct ProfileTabViewAbout: View {
                 
                 // additional buttons for profile editing
                 
-                ForEach(0..<3) { index in
+                ForEach(detailsViewModel.titles.indices) { index in
                     
                     // profile view item to show profile
                     // section with different buttons
                     ProfileViewItem(
-                        title   : $titles[index],
-                        array   : $buttonsArray[index]
+                        title : $detailsViewModel.titles[index],
+                        array : $detailsViewModel.buttonsArray[index]
                     )
                     
                     Divider()
@@ -140,5 +120,6 @@ struct ProfileTabViewAbout_Previews: PreviewProvider {
     static var previews: some View {
         ProfileTabViewAbout()
             .environmentObject(BaseViewModel())
+            .environmentObject(DetailsViewModel())
     }
 }

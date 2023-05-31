@@ -23,7 +23,7 @@
 		6A1BDD3F2A20B65300459FF2 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BDD3E2A20B65300459FF2 /* SearchResultsView.swift */; };
 		6A1BDD412A20BD6200459FF2 /* RideDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BDD402A20BD6200459FF2 /* RideDetailView.swift */; };
 		6A32BACC2A17414800866706 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACB2A17414800866706 /* ForgotPasswordView.swift */; };
-		6A32BAD02A174CB500866706 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACF2A174CB500866706 /* EditProfileView.swift */; };
+		6A32BAD02A174CB500866706 /* EditDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACF2A174CB500866706 /* EditDetailsView.swift */; };
 		6A32BAD82A17775A00866706 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD72A17775A00866706 /* DetailsViewModel.swift */; };
 		6A32BADA2A1777FF00866706 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD92A1777FF00866706 /* BaseViewModel.swift */; };
 		6A32BADC2A17940C00866706 /* AddProfileOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */; };
@@ -43,7 +43,7 @@
 		6A3FB3472A1B9B0B0069673A /* ShowPickerText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3462A1B9B0B0069673A /* ShowPickerText.swift */; };
 		6A6280F62A1B2BCA00A15287 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 6A6280F52A1B2BCA00A15287 /* .swiftlint.yml */; };
 		6AAB53BC2A0B7C5800138024 /* CarPoolApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB53BB2A0B7C5800138024 /* CarPoolApp.swift */; };
-		6AAB53BE2A0B7C5800138024 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB53BD2A0B7C5800138024 /* ContentView.swift */; };
+		6AAB53BE2A0B7C5800138024 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB53BD2A0B7C5800138024 /* OnboardingView.swift */; };
 		6AAB53C02A0B7C5900138024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AAB53BF2A0B7C5900138024 /* Assets.xcassets */; };
 		6AAB53C32A0B7C5900138024 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AAB53C22A0B7C5900138024 /* Preview Assets.xcassets */; };
 		6AAB53CC2A0B82EF00138024 /* LoginSignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAB53CB2A0B82EF00138024 /* LoginSignupView.swift */; };
@@ -86,7 +86,7 @@
 		6A1BDD3E2A20B65300459FF2 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		6A1BDD402A20BD6200459FF2 /* RideDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailView.swift; sourceTree = "<group>"; };
 		6A32BACB2A17414800866706 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
-		6A32BACF2A174CB500866706 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		6A32BACF2A174CB500866706 /* EditDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailsView.swift; sourceTree = "<group>"; };
 		6A32BAD72A17775A00866706 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
 		6A32BAD92A1777FF00866706 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
 		6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileOptionView.swift; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 		6A6280F52A1B2BCA00A15287 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		6AAB53B82A0B7C5800138024 /* CarPool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarPool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6AAB53BB2A0B7C5800138024 /* CarPoolApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarPoolApp.swift; sourceTree = "<group>"; };
-		6AAB53BD2A0B7C5800138024 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6AAB53BD2A0B7C5800138024 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		6AAB53BF2A0B7C5900138024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6AAB53C22A0B7C5900138024 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6AAB53CB2A0B82EF00138024 /* LoginSignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupView.swift; sourceTree = "<group>"; };
@@ -179,7 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				6A12E8592A0E58380061333A /* ProfileView.swift */,
-				6AAE83CA2A1CA072000CD679 /* EditProfile */,
+				6AAF550D2A273FE300A46B8B /* Components */,
 				6AEEF4012A16553C0012FE65 /* ProfileTabViews */,
 			);
 			path = Profile;
@@ -250,10 +250,9 @@
 		6A64A6812A1F557B001E48F9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6AAF550C2A273E9B00A46B8B /* Onboarding */,
 				6A33EAD22A0E4D7900620993 /* Dashboard */,
 				6AAB53CA2A0B82DD00138024 /* LoginSignup */,
-				6AAB53BB2A0B7C5800138024 /* CarPoolApp.swift */,
-				6AAB53BD2A0B7C5800138024 /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -455,13 +454,22 @@
 			path = CommonViews;
 			sourceTree = "<group>";
 		};
-		6AAE83CA2A1CA072000CD679 /* EditProfile */ = {
+		6AAF550C2A273E9B00A46B8B /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				6A32BACF2A174CB500866706 /* EditProfileView.swift */,
-				6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */,
+				6AAB53BB2A0B7C5800138024 /* CarPoolApp.swift */,
+				6AAB53BD2A0B7C5800138024 /* OnboardingView.swift */,
 			);
-			path = EditProfile;
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		6AAF550D2A273FE300A46B8B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6A32BADB2A17940C00866706 /* AddProfileOptionView.swift */,
+				6A32BACF2A174CB500866706 /* EditDetailsView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		6AB0DA4D2A0D0836001F7B9C /* ViewModels */ = {
@@ -617,7 +625,7 @@
 				6A3FB3432A1B891F0069673A /* VehicleModel.swift in Sources */,
 				6A12E84F2A0E51830061333A /* TabViewIdentifier.swift in Sources */,
 				6AD6CDF92A160175002B7548 /* InputFieldsWithIcons.swift in Sources */,
-				6A32BAD02A174CB500866706 /* EditProfileView.swift in Sources */,
+				6A32BAD02A174CB500866706 /* EditDetailsView.swift in Sources */,
 				6AAB53E12A0BA32F00138024 /* UserDetailsView.swift in Sources */,
 				6AAB53D02A0B839A00138024 /* Constants.swift in Sources */,
 				6AAB53DF2A0B9CC200138024 /* DefaultInputField.swift in Sources */,
@@ -640,7 +648,7 @@
 				6A33EAC92A0E0F4000620993 /* DefaultPickers.swift in Sources */,
 				6AD6CDFC2A160505002B7548 /* LocationTextViewComponent.swift in Sources */,
 				6AAB53FA2A0BCB6500138024 /* SignInModel.swift in Sources */,
-				6AAB53BE2A0B7C5800138024 /* ContentView.swift in Sources */,
+				6AAB53BE2A0B7C5800138024 /* OnboardingView.swift in Sources */,
 				6A33EAD42A0E4D9700620993 /* DashboardView.swift in Sources */,
 				6A12E85F2A0E6A630061333A /* MessagesListItem.swift in Sources */,
 				6A32BADA2A1777FF00866706 /* BaseViewModel.swift in Sources */,

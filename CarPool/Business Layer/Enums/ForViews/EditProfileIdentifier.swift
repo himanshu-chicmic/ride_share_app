@@ -48,7 +48,7 @@ enum EditProfileIdentifier: String, Identifiable {
                 keyboardType : .default
             )
         case .vehicles:
-            EditProfileView(title: Constants.Headings.vehicle, isProfile: false)
+            EditDetailsView(title: Constants.Headings.vehicle, isProfile: false)
         }
     }
 }

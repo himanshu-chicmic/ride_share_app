@@ -32,8 +32,9 @@ struct DefaultInputField: View {
     // false - password is not visible
     @State var isPasswordVisible: Bool = false
 
-    // environment object for detailsViewModel
+    // environment object for detailsViewModel and signInViewModel
     @EnvironmentObject var detailsViewModel: DetailsViewModel
+    @EnvironmentObject var signInViewModel: SignInViewModel
     
     var background: Color = .gray
     
@@ -125,6 +126,17 @@ struct DefaultInputField: View {
                         )
                     })
                 }
+                // set is password visible to false
+                // when the view is switched between
+                // login and signup
+                .onChange(of: signInViewModel.isNewUser) { _ in
+                    isPasswordVisible = false
+                }
+                // auto capitalization is text is disable for login / signup
+                // text fields to prevent password confusion
+                // the auto capitalize is sets the password's first letter as
+                // capital letter. the password is case sensitive
+                .textInputAutocapitalization(.never)
             }
         }
         .font(.system(size: 15))
@@ -158,5 +170,6 @@ struct DefaultTextField_Previews: PreviewProvider {
             keyboard       : .default
         )
         .environmentObject(DetailsViewModel())
+        .environmentObject(SignInViewModel())
     }
 }

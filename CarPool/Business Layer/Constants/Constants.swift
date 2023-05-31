@@ -68,13 +68,13 @@ struct Constants {
     struct UserDetails {
         
         static let title                = "Complete Profile"
-        static let titles               = ["What's your name?", "What's your date of birth?", "How'd you like to be addressed?"]
+        static let titles               = ["What's your name?", "What's your mobile number?", "What's your date of birth?", "How'd you like to be addressed?"]
         
         // progress bar properties
-        static let progress             = "Step %i of 3"
+        static let progress             = "Step %i of 4"
         
-        static let progressCompletion   = 90.0
-        static let progressIncrements   = 30.0
+        static let progressCompletion   = 100.0
+        static let progressIncrements   = 25.0
     }
     
     // MARK: - text field placholders
@@ -220,6 +220,9 @@ struct Constants {
         static let no           = "No"
         static let save         = "Save"
         static let cancel       = "Cancel"
+        static let close       = "Close"
+        static let dismiss       = "Dismiss"
+        static let exit         = "Exit"
     }
     
     struct JsonKeys {
@@ -240,7 +243,7 @@ struct Constants {
         
         static let logout    = "Are you sure you want to log out?"
         
-        static let areYouSure           = "Are you sure to exit?"
+        static let areYouSure           = "Are you sure?"
     }
     
     // MARK: - images names

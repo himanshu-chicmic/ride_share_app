@@ -190,12 +190,8 @@ struct Validations {
             // value.3 - keyboard type (not used for validations)
             switch value.2 {
                 // validate for email or phone
-            case .email:
+            case .email, .phoneNumber:
                 toastMessage = validateEmailorPhone(value: value.0, type: value.2)
-            case .phoneNumber:
-                if !value.0.isEmpty {
-                    toastMessage = validateEmailorPhone(value: value.0, type: value.2)
-                }
                 
                 // valdidate for password
             case .password:

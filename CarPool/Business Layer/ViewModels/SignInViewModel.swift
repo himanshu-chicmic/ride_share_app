@@ -17,6 +17,9 @@ class SignInViewModel: ObservableObject {
     // variable that determines sign up or log in
     @Published var isNewUser: Bool = false
     
+    // variable to navigate to login signup
+    @Published var navigate: Bool = false
+    
     // signInModel for email, password and,
     // confirm password properties
     @Published var signInModel = SignInModel()

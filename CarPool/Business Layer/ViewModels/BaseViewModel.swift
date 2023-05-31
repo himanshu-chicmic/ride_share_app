@@ -41,21 +41,21 @@ class BaseViewModel: ObservableObject {
     // information and show a progress view
     @Published var inProgess: Bool = false
     
-    // navigate or dismiss variables
-    @Published var navigate: Bool = false
-    @Published var dismiss: Bool = false
-    
-    // navigate boolean
-    // navigate to new view if
-    // set to true
-    @Published var navigateToDashboard: Bool = false
-    
     // open view for user detials
     @Published var openUserDetailsView: Bool = false
+    
+    // open edit details for vehicles or profile
+    @Published var editDetailsVehiclesProfile = false
+    
+    // open edit details
+    @Published var editProfileOption = false
     
     // open forgot password view
     @Published var openForgotPasswordView: Bool = false
     
+    // navigate boolean
+    // navigate to new view if
+    // set to true
     @Published var switchToDashboard = false
     
     // MARK: variable instances
@@ -98,6 +98,8 @@ class BaseViewModel: ObservableObject {
         )
         .receive(on: DispatchQueue.main)
         .sink { completion in
+            // switch completion to handle
+            // failure and finished cases
             switch completion {
             case .failure(let error):
                 self.toastMessage = error.localizedDescription
@@ -106,45 +108,84 @@ class BaseViewModel: ObservableObject {
                 print("success")
             }
             
+            // disable the progress view once the completion has received
             self.disableProgress()
         } receiveValue: { [weak self] dataResponse in
-            
+            // initialize baseDataModel with response returned from api request
             self?.baseDataModel = dataResponse
-            
             print(dataResponse)
             
-            switch requestType {
-            case .logIn:
-                self?.switchDashboardLogin()
-            case .signUp:
-                self?.dismiss.toggle()
-                self?.switchDashboardLogin()
-            case .logOut:
-                self?.switchDashboardLogin()
-            case .emailCheck:
-                switch dataResponse.status.code {
-                case 0:
-                    self?.goToUserDetails()
-                case 50...55:
-                    self?.toastMessage = "Email already exists."
-                default:
-                    self?.toastMessage = "Data returned in invalid format."
-                }
-            case .forgotPassword:
-                break
-            case .resetPassword:
-                break
-            case .updateProfile:
-                self?.dismiss.toggle()
-            case .confirmEmail:
-                break
-            case .confirmPhone:
-                break
-            case .confirmOtp:
-                break
-            default:
-                break
+            // call function handleDataRespones to handle
+            // the result returned from api
+            self?.handleDataResponse(response: dataResponse, type: requestType)
+        }
+    }
+    
+    // MARK: methods for handling data from the api
+    /// method to check the response status code for email check api requeste
+    /// - Parameter response: a response retured from the api call
+    func handleEmailCheckResponse(response: SignInAndProfileModel) {
+        // check status code for email check
+        switch response.status.code {
+        // status code 0 is indication that the email is
+        // available to use and users can proceed to enter
+        // their personal information
+        case 0:
+            // open user details page
+            openUserDetailsView.toggle()
+        // else the email already
+        // exists in the database and cannot be used again
+        default:
+            // set toast message for dupliation of email address
+            toastMessage = "Email already exists."
+        }
+    }
+    
+    /// method to handle reponse for login, signup and logout
+    /// - Parameter response: response returned from api call
+    func switchDashboardOnboarding(response: SignInAndProfileModel) {
+        switch response.status.code {
+        case 200:
+            if openUserDetailsView {
+                openUserDetailsView.toggle()
             }
+            switchToDashboard.toggle()
+        default:
+            toastMessage = response.status.error ?? ""
+        }
+    }
+    
+    /// base method to handle data response returned from api. this method checks the type of request
+    /// and calls methods, assign variables and toggle navigation variables for changing view
+    /// - Parameters:
+    ///   - response: response returned from api call
+    ///   - type: type of api request
+    func handleDataResponse(response: SignInAndProfileModel, type: RequestType) {
+        // check the type of the request and handle the response
+        // accroding to the type of request
+        switch type {
+        case .logIn, .signUp, .logOut:
+            // handlre response for signup, login and logout
+            switchDashboardOnboarding(response: response)
+        case .emailCheck:
+            // handle email check response by checking
+            // the status code of the response indside
+            // handleEmailCheckResponse
+            handleEmailCheckResponse(response: response)
+        case .forgotPassword:
+            break
+        case .resetPassword:
+            break
+        case .updateProfile:
+            editDetailsVehiclesProfile = false
+        case .confirmEmail:
+            break
+        case .confirmPhone:
+            break
+        case .confirmOtp:
+            break
+        default:
+            break
         }
     }
     
@@ -254,43 +295,9 @@ class BaseViewModel: ObservableObject {
     // MARK: change navigation methods
     func switchDashboardLogin() {
         // get session authorization token from user defaults
-        guard let token = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.session) as? String else {
+        if let token = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.session) as? String {
             // return false if not found
-            switchToDashboard = false
-            return
+            switchToDashboard = !token.isEmpty
         }
-        
-        // return false in empty
-        if token.isEmpty {
-            switchToDashboard = false
-        }
-        
-        // return true if found
-        switchToDashboard = true
-    }
-    /// method to close user details view and
-    /// navigate to dashboard by setting the value
-    /// of naviate to dashboard to true
-    func toggleDetailsViewAndNavigate() {
-        // toggle open user details
-        openUserDetailsView = false
-        // set navigateToDashboard to true
-        navigateToDashboard = true
-    }
-    
-    /// method to navigate to dashboard view
-    func goToDashboard() {
-        // toggle navigate to dashboard
-        // changing this will activate is presented
-        // inside view and navigate to dashboard
-        navigateToDashboard.toggle()
-    }
-    
-    /// method to open user details view
-    func goToUserDetails() {
-        // toggle open user details
-        // changing this will activate is presented
-        // inside view and open user details view
-        openUserDetailsView.toggle()
     }
 }

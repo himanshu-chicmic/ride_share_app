@@ -14,9 +14,6 @@ struct ForgotPasswordView: View {
     // environment object for view model
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    // environment variable to dismiss the view
-    @Environment(\.dismiss) var dismiss
-    
     // navigate boolean
     // navigate to new view if
     // set to true
@@ -47,7 +44,7 @@ struct ForgotPasswordView: View {
                         if navigate {
                             popViewConfirmation.toggle()
                         } else {
-                            dismiss()
+                            baseViewModel.openForgotPasswordView.toggle()
                         }
                     }, label: {
                         Image(systemName: navigate
@@ -141,6 +138,11 @@ struct ForgotPasswordView: View {
             }
             .onAppear {
                 navigate = false
+            }
+            // when the view disappears clear the toast Message
+            // if any is shown in the view
+            .onDisappear {
+                baseViewModel.toastMessage = ""
             }
             .onChange(of: navigate) { val in
                 
