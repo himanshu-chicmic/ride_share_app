@@ -26,6 +26,7 @@ enum RequestType: RawRepresentable {
     case getVehicles
     case updateVehicle
     case deleteVehicle
+    case searchRides
     
     /// get raw values based on current
     /// value of the enum
@@ -51,6 +52,8 @@ enum RequestType: RawRepresentable {
             return ApiConstants.resetPassword
         case .vehicles, .getVehicles, .updateVehicle, .deleteVehicle:
             return ApiConstants.vehicles
+        case .searchRides:
+            return ApiConstants.searchRides
         }
     }
     
@@ -82,6 +85,8 @@ enum RequestType: RawRepresentable {
             self = .getVehicles
             self = .updateVehicle
             self = .deleteVehicle
+        case ApiConstants.searchRides:
+            self = .searchRides
         default:
             return nil
         }

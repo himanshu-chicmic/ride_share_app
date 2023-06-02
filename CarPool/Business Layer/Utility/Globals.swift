@@ -98,4 +98,11 @@ struct Globals {
         // to show most recent years on top
         return years.reversed()
     }
+    
+    static func fetchAPIKey() -> String {
+        if let apikey = Bundle.main.infoDictionary?["PLACES_API_KEY"] as? String {
+            return apikey
+        }
+        return ""
+    }
 }

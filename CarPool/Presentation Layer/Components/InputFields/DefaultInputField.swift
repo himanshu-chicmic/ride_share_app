@@ -173,6 +173,9 @@ struct DefaultInputField: View {
                     .padding(.horizontal)
             }
         }
+        .onAppear {
+            UITextField.appearance().clearButtonMode = .whileEditing
+        }
     }
 }
 

@@ -74,6 +74,9 @@ struct SearchView: View {
             .fullScreenCover(isPresented: $searchViewModel.activeSearchView) {
                 SearchInputFieldView()
             }
+            .onChange(of: searchViewModel.activeSearchView) { _ in
+                searchViewModel.suggestions = []
+            }
             .navigationDestination(isPresented: $searchViewModel.showSearchResults, destination: {
                 SearchResultsView()
                     .navigationBarBackButtonHidden()
@@ -90,5 +93,6 @@ struct SearchView: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView()
+            .environmentObject(BaseViewModel())
     }
 }

@@ -65,6 +65,30 @@ struct DrawSearchComponent: View {
                     text           : $textField,
                     keyboard       : .default
                 )
+                .lineLimit(1)
+                .onChange(of: textField) { text in
+                    // call google place api
+                    searchViewModel.sendRequestToApi(httpMethod: .GET, requestType: .searchRides, data: text)
+                }
+                
+                List(searchViewModel.suggestions, id: \.self) { suggestion in
+                    ZStack {
+                        Text(suggestion.formattedAddress)
+                            .onTapGesture {
+                                textField = suggestion.formattedAddress
+                                
+                                if searchViewModel.searchComponentType == .startLocation {
+                                    searchViewModel.startLocationVal = suggestion
+                                } else if searchViewModel.searchComponentType == .endLocation {
+                                    searchViewModel.endLocationVal = suggestion
+                                }
+                                
+                                searchViewModel.activeSearchView.toggle()
+                            }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                }
+                .listStyle(.plain)
             }
         }
     }

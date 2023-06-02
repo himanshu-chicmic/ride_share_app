@@ -322,6 +322,107 @@ class ApiManager {
             }
             .eraseToAnyPublisher()
     }
+    
+    func getPlacesData(httpMethod: HttpMethod, text: String, requestType: RequestType) -> AnyPublisher<PlacesDataModel, Error> {
+        // create a base url
+        let baseURL = ApiConstants.placesURL + text.replacingOccurrences(of: " ", with: "+") + ApiConstants.placesEndpoint + Globals.fetchAPIKey()
+
+        // get the url from base url string
+        guard let url = URL(string: baseURL) else {
+            // return nil if url is invalid
+            return Fail(error: APIError.invalidRequestError("URL Invalid"))
+                .eraseToAnyPublisher()
+        }
+        
+        // initialize url request
+        var request = URLRequest(url: url)
+        
+        // set the http method
+        request.httpMethod = httpMethod.rawValue.trimmingCharacters(in: .whitespaces)
+        
+        // use dataTaskPublisher to call the api for url request
+        return URLSession.shared.dataTaskPublisher(for: request)
+            // mapping error related to invalid format or key values or data limitations
+            .mapError { error -> Error in
+                return APIError.transportError(error)
+            }
+            // map data and reponse and return
+            // after getting response as HTTPURLResponse
+            .tryMap { (data, response) -> (data: Data, response: URLResponse) in
+                // get reponse as HTTPURLResponse
+                guard let response = response as? HTTPURLResponse else {
+                    // else throw error as invalid response
+                    throw APIError.invalidResponse
+                }
+                
+                // return data and response
+                return (data, response)
+            }
+            // mapping data
+            .map(\.data)
+            // decoding data
+            .tryMap { data in
+                // initialize json decoder
+                let decoder = JSONDecoder()
+                do {
+                    let resp = try decoder.decode(PlacesDataModel.self, from: data)
+                    return resp
+                } catch {
+                    throw APIError.decodingError(error)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func getSearchResults(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<RidesSearchModel, Error> {
+        // get url request from setUpApiRequest method
+        guard let request = setUpApiRequest(
+            httpMethod  : httpMethod,
+            data        : data,
+            requestType : requestType
+        ) else {
+            // return error if request is nil
+            return Fail(error: APIError.invalidRequestError("URL Invalid"))
+                .eraseToAnyPublisher()
+        }
+        
+        // use dataTaskPublisher to call the api for url request
+        return URLSession.shared.dataTaskPublisher(for: request)
+            // mapping error related to invalid format or key values or data limitations
+            .mapError { error -> Error in
+                return APIError.transportError(error)
+            }
+            // map data and reponse and return
+            // after getting response as HTTPURLResponse
+            .tryMap { (data, response) -> (data: Data, response: URLResponse) in
+                // get reponse as HTTPURLResponse
+                guard let response = response as? HTTPURLResponse else {
+                    // else throw error as invalid response
+                    throw APIError.invalidResponse
+                }
+                // return data and response
+                return (data, response)
+            }
+            // mapping data
+            .map(\.data)
+            // decoding data
+            .tryMap { data in
+                // initialize json decoder
+                let decoder = JSONDecoder()
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        
+                        print(json)
+                    }
+                    let resp = try decoder.decode(RidesSearchModel.self, from: data)
+                    print(resp)
+                    return resp
+                } catch {
+                    throw APIError.decodingError(error)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
 }
 
 /// enum for handling errors
