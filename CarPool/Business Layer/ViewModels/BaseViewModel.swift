@@ -57,6 +57,7 @@ class BaseViewModel: ObservableObject {
     // set to true
     @Published var switchToDashboard = false
     
+    // variable to switch between view otp field and hide otp field
     @Published var viewOtpField = false
     
     // MARK: variable instances
@@ -64,41 +65,47 @@ class BaseViewModel: ObservableObject {
     var validationsInstance = Validations()
     
     // MARK: computed properties
+    // computed propert to get user's data
     var userData: SignInAndProfileModel? {
-        // get session authorization token from user defaults
+        // get profile data from user defaults
         guard let data = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.profileData) as? Data else {
-            // return false if not found
+            // return nil if not found
+            return nil
+        }
+        // decode data into SignInAndProfileModel
+        guard let loadedData = try? JSONDecoder().decode(SignInAndProfileModel.self, from: data) else {
             return nil
         }
         
-        let decoder = JSONDecoder()
-        
-        guard let loadedData = try? decoder.decode(SignInAndProfileModel.self, from: data) else {
-            return nil
-        }
-        
+        // return decoded data
         return loadedData
     }
     
+    // compted property to get vehicles data
     var vehiclesData: VehiclesDataModel? {
-        guard let data = UserDefaults.standard.value(forKey: "VehiclesData") as? Data else {
+        // get vehicles data form user defaults
+        guard let data = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.vehiclesData) as? Data else {
+            // return nil if not found
             return nil
         }
         
+        // decode vehicle data
         do {
+            // first convert to dictionary of type [String: Any]
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                 
-                let data = try JSONSerialization.data(withJSONObject: json["data"]!, options: .fragmentsAllowed)
+                // convert json["data'] into Data
+                let data = try JSONSerialization.data(withJSONObject: json[Constants.JsonKeys.data]!, options: .fragmentsAllowed)
                 
-                let list: [VehiclesDataClass] = try JSONDecoder().decode([VehiclesDataClass].self, from: data)
-                
-                let response = VehiclesDataModel(status: VehiclesStatus(code: json["code"] as? Int ?? 0, message: nil, data: list))
-                return response
+                // decode the encoded data in an array of VehiclesDataClass
+                let list = try JSONDecoder().decode([VehiclesDataClass].self, from: data)
+                // return resposne
+                return VehiclesDataModel(status: VehiclesStatus(code: json[Constants.JsonKeys.code] as? Int ?? 0, message: nil, data: list))
             }
         } catch {
             return nil
         }
-        
+        // return nil if not found
         return nil
     }
         
@@ -112,34 +119,38 @@ class BaseViewModel: ObservableObject {
     func sendRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         // set in progress to true for showing loader
         inProgess = true
-        // call signInUserMethod in ApiManager class
+        // call createApiRequest in ApiManager class
         cancellables = ApiManager.shared.createApiRequest(
-            httpMethod      : httpMethod,
-            dataDictionary  : data,
-            requestType     : requestType
+            httpMethod     : httpMethod,
+            dataDictionary : data,
+            requestType    : requestType
         )
         .receive(on: DispatchQueue.main)
         .sink { completion in
-            // switch completion to handle
-            // failure and finished cases
+            // switch completion to handle failure and success
             switch completion {
             case .failure(let error):
+                // show failure info in form of toast
                 self.toastMessage = error.localizedDescription
                 print("ERROR: \(error)")
             case .finished:
+                // show success info in form of toast
                 print("success")
             }
             
             // disable the progress view once the completion has received
             self.disableProgress()
-            
         } receiveValue: { [weak self] response in
-            
-            if response.status.code == 200 {
+            // check if response status code is 200 or 0 or show error message
+            if response.status.code == 200 || response.status.code == 0 {
                 // call function handleDataRespones to handle
                 // the result returned from api
-                self?.handleDataResponse(userData: response, type: requestType)
+                self?.handleDataResponse(
+                    userData : response,
+                    type     : requestType
+                )
             } else {
+                // check and assign if error or message exists
                 self?.toastMessage = response.status.error ?? response.status.message ?? ""
             }
         }
@@ -152,11 +163,11 @@ class BaseViewModel: ObservableObject {
     func sendVehiclesRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         // set in progress to true for showing loader
         inProgess = true
-        // call signInUserMethod in ApiManager class
+        // call createVehiclesApiRequest in ApiManager class
         cancellables = ApiManager.shared.createVehiclesApiRequest(
-            httpMethod      : httpMethod,
-            dataDictionary  : data,
-            requestType     : requestType
+            httpMethod     : httpMethod,
+            dataDictionary : data,
+            requestType    : requestType
         )
         .receive(on: DispatchQueue.main)
         .sink { completion in
@@ -172,46 +183,41 @@ class BaseViewModel: ObservableObject {
             
             // disable the progress view once the completion has received
             self.disableProgress()
-            
         } receiveValue: { [weak self] response in
-            
+            // check if response status code is 200 or show error message
             if response.status.code == 200 || response.status.code == 201 {
                 // call function handleDataRespones to handle
                 // the result returned from api
-                self?.handleDataResponse(vehiclesData: response, type: requestType)
+                self?.handleDataResponse(
+                    vehiclesData : response,
+                    type         : requestType
+                )
             } else {
+                // check and assign if error message exists
                 self?.toastMessage = response.status.message ?? ""
             }
         }
     }
     
     // MARK: methods for handling data from the api
-    /// method to check the response status code for email check api requeste
-    /// - Parameter response: a response retured from the api call
-    func handleEmailCheckResponse(response: SignInAndProfileModel) {
-        // check status code for email check
-        switch response.status.code {
-        // status code 0 is indication that the email is
-        // available to use and users can proceed to enter
-        // their personal information
-        case 0:
-            // open user details page
-            openUserDetailsView.toggle()
-        // else the email already
-        // exists in the database and cannot be used again
-        default:
-            // set toast message for dupliation of email address
-            toastMessage = "Email already exists."
-        }
-    }
-    
     /// method to handle reponse for login, signup and logout
     /// - Parameter response: response returned from api call
-    func switchDashboardOnboarding(response: SignInAndProfileModel) {
+    func switchDashboardOnboarding(response: SignInAndProfileModel, type: RequestType) {
+        // if user details is open then close it first
         if openUserDetailsView {
             openUserDetailsView.toggle()
         }
+        // then toggle switch to dashboard
         switchToDashboard.toggle()
+        
+        // on .login request type get user details
+        if type == .logIn {
+            sendRequestToApi(
+                httpMethod  : .GET,
+                requestType : .getDetails,
+                data        : [:]
+            )
+        }
     }
     
     /// base method to handle data response returned from api. this method checks the type of request
@@ -223,47 +229,58 @@ class BaseViewModel: ObservableObject {
         // check the type of the request and handle the response
         // accroding to the type of request
         switch type {
-        case .logIn, .signUp, .logOut:
+        case .logIn,
+             .signUp,
+             .logOut:
             // handlre response for signup, login and logout
-            switchDashboardOnboarding(response: userData!)
-            // call user detail method
-            if type == .logIn {
-                sendRequestToApi(httpMethod: .GET, requestType: .getDetails, data: [:])
-            }
+            switchDashboardOnboarding(
+                response : userData!,
+                type     : type
+            )
         case .getDetails:
             if vehiclesData == nil {
-                sendVehiclesRequestToApi(httpMethod: .GET, requestType: .getVehicles, data: [:])
+                sendVehiclesRequestToApi(
+                    httpMethod  : .GET,
+                    requestType : .getVehicles,
+                    data        : [:]
+                )
             }
         case .emailCheck:
-            // handle email check response by checking
-            // the status code of the response indside
-            // handleEmailCheckResponse
-            handleEmailCheckResponse(response: userData!)
+            // open details view for getting user information
+            openUserDetailsView.toggle()
         case .updateProfile:
-            if editProfile {
-                editProfile.toggle()
-            }
-            if openAddProfile {
-                openAddProfile.toggle()
-            }
+            // set bools related to open edit profile
+            // and open add profile false
+            editProfile = false
+            openAddProfile = false
         case .uploadImage:
-            toastMessage = "Profile picture updated!"
+            // set message for success in image updation
+            toastMessage = Constants.InfoMessages.pictureUpdated
         case .confirmPhone:
-            withAnimation {
-                viewOtpField.toggle()
-            }
+            // show otp field on completion of api call for sending passcode
+            withAnimation { viewOtpField.toggle() }
         case .confirmOtp:
-            sendRequestToApi(httpMethod: .GET, requestType: .getDetails, data: [:])
+            // close add profile view
             openAddProfile.toggle()
+            // hide otp field
             viewOtpField.toggle()
+            // send request to fetch user details to get updated data
+            sendRequestToApi(
+                httpMethod  : .GET,
+                requestType : .getDetails,
+                data        : [:]
+            )
         case .vehicles, .updateVehicle, .deleteVehicle:
-            if addVehicle {
-                addVehicle.toggle()
-            }
-            if dismissUpdateVehicle {
-                dismissUpdateVehicle = false
-            }
-            sendVehiclesRequestToApi(httpMethod: .GET, requestType: .getVehicles, data: [:])
+            // set add vehicles to false to close add vehicle view
+            addVehicle = false
+            // if dismissUpdateVehicle is true set to false
+            if dismissUpdateVehicle {  dismissUpdateVehicle = false }
+            // sent an api request to fetch vehicles data again
+            sendVehiclesRequestToApi(
+                httpMethod  : .GET,
+                requestType : .getVehicles,
+                data        : [:]
+            )
         default:
             break
         }
@@ -278,16 +295,16 @@ class BaseViewModel: ObservableObject {
         // initialize empty dictionary
         var data: [String: Any] = [:]
         
+        // if type is of reset password type
         if type == .resetPassword {
             // return dictinary according to
             // reset password
             // needs reset password token and new password
             return [Constants.JsonKeys.user : [
-                "reset_password_token": "returned from api",
-                values[1].2.rawValue : values[1].0,
-                "password_confirmation" : values[1].0
+                Constants.JsonKeys.resetPasswordToken   : "returned from api",
+                values[1].2.rawValue                    : values[1].0,
+                Constants.JsonKeys.passwordConfirmation : values[1].0
             ]]
-
         } else if type == .emailCheck || type == .forgotPassword {
             // if type is email check
             // then we only need email
@@ -303,7 +320,6 @@ class BaseViewModel: ObservableObject {
                 data[value.2.rawValue] = value.0
             }
         }
-        
         // return final result
         return [Constants.JsonKeys.user : data]
     }
@@ -319,7 +335,6 @@ class BaseViewModel: ObservableObject {
         values          : [Constants.TypeAliases.InputFieldArrayType],
         viewModel       : DetailsViewModel
     ) -> [String : Any] {
-        
         // initialize array with values
         var array = values
         
@@ -334,7 +349,6 @@ class BaseViewModel: ObservableObject {
         for value in array {
             // inner loop get the value from array
             for innerValue in value where innerValue.2 != .confirmPassword {
-                print(innerValue.2.rawValue)
                 // swift over the type of input field
                 // some input fields are pickers and their
                 // values are stored in user details view model
@@ -349,7 +363,6 @@ class BaseViewModel: ObservableObject {
                 }
             }
         }
-        
         // return the final dictionary
         return [Constants.JsonKeys.user : data]
     }

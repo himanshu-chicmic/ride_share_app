@@ -209,6 +209,9 @@ struct Constants {
         
         // all input fields required
         static let inputFieldsEmpty = "All input fields are required to be filled for adding a vehicle."
+        
+        static let emptyStartLocation = "Enter a start location"
+        static let emptyEndLocation = "Enter an end location"
     }
     
     // MARK: - other common strings
@@ -230,11 +233,33 @@ struct Constants {
     
     struct JsonKeys {
         static let user = "user"
+        static let data = "data"
+        static let code = "code"
+        
+        static let resetPasswordToken = "reset_password_token"
+        static let passwordConfirmation = "password_confirmation"
+        
+        static let sourceLongitude = "source_longitude"
+        static let sourceLatitude = "source_latitude"
+        static let destinationLongitude = "destination_longitude"
+        static let destinationLatitude = "destination_latitude"
+        static let passengersCount = "pass_count"
+        static let date = "date"
+    }
+    
+    struct ErrorsMessages {
+        static let emailAlreadyExists = "Email already exists."
+        
+    }
+    
+    struct InfoMessages {
+        static let pictureUpdated = "Profile picture updated!"
     }
     
     struct UserDefaultKeys {
         static let session = "SessionAuthToken"
         static let profileData = "UserProfileData"
+        static let vehiclesData = "VehiclesData"
     }
     
     // MARK: - alert dialog strings

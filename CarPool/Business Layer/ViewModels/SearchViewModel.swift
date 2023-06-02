@@ -15,93 +15,79 @@ class SearchViewModel: ObservableObject {
     // MARK: - properties
     
     // MARK: private properties
-    var anyCancellable: AnyCancellable?
+    private var anyCancellable: AnyCancellable?
     
     // MARK: published properties
+    // properties for search fields
+    // start location
     @Published var startLocation: String = ""
+    // end location
     @Published var endLocation: String = ""
-    
-    var startLocationVal: Candidate?
-    var endLocationVal: Candidate?
-    
+    // data of departure
     @Published var dateOfDeparture: Date = Globals.defaultDateCurrent
-    
+    // number of persons
     @Published var numberOfPersons: String = Constants.Placeholders.one
     
+    // boolean to open close active search view
     @Published var activeSearchView: Bool = false
-    @Published var searchComponentType: SearchInputsIdentifier = .startLocation
-    
+    // boolean to open close search results view
     @Published var showSearchResults: Bool = false
     
-    @Published var suggestions: [Candidate] = []
+    // variable to store type of input field in search view
+    // used to know type of input given by user in a same view
+    @Published var searchComponentType: SearchInputsIdentifier = .startLocation
     
+    // array to store places suggestions
+    @Published var suggestions: [Candidate] = []
+    // array to store search results
     @Published var searchResults: [Datum] = []
     
+    // MARK: instance variables
+    // shared instance of base view model
     var baseViewModel = BaseViewModel.shared
+    
+    // selected start location value
+    var startLocationVal: Candidate?
+    // selected end location value
+    var endLocationVal: Candidate?
     
     // MARK: - method
     
-    // MARK: utility method
+    // MARK: utility methods
+    /// method to validate input search field and call api request function
     func validateSearchInput() {
         if startLocation.isEmpty {
-            baseViewModel.toastMessage = "Enter a start location"
+            baseViewModel.toastMessage = Constants.ValidationMessages.emptyStartLocation
         } else if endLocation.isEmpty {
-            baseViewModel.toastMessage = "Enter an end location"
+            baseViewModel.toastMessage = Constants.ValidationMessages.emptyEndLocation
         } else {
             let data : [String : Any] = [
-                "source_longitude": startLocationVal?.geometry.location.lng ?? 30.71326,
-                "source_latitude": startLocationVal?.geometry.location.lat ?? 76.69106,
-                "destination_longitude": endLocationVal?.geometry.location.lng ?? 82.9739,
-                "destination_latitude": endLocationVal?.geometry.location.lat ?? 25.3176,
-                "pass_count": Int(numberOfPersons) ?? 1,
-                "date": Globals.dateFormatter.string(from: dateOfDeparture)
+                Constants.JsonKeys.sourceLongitude      : startLocationVal?.geometry.location.lng ?? 30.71326,
+                Constants.JsonKeys.sourceLatitude       : startLocationVal?.geometry.location.lat ?? 76.69106,
+                Constants.JsonKeys.destinationLongitude : endLocationVal?.geometry.location.lng ?? 82.9739,
+                Constants.JsonKeys.destinationLatitude  : endLocationVal?.geometry.location.lat ?? 25.3176,
+                Constants.JsonKeys.passengersCount      : Int(numberOfPersons) ?? 1,
+                Constants.JsonKeys.date                 : Globals.dateFormatter.string(from: dateOfDeparture)
             ]
                 
-            sendRequestToForSearch(httpMethod: .GET, requestType: .searchRides, data: data)
+            sendRequestForSearch(httpMethod: .GET, requestType: .searchRides, data: data)
         }
     }
     
     // MARK: method to send api requests
-    /// method to send api request and observe changes
+    /// method to send api request and get search results for rides published on application
     /// - Parameters:
     ///   - httpMethod: http method for sending api request
     ///   - requestType: type of request ex .login, .signup etc.
-    func sendRequestToForSearch(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        
+    func sendRequestForSearch(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        // empty search results before sending api request
         searchResults = []
-        // call signInUserMethod in ApiManager class
-        anyCancellable = ApiManager.shared.getSearchResults(httpMethod: httpMethod, data: data, requestType: requestType)
-        .receive(on: DispatchQueue.main)
-        .sink { completion in
-            // switch completion to handle
-            // failure and finished cases
-            switch completion {
-            case .failure(let error):
-                print("ERROR: \(error)")
-            case .finished:
-                print("success")
-            }
-            
-        } receiveValue: { [weak self] response in
-            for result in response.data {
-                self?.searchResults.append(result)
-            }
-            
-            self?.showSearchResults.toggle()
-        }
-    }
-    
-    // MARK: method to send api requests
-    /// method to send api request and observe changes
-    /// - Parameters:
-    ///   - httpMethod: http method for sending api request
-    ///   - requestType: type of request ex .login, .signup etc.
-    func sendRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: String) {
-        // call signInUserMethod in ApiManager class
-        anyCancellable = ApiManager.shared.getPlacesData(
-            httpMethod      : httpMethod,
-            text  : data,
-            requestType     : requestType
+        
+        // call getSearchResults in ApiManager class
+        anyCancellable = ApiManager.shared.getSearchResults(
+            httpMethod  : httpMethod,
+            data        : data,
+            requestType : requestType
         )
         .receive(on: DispatchQueue.main)
         .sink { completion in
@@ -113,9 +99,42 @@ class SearchViewModel: ObservableObject {
             case .finished:
                 print("success")
             }
-            
         } receiveValue: { [weak self] response in
-            self?.suggestions = []
+            // add response data in searchResults array
+            for result in response.data {
+                self?.searchResults.append(result)
+            }
+            // toggle searchShowResults to open search results view
+            self?.showSearchResults.toggle()
+        }
+    }
+    
+    /// method to send api request for getting places data using google places api
+    /// - Parameters:
+    ///   - httpMethod: http method for sending api request
+    ///   - requestType: type of request ex .login, .signup etc.
+    func sendRequestForGettingPlacesData(httpMethod: HttpMethod, requestType: RequestType, data: String) {
+        // empty suggestions before sending api request
+        suggestions = []
+        
+        // call getPlacesData in ApiManager class
+        anyCancellable = ApiManager.shared.getPlacesData(
+            httpMethod  : httpMethod,
+            text        : data,
+            requestType : requestType
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            // switch completion to handle
+            // failure and finished cases
+            switch completion {
+            case .failure(let error):
+                print("ERROR: \(error)")
+            case .finished:
+                print("success")
+            }
+        } receiveValue: { [weak self] response in
+            // add response to suggestions array
             for address in response.candidates {
                 self?.suggestions.append(address)
             }

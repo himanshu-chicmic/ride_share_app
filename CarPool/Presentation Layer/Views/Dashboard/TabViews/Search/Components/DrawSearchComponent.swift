@@ -68,7 +68,7 @@ struct DrawSearchComponent: View {
                 .lineLimit(1)
                 .onChange(of: textField) { text in
                     // call google place api
-                    searchViewModel.sendRequestToApi(httpMethod: .GET, requestType: .searchRides, data: text)
+                    searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
                 }
                 
                 List(searchViewModel.suggestions, id: \.self) { suggestion in
