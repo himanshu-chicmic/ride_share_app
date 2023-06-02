@@ -16,6 +16,7 @@ enum RequestType: RawRepresentable {
     case logOut
     case getDetails
     case updateProfile
+    case uploadImage
     case confirmEmail
     case confirmPhone
     case confirmOtp
@@ -30,6 +31,8 @@ enum RequestType: RawRepresentable {
             return ApiConstants.commonEndpoint
         case .emailCheck:
             return ApiConstants.checkEmail
+        case .uploadImage:
+            return ApiConstants.addImage
         case .logIn:
             return ApiConstants.signIn
         case .logOut:

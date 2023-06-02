@@ -40,7 +40,7 @@ struct ToastMessageView: View {
         .fontWeight(.semibold)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(backgroundColor.opacity(0.75))
+        .background(backgroundColor)
         .foregroundColor(.white)
         .cornerRadius(12)
         .padding()

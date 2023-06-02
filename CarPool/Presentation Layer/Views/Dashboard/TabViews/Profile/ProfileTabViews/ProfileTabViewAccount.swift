@@ -26,7 +26,6 @@ struct ProfileTabViewAccount: View {
     // initialize the empty values for buttons and titles array
     init() {
         navigationLinks = [
-            Constants.ProfileAccount.details,
             Constants.ProfileAccount.additionalOptions
         ]
     }
@@ -89,7 +88,6 @@ struct ProfileTabViewAccount: View {
             Button(Constants.ProfileAccount.logOut, role: .destructive) {
                 baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .logOut, data: [:])
             }
-            Button(Constants.Others.no, role: .cancel) {}
         }
         .confirmationDialog(
             "",

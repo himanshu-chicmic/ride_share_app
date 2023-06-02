@@ -14,10 +14,10 @@ struct SignInAndProfileModel: Codable {
 
 // MARK: - Status
 struct Status: Codable {
-    let code: Int
+    var code: Int
     let error: String?
     let errors: [String]?
-    let message: String?
+    var message: String?
     let data: DataClass?
     let imageURL: URL?
     
@@ -35,10 +35,11 @@ struct DataClass: Codable {
     let firstName, lastName, dob, title: String
     let phoneNumber, bio, travelPreferences, postalAddress: String?
     let activationDigest: String
-    let activated: String?
+    let activated: Bool?
     let activatedAt: String?
     let activateToken: String
     let sessionKey: String?
+    let phoneVerified: Bool?
     let averageRating: String?
     let customToken: String?
     let otp: Int? = 0
@@ -60,6 +61,7 @@ struct DataClass: Codable {
         case activatedAt       = "activated_at"
         case activateToken     = "activate_token"
         case sessionKey        = "session_key"
+        case phoneVerified      = "phone_verified"
         case averageRating     = "average_rating"
         case customToken       = "custom_token"
         case otp          

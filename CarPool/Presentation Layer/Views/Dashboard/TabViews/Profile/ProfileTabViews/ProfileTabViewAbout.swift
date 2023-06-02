@@ -21,48 +21,60 @@ struct ProfileTabViewAbout: View {
     // MARK: private state variables
     // photos picker item
     @State private var photosPicker: PhotosPickerItem?
-    // by default intialize to a default image
-    // or the image set by user
-    @State private var image = Image(Constants.Images.introImage)
     
     // MARK: - body
     
     var body: some View {
         ScrollView {
+            
             VStack {
                 
                 // profile can be changed
                 // by clicking on it
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 124, height: 124)
-                    .clipShape(Circle())
-                    .onTapGesture {
-                        // toggle edit profile button
-                        detailsViewModel.editPhoto.toggle()
+                AsyncImage(url: baseViewModel.userData?.status.imageURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    if baseViewModel.userData?.status.imageURL != nil {
+                        ZStack {
+                            Color.gray.opacity(0.1)
+                            ProgressView()
+                        }
+                    } else {
+                        Image(Constants.Images.introImage)
+                            .resizable()
+                            .scaledToFill()
                     }
-                    .photosPicker(isPresented: $detailsViewModel.openPhotosPicker, selection: $photosPicker)
-                    .onChange(of: photosPicker) { _ in
-                        Task {
-                            // update the image of the user here
-                            if let data = try? await photosPicker?.loadTransferable(type: Data.self) {
-                                if let uiImage = UIImage(data: data) {
-                                    image = Image(uiImage: uiImage)
-                                    return
-                                }
+                }
+                .frame(width: 124, height: 124)
+                .clipShape(Circle())
+                .onTapGesture {
+                    // toggle edit profile button
+                    detailsViewModel.editPhoto.toggle()
+                }
+                .photosPicker(isPresented: $detailsViewModel.openPhotosPicker, selection: $photosPicker)
+                .onChange(of: photosPicker) { _ in
+                    Task {
+                        // update the image of the user here
+                        if let data = try? await photosPicker?.loadTransferable(type: Data.self) {
+                            if let uiImage = UIImage(data: data) {
+                                baseViewModel.sendRequestToApi(httpMethod: .PUT, requestType: .uploadImage, data: ["image": uiImage])
+                                return
                             }
                         }
                     }
-                    // confirmation dialog
-                    // prompting user with options
-                    // to get image from galler
-                    // to click a picture
-                    .confirmationDialog("", isPresented : $detailsViewModel.editPhoto) {
-                        Button(Constants.ImagePicker.selectFromGallery) {
-                            detailsViewModel.openPhotosPicker.toggle()
-                        }
+                }
+                // confirmation dialog
+                // prompting user with options
+                // to get image from galler
+                // to click a picture
+                .confirmationDialog("", isPresented : $detailsViewModel.editPhoto) {
+                    Button(Constants.ImagePicker.selectFromGallery) {
+                        detailsViewModel.openPhotosPicker.toggle()
                     }
+                }
+                .padding(.top)
                 
                 // user name
                 Text(
@@ -72,17 +84,10 @@ struct ProfileTabViewAbout: View {
                 .fontWeight(.semibold)
                 .padding(.bottom, 1)
                 
-                if let bio = baseViewModel.userData?.status.data?.bio {
-                    Text(bio)
-                        .font(.system(size: 14))
-                        .padding(.bottom)
-                    
-                }
-                
                 // edit profile button
                 Button {
                     // toggle edit profile button
-                    baseViewModel.editDetailsVehiclesProfile.toggle()
+                    baseViewModel.editProfile.toggle()
                 } label: {
                     HStack(alignment: .firstTextBaseline, spacing: 5) {
                         // edit profile text
@@ -97,8 +102,11 @@ struct ProfileTabViewAbout: View {
                 }
                 // open new view as a full screen
                 // bottom sheet to edit profile details
-                .fullScreenCover(isPresented: $baseViewModel.editDetailsVehiclesProfile) {
-                    EditDetailsView(textFieldValues: detailsViewModel.userModel.getInputFields(data: baseViewModel.userData), title: Constants.UserInfo.title)
+                .navigationDestination(isPresented: $baseViewModel.editProfile) {
+                    EditDetailsView(title: Constants.UserInfo.title)
+                }
+                .navigationDestination(isPresented: $baseViewModel.addVehicle) {
+                    EditDetailsView(title: Constants.Headings.vehicle, isProfile: false)
                 }
                 
                 Divider()
@@ -106,7 +114,7 @@ struct ProfileTabViewAbout: View {
                 
                 // additional buttons for profile editing
                 
-                ForEach(detailsViewModel.titles.indices) { index in
+                ForEach(detailsViewModel.titles.indices, id: \.self) { index in
                     
                     // profile view item to show profile
                     // section with different buttons
@@ -120,6 +128,15 @@ struct ProfileTabViewAbout: View {
                 }
             }
             .padding()
+            .overlay (alignment: .bottom) {
+                CircleProgressView()
+                
+                if baseViewModel.toastMessage == "Profile picture updated!" {
+                    ToastMessageView(backgroundColor: .green)
+                } else if baseViewModel.toastMessage == "Unbale to update profle picture!" {
+                    ToastMessageView()
+                }
+            }
         }
     }
 }

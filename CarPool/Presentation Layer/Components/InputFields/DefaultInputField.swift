@@ -93,10 +93,20 @@ struct DefaultInputField: View {
             case .email,
                  .firstName,
                  .lastName,
-                 .phoneNumber,
                  .text,
                  .bio:
                 TextField(placeholder, text: $text)
+                
+            case .phoneNumber:
+                TextField(placeholder, text: $text)
+                    .onChange(of: text) { value in
+                        text = String(value.prefix(10))
+                    }
+            case .passcode:
+                TextField(placeholder, text: $text)
+                    .onChange(of: text) { value in
+                        text = String(value.prefix(4))
+                    }
             
             // show secure field for
             // password

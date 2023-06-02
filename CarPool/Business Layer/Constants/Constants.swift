@@ -117,6 +117,8 @@ struct Constants {
         static let type             = "Ex: Sedan, Hatchback etc."
         static let color            = "Select color"
         static let modelYear        = "Select year"
+        
+        static let headings             = ["Country", "Vehicle number", "Brand", "Model", "Type of vehicle", "Color", "Model year"]
     }
     
     struct Headings {
@@ -124,7 +126,7 @@ struct Constants {
         static let email = "What's your email?"
         static let mobile = "What's your mobile number?"
         static let bio = "What would you like other members to know about you?"
-        static let vehicle = "Let's add your vehicle"
+        static let vehicle = "Add vehicle"
         
         static let pickUp = "Pick-up"
         static let dropOff = "Drop-off"
@@ -223,6 +225,7 @@ struct Constants {
         static let close       = "Close"
         static let dismiss       = "Dismiss"
         static let exit         = "Exit"
+        static let update         = "Update"
     }
     
     struct JsonKeys {
@@ -259,6 +262,7 @@ struct Constants {
         static let back             = "chevron.left"
         static let next             = "chevron.right"
         static let check            = "checkmark"
+        static let checkCircle            = "checkmark.circle.fill"
         
         static let edit             = "square.and.pencil"
         static let plusCircle       = "plus.circle"

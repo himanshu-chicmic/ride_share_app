@@ -23,4 +23,5 @@ enum InputFieldIdentifier: String {
     case model
     case text
     case bio
+    case passcode
 }

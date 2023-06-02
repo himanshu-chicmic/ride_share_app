@@ -18,7 +18,7 @@ enum EditProfileIdentifier: String, Identifiable {
     }
     
     // cases for edit profile type
-    case email    = "Confirm email %@"
+    case email    = "Confirm email"
     case mobile   = "Confirm phone number"
     case bio      = "Add a mini bio"
     case vehicles = "Add vehicle"
@@ -31,24 +31,27 @@ enum EditProfileIdentifier: String, Identifiable {
                 heading      : Constants.Headings.email,
                 placeholder  : Constants.Placeholders.email,
                 inputField   : .email,
-                keyboardType : .emailAddress
+                keyboardType : .emailAddress,
+                title: self.rawValue
             )
         case .mobile:
             AddProfileOptionView(
                 heading      : Constants.Headings.mobile,
                 placeholder  : Constants.Placeholders.mobile,
                 inputField   : .phoneNumber,
-                keyboardType : .numberPad
+                keyboardType : .numberPad,
+                title: self.rawValue
             )
         case .bio:
             AddProfileOptionView(
                 heading      : Constants.Headings.bio,
                 placeholder  : Constants.Placeholders.bio,
                 inputField   : .bio,
-                keyboardType : .default
+                keyboardType : .default,
+                title: self.rawValue
             )
-        case .vehicles:
-            EditDetailsView(title: Constants.Headings.vehicle, isProfile: false)
+        default:
+            EmptyView()
         }
     }
 }

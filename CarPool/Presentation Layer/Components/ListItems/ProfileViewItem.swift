@@ -7,6 +7,25 @@
 
 import SwiftUI
 
+struct VerifiedComponent: View {
+    
+    var icon: String
+    var text: String
+    
+    var body: some View {
+        HStack(alignment: .firstTextBaseline) {
+            // plus circle image
+            Image(systemName: Constants.Icon.checkCircle)
+                .foregroundColor(.blue)
+            
+            Text(text)
+                .font(.system(size: 17))
+                .multilineTextAlignment(.leading)
+                .foregroundColor(.gray)
+        }
+    }
+}
+
 /// item view for profile page
 /// the item view has title and button
 /// that is used in profile about view
@@ -31,10 +50,6 @@ struct ProfileViewItem: View {
     var body: some View {
         VStack(alignment: .leading) {
             
-            if title == Constants.Headings.vehicle {
-                // TODO: show a list of vehicles added
-            }
-            
             // title
             Text(title)
                 .font(.system(size: 20))
@@ -43,29 +58,48 @@ struct ProfileViewItem: View {
             // buttons
             
             ForEach(array) { val in
-                Button {
-                    openEditView.toggle()
-                    clickedItem = val
-                } label: {
-                    
-                    HStack {
-                        // plus circle image
-                        Image(systemName: Constants.Icon.plusCircle)
-                        
-                        // text value of button
-                        Text(val.rawValue)
-                            .font(.system(size: 18))
-                        
-                        // spacer to occupy extra space
-                        // at the trailing of hstack
-                        Spacer()
+                
+                if val == .email, let activation = baseViewModel.userData?.status.data?.activated, activation, let email = baseViewModel.userData?.status.data?.email {
+                    VerifiedComponent(icon: Constants.Icon.checkCircle, text: email)
+                } else if val == .mobile, let activation = baseViewModel.userData?.status.data?.phoneVerified, activation, let phone = baseViewModel.userData?.status.data?.phoneNumber {
+                    VerifiedComponent(icon: Constants.Icon.checkCircle, text: phone)
+                } else {
+                    Button {
+                        if val == .vehicles {
+                            baseViewModel.addVehicle.toggle()
+                        } else {
+                            baseViewModel.openAddProfile.toggle()
+                            openEditView.toggle()
+                            clickedItem = val
+                        }
+                    } label: {
+                        HStack (alignment: .firstTextBaseline) {
+                             if val == .bio, let bio = baseViewModel.userData?.status.data?.bio {
+                                
+                                 VerifiedComponent(icon: Constants.Icon.checkCircle, text: bio)
+                                
+                            } else {
+                                // plus circle image
+                                Image(systemName: Constants.Icon.plusCircle)
+                                // text value of button
+                                Text(val.rawValue)
+                                    .font(.system(size: 18))
+                                
+                            }
+                            
+                            // spacer to occupy extra space
+                            // at the trailing of hstack
+                            Spacer()
+                        }
                     }
+                    .padding(.vertical, 8)
                 }
-                .padding(.vertical, 8)
+                
             }
-            .fullScreenCover(isPresented: $openEditView) {
+            .navigationDestination(isPresented: $openEditView) {
                 clickedItem.view
             }
+    
         }
     }
 }

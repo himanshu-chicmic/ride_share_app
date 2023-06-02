@@ -45,10 +45,8 @@ class BaseViewModel: ObservableObject {
     @Published var openUserDetailsView: Bool = false
     
     // open edit details for vehicles or profile
-    @Published var editDetailsVehiclesProfile = false
-    
-    // open edit details
-    @Published var editProfileOption = false
+    @Published var editProfile = false
+    @Published var addVehicle = false
     
     // open forgot password view
     @Published var openForgotPasswordView: Bool = false
@@ -60,6 +58,8 @@ class BaseViewModel: ObservableObject {
     // navigate to new view if
     // set to true
     @Published var switchToDashboard = false
+    
+    @Published var viewOtpField = false
     
     // MARK: variable instances
     // instance for validations struct
@@ -92,7 +92,6 @@ class BaseViewModel: ObservableObject {
     func sendRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         // set in progress to true for showing loader
         inProgess = true
-        print(data)
         // call signInUserMethod in ApiManager class
         cancellables = ApiManager.shared.createApiRequest(
             httpMethod      : httpMethod,
@@ -113,21 +112,20 @@ class BaseViewModel: ObservableObject {
             
             // disable the progress view once the completion has received
             self.disableProgress()
-        } receiveValue: { [weak self] dataResponse in
-            switch requestType {
-            case .logIn, .signUp, .updateProfile:
-                // initialize baseDataModel with response returned from api request
-                self?.baseDataModel = dataResponse
-                print(dataResponse)
-            case .confirmEmail:
-                self?.toastMessage = "Verification email sent at your email address"
-            default:
-                print(dataResponse)
+        } receiveValue: { [weak self] response in
+            
+            // if response is success set data to user defaults
+            if response.status.code == 200, requestType != .confirmOtp, requestType != .confirmPhone, requestType != .confirmEmail {
+                self?.baseDataModel = response
             }
             
-            // call function handleDataRespones to handle
-            // the result returned from api
-            self?.handleDataResponse(response: dataResponse, type: requestType)
+            if response.status.code == 200 {
+                // call function handleDataRespones to handle
+                // the result returned from api
+                self?.handleDataResponse(response: response, type: requestType)
+            } else {
+                self?.toastMessage = response.status.error ?? response.status.message ?? ""
+            }
         }
     }
     
@@ -154,15 +152,10 @@ class BaseViewModel: ObservableObject {
     /// method to handle reponse for login, signup and logout
     /// - Parameter response: response returned from api call
     func switchDashboardOnboarding(response: SignInAndProfileModel) {
-        switch response.status.code {
-        case 200:
-            if openUserDetailsView {
-                openUserDetailsView.toggle()
-            }
-            switchToDashboard.toggle()
-        default:
-            toastMessage = response.status.error ?? ""
+        if openUserDetailsView {
+            openUserDetailsView.toggle()
         }
+        switchToDashboard.toggle()
     }
     
     /// base method to handle data response returned from api. this method checks the type of request
@@ -182,18 +175,23 @@ class BaseViewModel: ObservableObject {
             // the status code of the response indside
             // handleEmailCheckResponse
             handleEmailCheckResponse(response: response)
-        case .forgotPassword:
-            break
-        case .resetPassword:
-            break
         case .updateProfile:
-            editDetailsVehiclesProfile = false
-        case .confirmEmail:
-            break
+            if editProfile {
+                editProfile.toggle()
+            }
+            if openAddProfile {
+                openAddProfile.toggle()
+            }
+        case .uploadImage:
+            toastMessage = "Profile picture updated!"
         case .confirmPhone:
-            break
+            withAnimation {
+                viewOtpField.toggle()
+            }
         case .confirmOtp:
-            break
+            sendRequestToApi(httpMethod: .GET, requestType: .getDetails, data: [:])
+            openAddProfile.toggle()
+            viewOtpField.toggle()
         default:
             break
         }

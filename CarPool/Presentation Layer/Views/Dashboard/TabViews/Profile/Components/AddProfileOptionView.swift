@@ -12,12 +12,11 @@ struct AddProfileOptionView: View {
     
     // MARK: - properties
     
-    // environment object for dismiss the view
-    @Environment(\.dismiss) var dismiss
-    
     // environment object of validations view model
     @EnvironmentObject var baseViewModel: BaseViewModel
     @EnvironmentObject var detailsViewModel: DetailsViewModel
+    
+    @Environment(\.dismiss) var dismiss
     
     // text field variable
     @State var textField: String = ""
@@ -30,7 +29,11 @@ struct AddProfileOptionView: View {
     // keyboard type
     var keyboardType: UIKeyboardType
     
+    @State var otp: String = ""
+    
     @State var textFieldValues: Constants.TypeAliases.InputFieldArrayType = []
+    
+    var title: String
     
     // MARK: - body
     
@@ -43,13 +46,16 @@ struct AddProfileOptionView: View {
                     
                     // button to pop view
                     Button(action: {
+                        if baseViewModel.viewOtpField {
+                            baseViewModel.viewOtpField.toggle()
+                        }
                         dismiss()
                     }, label: {
-                        Image(systemName: Constants.Icon.close)
+                        Image(systemName: Constants.Icon.back)
                     })
                     
                     // title of app bar
-                    Text(Constants.UserInfo.title)
+                    Text(title)
                     .frame(maxWidth: .infinity)
                     
                 }
@@ -69,7 +75,18 @@ struct AddProfileOptionView: View {
                     text            : $textField,
                     keyboard        : keyboardType
                 )
-
+                .disabled(baseViewModel.viewOtpField)
+                
+                if baseViewModel.viewOtpField {
+                    // text field for user input
+                    DefaultInputField(
+                        inputFieldType  : .passcode,
+                        placeholder     : "Enter 4-digit passcode",
+                        text            : $otp,
+                        keyboard        : .numberPad
+                    )
+                }
+                    
                 // button for saving details
                 Button {
                     
@@ -99,14 +116,17 @@ struct AddProfileOptionView: View {
                             case .email:
                                 baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmEmail, data: [inputField.rawValue : textField])
                             case .phoneNumber:
-                                baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmPhone, data: [inputField.rawValue : textField])
+                                if baseViewModel.viewOtpField {
+                                    baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmOtp, data: [inputField.rawValue : textField, InputFieldIdentifier.passcode.rawValue : otp])
+                                } else {
+                                    baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmPhone, data: [inputField.rawValue : textField])
+                                }
                             case .bio:
                                 baseViewModel.sendRequestToApi(httpMethod: .PUT, requestType: .updateProfile, data: [Constants.JsonKeys.user:[inputField.rawValue : textField]])
                             default:
                                 break
                             }
                         }
-                        dismiss()
                     }
                     
                 } label: {
@@ -116,7 +136,6 @@ struct AddProfileOptionView: View {
                 
                 // space to occupy extra space
                 Spacer()
-                
             }
             .onAppear {
                 switch heading {
@@ -135,6 +154,15 @@ struct AddProfileOptionView: View {
                     pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date
                 )
             }
+            .overlay {
+                CircleProgressView()
+            }
+            .onChange(of: baseViewModel.openAddProfile, perform: { value in
+                if !value {
+                    dismiss()
+                }
+            })
+            .navigationBarBackButtonHidden()
             
             // show toast message
             // if any validation or verificatioin
@@ -152,7 +180,8 @@ struct AddProfileOptionView_Previews: PreviewProvider {
             heading     : "",
             placeholder : "",
             inputField  : .email,
-            keyboardType: .default
+            keyboardType: .default,
+            title: Constants.UserInfo.title
         )
         .environmentObject(BaseViewModel())
         .environmentObject(DetailsViewModel())

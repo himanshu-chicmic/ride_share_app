@@ -7,12 +7,57 @@
 
 import Foundation
 import Combine
+import UIKit
 
 /// api manager class for handling api calls and responses
 class ApiManager {
     
     // static shared instance of api manageer class
     static let shared = ApiManager()
+    
+    /// method to create the body of data for sending the
+    /// image, and other details of user to the server
+    /// used in only put request for sending the user data
+    /// - Parameter params: data dictionary
+    /// - Returns: body of type Data
+    func createDataBody(withParameters params: [String: Any?]) -> Data {
+        
+        // initialize data object
+        var body = Data()
+        
+        // constant string struct
+        let dataBodyStrings = ApiConstants.StringForDataBody.self
+        
+        // loop over params dictionary
+        for (key, value) in params {
+            
+            // append boundary with a line break
+            body.append(dataBodyStrings.boudaryWithLineBreakTwoHyphens)
+            
+            if let value = value {
+                // check if key is for imageURL
+                if key == "image" {
+                    
+                    if let image = value as? UIImage {
+                        body.append(String(format: dataBodyStrings.imageContentDisposition, key, "\(BaseViewModel.shared.userData?.status.data?.firstName ?? "image").png"))
+                        body.append(String(format: dataBodyStrings.imageContentType, dataBodyStrings.imageMimePng))
+                        
+                        if let data = image.jpegData(compressionQuality: 0.7) {
+                            body.append(data)
+                            body.append(dataBodyStrings.lineBreak)
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+        body.append(dataBodyStrings.boudaryWithLineBreakFourHyphens)
+        
+        print(body)
+        
+        return body
+    }
     
     /// method to set up api request and return it as url request
     /// - Parameters:
@@ -25,9 +70,6 @@ class ApiManager {
         
         // create a base url
         var baseURL = String(format: ApiConstants.baseURL, requestType.rawValue)
-        
-        print(httpMethod)
-        print(data)
         
         // if request typ if of type email check
         // then our url need to be changed
@@ -61,14 +103,26 @@ class ApiManager {
         
         if httpMethod != .GET {
             // set content type
-            request.setValue(ApiConstants.json, forHTTPHeaderField: ApiConstants.contentType)
+            
+            if requestType == .uploadImage {
+                request.setValue(ApiConstants.StringForDataBody.multipartFormData, forHTTPHeaderField: ApiConstants.contentType)
+            } else {
+                request.setValue(ApiConstants.json, forHTTPHeaderField: ApiConstants.contentType)
+            }
             
             // convert dictionary data to json
-            let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .fragmentsAllowed)
+            let jsonData = requestType == .uploadImage
+            ? createDataBody(withParameters: data)
+            : try? JSONSerialization.data(withJSONObject: data, options: .fragmentsAllowed)
             
             // set json data in request http body
             request.httpBody = jsonData
         }
+        
+        print(httpMethod)
+        print(baseURL)
+        print(data)
+        print(requestType)
         
         // return url request
         return request
@@ -110,8 +164,6 @@ class ApiManager {
                     throw APIError.invalidResponse
                 }
                 
-                print(response)
-                
                 // if sign out it attempted
                 // the clear the user defaults
                 // by setting the authoriztion value of
@@ -139,7 +191,24 @@ class ApiManager {
             .tryMap { data in
                 // initialize json decoder
                 let decoder = JSONDecoder()
+                
                 do {
+                    // serialization for checking json response only
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        print(json)
+                    }
+                    
+                    // decoding data to SignInAndProfileModel
+                    let response = try decoder.decode(SignInAndProfileModel.self, from: data)
+                    
+                    // if response is success set data to user defaults
+                    if response.status.code == 200, requestType != .confirmOtp, requestType != .confirmPhone, requestType != .confirmEmail {
+                        UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.profileData)
+                    }
+                    
+                    return response
+                } catch {
+                    var status = Status(code: 0, error: nil, errors: nil, message: nil, data: nil, imageURL: nil)
                     // if request type is of email check
                     // do not decode with SignInLogInModel directly
                     // set it up manually
@@ -150,25 +219,22 @@ class ApiManager {
                     switch requestType {
                     case .emailCheck:
                         // set the status instance
-                        let status = Status(code: data.count, error: nil, errors: nil, message: nil, data: nil, imageURL: nil)
-                        // return signinlogin model with status instance
-                        return SignInAndProfileModel(status: status)
-                    case .logOut, .confirmEmail:
+                        status.code = data.count
+                    case .logOut:
                         // make sure this JSON is in the format we expect
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            // set the status instance
+                            status.code = json["status"] as? Int ?? 0
+                            status.message = json["message"] as? String
+                        }
+                    case .confirmEmail:
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? String {
                             print(json)
-                            let status = Status(code: json["status"] as? Int ?? 0, error: nil, errors: nil, message: json["message"] as? String, data: nil, imageURL: nil)
-                            // return signinlogin model with status instance
-                            return SignInAndProfileModel(status: status)
                         }
                     default:
-                        UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.profileData)
+                        throw APIError.decodingError(error)
                     }
                     
-                    return try decoder.decode(SignInAndProfileModel.self, from: data)
-                } catch {
-                    throw APIError.decodingError(error)
+                    return SignInAndProfileModel(status: status)
                 }
             }
             .eraseToAnyPublisher()

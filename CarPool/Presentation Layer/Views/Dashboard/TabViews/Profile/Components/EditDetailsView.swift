@@ -16,9 +16,6 @@ struct EditDetailsView: View {
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    // environment variable
-    @Environment(\.dismiss) var dismiss
-    
     // MARK: state variables
     // state variable array for textfield values
     @State var textFieldValues: Constants.TypeAliases.InputFieldArrayType = []
@@ -39,20 +36,18 @@ struct EditDetailsView: View {
         ZStack(alignment: .bottom) {
             VStack {
                 
-                ZStack (alignment: .centerFirstTextBaseline) {
+                ZStack {
+                    
                     // title of app bar
                     Text(title)
                     .frame(maxWidth: .infinity)
                     
-                    // app bar at the top
                     HStack {
-                        
                         // button to pop view
                         Button(action: {
                             popViewConfirmation.toggle()
                         }, label: {
-                            Text(Constants.Others.cancel)
-                                .font(.system(size: 15))
+                            Image(systemName: Constants.Icon.back)
                         })
                         
                         Spacer()
@@ -96,16 +91,14 @@ struct EditDetailsView: View {
                                         )
                                 }
                             }
-                        } label: {
-                            Text(Constants.Others.save)
-                                .font(.system(size: 15))
                         }
-                        
+                        label: {
+                           Text(Constants.Others.save)
+                       }
                     }
-                    .padding(.horizontal, 4)
+                    
                 }
                 .padding()
-                .padding(.bottom)
                 
                 ScrollView {
                     // for each loop to put
@@ -114,13 +107,11 @@ struct EditDetailsView: View {
                     // which contains necessary information of the fields to add
                     ForEach($textFieldValues.indices, id: \.self) { index in
                         
-                        if isProfile {
-                            Text(Constants.ProfileAccount.headings[index])
-                                .foregroundColor(.gray)
-                                .font(.system(size: 15))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding([.horizontal, .top])
-                        }
+                        Text(isProfile ? Constants.ProfileAccount.headings[index] : Constants.Vehicle.headings[index])
+                            .foregroundColor(.gray)
+                            .font(.system(size: 15))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding([.horizontal, .top])
                         
                         DefaultInputField(
                             inputFieldType  : textFieldValues[index].2,
@@ -129,10 +120,9 @@ struct EditDetailsView: View {
                             keyboard        : textFieldValues[index].3,
                             background: .white
                         )
-                        .padding(.bottom, isProfile ? 0 : 18)
+                        .padding(.bottom, 8)
                         
                     }
-
                 }
             }
             .overlay {
@@ -161,9 +151,9 @@ struct EditDetailsView: View {
             ) {
                 Button(Constants.Others.close, role: .destructive) {
                     if isProfile {
-                        baseViewModel.editDetailsVehiclesProfile = false
+                        baseViewModel.editProfile.toggle()
                     } else {
-                        dismiss()
+                        baseViewModel.addVehicle.toggle()
                     }
                 }
                 Button(Constants.Others.dismiss, role: .cancel) {}
@@ -173,6 +163,7 @@ struct EditDetailsView: View {
                     pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date
                 )
             }
+            .navigationBarBackButtonHidden()
             
             // show toast message
             // if any validation or verificatioin

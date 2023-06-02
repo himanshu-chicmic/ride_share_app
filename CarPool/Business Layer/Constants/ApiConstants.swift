@@ -10,11 +10,11 @@ import Foundation
 struct ApiConstants {
     
     // base url for api
-    static let baseURL = "https://940e-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "https://b16b-112-196-113-2.ngrok-free.app/%@"
     
     static let getRequestEmailCheck = "?email=%@"
     
-    // this endpoint is used for following type of reques
+    // this endpoint is used for following type of request
     // Post - to sign up
     // Delete - for account deletion
     // Get - to get information of current user
@@ -52,4 +52,33 @@ struct ApiConstants {
     static let contentType = "Content-Type"
     static let json = "application/json"
     
+    // MARK: - https header fields and values
+    struct HTTPHeaderFieldAndValues {
+        // values
+        static let mutlpartFormData = "multipart/form-data"
+        static let applicationJson  = "application/json"
+    
+        // headers
+        static let contentType      = "Content-Type"
+        static let authorization    = "Authorization"
+    }
+    
+    // MARK: - string format
+    struct StringForDataBody {
+        
+        static let lineBreak                        = "\r\n"
+        static let boundary                         = UUID().uuidString
+        
+        static let multipartFormData                = "\(HTTPHeaderFieldAndValues.mutlpartFormData); boundary=\(boundary)"
+        
+        static let imageMimePng                    = "image/png"
+        
+        static let imageContentType                 = "Content-Type: %@\(lineBreak + lineBreak)"
+        
+        static let imageContentDisposition          = "Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\(lineBreak)"
+        static let dataContentDisposition           = "Content-Disposition: form-data; name=\"%@\"\(lineBreak + lineBreak)"
+        
+        static let boudaryWithLineBreakTwoHyphens   = "--\(boundary + lineBreak)"
+        static let boudaryWithLineBreakFourHyphens  = "--\(boundary)--\(lineBreak)"
+    }
 }
