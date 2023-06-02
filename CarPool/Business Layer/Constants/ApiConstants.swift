@@ -10,7 +10,7 @@ import Foundation
 struct ApiConstants {
     
     // base url for api
-    static let baseURL = "https://b16b-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "https://8697-112-196-113-2.ngrok-free.app/%@"
     
     static let getRequestEmailCheck = "?email=%@"
     
@@ -38,8 +38,12 @@ struct ApiConstants {
     // otp verification
     static let otpVerification = "verify"
     
+    // MARK: vehicles
+    // get or add vehicles
+    static let vehicles = "vehicles"
+    
     // used to send two api requests
-    // one for sending email and gerating
+    // one for sending email and generating
     // a token for reset password
     // second for sending new password with
     // the token to change password

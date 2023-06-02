@@ -22,6 +22,10 @@ enum RequestType: RawRepresentable {
     case confirmOtp
     case forgotPassword
     case resetPassword
+    case vehicles
+    case getVehicles
+    case updateVehicle
+    case deleteVehicle
     
     /// get raw values based on current
     /// value of the enum
@@ -45,6 +49,8 @@ enum RequestType: RawRepresentable {
             return ApiConstants.otpVerification
         case .forgotPassword, .resetPassword:
             return ApiConstants.resetPassword
+        case .vehicles, .getVehicles, .updateVehicle, .deleteVehicle:
+            return ApiConstants.vehicles
         }
     }
     
@@ -71,6 +77,11 @@ enum RequestType: RawRepresentable {
         case ApiConstants.resetPassword:
             self = .forgotPassword
             self = .resetPassword
+        case ApiConstants.vehicles:
+            self = .vehicles
+            self = .getVehicles
+            self = .updateVehicle
+            self = .deleteVehicle
         default:
             return nil
         }

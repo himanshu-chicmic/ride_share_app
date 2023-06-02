@@ -51,12 +51,12 @@ struct DefaultInputField: View {
                     text        : $detailsViewModel.country,
                     placeholder : Constants.Vehicle.country
                 )
-            case .color:
+            case .vehicleColor:
                 ShowPickerText(
                     text        : $detailsViewModel.color,
                     placeholder : Constants.Vehicle.color
                 )
-            case .model:
+            case .vehicleModelYear:
                 ShowPickerText(
                     text        : $detailsViewModel.year,
                     placeholder : Constants.Vehicle.modelYear
@@ -94,7 +94,11 @@ struct DefaultInputField: View {
                  .firstName,
                  .lastName,
                  .text,
-                 .bio:
+                 .bio,
+                 .vehicleNumber,
+                 .vehicleBrand,
+                 .vehicleName,
+                 .vehicleType:
                 TextField(placeholder, text: $text)
                 
             case .phoneNumber:

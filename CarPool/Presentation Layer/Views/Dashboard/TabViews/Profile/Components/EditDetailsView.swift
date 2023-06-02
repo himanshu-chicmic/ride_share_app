@@ -22,6 +22,8 @@ struct EditDetailsView: View {
     // state var for confirmation
     @State var popViewConfirmation: Bool = false
     
+    @Environment(\.dismiss) var dismiss
+    
     // MARK: view properties for ui
     // title at the top of appbar
     var title: String
@@ -29,6 +31,7 @@ struct EditDetailsView: View {
     // view or for adding vehicles
     var isProfile: Bool = true
     
+    var vehiclesData: VehiclesDataClass?
     // MARK: - body
     
     var body: some View {
@@ -90,6 +93,27 @@ struct EditDetailsView: View {
                                             error       : Constants.ValidationMessages.noYearSelected
                                         )
                                 }
+                                
+                                var data: [String: Any] = [:]
+                                
+                                for item in textFieldValues {
+                                    switch item.2 {
+                                    case .country:
+                                        data[item.2.rawValue] = detailsViewModel.country
+                                    case .vehicleColor:
+                                        data[item.2.rawValue] = detailsViewModel.color
+                                    case .vehicleModelYear:
+                                        data[item.2.rawValue] = detailsViewModel.year
+                                    default:
+                                        data[item.2.rawValue] = item.0
+                                    }
+                                }
+                                
+                                if let vehiclesData {
+                                    baseViewModel.sendVehiclesRequestToApi(httpMethod: .PUT, requestType: .updateVehicle, data: ["vehicle" : data, "id" : vehiclesData.id])
+                                } else {
+                                    baseViewModel.sendVehiclesRequestToApi(httpMethod: .POST, requestType: .vehicles, data: ["vehicle" : data])
+                                }
                             }
                         }
                         label: {
@@ -136,7 +160,14 @@ struct EditDetailsView: View {
                     
                     detailsViewModel.setPickerData()
                 } else {
-                    textFieldValues = VehicleModel().getInputFields()
+                    
+                    if vehiclesData != nil {
+                        baseViewModel.dismissUpdateVehicle = true
+                    }
+                    
+                    textFieldValues = VehicleModel().getInputFields(data: vehiclesData ?? nil)
+                    
+                    detailsViewModel.setPickerData(vehiclesData: vehiclesData ?? nil)
                 }
             }
             .onDisappear {
@@ -153,11 +184,20 @@ struct EditDetailsView: View {
                     if isProfile {
                         baseViewModel.editProfile.toggle()
                     } else {
-                        baseViewModel.addVehicle.toggle()
+                        if vehiclesData != nil {
+                            dismiss()
+                        } else {
+                            baseViewModel.addVehicle.toggle()
+                        }
                     }
                 }
                 Button(Constants.Others.dismiss, role: .cancel) {}
             }
+            .onChange(of: baseViewModel.dismissUpdateVehicle, perform: { newValue in
+                if !newValue {
+                    dismiss()
+                }
+            })
             .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
                     pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date

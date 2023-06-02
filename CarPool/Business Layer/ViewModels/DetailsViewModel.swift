@@ -175,10 +175,16 @@ class DetailsViewModel: ObservableObject {
     
     // MARK: utility methods
     /// set picker data if userData is not nil
-    func setPickerData() {
+    func setPickerData(vehiclesData: VehiclesDataClass? = nil) {
         if let data = baseViewModel.userData {
             gender = data.status.data?.title ?? Constants.Placeholders.selectGender
             date = Globals.dateFormatter.date(from: data.status.data?.dob ?? "") ?? Globals.defaultDate
+        }
+        
+        if let data = vehiclesData {
+            country = data.country
+            color = data.vehicleColor
+            year = Globals.yearString(at: data.vehicleModelYear)
         }
     }
     

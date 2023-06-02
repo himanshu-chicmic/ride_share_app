@@ -20,9 +20,6 @@ class BaseViewModel: ObservableObject {
     private var cancellables: AnyCancellable?
     
     // MARK: published properties
-    // variable to get response from api
-    @Published var baseDataModel: SignInAndProfileModel?
-    
     // var for error/validaton messages
     // to be shown on a error dialog box
     @Published var toastMessage: String = "" {
@@ -47,6 +44,7 @@ class BaseViewModel: ObservableObject {
     // open edit details for vehicles or profile
     @Published var editProfile = false
     @Published var addVehicle = false
+    @Published var dismissUpdateVehicle = false
     
     // open forgot password view
     @Published var openForgotPasswordView: Bool = false
@@ -82,6 +80,28 @@ class BaseViewModel: ObservableObject {
         return loadedData
     }
     
+    var vehiclesData: VehiclesDataModel? {
+        guard let data = UserDefaults.standard.value(forKey: "VehiclesData") as? Data else {
+            return nil
+        }
+        
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                
+                let data = try JSONSerialization.data(withJSONObject: json["data"]!, options: .fragmentsAllowed)
+                
+                let list: [VehiclesDataClass] = try JSONDecoder().decode([VehiclesDataClass].self, from: data)
+                
+                let response = VehiclesDataModel(status: VehiclesStatus(code: json["code"] as? Int ?? 0, message: nil, data: list))
+                return response
+            }
+        } catch {
+            return nil
+        }
+        
+        return nil
+    }
+        
     // MARK: - methods
     
     // MARK: method to send api requests
@@ -112,19 +132,55 @@ class BaseViewModel: ObservableObject {
             
             // disable the progress view once the completion has received
             self.disableProgress()
-        } receiveValue: { [weak self] response in
             
-            // if response is success set data to user defaults
-            if response.status.code == 200, requestType != .confirmOtp, requestType != .confirmPhone, requestType != .confirmEmail {
-                self?.baseDataModel = response
-            }
+        } receiveValue: { [weak self] response in
             
             if response.status.code == 200 {
                 // call function handleDataRespones to handle
                 // the result returned from api
-                self?.handleDataResponse(response: response, type: requestType)
+                self?.handleDataResponse(userData: response, type: requestType)
             } else {
                 self?.toastMessage = response.status.error ?? response.status.message ?? ""
+            }
+        }
+    }
+    
+    /// method to send api request and observe changes
+    /// - Parameters:
+    ///   - httpMethod: http method for sending api request
+    ///   - requestType: type of request ex .login, .signup etc.
+    func sendVehiclesRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        // set in progress to true for showing loader
+        inProgess = true
+        // call signInUserMethod in ApiManager class
+        cancellables = ApiManager.shared.createVehiclesApiRequest(
+            httpMethod      : httpMethod,
+            dataDictionary  : data,
+            requestType     : requestType
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            // switch completion to handle
+            // failure and finished cases
+            switch completion {
+            case .failure(let error):
+                self.toastMessage = error.localizedDescription
+                print("ERROR: \(error)")
+            case .finished:
+                print("success")
+            }
+            
+            // disable the progress view once the completion has received
+            self.disableProgress()
+            
+        } receiveValue: { [weak self] response in
+            
+            if response.status.code == 200 || response.status.code == 201 {
+                // call function handleDataRespones to handle
+                // the result returned from api
+                self?.handleDataResponse(vehiclesData: response, type: requestType)
+            } else {
+                self?.toastMessage = response.status.message ?? ""
             }
         }
     }
@@ -163,18 +219,26 @@ class BaseViewModel: ObservableObject {
     /// - Parameters:
     ///   - response: response returned from api call
     ///   - type: type of api request
-    func handleDataResponse(response: SignInAndProfileModel, type: RequestType) {
+    func handleDataResponse(userData: SignInAndProfileModel? = nil, vehiclesData: VehiclesDataModel? = nil, type: RequestType) {
         // check the type of the request and handle the response
         // accroding to the type of request
         switch type {
         case .logIn, .signUp, .logOut:
             // handlre response for signup, login and logout
-            switchDashboardOnboarding(response: response)
+            switchDashboardOnboarding(response: userData!)
+            // call user detail method
+            if type == .logIn {
+                sendRequestToApi(httpMethod: .GET, requestType: .getDetails, data: [:])
+            }
+        case .getDetails:
+            if vehiclesData == nil {
+                sendVehiclesRequestToApi(httpMethod: .GET, requestType: .getVehicles, data: [:])
+            }
         case .emailCheck:
             // handle email check response by checking
             // the status code of the response indside
             // handleEmailCheckResponse
-            handleEmailCheckResponse(response: response)
+            handleEmailCheckResponse(response: userData!)
         case .updateProfile:
             if editProfile {
                 editProfile.toggle()
@@ -192,6 +256,14 @@ class BaseViewModel: ObservableObject {
             sendRequestToApi(httpMethod: .GET, requestType: .getDetails, data: [:])
             openAddProfile.toggle()
             viewOtpField.toggle()
+        case .vehicles, .updateVehicle, .deleteVehicle:
+            if addVehicle {
+                addVehicle.toggle()
+            }
+            if dismissUpdateVehicle {
+                dismissUpdateVehicle = false
+            }
+            sendVehiclesRequestToApi(httpMethod: .GET, requestType: .getVehicles, data: [:])
         default:
             break
         }

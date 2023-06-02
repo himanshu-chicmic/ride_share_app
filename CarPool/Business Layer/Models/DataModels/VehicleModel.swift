@@ -2,7 +2,7 @@
 //  VehicleModel.swift
 //  CarPool
 //
-//  Created by Nitin on 5/22/23.
+//  Created by Himanshu on 5/22/23.
 //
 
 import Foundation
@@ -29,51 +29,51 @@ struct VehicleModel {
     
     // MARK: - methods
     
-    func getInputFields() -> Constants.TypeAliases.InputFieldArrayType {
+    func getInputFields(data: VehiclesDataClass?) -> Constants.TypeAliases.InputFieldArrayType {
         
         // return the array with necessary
         // values of input fields
         return [
             (
-                "",
+                data?.country ?? "",
                 Constants.Vehicle.country,
                 InputFieldIdentifier.country,
                 UIKeyboardType.default
             ),
             (
-                number,
+                data?.vehicleNumber ?? number,
                 Constants.Vehicle.number,
-                InputFieldIdentifier.text,
+                InputFieldIdentifier.vehicleNumber,
                 UIKeyboardType.default
             ),
             (
-                brand,
+                data?.vehicleBrand ?? brand,
                 Constants.Vehicle.brand,
-                InputFieldIdentifier.text,
+                InputFieldIdentifier.vehicleBrand,
                 UIKeyboardType.default
             ),
             (
-                name,
+                data?.vehicleName ?? name,
                 Constants.Vehicle.name,
-                InputFieldIdentifier.text,
+                InputFieldIdentifier.vehicleName,
                 UIKeyboardType.default
             ),
             (
-                type,
+                data?.vehicleType ?? type,
                 Constants.Vehicle.type,
-                InputFieldIdentifier.text,
+                InputFieldIdentifier.vehicleType,
                 UIKeyboardType.default
             ),
             (
-                "",
+                data?.vehicleColor ?? "",
                 Constants.Vehicle.color,
-                InputFieldIdentifier.color,
+                InputFieldIdentifier.vehicleColor,
                 UIKeyboardType.default
             ),
             (
-                "",
+                Globals.yearString(at: data?.vehicleModelYear ?? 0),
                 Constants.Vehicle.modelYear,
-                InputFieldIdentifier.model,
+                InputFieldIdentifier.vehicleModelYear,
                 UIKeyboardType.default
             )
         ]

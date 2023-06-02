@@ -18,10 +18,15 @@ enum InputFieldIdentifier: String {
     case dateOfBirth     = "dob"
     case gender          = "title"
     case phoneNumber     = "phone_number"
-    case country
-    case color
-    case model
     case text
     case bio
     case passcode
+    
+    case country
+    case vehicleNumber = "vehicle_number"
+    case vehicleBrand = "vehicle_brand"
+    case vehicleName = "vehicle_name"
+    case vehicleType = "vehicle_type"
+    case vehicleColor = "vehicle_color"
+    case vehicleModelYear = "vehicle_model_year"
 }

@@ -42,7 +42,7 @@ class ApiManager {
                         body.append(String(format: dataBodyStrings.imageContentDisposition, key, "\(BaseViewModel.shared.userData?.status.data?.firstName ?? "image").png"))
                         body.append(String(format: dataBodyStrings.imageContentType, dataBodyStrings.imageMimePng))
                         
-                        if let data = image.jpegData(compressionQuality: 0.7) {
+                        if let data = image.jpegData(compressionQuality: 0.25) {
                             body.append(data)
                             body.append(dataBodyStrings.lineBreak)
                         }
@@ -68,6 +68,8 @@ class ApiManager {
     /// - Returns: a url request which is used to for url session
     func setUpApiRequest(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> URLRequest? {
         
+        var data = data
+        
         // create a base url
         var baseURL = String(format: ApiConstants.baseURL, requestType.rawValue)
         
@@ -78,6 +80,13 @@ class ApiManager {
         // with the url
         if requestType == .emailCheck, let email = data[InputFieldIdentifier.email.rawValue] as? String {
             baseURL += String(format: ApiConstants.getRequestEmailCheck, email.lowercased())
+        }
+        
+        if requestType == .deleteVehicle || requestType == .updateVehicle {
+            if let endpoint = data["id"] {
+                baseURL += "/\(endpoint)"
+            }
+            data.removeValue(forKey: "id")
         }
         
         // get the url from base url string
@@ -235,6 +244,80 @@ class ApiManager {
                     }
                     
                     return SignInAndProfileModel(status: status)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    // method to add, get or delete vehicles
+    /// - Parameters:
+    ///   - httpMethod: method of api request i.e. get, post, delete, put
+    ///   - dataDictionary: dictionary for sending some json data alog with api
+    ///   - endPoint: string value of api endpoint. used with base api url to form a valid url
+    ///   - requestType: type of request i.e. signup, login, email check etc.
+    /// - Returns: any published with either response as SignInLogInModel or Error
+    func createVehiclesApiRequest(httpMethod: HttpMethod, dataDictionary: [String: Any], requestType: RequestType) -> AnyPublisher<VehiclesDataModel, Error> {
+        
+        // get url request from setUpApiRequest method
+        guard let request = setUpApiRequest(
+            httpMethod  : httpMethod,
+            data        : dataDictionary,
+            requestType : requestType
+        ) else {
+            // return error if request is nil
+            return Fail(error: APIError.invalidRequestError("URL Invalid"))
+                .eraseToAnyPublisher()
+        }
+        
+        // use dataTaskPublisher to call the api for url request
+        return URLSession.shared.dataTaskPublisher(for: request)
+            // mapping error related to invalid format or key values or data limitations
+            .mapError { error -> Error in
+                return APIError.transportError(error)
+            }
+            // map data and reponse and return
+            // after getting response as HTTPURLResponse
+            .tryMap { (data, response) -> (data: Data, response: URLResponse) in
+                
+                // get reponse as HTTPURLResponse
+                guard let response = response as? HTTPURLResponse else {
+                    // else throw error as invalid response
+                    throw APIError.invalidResponse
+                }
+                
+                // return data and response
+                return (data, response)
+            }
+            // mapping data
+            .map(\.data)
+            // decoding data
+            .tryMap { data in
+                // initialize json decoder
+                let decoder = JSONDecoder()
+                
+                do {
+                    // serialization for checking json response only
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        
+                        print(json)
+                        
+                        if httpMethod == .GET {
+                            UserDefaults.standard.set(data, forKey: "VehiclesData")
+                            return VehiclesDataModel(status: VehiclesStatus(code: json["code"] as? Int ?? 0, message: nil, data: json["data"] as? [VehiclesDataClass]))
+                        }
+                        
+                        if httpMethod == .POST || httpMethod == .PUT {
+                            let jsonData = json["status"] as? [String: Any]
+                            return VehiclesDataModel(status: VehiclesStatus(code: jsonData!["code"] as? Int ?? 0, message: nil, data: [jsonData?["data"]] as? [VehiclesDataClass]))
+                        }
+                    }
+                    
+                    // decoding data to SignInAndProfileModel
+                    let response = try decoder.decode(VehiclesDataModel.self, from: data)
+                    
+                    return response
+                } catch {
+                    throw APIError.decodingError(error)
                 }
             }
             .eraseToAnyPublisher()

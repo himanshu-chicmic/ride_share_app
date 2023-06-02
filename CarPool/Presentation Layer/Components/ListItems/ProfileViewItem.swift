@@ -7,21 +7,17 @@
 
 import SwiftUI
 
-struct VerifiedComponent: View {
+struct ShowAddedVehicles: View {
     
-    var icon: String
-    var text: String
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            // plus circle image
-            Image(systemName: Constants.Icon.checkCircle)
-                .foregroundColor(.blue)
-            
-            Text(text)
-                .font(.system(size: 17))
-                .multilineTextAlignment(.leading)
-                .foregroundColor(.gray)
+        if let data = baseViewModel.vehiclesData?.status.data {
+            ForEach(data, id: \.self) { vehicle in
+                AddedVehicleItem(
+                    data: vehicle
+                )
+            }
         }
     }
 }
@@ -59,11 +55,26 @@ struct ProfileViewItem: View {
             
             ForEach(array) { val in
                 
-                if val == .email, let activation = baseViewModel.userData?.status.data?.activated, activation, let email = baseViewModel.userData?.status.data?.email {
+                if val == .email,
+                    let activation = baseViewModel.userData?.status.data?.activated,
+                    activation,
+                    let email = baseViewModel.userData?.status.data?.email {
+                    
                     VerifiedComponent(icon: Constants.Icon.checkCircle, text: email)
-                } else if val == .mobile, let activation = baseViewModel.userData?.status.data?.phoneVerified, activation, let phone = baseViewModel.userData?.status.data?.phoneNumber {
+                } else if val == .mobile,
+                          let activation = baseViewModel.userData?.status.data?.phoneVerified,
+                            activation,
+                            let phone = baseViewModel.userData?.status.data?.phoneNumber {
+                    
                     VerifiedComponent(icon: Constants.Icon.checkCircle, text: phone)
                 } else {
+                    
+                    if val == .vehicles {
+                        
+                        ShowAddedVehicles()
+                        
+                    }
+                    
                     Button {
                         if val == .vehicles {
                             baseViewModel.addVehicle.toggle()
