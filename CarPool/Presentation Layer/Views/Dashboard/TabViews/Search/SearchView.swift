@@ -11,10 +11,8 @@ struct SearchView: View {
     
     // MARK: - properties
     
-    // search view model
-    @StateObject var searchViewModel = SearchViewModel()
-    
     @EnvironmentObject var baseViewModel: BaseViewModel
+    @EnvironmentObject var searchViewModel: SearchViewModel
     
     // MARK: - body
     
@@ -86,7 +84,6 @@ struct SearchView: View {
                 ToastMessageView()
             }
         }
-        .environmentObject(searchViewModel)
     }
 }
 

@@ -20,6 +20,9 @@ struct DashboardView: View {
     // state var for selection of tab item
     @State private var selection = TabViewIdentifier.search
     
+    // search view model
+    @StateObject var searchViewModel = SearchViewModel()
+    
     // MARK: - body
     
     var body: some View {
@@ -49,6 +52,7 @@ struct DashboardView: View {
                 }
             }
         }
+        .environmentObject(searchViewModel)
     }
 }
 

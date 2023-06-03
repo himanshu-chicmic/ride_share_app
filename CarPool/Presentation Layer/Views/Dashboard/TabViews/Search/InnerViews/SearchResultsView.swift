@@ -7,27 +7,15 @@
 
 import SwiftUI
 
-struct RidesListData: Hashable {
-    var startLocation = "Chandigarh"
-    var endLocation = "Patiala"
-    var startTime = "03:00 am"
-    var endTime = "04:00 am"
-    var price: String
-    var dateOfDeparture = "Friday may 23"
-    var numberOfSeats = "2"
-    var driverImage = Constants.Images.introImage
-    var driverName = "Driver"
-    var driverRating = "4.8"
-}
-
 struct SearchResultsView: View {
     
-    @State var selectedTile: RidesListData = RidesListData(price: "")
-    @State var nagitate = false
+    @State var navigate = false
+    
+    @State var selectedTile: Datum?
+    
+    @EnvironmentObject var searchViewModel: SearchViewModel
     
     @Environment(\.dismiss) var dismiss
-    
-    var list = [RidesListData(price: "3000 Rs."), RidesListData(price: "300 Rs."), RidesListData(price: "3300 Rs."), RidesListData(price: "3050 Rs."), RidesListData(price: "300 Rs."), RidesListData(price: "3300 Rs."), RidesListData(price: "3050 Rs.")]
     
     var body: some View {
         VStack {
@@ -48,26 +36,26 @@ struct SearchResultsView: View {
             .padding()
             
             ScrollView {
-                ForEach(list, id: \.self) { data in
+                ForEach($searchViewModel.searchResults, id: \.self) { $data in
                     RidesListItem(
-                        startLoction:data.startLocation,
-                        startTime: data.startTime,
-                        endLocation: data.endLocation,
-                        endTime: data.endTime,
-                        price: data.price,
-                        dateOfDeparture: "Fri May 26",
-                        numberOfSeats: "2",
-                        driverImage: Constants.Images.introImage,
-                        driverName: "Driver",
-                        driverRating: "4.8")
+                        startLoction    : data.publish.source,
+                        startTime       : data.publish.time,
+                        endLocation     : data.publish.destination,
+                        endTime         : data.publish.time,
+                        price           : "String(data.publish.setPrice)",
+                        dateOfDeparture : "data.publish.date",
+                        numberOfSeats   : "data.publish.passengersCount",
+                        driverImage     : Constants.Images.introImage,
+                        driverName      : "data.publish.d",
+                        driverRating    : "String(data.averageRating)"
+                    )
                     .foregroundColor(.black)
                     .onTapGesture {
-                        selectedTile = data
-                        nagitate.toggle()
+                        navigate.toggle()
                     }
                 }
-                .navigationDestination(isPresented: $nagitate) {
-                    RideDetailView(data: selectedTile)
+                .navigationDestination(isPresented: $navigate) {
+                    RideDetailView(data: selectedTile ?? nil)
                         .navigationBarBackButtonHidden()
                 }
                 .padding()

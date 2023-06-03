@@ -235,6 +235,10 @@ struct Constants {
         static let user = "user"
         static let data = "data"
         static let code = "code"
+        static let image = "image"
+        static let status = "status"
+        static let message = "message"
+
         
         static let resetPasswordToken = "reset_password_token"
         static let passwordConfirmation = "password_confirmation"
@@ -245,10 +249,14 @@ struct Constants {
         static let destinationLatitude = "destination_latitude"
         static let passengersCount = "pass_count"
         static let date = "date"
+        
+        static let id = "id"
     }
     
     struct ErrorsMessages {
         static let emailAlreadyExists = "Email already exists."
+        
+        static let invalidUrl = "URL Invalid"
         
     }
     
@@ -278,6 +286,8 @@ struct Constants {
     struct Images {
         
         static let introImage   = "intro-image"
+        
+        static let defaultImageName = "image.png"
     }
     
     // MARK: - default icons

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RideDetailView: View {
     
-    var data: RidesListData
+    var data: Datum?
     
     @Environment(\.dismiss) var dismiss
     
@@ -34,124 +34,126 @@ struct RideDetailView: View {
             .padding(.vertical)
             .padding(.bottom)
             
-            ScrollView {
-                Text(data.dateOfDeparture)
-                    .font(.system(size: 20, weight: .bold))
-                    .padding(.bottom)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                VStack(
-                    alignment : .leading,
-                    spacing   : 40
-                ) {
-                    HStack (alignment: .top) {
-                        Text(data.startTime)
-                        // helper layout for city name
-                        HStack {
-                            LocationTextViewComponent(
-                                icon     : Constants.Icon.startLocation,
-                                location : data.startLocation,
-                                time     : data.startLocation
-                            )
-                            
-                            Spacer()
-                            
-                            Image(systemName: Constants.Icon.next)
-                        }
-                    }
-                    HStack (alignment: .top) {
-                        Text(data.endTime)
-                        // helper layout for city name
-                        HStack {
-                            LocationTextViewComponent(
-                                icon     : Constants.Icon.endLocation,
-                                location : data.endLocation,
-                                time     : data.endLocation
-                            )
-                            
-                            Spacer()
-                            
-                            Image(systemName: Constants.Icon.next)
-                        }
-                    }
-                }.padding(.horizontal, 2)
-                    .overlay (alignment: .leading) {
-                        RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
-                            .frame(width: 2, height: .infinity)
-                            .padding(.bottom, 34)
-                            .padding(.top, 18)
-                            .padding(.leading, 93)
-                    }
-                    .padding(.bottom)
-                
-                Divider()
-                
-                HStack {
-                    Text("Total price for 1 passenger")
-                        .font(.system(size: 13))
+            if let data {
+                ScrollView {
+                    Text(data.publish.date)
+                        .font(.system(size: 20, weight: .bold))
+                        .padding(.bottom)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    Spacer()
-                    
-                    Text(data.price)
-                        .font(.system(size: 18, weight: .semibold))
-                }
-                .padding(.vertical)
-                
-                Divider()
-                
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(data.driverName)
-                            .font(.system(size: 16, weight: .semibold))
-                        // ratings received by driver
-                        HStack (
-                            spacing: 4
-                        ) {
-                            Image(systemName: Constants.Icon.star)
-                                .resizable()
-                                .frame(
-                                    width  : 16,
-                                    height : 16
+                    VStack(
+                        alignment : .leading,
+                        spacing   : 40
+                    ) {
+                        HStack (alignment: .top) {
+                            Text(data.publish.time)
+                            // helper layout for city name
+                            HStack {
+                                LocationTextViewComponent(
+                                    icon     : Constants.Icon.startLocation,
+                                    location : data.publish.source,
+                                    time     : data.publish.source
                                 )
-                            
-                            Text("\(data.driverRating)\\5 - 34 ratings")
+                                
+                                Spacer()
+                                
+                                Image(systemName: Constants.Icon.next)
+                            }
                         }
-                        .foregroundColor(.gray)
+                        HStack (alignment: .top) {
+                            Text(data.publish.estimateTime ?? "")
+                            // helper layout for city name
+                            HStack {
+                                LocationTextViewComponent(
+                                    icon     : Constants.Icon.endLocation,
+                                    location : data.publish.destination,
+                                    time     : data.publish.destination
+                                )
+                                
+                                Spacer()
+                                
+                                Image(systemName: Constants.Icon.next)
+                            }
+                        }
+                    }.padding(.horizontal, 2)
+                        .overlay (alignment: .leading) {
+                            RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
+                                .frame(width: 2, height: .infinity)
+                                .padding(.bottom, 34)
+                                .padding(.top, 18)
+                                .padding(.leading, 93)
+                        }
+                        .padding(.bottom)
+                    
+                    Divider()
+                    
+                    HStack {
+                        Text("Total price for 1 passenger")
+                            .font(.system(size: 13))
+                        
+                        Spacer()
+                        
+                        Text("\(data.publish.setPrice)")
+                            .font(.system(size: 18, weight: .semibold))
                     }
+                    .padding(.vertical)
                     
-                    Spacer()
+                    Divider()
                     
-                    // driver profile image
-                    Image(data.driverImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(
-                            width  : 54,
-                            height : 54
-                        )
-                        .clipShape(Circle())
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("data.driverName")
+                                .font(.system(size: 16, weight: .semibold))
+                            // ratings received by driver
+                            HStack (
+                                spacing: 4
+                            ) {
+                                Image(systemName: Constants.Icon.star)
+                                    .resizable()
+                                    .frame(
+                                        width  : 16,
+                                        height : 16
+                                    )
+                                
+                                Text("\(4)\\5 - 34 ratings")
+                            }
+                            .foregroundColor(.gray)
+                        }
+                        
+                        Spacer()
+                        
+                        // driver profile image
+                        Image("intro-image")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(
+                                width  : 54,
+                                height : 54
+                            )
+                            .clipShape(Circle())
+                        
+                        Image(systemName: Constants.Icon.next)
+                    }
+                    .padding(.vertical)
                     
-                    Image(systemName: Constants.Icon.next)
-                }
-                .padding(.vertical)
-                
-                Divider()
-                
-                Button {
-                    // contact driver
-                } label: {
-                    Text("Contact \(data.driverName)")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.vertical)
+                    Divider()
+                    
+                    Button {
+                        // contact driver
+                    } label: {
+                        Text("Contact")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.vertical)
 
-                Button {
-                    // contact driver
-                } label: {
-                    Text("Share Ride")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Button {
+                        // contact driver
+                    } label: {
+                        Text("Share Ride")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .padding(.bottom)
                 }
-                .padding(.bottom)
             }
             
         }
@@ -162,6 +164,6 @@ struct RideDetailView: View {
 
 struct RideDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        RideDetailView(data: RidesListData(price: "Rs. 0"))
+        RideDetailView()
     }
 }

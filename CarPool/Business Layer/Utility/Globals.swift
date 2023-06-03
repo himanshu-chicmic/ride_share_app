@@ -105,4 +105,8 @@ struct Globals {
         }
         return ""
     }
+    
+    static func getTextQueryWithReplacedCharsWithPlus(text: String) -> String{
+        return text.replacingOccurrences(of: " ", with: "+")
+    }
 }
