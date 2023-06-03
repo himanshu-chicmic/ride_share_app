@@ -24,7 +24,7 @@ struct SearchResultsView: View {
     var body: some View {
         VStack {
             // app bar at the top
-            ZStack(alignment: .leading) {
+            HStack {
                 
                 // button to pop view
                 Button(action: {
@@ -33,21 +33,40 @@ struct SearchResultsView: View {
                     Image(systemName: Constants.Icon.back)
                 })
                 
-                HStack {
-                    Text(searchViewModel.startLocation)
-                        .frame(width: 40)
-                        .truncationMode(.tail)
-                    Image(systemName: Constants.Icon.arrowsLeftRight)
-                        .font(.system(size: 12))
-                    Text(searchViewModel.endLocation)
+                VStack (alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(searchViewModel.startLocation)
+                        Image(systemName: Constants.Icon.arrowLeft)
+                        Text(searchViewModel.endLocation)
+                        
+                        Spacer()
+                    }
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .font(.system(size: 13))
                     
-                        .frame(width: 40)
-                        .truncationMode(.tail)
+                    Text(String(format: Constants.Search.searchBarCaption, Globals.dateFormatter.string(from: searchViewModel.dateOfDeparture), searchViewModel.numberOfPersons))
+                    .fontWeight(.light)
+                    .font(.system(size: 12))
                 }
-                .padding(.horizontal, 44)
                 .frame(maxWidth: .infinity)
+                .padding(.leading)
+                
+                // button to pop view
+                Button(action: {
+                    // toggle filter view
+                }, label: {
+                    Image(systemName: Constants.Icon.filters)
+                })
             }
-            .padding()
+            .padding(22)
+            .padding(.horizontal, 4)
+            .overlay {
+                RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
+                    .stroke()
+                    .foregroundColor(.gray.opacity(0.5))
+                    .padding(8)
+            }
             
             ScrollView {
                 ForEach($searchViewModel.searchResults, id: \.self) { $data in
@@ -56,12 +75,12 @@ struct SearchResultsView: View {
                         startTime       : data.publish.time,
                         endLocation     : data.publish.destination,
                         endTime         : data.publish.time,
-                        price           : "String(data.publish.setPrice)",
-                        dateOfDeparture : "data.publish.date",
-                        numberOfSeats   : "data.publish.passengersCount",
+                        price           : "\(data.publish.setPrice)",
+                        dateOfDeparture : data.publish.date,
+                        numberOfSeats   : "\(data.publish.passengersCount)",
                         driverImage     : Constants.Images.introImage,
-                        driverName      : "data.publish.d",
-                        driverRating    : "String(data.averageRating)"
+                        driverName      : data.name,
+                        driverRating    : "\(data.averageRating)"
                     )
                     .foregroundColor(.black)
                     .onTapGesture {

@@ -301,9 +301,13 @@ struct Constants {
         static let check            = "checkmark"
         static let checkCircle      = "checkmark.circle.fill"
         
+        static let arrowLeft        = "arrow.forward"
+        
         static let edit             = "square.and.pencil"
         static let plusCircle       = "plus.circle"
         static let minusCircle      = "minus.circle"
+        
+        static let filters          = "slider.horizontal.3"
         
         static let eye              = "eye"
         static let eyeSlash         = "eye.slash"
@@ -328,6 +332,8 @@ struct Constants {
         static let search   = "Search"
         
         static let rideDetails = "Ride Details"
+        
+        static let searchBarCaption = "%@, %@ Persons"
     }
     
     // MARK: - type aliases

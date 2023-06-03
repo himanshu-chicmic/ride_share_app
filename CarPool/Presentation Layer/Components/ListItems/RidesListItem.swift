@@ -63,7 +63,6 @@ struct RidesListItem: View {
             .padding(
                 [.top, .horizontal]
             )
-            .layoutPriority(1)
             
             VStack {
                 // price of ride

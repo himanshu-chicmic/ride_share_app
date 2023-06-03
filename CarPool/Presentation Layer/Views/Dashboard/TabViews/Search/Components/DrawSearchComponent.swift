@@ -94,6 +94,7 @@ struct DrawSearchComponent: View {
                             Image(systemName: Constants.Icon.next)
                                 .padding()
                         }
+                        .font(.system(size: 14))
                         .onTapGesture {
                             // set text field value to suggestion on tap
                             textField = suggestion.formattedAddress

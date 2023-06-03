@@ -46,9 +46,9 @@ class SearchViewModel: ObservableObject {
     var baseViewModel = BaseViewModel.shared
     
     // selected start location value
-    var startLocationVal: Candidate?
+    @Published var startLocationVal: Candidate?
     // selected end location value
-    var endLocationVal: Candidate?
+    @Published var endLocationVal: Candidate?
     
     // MARK: - method
     
@@ -78,6 +78,7 @@ class SearchViewModel: ObservableObject {
         } else {
             // check if startLocation and endLocation are not nil
             if let startLocationVal, let endLocationVal {
+                print(startLocationVal.formattedAddress, endLocationVal.formattedAddress)
                 // create data using all properties
                 let data : [String : Any] = [
                     Constants.JsonKeys.sourceLongitude      : startLocationVal.geometry.location.lng,
