@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// enum for search input fields identifier
 enum SearchInputsIdentifier {
     case startLocation
     case endLocation

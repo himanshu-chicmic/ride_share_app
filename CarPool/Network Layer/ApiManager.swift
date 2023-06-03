@@ -37,7 +37,7 @@ class ApiManager {
         ) else {
             // return error if request is nil
             return Fail(
-                error: APIError.invalidRequestError(Constants.ErrorsMessages.invalidUrl)
+                error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl)
             ).eraseToAnyPublisher()
         }
         
@@ -45,7 +45,7 @@ class ApiManager {
         return URLSession.shared.dataTaskPublisher(for: request)
             // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
-                return APIError.transportError(error)
+                return APIErrors.transportError(error)
             }
             // map data and reponse and return
             // after getting response as HTTPURLResponse
@@ -99,7 +99,7 @@ class ApiManager {
             requestType : requestType
         ) else {
             // return error if request is nil
-            return Fail(error: APIError.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
+            return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
         
@@ -107,7 +107,7 @@ class ApiManager {
         return URLSession.shared.dataTaskPublisher(for: request)
             // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
-                return APIError.transportError(error)
+                return APIErrors.transportError(error)
             }
             // map data and reponse and return
             // after getting response as HTTPURLResponse
@@ -131,7 +131,7 @@ class ApiManager {
                     )
                 } catch {
                     // thrown decoding error message
-                    throw APIError.decodingError(error)
+                    throw APIErrors.decodingError(error)
                 }
             }
             .eraseToAnyPublisher()
@@ -149,7 +149,7 @@ class ApiManager {
         // get the url from base url string
         guard let url = URL(string: baseURL) else {
             // return nil if url is invalid
-            return Fail(error: APIError.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
+            return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
         // initialize url request
@@ -161,7 +161,7 @@ class ApiManager {
         return URLSession.shared.dataTaskPublisher(for: request)
             // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
-                return APIError.transportError(error)
+                return APIErrors.transportError(error)
             }
             // map data and reponse and return
             // after getting response as HTTPURLResponse
@@ -178,7 +178,7 @@ class ApiManager {
                 do {
                     return try JSONDecoder().decode(PlacesDataModel.self, from: data)
                 } catch {
-                    throw APIError.decodingError(error)
+                    throw APIErrors.decodingError(error)
                 }
             }
             .eraseToAnyPublisher()
@@ -198,7 +198,7 @@ class ApiManager {
             requestType : requestType
         ) else {
             // return error if request is nil
-            return Fail(error: APIError.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
+            return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
         
@@ -206,7 +206,7 @@ class ApiManager {
         return URLSession.shared.dataTaskPublisher(for: request)
             // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
-                return APIError.transportError(error)
+                return APIErrors.transportError(error)
             }
             // map data and reponse and return
             // after getting response as HTTPURLResponse
@@ -220,7 +220,7 @@ class ApiManager {
                 do {
                     return try decoder.decode(RidesSearchModel.self, from: data)
                 } catch {
-                    throw APIError.decodingError(error)
+                    throw APIErrors.decodingError(error)
                 }
             }
             .eraseToAnyPublisher()

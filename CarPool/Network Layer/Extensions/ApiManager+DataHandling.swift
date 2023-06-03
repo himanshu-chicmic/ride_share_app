@@ -87,7 +87,7 @@ extension ApiManager {
         // get reponse as HTTPURLResponse
         guard let response = response as? HTTPURLResponse else {
             // else throw error as invalid response
-            throw APIError.invalidResponse
+            throw APIErrors.invalidResponse
         }
         // set sessino token for three types of request. signup, logi and logout
 
@@ -136,7 +136,7 @@ extension ApiManager {
     func decodeSignInRequestAdditionalData(requestType: RequestType, data: Data, error: Error) throws -> SignInAndProfileModel {
         // serialize data to get json dictionary of response returned from api
         guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-            throw APIError.decodingError(error)
+            throw APIErrors.decodingError(error)
         }
         // initialize status struct instance with code 404
         var status = Status(code: 404, error: nil, errors: nil, data: nil, imageURL: nil)
@@ -151,7 +151,7 @@ extension ApiManager {
             status.code = json[Constants.JsonKeys.status] as? Int ?? 0
             status.message = json[Constants.JsonKeys.message] as? String
         default:
-            throw APIError.decodingError(error)
+            throw APIErrors.decodingError(error)
         }
         // return response
         return SignInAndProfileModel(status: status)

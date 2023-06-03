@@ -2,13 +2,13 @@
 //  Errors.swift
 //  CarPool
 //
-//  Created by Nitin on 6/3/23.
+//  Created by Himanshu on 6/3/23.
 //
 
 import Foundation
 
 /// enum for handling errors
-enum APIError: LocalizedError {
+enum APIErrors: LocalizedError {
       /// Invalid request, e.g. invalid URL
       case invalidRequestError(String)
       
