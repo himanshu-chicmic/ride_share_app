@@ -209,15 +209,6 @@ class BaseViewModel: ObservableObject {
         }
         // then toggle switch to dashboard
         switchToDashboard.toggle()
-        
-        // on .login request type get user details
-        if type == .logIn {
-            sendRequestToApi(
-                httpMethod  : .GET,
-                requestType : .getDetails,
-                data        : [:]
-            )
-        }
     }
     
     /// base method to handle data response returned from api. this method checks the type of request

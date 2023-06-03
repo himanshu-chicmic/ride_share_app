@@ -1,16 +1,19 @@
 //
-//  ApiManager+Extension.swift
+//  ApiManager+DataHandling.swift
 //  CarPool
 //
-//  Created by Nitin on 6/3/23.
+//  Created by Himanshu on 6/3/23.
 //
 
 import Foundation
 import UIKit
 
+/// extension for ApiMangerClass
+/// contains methods related to data handling and decoding
 extension ApiManager {
     
-    // MARK: methods for creating data
+    // MARK: - methods for creating data
+    
     /// method to create the body of data for sending the
     /// image, and other details of user to the server
     /// used in only put request for sending the user data
@@ -32,7 +35,8 @@ extension ApiManager {
                 if key == Constants.JsonKeys.image {
                     // get image as UIImage
                     if let image = value as? UIImage {
-                        body.append(String(format: dataBodyStrings.imageContentDisposition, key, "\(BaseViewModel.shared.userData?.status.data?.firstName ?? Constants.Images.defaultImageName)"))
+                        let imageFileName = BaseViewModel.shared.userData?.status.data?.firstName ?? Constants.Images.defaultImageName
+                        body.append(String(format: dataBodyStrings.imageContentDisposition, key, imageFileName))
                         body.append(String(format: dataBodyStrings.imageContentType, dataBodyStrings.imageMimePng))
                         // get data of image by compressing image
                         if let data = image.jpegData(compressionQuality: 0.25) {
@@ -48,7 +52,8 @@ extension ApiManager {
         return body
     }
     
-    // MARK: method to handle response from api requests
+    // MARK: - methods for session token
+    
     /// method to set authorization token for signup, login or logout requests
     /// - Parameters:
     ///   - requestType: type of api request
@@ -70,7 +75,8 @@ extension ApiManager {
         }
     }
     
-    // MARK: methods for decoding data
+    // MARK: - methods for decoding data
+    
     /// method to get HttpUrlResponse and set session token by using it
     /// - Parameters:
     ///   - requestType: type of api request
@@ -84,7 +90,8 @@ extension ApiManager {
             throw APIError.invalidResponse
         }
         // set sessino token for three types of request. signup, logi and logout
-        if requestType == .signUp, requestType == .logIn, requestType == .logOut {
+
+        if requestType == .signUp || requestType == .logIn || requestType == .logOut {
             // call set session token method to set authorization token
             // for login signup or logout requests
             self.setSessionToken(
