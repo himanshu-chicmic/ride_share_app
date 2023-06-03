@@ -239,7 +239,6 @@ struct Constants {
         static let status = "status"
         static let message = "message"
 
-        
         static let resetPasswordToken = "reset_password_token"
         static let passwordConfirmation = "password_confirmation"
         
@@ -249,6 +248,8 @@ struct Constants {
         static let destinationLatitude = "destination_latitude"
         static let passengersCount = "pass_count"
         static let date = "date"
+        
+        static let places = "PLACES_API_KEY"
         
         static let id = "id"
     }

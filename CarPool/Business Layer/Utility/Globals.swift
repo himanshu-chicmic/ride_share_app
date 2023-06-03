@@ -33,6 +33,7 @@ struct Globals {
         )!
     }()
     
+    // get default maximum date
     static let defaultDateMax: Date = {
         return Calendar.current.date(
             byAdding: .year,
@@ -40,7 +41,7 @@ struct Globals {
             to      : Date()
         )!
     }()
-    
+    // get default mininum date
     static let defaultDateMin: Date = {
         return Calendar.current.date(
             byAdding: .year,
@@ -99,14 +100,16 @@ struct Globals {
         return years.reversed()
     }
     
+    /// method to fetch api key from project
+    /// - Returns: api key as string
     static func fetchAPIKey() -> String {
-        if let apikey = Bundle.main.infoDictionary?["PLACES_API_KEY"] as? String {
+        if let apikey = Bundle.main.infoDictionary?[Constants.JsonKeys.places] as? String {
             return apikey
         }
         return ""
     }
     
-    static func getTextQueryWithReplacedCharsWithPlus(text: String) -> String{
+    static func getTextQueryWithReplacedCharsWithPlus(text: String) -> String {
         return text.replacingOccurrences(of: " ", with: "+")
     }
 }

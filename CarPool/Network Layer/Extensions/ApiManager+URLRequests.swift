@@ -98,12 +98,12 @@ extension ApiManager {
         else if requestType == .searchRides {
             // variable use for starting a query
             var addQuery = true
-            for (key, values) in data {
+            for (key, value) in data {
                 if addQuery {
-                    baseURL.append("?\(key)=\(values)")
+                    baseURL.append(String(format: ApiConstants.query, key, "\(value)"))
                     addQuery = false
                 } else {
-                    baseURL.append("&\(key)=\(values)")
+                    baseURL.append(String(format: ApiConstants.addToQuery, key, "\(value)"))
                 }
             }
         }

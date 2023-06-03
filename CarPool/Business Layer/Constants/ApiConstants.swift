@@ -15,6 +15,8 @@ struct ApiConstants {
     static let placesEndpoint = "&inputtype=textquery&key="
     
     static let getRequestEmailCheck = "?email=%@"
+    static let query = "?%@=%@"
+    static let addToQuery = "&%@=%@"
     
     // this endpoint is used for following type of request
     // Post - to sign up

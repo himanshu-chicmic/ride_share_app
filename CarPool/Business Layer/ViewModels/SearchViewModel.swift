@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import SwiftUI
 
 /// view model for search properties and methods
 class SearchViewModel: ObservableObject {
@@ -56,28 +55,30 @@ class SearchViewModel: ObservableObject {
     // MARK: utility methods
     /// method to validate input search field and call api request function
     func validateSearchInput() {
-//        if startLocation.isEmpty {
-//            baseViewModel.toastMessage = Constants.ValidationMessages.emptyStartLocation
-//        } else if endLocation.isEmpty {
-//            baseViewModel.toastMessage = Constants.ValidationMessages.emptyEndLocation
-//        } else {
-            let data = [
-                "source_latitude": 30.7298742, "source_longitude": 76.7741056, "destination_latitude": 13.082881,
-                    "destination_longitude": 80.276002,
-                    "pass_count" : 1,
-                   "date": "2023-06-04"
-            ] as [String : Any]
-//            let data : [String : Any] = [
-//                Constants.JsonKeys.sourceLongitude      : startLocationVal?.geometry.location.lng ?? 30.71326,
-//                Constants.JsonKeys.sourceLatitude       : startLocationVal?.geometry.location.lat ?? 76.69106,
-//                Constants.JsonKeys.destinationLongitude : endLocationVal?.geometry.location.lng ?? 82.9739,
-//                Constants.JsonKeys.destinationLatitude  : endLocationVal?.geometry.location.lat ?? 25.3176,
-//                Constants.JsonKeys.passengersCount      : Int(numberOfPersons) ?? 1,
-//                Constants.JsonKeys.date                 : Globals.dateFormatter.string(from: dateOfDeparture)
-//            ]
-                
-            sendRequestForSearch(httpMethod: .GET, requestType: .searchRides, data: data)
-//        }
+        if startLocation.isEmpty {
+            baseViewModel.toastMessage = Constants.ValidationMessages.emptyStartLocation
+        } else if endLocation.isEmpty {
+            baseViewModel.toastMessage = Constants.ValidationMessages.emptyEndLocation
+        } else {
+            // check if startLocation and endLocation are not nil
+            if let startLocationVal, let endLocationVal {
+                // create data using all properties
+                let data : [String : Any] = [
+                    Constants.JsonKeys.sourceLongitude      : startLocationVal.geometry.location.lng,
+                    Constants.JsonKeys.sourceLatitude       : startLocationVal.geometry.location.lat,
+                    Constants.JsonKeys.destinationLongitude : endLocationVal.geometry.location.lng,
+                    Constants.JsonKeys.destinationLatitude  : endLocationVal.geometry.location.lat,
+                    Constants.JsonKeys.passengersCount      : numberOfPersons,
+                    Constants.JsonKeys.date                 : Globals.dateFormatter.string(from: dateOfDeparture)
+                ]
+                // send request for search
+                sendRequestForSearch(
+                    httpMethod  : .GET,
+                    requestType : .searchRides,
+                    data        : data
+                )
+            }
+        }
     }
     
     // MARK: method to send api requests
@@ -88,7 +89,6 @@ class SearchViewModel: ObservableObject {
     func sendRequestForSearch(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         // empty search results before sending api request
         searchResults = []
-        
         // call getSearchResults in ApiManager class
         anyCancellable = ApiManager.shared.getSearchResults(
             httpMethod  : httpMethod,
@@ -122,7 +122,6 @@ class SearchViewModel: ObservableObject {
     func sendRequestForGettingPlacesData(httpMethod: HttpMethod, requestType: RequestType, data: String) {
         // empty suggestions before sending api request
         suggestions = []
-        
         // call getPlacesData in ApiManager class
         anyCancellable = ApiManager.shared.getPlacesData(
             httpMethod  : httpMethod,
