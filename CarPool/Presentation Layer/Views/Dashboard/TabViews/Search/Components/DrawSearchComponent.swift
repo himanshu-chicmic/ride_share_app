@@ -2,7 +2,7 @@
 //  DrawSearchComponent.swift
 //  CarPool
 //
-//  Created by Nitin on 5/26/23.
+//  Created by Himanshu on 5/26/23.
 //
 
 import SwiftUI
@@ -11,12 +11,14 @@ struct DrawSearchComponent: View {
     
     // MARK: - properties
     
+    // properties for view data
     var heading: String
     var inputField: InputFieldIdentifier
     var placeholder: String
-
+    // binding variable for text field input
     @Binding var textField: String
     
+    // environment object for search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
     
     // MARK: - body
@@ -29,6 +31,7 @@ struct DrawSearchComponent: View {
                 
                 // button to pop view
                 Button(action: {
+                    // disable search view on close button click
                     searchViewModel.activeSearchView.toggle()
                 }, label: {
                     Image(systemName: Constants.Icon.close)
@@ -40,12 +43,15 @@ struct DrawSearchComponent: View {
             .padding()
             .padding(.bottom)
             
+            // title for type of input
             Text(heading)
                 .font(.system(size: 20))
                 .fontWeight(.semibold)
                 .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
             
+            // set input field type based on the search component type
+            // which is updated when this view is opened
             switch searchViewModel.searchComponentType {
             case .date:
                 DatePicker(
@@ -70,21 +76,34 @@ struct DrawSearchComponent: View {
                     // call google place api
                     searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
                 }
+                .onAppear {
+                    // empty search view when this view appears
+                    searchViewModel.suggestions = []
+                }
                 
+                // list to show suggestions of places
                 List(searchViewModel.suggestions, id: \.self) { suggestion in
-                    ZStack {
+                    HStack {
+                        // text containg place suggestion
                         Text(suggestion.formattedAddress)
-                            .onTapGesture {
-                                textField = suggestion.formattedAddress
-                                
-                                if searchViewModel.searchComponentType == .startLocation {
-                                    searchViewModel.startLocationVal = suggestion
-                                } else if searchViewModel.searchComponentType == .endLocation {
-                                    searchViewModel.endLocationVal = suggestion
-                                }
-                                
-                                searchViewModel.activeSearchView.toggle()
-                            }
+                        Spacer()
+                        Image(systemName: Constants.Icon.enter)
+                            .padding()
+                    }
+                    .onTapGesture {
+                        // set text field value to suggestion on tap
+                        textField = suggestion.formattedAddress
+                        // if search component type is start location then set
+                        // start location
+                        if searchViewModel.searchComponentType == .startLocation {
+                            searchViewModel.startLocationVal = suggestion
+                        }
+                        // else set value for end location
+                        else if searchViewModel.searchComponentType == .endLocation {
+                            searchViewModel.endLocationVal = suggestion
+                        }
+                        // toggle active search view to dismiss this view
+                        searchViewModel.activeSearchView.toggle()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 }

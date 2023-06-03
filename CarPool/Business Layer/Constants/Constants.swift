@@ -314,6 +314,8 @@ struct Constants {
         
         static let person           = "person"
         static let calendar         = "calendar"
+        
+        static let enter            = "arrow.up.left"
     }
     
     // MARK: - search view
