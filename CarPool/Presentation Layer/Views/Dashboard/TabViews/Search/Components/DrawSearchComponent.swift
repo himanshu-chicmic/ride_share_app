@@ -33,6 +33,8 @@ struct DrawSearchComponent: View {
                 Button(action: {
                     // disable search view on close button click
                     searchViewModel.activeSearchView.toggle()
+                    // set input field value on view dismiss
+                    searchViewModel.setInputFieldValue()
                 }, label: {
                     Image(systemName: Constants.Icon.close)
                 })
@@ -81,33 +83,43 @@ struct DrawSearchComponent: View {
                     searchViewModel.suggestions = []
                 }
                 
-                // list to show suggestions of places
-                List(searchViewModel.suggestions, id: \.self) { suggestion in
-                    HStack {
-                        // text containg place suggestion
-                        Text(suggestion.formattedAddress)
-                        Spacer()
-                        Image(systemName: Constants.Icon.enter)
+                // show loader if suggestion list is empty
+                if !searchViewModel.suggestions.isEmpty {
+                    // list to show suggestions of places
+                    List(searchViewModel.suggestions, id: \.self) { suggestion in
+                        HStack {
+                            // text containg place suggestion
+                            Text(suggestion.formattedAddress)
+                            Spacer()
+                            Image(systemName: Constants.Icon.next)
+                                .padding()
+                        }
+                        .onTapGesture {
+                            // set text field value to suggestion on tap
+                            textField = suggestion.formattedAddress
+                            // if search component type is start location then set
+                            // start location
+                            if searchViewModel.searchComponentType == .startLocation {
+                                searchViewModel.startLocationVal = suggestion
+                            }
+                            // else set value for end location
+                            else if searchViewModel.searchComponentType == .endLocation {
+                                searchViewModel.endLocationVal = suggestion
+                            }
+                            // toggle active search view to dismiss this view
+                            searchViewModel.activeSearchView.toggle()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    }
+                    .listStyle(.plain)
+                } else {
+                    // loader will be visible once the text field
+                    // containts atleast one character
+                    if !textField.isEmpty {
+                        ProgressView()
                             .padding()
                     }
-                    .onTapGesture {
-                        // set text field value to suggestion on tap
-                        textField = suggestion.formattedAddress
-                        // if search component type is start location then set
-                        // start location
-                        if searchViewModel.searchComponentType == .startLocation {
-                            searchViewModel.startLocationVal = suggestion
-                        }
-                        // else set value for end location
-                        else if searchViewModel.searchComponentType == .endLocation {
-                            searchViewModel.endLocationVal = suggestion
-                        }
-                        // toggle active search view to dismiss this view
-                        searchViewModel.activeSearchView.toggle()
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 }
-                .listStyle(.plain)
             }
         }
     }

@@ -352,6 +352,7 @@
 		6AA164632A29EEB000EFDFBC /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				6A1BDD382A2082E800459FF2 /* SearchInputFieldView.swift */,
 				6A1BDD3A2A208EB500459FF2 /* DrawSearchComponent.swift */,
 			);
 			path = Components;
@@ -360,7 +361,6 @@
 		6AA164642A29EEC500EFDFBC /* InnerViews */ = {
 			isa = PBXGroup;
 			children = (
-				6A1BDD382A2082E800459FF2 /* SearchInputFieldView.swift */,
 				6A1BDD3E2A20B65300459FF2 /* SearchResultsView.swift */,
 				6A1BDD402A20BD6200459FF2 /* RideDetailView.swift */,
 			);

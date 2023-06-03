@@ -98,6 +98,7 @@ struct Constants {
         
         static let leavingFrom      = "Leaving from"
         static let goingTo          = "Going to"
+        static let inputLocation    = "Enter a location"
         static let today            = "Today"
         static let one              = "1"
         
@@ -246,7 +247,7 @@ struct Constants {
         static let sourceLatitude = "source_latitude"
         static let destinationLongitude = "destination_longitude"
         static let destinationLatitude = "destination_latitude"
-        static let passengersCount = "pass_count"
+        static let passengersCount = "passengers_count"
         static let date = "date"
         
         static let places = "PLACES_API_KEY"
@@ -298,7 +299,7 @@ struct Constants {
         static let back             = "chevron.left"
         static let next             = "chevron.right"
         static let check            = "checkmark"
-        static let checkCircle            = "checkmark.circle.fill"
+        static let checkCircle      = "checkmark.circle.fill"
         
         static let edit             = "square.and.pencil"
         static let plusCircle       = "plus.circle"
@@ -316,6 +317,8 @@ struct Constants {
         static let calendar         = "calendar"
         
         static let enter            = "arrow.up.left"
+        
+        static let arrowsLeftRight  = "arrow.left.arrow.right"
     }
     
     // MARK: - search view
@@ -323,6 +326,8 @@ struct Constants {
         
         static let title    = "Where To?"
         static let search   = "Search"
+        
+        static let rideDetails = "Ride Details"
     }
     
     // MARK: - type aliases

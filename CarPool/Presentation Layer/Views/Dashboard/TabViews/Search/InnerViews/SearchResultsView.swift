@@ -2,20 +2,24 @@
 //  SearchResultsView.swift
 //  CarPool
 //
-//  Created by Nitin on 5/26/23.
+//  Created by Himanshu on 5/26/23.
 //
 
 import SwiftUI
 
 struct SearchResultsView: View {
     
+    // MARK: - properties
+    
+    // variable tp navigate to rides details view
     @State var navigate = false
     
+    // variable to contain current clicked or default value
+    // of data related to search model
     @State var selectedTile: Datum?
     
+    // environment object for search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
-    
-    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
@@ -24,14 +28,24 @@ struct SearchResultsView: View {
                 
                 // button to pop view
                 Button(action: {
-                    dismiss()
+                    searchViewModel.showSearchResults.toggle()
                 }, label: {
                     Image(systemName: Constants.Icon.back)
                 })
-
-                // title for app bar
-                Text("Ride Details")
-                    .frame(maxWidth: .infinity)
+                
+                HStack {
+                    Text(searchViewModel.startLocation)
+                        .frame(width: 40)
+                        .truncationMode(.tail)
+                    Image(systemName: Constants.Icon.arrowsLeftRight)
+                        .font(.system(size: 12))
+                    Text(searchViewModel.endLocation)
+                    
+                        .frame(width: 40)
+                        .truncationMode(.tail)
+                }
+                .padding(.horizontal, 44)
+                .frame(maxWidth: .infinity)
             }
             .padding()
             
@@ -68,5 +82,6 @@ struct SearchResultsView: View {
 struct SearchResultsView_Previews: PreviewProvider {
     static var previews: some View {
         SearchResultsView()
+            .environmentObject(SearchViewModel())
     }
 }

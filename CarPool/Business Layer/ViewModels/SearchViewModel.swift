@@ -53,6 +53,22 @@ class SearchViewModel: ObservableObject {
     // MARK: - method
     
     // MARK: utility methods
+    /// method to set input field values
+    func setInputFieldValue() {
+        switch searchComponentType {
+        case .startLocation:
+            if startLocationVal == nil {
+                startLocation = ""
+            }
+        case .endLocation:
+            if endLocationVal == nil {
+                endLocation = ""
+            }
+        default:
+            break
+        }
+    }
+    
     /// method to validate input search field and call api request function
     func validateSearchInput() {
         if startLocation.isEmpty {

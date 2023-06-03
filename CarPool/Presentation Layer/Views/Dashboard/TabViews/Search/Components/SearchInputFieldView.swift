@@ -2,7 +2,7 @@
 //  SearchInputFieldView.swift
 //  CarPool
 //
-//  Created by Nitin on 5/26/23.
+//  Created by Himanshu on 5/26/23.
 //
 
 import SwiftUI
@@ -11,36 +11,38 @@ struct SearchInputFieldView: View {
     
     // MARK: - properties
     
-    // environment variable for dismiss
-    @Environment(\.dismiss) var dismiss
-    
+    // environment objects
     @EnvironmentObject var baseViewModel: BaseViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     
+    // MARK: - body
+    
     var body: some View {
         VStack {
-            
+            // swift over the componenet type of search
+            // and draw search component according to it
+            // to get the correct input field for property type
             switch searchViewModel.searchComponentType {
             case .startLocation:
                 DrawSearchComponent(
                     heading     : Constants.Headings.pickUp,
                     inputField  : .text,
-                    placeholder : Constants.Placeholders.leavingFrom,
+                    placeholder : Constants.Placeholders.inputLocation,
                     textField   : $searchViewModel.startLocation
                 )
             case .endLocation:
                 DrawSearchComponent(
                     heading     : Constants.Headings.dropOff,
                     inputField  : .text,
-                    placeholder : Constants.Placeholders.goingTo,
+                    placeholder : Constants.Placeholders.inputLocation,
                     textField   : $searchViewModel.endLocation
                 )
             case .date:
                 DrawSearchComponent(
                     heading     : Constants.Headings.whenAreYouGoing,
                     inputField  : .dateOfBirth,
-                    placeholder : Constants.Placeholders.leavingFrom,
+                    placeholder : "",
                     textField   : .constant("")
                 )
             case .numberOfPersons:
@@ -52,30 +54,19 @@ struct SearchInputFieldView: View {
                 )
             }
             
-            // button for saving details
-            Button {
-                
-                withAnimation {
-                    // check for textfield validations
-                }
-                
-                // if toast message is empty
-                // there no error in validations and verification
-                if baseViewModel.toastMessage.isEmpty {
+            if searchViewModel.searchComponentType == .numberOfPersons || searchViewModel.searchComponentType == .date {
+                // button for saving details
+                Button {
                     searchViewModel.activeSearchView.toggle()
+                } label: {
+                    DefaultButtonLabel(text: Constants.Others.save)
                 }
-                
-            } label: {
-                DefaultButtonLabel(text: Constants.Others.save)
+                .padding()
             }
-            .padding()
             
+            // space needed for input picker types
+            // will not affect other input field types
             Spacer()
-        }
-        .onChange(of: searchViewModel.activeSearchView) { newValue in
-            if !newValue {
-                dismiss()
-            }
         }
     }
 }
