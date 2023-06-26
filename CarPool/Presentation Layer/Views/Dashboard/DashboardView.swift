@@ -22,6 +22,8 @@ struct DashboardView: View {
     // state objects
     @StateObject var searchViewModel = SearchViewModel()
     
+    @EnvironmentObject var baseViewModel: BaseViewModel
+    
     // MARK: - body
     
     var body: some View {
@@ -52,6 +54,16 @@ struct DashboardView: View {
             }
         }
         .environmentObject(searchViewModel)
+        .overlay (alignment: .bottom) {
+            if !baseViewModel.toastMessage.isEmpty {
+                
+                if baseViewModel.toastMessage == "Profile picture updated!" {
+                    ToastMessageView(backgroundColor: .green)
+                } else {
+                    ToastMessageView()
+                }
+            }
+        }
     }
 }
 

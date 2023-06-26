@@ -18,6 +18,9 @@ struct SearchView: View {
     // state variables
     @State var findRide: Bool = true
     
+    // data of selected result
+    @State var selectedTile: Datum?
+    
     // colors array
     private var colorsListForBanners: [Color] = [
         Color(uiColor: UIColor(hexString: "#9699BE")),
@@ -49,12 +52,12 @@ struct SearchView: View {
                     // switch `find a ride` and `offer a ride`
                     HStack {
                         Group {
-                            Text("Find a ride")
+                            Text(Constants.Search.findARide)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 44)
                                 .background(findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
                                 .foregroundColor(findRide ? .white : .gray)
-                            Text("Offer a ride")
+                            Text(Constants.Search.offerARide)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 44)
                                 .background(!findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
@@ -120,11 +123,11 @@ struct SearchView: View {
                             .padding()
                             .font(.system(size: 16))
                             .fontWeight(.semibold)
-                            // set background by checking `isPrimary` boolean
+                        // set background by checking `isPrimary` boolean
                             .background(
                                 Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
                             )
-                            // set foreground by checking `isPrimary` boolean
+                        // set foreground by checking `isPrimary` boolean
                             .foregroundColor(.white)
                             .cornerRadius(4)
                     })
@@ -136,63 +139,88 @@ struct SearchView: View {
                         .foregroundColor(.gray.opacity(0.05))
                         .background(.gray.opacity(0.05))
                     
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(0..<2) { index in
-                                Text("Don't make advance payments to driver to avoid any inconveniences.")
-                                    .padding(.vertical, 24)
-                                    .padding(.horizontal, 44)
-                                    .background(colorsListForBanners[index])
-                                    .foregroundColor(.white)
+                    //                    ScrollView(.horizontal) {
+                    //                        HStack {
+                    //                            ForEach(0..<2) { index in
+                    //                                Text("Don't make advance payments to driver to avoid any inconveniences.")
+                    //                                    .padding(.vertical, 24)
+                    //                                    .padding(.horizontal, 44)
+                    //                                    .background(colorsListForBanners[index])
+                    //                                    .foregroundColor(.white)
+                    //                                    .font(.system(size: 14, design: .rounded))
+                    //                                    .fontWeight(.medium)
+                    //                                    .frame(width: 360)
+                    //                                    .cornerRadius(4)
+                    //                                    .padding(.leading, ((index == 0) ? 16 : 0))
+                    //                                    .padding(.trailing, ((index == 1) ? 16 : 0))
+                    //                            }
+                    //                        }
+                    //                    }
+                    //                    .scrollIndicators(.never)
+                    //                    .padding(.vertical)
+                    //
+                    //                    Rectangle()
+                    //                        .frame(height: 4)
+                    //                        .foregroundColor(.gray.opacity(0.05))
+                    //                        .background(.gray.opacity(0.05))
+                    
+                    // show below view only if recent searches are available
+                    
+                    if !searchViewModel.recentSearches.isEmpty {
+                        
+                        HStack(alignment: .center) {
+                            Text(Constants.Search.recentSearches)
+                                .font(.system(size: 16, design: .rounded))
+                                .fontWeight(.medium)
+                                .padding()
+                            
+                            Spacer()
+                            
+                            Button {
+                                withAnimation {
+                                    UserDefaults.standard.set([], forKey: Constants.UserDefaultKeys.recentSearches)
+                                    searchViewModel.getRecentSearches()
+                                }
+                            } label: {
+                                Text(Constants.Others.clear)
                                     .font(.system(size: 14, design: .rounded))
                                     .fontWeight(.medium)
-                                    .frame(width: 360)
-                                    .cornerRadius(4)
+                                    .padding()
+                            }
+                            
+                        }
+                        
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(Array(zip(searchViewModel.recentSearches.indices, searchViewModel.recentSearches)), id: \.0) { (index, recentSearch) in
+                                    RidesListItem(
+                                        startLoction    : recentSearch.publish.source,
+                                        startTime       : Globals.getFormattedDate(date: recentSearch.publish.time),
+                                        endLocation     : recentSearch.publish.destination,
+                                        endTime         : Globals.getFormattedDate(date: recentSearch.reachTime),
+                                        date            : "\(recentSearch.publish.date ?? Constants.Placeholders.defaultTime)",
+                                        price           : Globals.getPrice(price: recentSearch.publish.setPrice),
+                                        driverImage     : recentSearch.imageURL ?? "",
+                                        driverName      : recentSearch.name,
+                                        driverRating    : Globals.getRatings(ratings: recentSearch.averageRating ?? 0)
+                                    )
+                                    .frame(width: 300)
+                                    .foregroundColor(.black)
                                     .padding(.leading, ((index == 0) ? 16 : 0))
-                                    .padding(.trailing, ((index == 1) ? 16 : 0))
-                            }
-                        }
-                    }
-                    .scrollIndicators(.never)
-                    .padding(.vertical)
-                    
-                    Rectangle()
-                        .frame(height: 4)
-                        .foregroundColor(.gray.opacity(0.05))
-                        .background(.gray.opacity(0.05))
-                    
-                    Text("Recent Searches")
-                        .font(.system(size: 16, design: .rounded))
-                        .fontWeight(.medium)
-                        .padding(.vertical)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
-                    
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(0..<5) { index in
-                                RidesListItem(
-                                    startLoction    : "Chandigarh, Punjab",
-                                    startTime       : "08:00 AM",
-                                    endLocation     : "Mohali, Punjab",
-                                    endTime         : "09:00 AM",
-                                    date            : "",
-                                    price           : "",
-                                    driverImage     : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMWare6bVn8jvzemzQAGlNCznq2mhogai21DA4EHHoEKfvUFbFOru20v7L3BHZD2CghQTuHaxLdGk&usqp=CAU&ec=48665701",
-                                    driverName      : "Miles Morales",
-                                    driverRating    : "4.9/5.0"
-                                )
-                                .frame(width: 300)
-                                .foregroundColor(.black)
-                                .onTapGesture {
-                                    searchViewModel.showRideDetailView.toggle()
+                                    .padding(.trailing, ((index == searchViewModel.recentSearches.count-1) ? 16 : 0))
+                                    .onTapGesture {
+                                        selectedTile = recentSearch
+                                        searchViewModel.showRideDetailView.toggle()
+                                    }
                                 }
-                                .padding(.leading, ((index == 0) ? 16 : 0))
-                                .padding(.trailing, ((index == 4) ? 16 : 0))
+                                .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {
+                                    RideDetailView(data: selectedTile ?? nil)
+                                        .navigationBarBackButtonHidden()
+                                }
                             }
                         }
+                        .scrollIndicators(.never)
                     }
-                    .scrollIndicators(.never)
                 }
                 .scrollIndicators(.never)
                 
@@ -213,10 +241,6 @@ struct SearchView: View {
                 RideBookSuccess()
             }
             
-            // toast message for errors
-            if !baseViewModel.toastMessage.isEmpty {
-                ToastMessageView()
-            }
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Network
 
 /// api manager class for handling api calls and responses
 class ApiManager {
@@ -29,6 +30,15 @@ class ApiManager {
     func createApiRequest(
         httpMethod: HttpMethod, dataDictionary: [String: Any], requestType: RequestType
     ) -> AnyPublisher<SignInAndProfileModel, Error> {
+        
+        NetworkMonitor.shared.startMonitoring()
+        if NetworkMonitor.shared.isReachable {
+            NetworkMonitor.shared.stopMonitoring()
+            return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
+                .eraseToAnyPublisher()
+        }
+        NetworkMonitor.shared.stopMonitoring()
+        
         // get url request from setUpApiRequest method
         guard let request = setUpApiRequest(
             httpMethod  : httpMethod,
@@ -92,6 +102,15 @@ class ApiManager {
     func createVehiclesApiRequest(
         httpMethod: HttpMethod, dataDictionary: [String: Any], requestType: RequestType
     ) -> AnyPublisher<VehiclesDataModel, Error> {
+        
+        NetworkMonitor.shared.startMonitoring()
+        if NetworkMonitor.shared.isReachable {
+            NetworkMonitor.shared.stopMonitoring()
+            return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
+                .eraseToAnyPublisher()
+        }
+        NetworkMonitor.shared.stopMonitoring()
+        
         // get url request from setUpApiRequest method
         guard let request = setUpApiRequest(
             httpMethod  : httpMethod,
@@ -145,6 +164,15 @@ class ApiManager {
     ///   - requestType: type of request
     /// - Returns: any published with either response as PlacesDataModel or Error
     func getPlacesData(httpMethod: HttpMethod, text: String, requestType: RequestType) -> AnyPublisher<PlacesDataModel, Error> {
+        
+        NetworkMonitor.shared.startMonitoring()
+        if NetworkMonitor.shared.isReachable {
+            NetworkMonitor.shared.stopMonitoring()
+            return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
+                .eraseToAnyPublisher()
+        }
+        NetworkMonitor.shared.stopMonitoring()
+        
         // create a base url
         let baseURL = ApiConstants.placesURL + Globals.getTextQueryWithReplacedCharsWithPlus(text: text) + ApiConstants.placesEndpoint + Globals.fetchAPIKey()
         // get the url from base url string
@@ -192,6 +220,15 @@ class ApiManager {
     ///   - requestType: type of api request
     /// - Returns: any published with either response as PlacesDataModel or Error
     func getSearchResults(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<RidesSearchModel, Error> {
+        
+        NetworkMonitor.shared.startMonitoring()
+        if NetworkMonitor.shared.isReachable {
+            NetworkMonitor.shared.stopMonitoring()
+            return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
+                .eraseToAnyPublisher()
+        }
+        NetworkMonitor.shared.stopMonitoring()
+        
         // get url request from setUpApiRequest method
         guard let request = setUpApiRequest(
             httpMethod  : httpMethod,
@@ -237,6 +274,15 @@ class ApiManager {
     ///   - requestType: type of api request
     /// - Returns: any published with either response as PlacesDataModel or Error
     func createApiRequestForRides(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<BookRideModel, Error> {
+        
+        NetworkMonitor.shared.startMonitoring()
+        if NetworkMonitor.shared.isReachable {
+            NetworkMonitor.shared.stopMonitoring()
+            return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
+                .eraseToAnyPublisher()
+        }
+        NetworkMonitor.shared.stopMonitoring()
+        
         // get url request from setUpApiRequest method
         guard let request = setUpApiRequest(
             httpMethod  : httpMethod,

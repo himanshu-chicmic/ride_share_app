@@ -9,11 +9,10 @@ import SwiftUI
 
 struct LoadImageView: View {
     
+    // image
     var driverImage: String
     
     var body: some View {
-        // profile can be changed
-        // by clicking on it
         AsyncImage(url: URL(string: driverImage)) { image in
             image
                 .resizable()

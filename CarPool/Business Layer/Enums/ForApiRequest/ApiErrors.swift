@@ -23,6 +23,9 @@ enum APIErrors: LocalizedError {
       
       /// The server sent data in an unexpected format
       case decodingError(Error)
+    
+      /// no internet connection available
+      case noInternet(String)
 
       var errorDescription: String? {
         switch self {
@@ -36,6 +39,8 @@ enum APIErrors: LocalizedError {
           return "Validation Error: \(reason)"
         case .decodingError:
           return "The server returned data in an unexpected format. Try updating the app."
+        case .noInternet(let message):
+            return "No internet connection available."
         }
       }
 }

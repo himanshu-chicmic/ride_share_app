@@ -20,9 +20,7 @@ struct SearchInputFieldView: View {
     
     var body: some View {
         VStack {
-            // swift over the componenet type of search
-            // and draw search component according to it
-            // to get the correct input field for property type
+            // type of search
             switch searchViewModel.searchComponentType {
             case .startLocation:
                 DrawSearchComponent(
@@ -64,8 +62,6 @@ struct SearchInputFieldView: View {
                 .padding()
             }
             
-            // space needed for input picker types
-            // will not affect other input field types
             Spacer()
         }
     }

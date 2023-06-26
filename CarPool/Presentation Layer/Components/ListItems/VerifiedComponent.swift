@@ -16,7 +16,7 @@ struct VerifiedComponent: View {
         HStack(alignment: .firstTextBaseline) {
             // plus circle image
             Image(systemName: Constants.Icon.checkCircle)
-                .foregroundColor(.blue)
+                .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
             
             Text(text)
                 .font(.system(size: 17))

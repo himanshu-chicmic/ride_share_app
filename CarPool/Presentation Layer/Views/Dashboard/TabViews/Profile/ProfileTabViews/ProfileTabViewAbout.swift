@@ -130,12 +130,6 @@ struct ProfileTabViewAbout: View {
             .padding()
             .overlay (alignment: .bottom) {
                 CircleProgressView()
-                
-                if baseViewModel.toastMessage == "Profile picture updated!" {
-                    ToastMessageView(backgroundColor: .green)
-                } else if baseViewModel.toastMessage == "Unbale to update profle picture!" {
-                    ToastMessageView()
-                }
             }
         }
     }

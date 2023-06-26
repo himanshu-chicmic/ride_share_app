@@ -113,8 +113,7 @@ struct RideSummary: View {
                         ]
                     ])
                 } label: {
-                    DefaultButtonLabel(
-                        text: "Confirm Ride")
+                    DefaultButtonLabel(text: Constants.Others.confirm)
                 }
                 .padding()
             }

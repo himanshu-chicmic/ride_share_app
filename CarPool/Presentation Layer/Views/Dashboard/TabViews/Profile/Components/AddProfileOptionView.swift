@@ -163,13 +163,6 @@ struct AddProfileOptionView: View {
                 }
             })
             .navigationBarBackButtonHidden()
-            
-            // show toast message
-            // if any validation or verificatioin
-            // message exists
-            if !baseViewModel.toastMessage.isEmpty {
-                ToastMessageView()
-            }
         }
     }
 }

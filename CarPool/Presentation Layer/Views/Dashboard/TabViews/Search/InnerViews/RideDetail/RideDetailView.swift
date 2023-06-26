@@ -14,6 +14,7 @@ struct RideDetailView: View {
     // selected ride data
     var data: Datum?
     
+    // search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
     
     @Environment(\.dismiss) var dismiss

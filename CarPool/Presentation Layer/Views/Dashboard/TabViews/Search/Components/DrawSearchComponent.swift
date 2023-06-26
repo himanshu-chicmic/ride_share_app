@@ -11,17 +11,17 @@ struct DrawSearchComponent: View {
     
     // MARK: - properties
     
-    // properties for view data
     var heading: String
     var inputField: InputFieldIdentifier
     var placeholder: String
-    // binding variable for text field input
+    
+    // text field input
     @Binding var textField: String
     
-    // environment object for search view model
+    // search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
     
-    // state object for progress bar view
+    // progress bar view
     @State var showProgressView = false
     
     // MARK: - body
@@ -29,14 +29,12 @@ struct DrawSearchComponent: View {
     var body: some View {
         VStack {
             
-            // app bar at the top
+            // app bar
             HStack {
                 
-                // button to pop view
+                // close button
                 Button(action: {
-                    // disable search view on close button click
                     searchViewModel.activeSearchView.toggle()
-                    // set input field value on view dismiss
                     searchViewModel.setInputFieldValue()
                 }, label: {
                     Image(systemName: Constants.Icon.close)
@@ -48,15 +46,14 @@ struct DrawSearchComponent: View {
             .padding()
             .padding(.bottom)
             
-            // title for type of input
+            // title
             Text(heading)
                 .font(.system(size: 20))
                 .fontWeight(.semibold)
                 .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            // set input field type based on the search component type
-            // which is updated when this view is opened
+            // input field
             switch searchViewModel.searchComponentType {
             case .date:
                 DatePicker(
@@ -84,16 +81,13 @@ struct DrawSearchComponent: View {
                     showProgressView = !text.isEmpty
                 }
                 .onAppear {
-                    // empty search view when this view appears
                     searchViewModel.suggestions = []
                 }
                 
                 // show loader if suggestion list is empty
                 if !searchViewModel.suggestions.isEmpty {
-                    // list to show suggestions of places
                     List(searchViewModel.suggestions, id: \.self) { suggestion in
                         HStack {
-                            // text containg place suggestion
                             Text(suggestion.formattedAddress)
                             Spacer()
                             Image(systemName: Constants.Icon.next)
@@ -103,8 +97,7 @@ struct DrawSearchComponent: View {
                         .onTapGesture {
                             // set text field value to suggestion on tap
                             textField = suggestion.formattedAddress
-                            // if search component type is start location then set
-                            // start location
+                            // if search component type is start location
                             if searchViewModel.searchComponentType == .startLocation {
                                 searchViewModel.startLocationVal = suggestion
                             }
@@ -112,15 +105,12 @@ struct DrawSearchComponent: View {
                             else if searchViewModel.searchComponentType == .endLocation {
                                 searchViewModel.endLocationVal = suggestion
                             }
-                            // toggle active search view to dismiss this view
                             searchViewModel.activeSearchView.toggle()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     }
                     .listStyle(.plain)
                 } else {
-                    // loader will be visible once the text field
-                    // containts atleast one character
                     if showProgressView {
                         ProgressView()
                             .padding()

@@ -56,6 +56,12 @@ class SearchViewModel: ObservableObject {
     // selected end location value
     @Published var endLocationVal: Candidate?
     
+    @Published var recentSearches: [Datum] = []
+    
+    init() {
+        getRecentSearches()
+    }
+    
     // MARK: - method
     
     // MARK: utility methods
@@ -172,6 +178,11 @@ class SearchViewModel: ObservableObject {
                 
                 self?.bookedSuccess.toggle()
                 
+                self?.startLocation = ""
+                self?.endLocation = ""
+                self?.dateOfDeparture = Globals.defaultDateCurrent
+                self?.numberOfPersons = Constants.Placeholders.one
+                
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
                     self?.showRideDetailView.toggle()
                     self?.showSearchResults.toggle()
@@ -213,5 +224,53 @@ class SearchViewModel: ObservableObject {
                 self?.suggestions.append(address)
             }
         }
+    }
+    
+    /// update recent searches in user defaults
+    /// - Parameter data: search result data
+    func updateRecentSearches(data: Datum?) {
+        
+        var recentSearches: [Data] = []
+        
+        let encoder = JSONEncoder()
+        guard let encoded = try? encoder.encode(data) else {
+            return
+        }
+        
+        if let data = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentSearches) as? [Data] {
+            recentSearches = data
+        }
+        
+        for data in recentSearches {
+            if encoded == data {
+                return
+            }
+        }
+        
+        if recentSearches.count >= 10 {
+            recentSearches.removeSubrange(9..<recentSearches.count)
+        }
+        
+        recentSearches.insert(encoded, at: 0)
+        
+        UserDefaults.standard.set(recentSearches, forKey: Constants.UserDefaultKeys.recentSearches)
+        
+        getRecentSearches()
+    }
+    
+    func getRecentSearches() {
+        guard let savedData = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentSearches) as? [Data] else {
+            return
+        }
+        
+        var recents: [Datum] = []
+        
+        for data in savedData {
+            if let jsonData = try? JSONDecoder().decode(Datum.self, from: data) {
+                recents.append(jsonData)
+            }
+        }
+        
+        self.recentSearches = recents
     }
 }

@@ -11,11 +11,10 @@ struct SearchResultsView: View {
     
     // MARK: - properties
     
-    // variable to contain current clicked or default value
-    // of data related to search model
+    // data of selected result
     @State var selectedTile: Datum?
     
-    // environment object for search view model
+    // search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
     
     var body: some View {
@@ -83,6 +82,7 @@ struct SearchResultsView: View {
                     .onTapGesture {
                         selectedTile = data
                         searchViewModel.showRideDetailView.toggle()
+                        searchViewModel.updateRecentSearches(data: data)
                     }
                 }
                 .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {

@@ -277,7 +277,9 @@ struct Constants {
         static let close       = "Close"
         static let dismiss       = "Dismiss"
         static let exit         = "Exit"
+        static let confirm = "Confirm Ride"
         static let update         = "Update"
+        static let clear         = "Clear"
     }
     
     struct JsonKeys {
@@ -312,6 +314,8 @@ struct Constants {
         
         static let invalidUrl = "URL Invalid"
         
+        static let noInternetConnection = "No internet connection available."
+        
     }
     
     struct InfoMessages {
@@ -322,6 +326,7 @@ struct Constants {
         static let session = "SessionAuthToken"
         static let profileData = "UserProfileData"
         static let vehiclesData = "VehiclesData"
+        static let recentSearches = "recentRideSearch"
     }
     
     // MARK: - alert dialog strings
@@ -391,6 +396,11 @@ struct Constants {
         static let rideDetails = "Ride Details"
         
         static let searchBarCaption = "%@, %@ Persons"
+        
+        static let findARide = "Find a ride"
+        static let offerARide = "Offer a ride"
+        
+        static let recentSearches = "Recent Searches"
     }
     
     // MARK: - type aliases
