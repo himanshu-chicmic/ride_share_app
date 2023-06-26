@@ -78,7 +78,9 @@ struct DrawSearchComponent: View {
                 .onChange(of: textField) { text in
                     // call google place api
                     searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
-                    showProgressView = !text.isEmpty
+                    withAnimation {
+                        showProgressView = !text.isEmpty
+                    }
                 }
                 .onAppear {
                     searchViewModel.suggestions = []
@@ -88,6 +90,8 @@ struct DrawSearchComponent: View {
                 if !searchViewModel.suggestions.isEmpty {
                     List(searchViewModel.suggestions, id: \.self) { suggestion in
                         HStack {
+                            Image(systemName: Constants.Icon.mapMark)
+                                .padding(.trailing)
                             Text(suggestion.formattedAddress)
                             Spacer()
                             Image(systemName: Constants.Icon.next)
@@ -115,6 +119,32 @@ struct DrawSearchComponent: View {
                         ProgressView()
                             .padding()
                     }
+                }
+            }
+            Spacer()
+        }
+        .overlay (alignment: .bottomTrailing) {
+            if searchViewModel.searchComponentType == .startLocation {
+                HStack {
+                    Spacer()
+                    
+                    HStack {
+                        Image(systemName: Constants.Icon.location)
+                            .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
+                            .padding([.vertical, .leading])
+                            .padding(.trailing, showProgressView ? 18 : 0)
+                        
+                        if !showProgressView {
+                            Text("Set current location")
+                                .fontWeight(.light)
+                                .padding(.trailing)
+                        }
+                        
+                    }
+                    .font(.system(size: 13))
+                    .background(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary, alpha: 0.15)))
+                    .cornerRadius(8)
+                    .padding()
                 }
             }
         }

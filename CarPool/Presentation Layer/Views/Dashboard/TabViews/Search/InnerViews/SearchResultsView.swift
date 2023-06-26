@@ -82,7 +82,7 @@ struct SearchResultsView: View {
                     .onTapGesture {
                         selectedTile = data
                         searchViewModel.showRideDetailView.toggle()
-                        searchViewModel.updateRecentSearches(data: data)
+                        searchViewModel.updateRecentlyViewedRides(data: data)
                     }
                 }
                 .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {

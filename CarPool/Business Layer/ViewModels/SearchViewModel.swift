@@ -56,10 +56,10 @@ class SearchViewModel: ObservableObject {
     // selected end location value
     @Published var endLocationVal: Candidate?
     
-    @Published var recentSearches: [Datum] = []
+    @Published var recenltyViewedRides: [Datum] = []
     
     init() {
-        getRecentSearches()
+        getRecentlyViewedRides()
     }
     
     // MARK: - method
@@ -228,38 +228,38 @@ class SearchViewModel: ObservableObject {
     
     /// update recent searches in user defaults
     /// - Parameter data: search result data
-    func updateRecentSearches(data: Datum?) {
+    func updateRecentlyViewedRides(data: Datum?) {
         
-        var recentSearches: [Data] = []
+        var recentlyViewed: [Data] = []
         
         let encoder = JSONEncoder()
         guard let encoded = try? encoder.encode(data) else {
             return
         }
         
-        if let data = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentSearches) as? [Data] {
-            recentSearches = data
+        if let data = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentViewedRides) as? [Data] {
+            recentlyViewed = data
         }
         
-        for data in recentSearches {
+        for data in recentlyViewed {
             if encoded == data {
                 return
             }
         }
         
-        if recentSearches.count >= 10 {
-            recentSearches.removeSubrange(9..<recentSearches.count)
+        if recentlyViewed.count >= 10 {
+            recentlyViewed.removeSubrange(9..<recentlyViewed.count)
         }
         
-        recentSearches.insert(encoded, at: 0)
+        recentlyViewed.insert(encoded, at: 0)
         
-        UserDefaults.standard.set(recentSearches, forKey: Constants.UserDefaultKeys.recentSearches)
+        UserDefaults.standard.set(recentlyViewed, forKey: Constants.UserDefaultKeys.recentViewedRides)
         
-        getRecentSearches()
+        getRecentlyViewedRides()
     }
     
-    func getRecentSearches() {
-        guard let savedData = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentSearches) as? [Data] else {
+    func getRecentlyViewedRides() {
+        guard let savedData = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentViewedRides) as? [Data] else {
             return
         }
         
@@ -271,6 +271,6 @@ class SearchViewModel: ObservableObject {
             }
         }
         
-        self.recentSearches = recents
+        self.recenltyViewedRides = recents
     }
 }

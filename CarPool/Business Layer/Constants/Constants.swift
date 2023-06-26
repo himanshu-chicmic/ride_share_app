@@ -326,7 +326,7 @@ struct Constants {
         static let session = "SessionAuthToken"
         static let profileData = "UserProfileData"
         static let vehiclesData = "VehiclesData"
-        static let recentSearches = "recentRideSearch"
+        static let recentViewedRides = "recentRideSearch"
     }
     
     // MARK: - alert dialog strings
@@ -385,6 +385,9 @@ struct Constants {
         static let enter            = "arrow.up.left"
         
         static let arrowsLeftRight  = "arrow.left.arrow.right"
+        
+        static let mapMark = "mappin.and.ellipse"
+        static let location = "location.fill"
     }
     
     // MARK: - search view
@@ -400,7 +403,7 @@ struct Constants {
         static let findARide = "Find a ride"
         static let offerARide = "Offer a ride"
         
-        static let recentSearches = "Recent Searches"
+        static let recentlyViewed = "Recently viewed"
     }
     
     // MARK: - type aliases

@@ -164,12 +164,11 @@ struct SearchView: View {
                     //                        .foregroundColor(.gray.opacity(0.05))
                     //                        .background(.gray.opacity(0.05))
                     
-                    // show below view only if recent searches are available
                     
-                    if !searchViewModel.recentSearches.isEmpty {
+                    if !searchViewModel.recenltyViewedRides.isEmpty {
                         
                         HStack(alignment: .center) {
-                            Text(Constants.Search.recentSearches)
+                            Text(Constants.Search.recentlyViewed)
                                 .font(.system(size: 16, design: .rounded))
                                 .fontWeight(.medium)
                                 .padding()
@@ -178,8 +177,8 @@ struct SearchView: View {
                             
                             Button {
                                 withAnimation {
-                                    UserDefaults.standard.set([], forKey: Constants.UserDefaultKeys.recentSearches)
-                                    searchViewModel.getRecentSearches()
+                                    UserDefaults.standard.set([], forKey: Constants.UserDefaultKeys.recentViewedRides)
+                                    searchViewModel.getRecentlyViewedRides()
                                 }
                             } label: {
                                 Text(Constants.Others.clear)
@@ -192,7 +191,7 @@ struct SearchView: View {
                         
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(Array(zip(searchViewModel.recentSearches.indices, searchViewModel.recentSearches)), id: \.0) { (index, recentSearch) in
+                                ForEach(Array(zip(searchViewModel.recenltyViewedRides.indices, searchViewModel.recenltyViewedRides)), id: \.0) { (index, recentSearch) in
                                     RidesListItem(
                                         startLoction    : recentSearch.publish.source,
                                         startTime       : Globals.getFormattedDate(date: recentSearch.publish.time),
@@ -207,7 +206,7 @@ struct SearchView: View {
                                     .frame(width: 300)
                                     .foregroundColor(.black)
                                     .padding(.leading, ((index == 0) ? 16 : 0))
-                                    .padding(.trailing, ((index == searchViewModel.recentSearches.count-1) ? 16 : 0))
+                                    .padding(.trailing, ((index == searchViewModel.recenltyViewedRides.count-1) ? 16 : 0))
                                     .onTapGesture {
                                         selectedTile = recentSearch
                                         searchViewModel.showRideDetailView.toggle()
