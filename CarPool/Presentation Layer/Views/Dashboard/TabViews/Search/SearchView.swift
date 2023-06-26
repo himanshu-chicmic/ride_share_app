@@ -120,10 +120,6 @@ struct SearchView: View {
                     .padding(.horizontal)
                     
                     if findRide {
-                        // date
-                        GetPickers(pickerType: .vehicle, dateRange: Globals.defaultDateMin...Globals.defaultDate, date: .constant(.now))
-                        .padding()
-                        
                         InputFieldsWithIcons(
                             icon        : Constants.Icon.rupee,
                             placeholder : Constants.Placeholders.price,
