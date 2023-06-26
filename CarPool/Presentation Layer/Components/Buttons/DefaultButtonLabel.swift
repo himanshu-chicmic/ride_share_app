@@ -7,47 +7,43 @@
 
 import SwiftUI
 
-/// default button for the application
 struct DefaultButtonLabel: View {
     
     // MARK: - properties
     
-    // text for button
+    // button text
     var text: String
     
-    // bool to check is button is primary
-    // primary button label has a solid background
-    // if not primary
-    // the button label will have transparent background
-    // and text color will be set to blue
+    // boolean to check if the button is primary or not
+    // by default set to `true`
     var isPrimary: Bool = true
     
     // MARK: - body
     
     var body: some View {
         
-        // text for button label
+        // button text
         Text(text)
             .frame(maxWidth: .infinity)
             .padding()
-            .font(.system(size: 14))
-            .fontWeight(
-                isPrimary ? .semibold : .regular
-            )
+            .font(.system(size: 16))
+            .fontWeight(.semibold)
+            // set background by checking `isPrimary` boolean
             .background(
-                isPrimary ? .blue : .blue.opacity(0)
+                isPrimary ?
+                Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) :
+                    Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)).opacity(0)
             )
+            // set foreground by checking `isPrimary` boolean
             .foregroundColor(
-                isPrimary ? .white : .blue
+                isPrimary ? .white : Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
             )
-            .cornerRadius(4)
+            .cornerRadius(8)
             .overlay {
-                // if isPrimary is false
-                // show a rounded rectangle overlay
-                // for border of button
+                // shown when value of `isPrimary` is set to `false`
                 if !isPrimary {
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(.blue, lineWidth: 0.75)
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)), lineWidth: 1)
                 }
             }
     }

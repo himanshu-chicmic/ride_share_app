@@ -61,11 +61,6 @@ struct EditDetailsView: View {
                                 detailsViewModel.validateCompleteProfile(textFieldValues: textFieldValues)
                             } else {
                                 // check for textfield validations
-                                baseViewModel.toastMessage = baseViewModel
-                                    .validationsInstance
-                                    .validateTextFields(
-                                        textFields: textFieldValues
-                                    )
                                 
                                 if baseViewModel.toastMessage.isEmpty {
                                     baseViewModel.toastMessage = baseViewModel.validationsInstance
@@ -94,25 +89,33 @@ struct EditDetailsView: View {
                                         )
                                 }
                                 
-                                var data: [String: Any] = [:]
+                                baseViewModel.toastMessage = baseViewModel
+                                    .validationsInstance
+                                    .validateTextFields(
+                                        textFields: textFieldValues
+                                    )
                                 
-                                for item in textFieldValues {
-                                    switch item.2 {
-                                    case .country:
-                                        data[item.2.rawValue] = detailsViewModel.country
-                                    case .vehicleColor:
-                                        data[item.2.rawValue] = detailsViewModel.color
-                                    case .vehicleModelYear:
-                                        data[item.2.rawValue] = detailsViewModel.year
-                                    default:
-                                        data[item.2.rawValue] = item.0
+                                if baseViewModel.toastMessage.isEmpty {
+                                    var data: [String: Any] = [:]
+                                    
+                                    for item in textFieldValues {
+                                        switch item.2 {
+                                        case .country:
+                                            data[item.2.rawValue] = detailsViewModel.country
+                                        case .vehicleColor:
+                                            data[item.2.rawValue] = detailsViewModel.color
+                                        case .vehicleModelYear:
+                                            data[item.2.rawValue] = detailsViewModel.year
+                                        default:
+                                            data[item.2.rawValue] = item.0
+                                        }
                                     }
-                                }
-                                
-                                if let vehiclesData {
-                                    baseViewModel.sendVehiclesRequestToApi(httpMethod: .PUT, requestType: .updateVehicle, data: ["vehicle" : data, "id" : vehiclesData.id])
-                                } else {
-                                    baseViewModel.sendVehiclesRequestToApi(httpMethod: .POST, requestType: .vehicles, data: ["vehicle" : data])
+                                    
+                                    if let vehiclesData {
+                                        baseViewModel.sendVehiclesRequestToApi(httpMethod: .PUT, requestType: .updateVehicle, data: ["vehicle" : data, "id" : vehiclesData.id])
+                                    } else {
+                                        baseViewModel.sendVehiclesRequestToApi(httpMethod: .POST, requestType: .vehicles, data: ["vehicle" : data])
+                                    }
                                 }
                             }
                         }

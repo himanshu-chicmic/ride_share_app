@@ -10,6 +10,7 @@ import Foundation
 // MARK: - Welcome
 struct RidesSearchModel: Codable {
     let code: Int
+    let message: String?
     let data: [Datum]
 }
 
@@ -22,6 +23,14 @@ struct Datum: Codable, Hashable {
     
     static func == (lhs: Datum, rhs: Datum) -> Bool {
         lhs.hashValue == rhs.hashValue
+    }
+    
+    func getDetailsArray(data: Datum) -> [String] {
+        return [
+            "Distance (in Kms) \(Globals.getDistanceInKms(distance: data.publish.distance))",
+            "\(data.publish.passengersCount) Passengers",
+            "Estimated Time \(Globals.getEstimatedTime(date: data.publish.estimateTime ?? ""))"
+        ]
     }
     
     let id: Int
@@ -48,7 +57,7 @@ struct Publish: Codable {
     let source, destination: String
     let passengersCount: Int
     let addCity: String?
-    let date, time: String
+    let date, time: String?
     let setPrice: Int
     let aboutRide: String
     let userID: Int

@@ -42,6 +42,7 @@ struct CarPoolApp: App {
             .onAppear {
                 baseViewModel.switchDashboardLogin()
             }
+            .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
         }
     }
 }

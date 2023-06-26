@@ -11,11 +11,11 @@ struct UserDetailsView: View {
     
     // MARK: - properties
     
-    // environment object for view models
+    // environment objects
     @EnvironmentObject var baseViewModel: BaseViewModel
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     
-    // state var for close view confirmation
+    // state variables
     @State var popViewConfirmation: Bool = false
     
     // MARK: - body
@@ -24,20 +24,17 @@ struct UserDetailsView: View {
         ZStack(alignment: .bottom) {
             VStack {
                 
-                // app bar at the top
+                // app bar
                 ZStack(alignment: .leading) {
                     
-                    // button to pop view
+                    // close button
                     Button(action: {
-                        // navigate back
-                        // dismiss after asking a confirmation
                         popViewConfirmation.toggle()
                     }, label: {
                         Image(systemName: Constants.Icon.close)
                     })
-                    // ask a confirmation before exiting
-                    .confirmationDialog(
-                        Constants.AlertDialog.exitCompleteProfile,
+                    // confirmation dialog
+                    .confirmationDialog(Constants.AlertDialog.exitCompleteProfile,
                         isPresented     : $popViewConfirmation,
                         titleVisibility : .visible
                     ) {
@@ -47,43 +44,36 @@ struct UserDetailsView: View {
                         Button(Constants.Others.no, role: .cancel) {}
                     }
     
-                    // title for app bar
+                    // app bar title
                     Text(Constants.UserDetails.title)
                         .frame(maxWidth: .infinity)
+                        .fontWeight(.medium)
                 }
                 .padding()
                 .padding(.bottom)
                 
                 // progress bar
-                ProgressView(
-                    String(format: Constants.UserDetails.progress, detailsViewModel.index+1),
-                    value   : detailsViewModel.profileCompletion,
-                    total   : Constants.UserDetails.progressCompletion
+                ProgressView(String(format: Constants.UserDetails.progress, detailsViewModel.index+1),
+                    value : detailsViewModel.profileCompletion,
+                    total : Constants.UserDetails.progressCompletion
                 )
                 .padding()
                 .font(.system(size: 13))
+                .tint(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
                 
-                // if profileCompletion value is greater
-                // than 0 then show the content of this page
+                // if `profileCompletion > 0` then show the content of this page
                 if detailsViewModel.profileCompletion > 0 {
                     
                     ScrollView {
                         // title
                         Text(Constants.UserDetails.titles[detailsViewModel.index])
-                            .font(.system(size: 22))
-                            .fontWeight(.bold)
+                            .font(.system(size: 18, design: .rounded))
+                            .fontWeight(.semibold)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                         
-                        // for each loop to put
-                        // input fields to the view
-                        // the for each loop works for the 2d array textFieldValue[[]]
-                        // which contains necessary information of the fields to add
-                        ForEach(
-                            $detailsViewModel
-                            .textFieldValues[detailsViewModel.index]
-                            .indices, id: \.self
-                        ) { value in
+                        // input fields depending on the progress view's position
+                        ForEach($detailsViewModel.textFieldValues[detailsViewModel.index].indices, id: \.self) { value in
                             DefaultInputField(
                                 inputFieldType : detailsViewModel.textFieldValues[detailsViewModel.index][value].2,
                                 placeholder    : detailsViewModel.textFieldValues[detailsViewModel.index][value].1,
@@ -92,8 +82,6 @@ struct UserDetailsView: View {
                             )
                         }
                         
-                        // button for back and continue
-                        // complete profile steps
                         HStack {
                             if detailsViewModel.index > 0 {
                                 // back button
@@ -112,35 +100,27 @@ struct UserDetailsView: View {
                 }
                 
             }
-            // overlay for progress bar view
-            .overlay {
-                CircleProgressView()
-            }
             .onAppear {
-                // increase the profile completion with +30 increment
-                // to set the first step for complete profile
                 detailsViewModel.profileCompletion += Constants.UserDetails.progressIncrements
-                
-                // reset text fields array
                 detailsViewModel.resetTextFields()
             }
             .onDisappear {
-                // func to reset picker data
                 detailsViewModel.resetPickerData()
-                // empty toast message
                 baseViewModel.toastMessage = ""
             }
-            // bottom sheet for pickers
+            // pickers
             .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
                     pickerType: detailsViewModel.pickerType,
                     date: $detailsViewModel.date
                 )
             }
+            // progress bar
+            .overlay {
+                CircleProgressView()
+            }
             
-            // show toast message
-            // if any validation or verificatioin
-            // message exists
+            // toast message
             if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
             }

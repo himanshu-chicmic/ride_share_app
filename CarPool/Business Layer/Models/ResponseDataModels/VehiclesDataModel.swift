@@ -21,6 +21,15 @@ struct VehiclesStatus: Codable {
 
 // MARK: - VehiclesDataClass
 struct VehiclesDataClass: Codable, Hashable {
+    
+    func getDetailsArray(data: VehiclesDataClass) -> [String] {
+        return [
+            "\(data.vehicleBrand) | \(data.vehicleName)",
+            "\(data.vehicleType) | \(data.vehicleColor) | \(data.vehicleModelYear)",
+            data.vehicleNumber
+        ]
+    }
+    
     let userID: Int
     let country, vehicleNumber, vehicleBrand, vehicleName: String
     let vehicleType, vehicleColor: String

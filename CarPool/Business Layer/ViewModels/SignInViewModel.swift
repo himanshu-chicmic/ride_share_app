@@ -38,13 +38,6 @@ class SignInViewModel: ObservableObject {
         isNewUser ? Constants.SignUp.signUp : Constants.LogIn.logIn
     }
     
-    // return button text
-    // for sign in button in
-    // sign in view
-    var signInButtonText: String {
-        isNewUser ? Constants.SignUp.createAccount : Constants.Others.continue_
-    }
-    
     // returns text for showing if
     // user is already a member
     // or a new user

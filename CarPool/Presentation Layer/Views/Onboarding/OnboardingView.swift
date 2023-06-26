@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     
     // MARK: - properties
+    
     @StateObject var signInViewModel = SignInViewModel()
     
     // MARK: - body
@@ -17,33 +18,56 @@ struct OnboardingView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                ZStack (alignment: .top) {
+                    
+                    // image view
+                    Image(Constants.Images.carpool)
+                        .resizable()
+                        .ignoresSafeArea()
+                        .scaledToFill()
+                    
+                    // ride share logo
+                    VStack (spacing: 0) {
+                        Image(Constants.Images.carpoolIcon)
+                            .resizable()
+                            .frame(width: 54, height: 54)
+                        Text(Constants.Onboarding.rideShare)
+                            .font(.system(size: 20, design: .rounded))
+                            .fontWeight(.bold)
+                        Text(Constants.Onboarding.yourRideYourChoice)
+                            .font(.system(size: 16, design: .rounded))
+                            .fontWeight(.medium)
+                            .padding(.top, 8)
+                    }
+                    .padding(34)
+                }
                 
-                Spacer()
-                
-                // onboarding image
-                Image(Constants.Images.introImage)
-                    .resizable()
-                    .frame(height: 204)
-                    .padding()
-                
-                // onboarding title
+                // welcome text
                 Text(Constants.Onboarding.title)
                     .multilineTextAlignment(.center)
-                    .font(.title)
+                    .padding(.top, 24)
+                    .font(.system(size: 22, design: .rounded))
                     .fontWeight(.bold)
-                    .padding()
                 
-                Spacer()
+                // get started text
+                Text(Constants.Onboarding.subTitle)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 1)
+                    .font(.system(size: 18, design: .rounded))
+                    .fontWeight(.medium)
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 34)
                 
-                // sign up button
+                // signup button
                 Button {
                     signInViewModel.isNewUser = true
                     signInViewModel.navigate.toggle()
                 } label: {
                     DefaultButtonLabel(text: Constants.SignUp.signUp)
                 }
+                .padding(.horizontal)
                 
-                // log in button
+                // login button
                 Button {
                     signInViewModel.isNewUser = false
                     signInViewModel.navigate.toggle()
@@ -53,17 +77,15 @@ struct OnboardingView: View {
                         isPrimary   : false
                     )
                 }
+                .padding(.horizontal)
+                .padding(.bottom, 24)
 
             }
-            // navigate to specified
-            // destination view when the
-            // navigate bool is set to true
+            // next screen/view
             .navigationDestination(isPresented: $signInViewModel.navigate) {
                 LoginSignupView()
             }
-            .padding()
         }
-        // set environment object for signin view model
         .environmentObject(signInViewModel)
     }
 }

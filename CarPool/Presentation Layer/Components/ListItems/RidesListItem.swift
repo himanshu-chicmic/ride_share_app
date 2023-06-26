@@ -22,14 +22,11 @@ struct RidesListItem: View {
     var endLocation: String
     var endTime: String
     
+    // distance of journey
+    var date: String
+    
     // price of ride
     var price: String
-    
-    // date of departure
-    var dateOfDeparture: String
-    
-    // number of seats
-    var numberOfSeats: String
     
     // driver details
     var driverImage: String
@@ -39,92 +36,59 @@ struct RidesListItem: View {
     // MARK: - body
     
     var body: some View {
-        HStack(alignment: .top) {
-            VStack(
-                alignment : .leading,
-                spacing   : 40
-            ) {
-                // helper layout for city name
-                LocationTextViewComponent(
-                    icon     : Constants.Icon.startLocation,
-                    color    : .green,
-                    location : startLoction,
-                    time     : startTime
-                )
-                // helper layout for city name
-                LocationTextViewComponent(
-                    icon     : Constants.Icon.endLocation,
-                    color    : .red,
-                    location : endLocation,
-                    time     : endTime
-                )
+        VStack {
+            HStack {
                 
-            }
-            .padding(
-                [.top, .horizontal]
-            )
-            
-            VStack {
-                // price of ride
-                Text(price)
-                    .font(.system(size: 16))
-                
-                Divider()
-                
-                // ride info
-                // date of departure and number of seats
-                Text(
-                    String(
-                        format: Constants.RidesData.info,
-                        dateOfDeparture, numberOfSeats
-                    )
-                )
-                .font(.system(size: 10))
-                .fontWeight(.light)
-                
-                // driver info
-                VStack(spacing: 2) {
+                VStack {
+                    Image(systemName: Constants.Icon.startLocation)
                     
-                    // driver profile image
-                    Image(driverImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(
-                            width  : 38,
-                            height : 38
-                        )
-                        .clipShape(Circle())
+                    RoundedRectangle(cornerSize: CGSize(width: 4, height: 4))
+                        .frame(width: 1, height: 54)
                     
-                    // name of the driver
-                    Text(driverName)
-                        .font(.system(size: 12))
-                    
-                    // ratings received by driver
-                    HStack(
-                        alignment : .firstTextBaseline,
-                        spacing   : 2
-                    ) {
-                        Text(driverRating)
-                        
-                        Image(systemName: Constants.Icon.star)
-                            .resizable()
-                            .frame(
-                                width  : 10,
-                                height : 10
-                            )
-                            .foregroundColor(.yellow)
-                    }
-                    .font(.system(size: 12))
-                    .fontWeight(.light)
+                    Image(systemName: Constants.Icon.startLocation)
                 }
+                .font(.system(size: 12))
+                .foregroundColor(.gray.opacity(0.5))
+                
+                VStack (alignment: .leading) {
+                    
+                    LocationTextView(title: startTime, location: startLoction)
+                    
+                    Divider()
+                    
+                    LocationTextView(title: endTime, location: endLocation)
+                }
+                .padding(.leading, 8)
             }
             .padding()
-            .background(.gray.opacity(0.05))
             
+            Divider()
+            
+            HStack {
+                
+                LoadImageView(driverImage: driverImage)
+                
+                VStack (alignment: .leading) {
+                    Text(driverName)
+                        .font(.system(size: 14))
+                    Text(driverRating)
+                        .font(.system(size: 12, weight: .light))
+                }
+                
+                Spacer()
+                
+                VStack (alignment: .trailing) {
+                    Text(date)
+                        .font(.system(size: 13, weight: .light))
+                    Text(price)
+                }
+                
+            }
+            .padding(.top, 4)
+            .padding([.bottom, .horizontal])
         }
-        .background(.white)
+        .background(.gray.opacity(0.05))
         .cornerRadius(12)
-        .shadow(color: .gray.opacity(0.2), radius: 12)
     }
 }
 
@@ -135,10 +99,9 @@ struct RidesListItem_Previews: PreviewProvider {
             startTime       : "4:00 pm",
             endLocation     : "patiala",
             endTime         : "5:00 pm",
+            date            : "12-06-2023",
             price           : "Rs. 100",
-            dateOfDeparture : "May, 23 2024",
-            numberOfSeats   : "2",
-            driverImage     : Constants.Images.introImage,
+            driverImage     : Constants.Images.carpool,
             driverName      : "The Protagonist",
             driverRating    : "4.9/5"
         )

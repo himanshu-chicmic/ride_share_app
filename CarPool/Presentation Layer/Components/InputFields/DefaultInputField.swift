@@ -139,6 +139,7 @@ struct DefaultInputField: View {
                                         : Constants.Icon.eyeSlash
                         )
                     })
+                    .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
                 }
                 // set is password visible to false
                 // when the view is switched between
@@ -154,7 +155,7 @@ struct DefaultInputField: View {
                 .disableAutocorrection(true)
             }
         }
-        .font(.system(size: 15))
+        .font(.system(size: 16))
         .keyboardType(keyboard)
         .padding()
         .frame(height: 50)

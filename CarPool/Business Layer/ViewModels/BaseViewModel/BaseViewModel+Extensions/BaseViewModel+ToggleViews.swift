@@ -14,6 +14,16 @@ extension BaseViewModel {
     /// method to handle reponse for login, signup and logout
     /// - Parameter response: response returned from api call
     func switchDashboardOnboarding(response: SignInAndProfileModel, type: RequestType) {
+        // if request is type of login
+        // then get details of the user
+        // to get image and other data
+        if type == .logIn {
+            sendRequestToApi(
+                httpMethod  : .GET,
+                requestType : .getDetails,
+                data        : [:]
+            )
+        }
         // if user details is open then close it first
         if openUserDetailsView {
             openUserDetailsView.toggle()

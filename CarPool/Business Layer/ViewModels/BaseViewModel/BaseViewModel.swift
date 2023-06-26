@@ -60,6 +60,9 @@ class BaseViewModel: ObservableObject {
     // variable to switch between view otp field and hide otp field
     @Published var viewOtpField = false
     
+    // single vehicle value
+    @Published var singleVehicleData: VehiclesDataModel?
+    
     // MARK: variable instances
     // instance for validations struct
     var validationsInstance = Validations()

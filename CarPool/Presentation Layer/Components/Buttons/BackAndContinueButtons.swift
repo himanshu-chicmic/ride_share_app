@@ -7,18 +7,14 @@
 
 import SwiftUI
 
-/// view for back and continue buttons
-/// used in progress of profile completion
-/// during creating a new account
 struct BackAndContinueButtons: View {
     
     // MARK: - properties
     
-    // bool to check wheter to increment
-    // or decrement the value of completion
+    // boolena for checking increment or decrement
     var increment: Bool = true
     
-    // environment object for view models
+    // environment objects
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     @EnvironmentObject var signInViewModel: SignInViewModel
     
@@ -27,9 +23,7 @@ struct BackAndContinueButtons: View {
     var body: some View {
         
         Button(action: {
-            // call validateProfileData to continue
-            // entering data by checking it and
-            // at last step call api for create user
+            // validate and continue
             detailsViewModel.validateProfileData(
                 increment     : increment,
                 emailPassword : signInViewModel.textFieldValues
@@ -38,7 +32,7 @@ struct BackAndContinueButtons: View {
         }, label: {
             DefaultButtonLabel(
                 text      : increment
-                            ? Constants.Others.continue_
+                            ? Constants.Others.next
                             : Constants.Others.back,
                 isPrimary : increment
             )

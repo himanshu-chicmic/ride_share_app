@@ -61,7 +61,7 @@ struct DataClass: Codable {
         case activatedAt       = "activated_at"
         case activateToken     = "activate_token"
         case sessionKey        = "session_key"
-        case phoneVerified      = "phone_verified"
+        case phoneVerified     = "phone_verified"
         case averageRating     = "average_rating"
         case customToken       = "custom_token"
         case otp          

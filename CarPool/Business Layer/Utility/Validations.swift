@@ -31,6 +31,7 @@ struct Validations {
         case .password: regEx = validationRegex.password
         case .firstName, .lastName: regEx = validationRegex.name
         case .phoneNumber: regEx = validationRegex.phone
+        case .vehicleNumber: regEx = validationRegex.vechileRegistrationNumber
         default: regEx = ""
         }
         
@@ -161,6 +162,18 @@ struct Validations {
         return ""
     }
     
+    func validateVehicleNumber(value: String) -> String {
+        let predicate = getPredicate(type: .vehicleNumber)
+        
+        if value.isEmpty {
+            return Constants.ValidationMessages.emptyVehicleNumber
+        } else if !predicate.evaluate(with: value) {
+            return Constants.ValidationMessages.invalidVehicleNumber
+        }
+        
+        return ""
+    }
+    
     /// main method to check for input field validations
     /// - Parameters:
     ///   - textFields: array of text fields that need to be validated
@@ -208,7 +221,8 @@ struct Validations {
                 // vehicle validations
             case .text:
                 toastMessage = validateText(value: value.0)
-                
+            case .vehicleNumber:
+                toastMessage = validateVehicleNumber(value: value.0)
             default:
                 toastMessage = ""
             }

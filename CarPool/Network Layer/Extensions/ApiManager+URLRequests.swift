@@ -29,7 +29,7 @@ extension ApiManager {
         
         // if http method is of type get
         // then we need to add query with base url
-        if httpMethod == .GET {
+        if httpMethod == .GET || httpMethod == .DELETE || httpMethod == .PUT {
             setGetRequestURL(
                 requestType : requestType,
                 baseURL     : &baseURL,
@@ -67,6 +67,10 @@ extension ApiManager {
             )
         }
         
+        // MARK: DEBUG MESSAGES
+        print("DEBUG REQUEST TYPE: ------- \(requestType)")
+        print("DEBUG URL: --------- \(url)")
+        
         // return url request
         return request
     }
@@ -85,7 +89,7 @@ extension ApiManager {
         }
         // if requesst type is of delete vehicle or update send delete or update request
         // which needs id of vehicle as parameters in url
-        else if requestType == .deleteVehicle || requestType == .updateVehicle {
+        else if requestType == .deleteVehicle || requestType == .updateVehicle || requestType == .getVehicleById {
             if let endpoint = data[Constants.JsonKeys.id] {
                 baseURL += "/\(endpoint)"
             }

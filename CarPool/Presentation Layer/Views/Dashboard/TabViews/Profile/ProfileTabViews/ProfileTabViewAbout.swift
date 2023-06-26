@@ -42,7 +42,7 @@ struct ProfileTabViewAbout: View {
                             ProgressView()
                         }
                     } else {
-                        Image(Constants.Images.introImage)
+                        Image(Constants.Images.carpool)
                             .resizable()
                             .scaledToFill()
                     }

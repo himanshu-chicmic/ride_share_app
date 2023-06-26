@@ -27,6 +27,11 @@ enum RequestType: RawRepresentable {
     case updateVehicle
     case deleteVehicle
     case searchRides
+    case getVehicleById
+    
+    case bookPublish
+    
+    case bookedPublishes
     
     /// get raw values based on current
     /// value of the enum
@@ -52,8 +57,14 @@ enum RequestType: RawRepresentable {
             return ApiConstants.resetPassword
         case .vehicles, .getVehicles, .updateVehicle, .deleteVehicle:
             return ApiConstants.vehicles
+        case .getVehicleById:
+            return ApiConstants.vehicleById
         case .searchRides:
             return ApiConstants.searchRides
+        case .bookPublish:
+            return ApiConstants.bookPubilsh
+        case .bookedPublishes:
+            return ApiConstants.bookedPublishes
         }
     }
     
@@ -87,6 +98,12 @@ enum RequestType: RawRepresentable {
             self = .deleteVehicle
         case ApiConstants.searchRides:
             self = .searchRides
+        case ApiConstants.vehicleById:
+            self = .getVehicleById
+        case ApiConstants.bookPubilsh:
+            self = .bookPublish
+        case ApiConstants.bookedPublishes:
+            self = .bookedPublishes
         default:
             return nil
         }

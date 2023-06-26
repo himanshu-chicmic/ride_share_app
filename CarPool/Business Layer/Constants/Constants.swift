@@ -27,7 +27,11 @@ struct Constants {
     // MARK: - onboarding
     struct Onboarding {
         
-        static let title = "Your pick of rides at low prices"
+        static let rideShare = "Ride Share"
+        static let yourRideYourChoice = "Your ride. Your Choice"
+        
+        static let title = "Welcome to Ride Share"
+        static let subTitle = "Let's get started"
     }
     
     // MARK: - sign in with
@@ -80,6 +84,8 @@ struct Constants {
     // MARK: - text field placholders
     struct Placeholders {
         
+        static let dateFormatterLong = "EEEE, MMMM dd YYYY"
+        
         // sign up or login
         static let email            = "Enter email address"
         static let password         = "Enter password"
@@ -89,15 +95,22 @@ struct Constants {
         static let firstname        = "Enter first name"
         static let lastname         = "Enter last name"
         
-        // date of birth picker
+        // date formats
         static let dateOfBirth      = "yyyy-MM-dd"
+        static let timeFormatter      = "hh:mm a"
+        static let dateFormat      = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        static let localeIdentifier = "en_US_POSIX"
+        static let defaultTime = "00:00"
+        
+        // price
+        static let rupee = "Rs. %i"
         
         // select name prefix
         static let selectGender     = "Select name prefix"
         static let genders          = ["Mr.", "Ms/Mrs.", "I'd prefer not to say"]
         
-        static let leavingFrom      = "Leaving from"
-        static let goingTo          = "Going to"
+        static let leavingFrom      = "Enter pickup location"
+        static let goingTo          = "Enter drop location"
         static let inputLocation    = "Enter a location"
         static let today            = "Today"
         static let one              = "1"
@@ -129,10 +142,37 @@ struct Constants {
         static let bio = "What would you like other members to know about you?"
         static let vehicle = "Add vehicle"
         
+        static let rideDetails = "Ride Details"
+        
+        static let summary = "Summary"
+        
         static let pickUp = "Pick-up"
         static let dropOff = "Drop-off"
         static let seatsToBook = "Number of seats to book"
         static let whenAreYouGoing = "When are you going?"
+    }
+    
+    struct RideDetails {
+        static let totalPrice = "Total price"
+        static let contact = "Contact"
+        static let shareRide = "Share ride"
+        static let details = "Trip info"
+        
+        static let vehicleDetails = "Vehicle info"
+        
+        static let passengers = "Passengers"
+        static let departureTime = "Departure time"
+        static let reachTime = "Reach time"
+        static let estimatedTime = "Estimated time"
+        static let aboutRide = "About ride"
+        static let status = "Ride status"
+        
+        static let bookRide = "Book Ride"
+        static let bookRideForPrice = "Book for %@"
+        
+        static let timeUnavailable = "No time mentioned"
+        static let estimateTimeUnavailable = "couldn't get estimated time."
+        static let noRatings = "No ratings"
     }
     
     struct UserInfo {
@@ -175,6 +215,10 @@ struct Constants {
         static let password     = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
         static let name         = "[A-Za-z, ]+"
         static let phone        = "^[6-9]\\d{9}$"
+        
+        static let vechileRegistrationNumber = """
+^[A-Z]{2}[\\ -]{0,1}[0-9]{2}[\\ ""-]{0,1}[A-Z]{1,2}[\\ -]{0,1}[0-9]{4}$
+"""
     }
     
     // MARK: - validation messages
@@ -211,8 +255,11 @@ struct Constants {
         // all input fields required
         static let inputFieldsEmpty = "All input fields are required to be filled for adding a vehicle."
         
-        static let emptyStartLocation = "Enter a start location"
-        static let emptyEndLocation = "Enter an end location"
+        static let emptyStartLocation = "Enter a start location."
+        static let emptyEndLocation = "Enter an end location."
+        
+        static let invalidVehicleNumber = "Invalid vehicle registration number. Please input correct number."
+        static let emptyVehicleNumber = "Please enter your vehicle's registration number."
     }
     
     // MARK: - other common strings
@@ -221,6 +268,7 @@ struct Constants {
         static let or           = "OR"
         static let continue_    = "Continue"
         static let back         = "Back"
+        static let next         = "Next"
         static let done         = "Done"
         static let yes          = "Yes"
         static let no           = "No"
@@ -253,6 +301,10 @@ struct Constants {
         static let places = "PLACES_API_KEY"
         
         static let id = "id"
+        
+        static let passengers = "passenger"
+        static let publishId = "publish_id"
+        static let seats = "seats"
     }
     
     struct ErrorsMessages {
@@ -287,9 +339,14 @@ struct Constants {
     // MARK: - images names
     struct Images {
         
-        static let introImage   = "intro-image"
+        static let carpool   = "carpool"
+        static let carpoolIcon = "carpoolIcon"
         
         static let defaultImageName = "image.png"
+    }
+    
+    struct DefaultColors {
+        static let primary = "#4FB0F4"
     }
     
     // MARK: - default icons

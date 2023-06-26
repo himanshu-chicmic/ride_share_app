@@ -11,41 +11,40 @@ struct DashboardView: View {
     
     // MARK: - properties
     
-    // state array for tableview identifier
-    // used for displaying tab bar
+    // state arrays
     @State var tabViewData: [TabViewIdentifier] = [
         .search, .rides, .inbox, .profile
     ]
     
-    // state var for selection of tab item
+    // state variables
     @State private var selection = TabViewIdentifier.search
     
-    // search view model
+    // state objects
     @StateObject var searchViewModel = SearchViewModel()
     
     // MARK: - body
     
     var body: some View {
         
-        // tab view
+        // tab bar view
         NavigationStack {
             TabView(selection: $selection) {
-                // loop over array  to display all
-                // the five tabs
                 ForEach(tabViewData, id: \.self) { value in
                     
                     Group {
-                        // root of of tab
+                        // tab views
                         switch value {
-                        case .search    : SearchView()
-                        case .rides     : YourRidesView()
-                        case .inbox     : InboxView()
-                        case .profile   : ProfileView()
+                        case .search  : SearchView()
+                        case .rides   : YourRidesView()
+                        case .inbox   : InboxView()
+                        case .profile : ProfileView()
                         }
                     }
-                    // associated tab item
+                    .padding(.bottom)
+                    // tab item
                     .tabItem {
                         Image(systemName: value.rawValue.image)
+                            .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
                         Text(value.rawValue.text)
                     }
                     .tag(value)

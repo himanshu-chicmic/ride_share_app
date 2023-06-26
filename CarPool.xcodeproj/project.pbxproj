@@ -66,9 +66,18 @@
 		6AAE83C52A1C76D2000CD679 /* PickerFieldIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAE83C42A1C76D2000CD679 /* PickerFieldIdentifier.swift */; };
 		6AAE83C72A1C7AAD000CD679 /* GetPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAE83C62A1C7AAD000CD679 /* GetPickers.swift */; };
 		6AAE83CC2A1CA0A9000CD679 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AAE83CB2A1CA0A9000CD679 /* PickerView.swift */; };
+		6AB093412A39D2B500CAFF52 /* BookRideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB093402A39D2B500CAFF52 /* BookRideModel.swift */; };
+		6AB093432A39E69000CAFF52 /* RideBookSuccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB093422A39E69000CAFF52 /* RideBookSuccess.swift */; };
 		6AB0DA4C2A0D0832001F7B9C /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */; };
+		6AB4EE862A36DDE200A3AB94 /* LocationTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE852A36DDE200A3AB94 /* LocationTextView.swift */; };
+		6AB4EE882A37009A00A3AB94 /* LoadImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE872A37009A00A3AB94 /* LoadImageView.swift */; };
+		6AB4EE8A2A3702CF00A3AB94 /* RideDetailsButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE892A3702CF00A3AB94 /* RideDetailsButtonsView.swift */; };
+		6AB4EE8C2A37040B00A3AB94 /* RideDetailsInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE8B2A37040B00A3AB94 /* RideDetailsInformationView.swift */; };
+		6AB4EE902A3713B200A3AB94 /* RideDetailVehicleInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE8F2A3713B200A3AB94 /* RideDetailVehicleInformation.swift */; };
 		6ACCFFA12A0CA7BE00524F17 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCFFA02A0CA7BE00524F17 /* UserModel.swift */; };
 		6ACCFFA32A0CD78400524F17 /* BackAndContinueButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCFFA22A0CD78400524F17 /* BackAndContinueButtons.swift */; };
+		6ACFA2862A3740DB00F07573 /* RideSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACFA2852A3740DB00F07573 /* RideSummary.swift */; };
+		6AD4A7E12A45A0C100CF7CFC /* UIColor+HexConverterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD4A7E02A45A0C100CF7CFC /* UIColor+HexConverterExtension.swift */; };
 		6AD6CDF92A160175002B7548 /* InputFieldsWithIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD6CDF82A160175002B7548 /* InputFieldsWithIcons.swift */; };
 		6AD6CDFC2A160505002B7548 /* LocationTextViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD6CDFB2A160505002B7548 /* LocationTextViewComponent.swift */; };
 		6AD8A6D62A27868000BD8FEE /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD8A6D52A27868000BD8FEE /* Data+Extension.swift */; };
@@ -142,9 +151,18 @@
 		6AAE83C42A1C76D2000CD679 /* PickerFieldIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerFieldIdentifier.swift; sourceTree = "<group>"; };
 		6AAE83C62A1C7AAD000CD679 /* GetPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPickers.swift; sourceTree = "<group>"; };
 		6AAE83CB2A1CA0A9000CD679 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
+		6AB093402A39D2B500CAFF52 /* BookRideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRideModel.swift; sourceTree = "<group>"; };
+		6AB093422A39E69000CAFF52 /* RideBookSuccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideBookSuccess.swift; sourceTree = "<group>"; };
 		6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		6AB4EE852A36DDE200A3AB94 /* LocationTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTextView.swift; sourceTree = "<group>"; };
+		6AB4EE872A37009A00A3AB94 /* LoadImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadImageView.swift; sourceTree = "<group>"; };
+		6AB4EE892A3702CF00A3AB94 /* RideDetailsButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailsButtonsView.swift; sourceTree = "<group>"; };
+		6AB4EE8B2A37040B00A3AB94 /* RideDetailsInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailsInformationView.swift; sourceTree = "<group>"; };
+		6AB4EE8F2A3713B200A3AB94 /* RideDetailVehicleInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailVehicleInformation.swift; sourceTree = "<group>"; };
 		6ACCFFA02A0CA7BE00524F17 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		6ACCFFA22A0CD78400524F17 /* BackAndContinueButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackAndContinueButtons.swift; sourceTree = "<group>"; };
+		6ACFA2852A3740DB00F07573 /* RideSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideSummary.swift; sourceTree = "<group>"; };
+		6AD4A7E02A45A0C100CF7CFC /* UIColor+HexConverterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+HexConverterExtension.swift"; sourceTree = "<group>"; };
 		6AD6CDF82A160175002B7548 /* InputFieldsWithIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldsWithIcons.swift; sourceTree = "<group>"; };
 		6AD6CDFB2A160505002B7548 /* LocationTextViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTextViewComponent.swift; sourceTree = "<group>"; };
 		6AD8A6D52A27868000BD8FEE /* Data+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extension.swift"; sourceTree = "<group>"; };
@@ -241,6 +259,7 @@
 			children = (
 				6A33EACB2A0E198900620993 /* Globals.swift */,
 				6A33EACE2A0E1AB300620993 /* Validations.swift */,
+				6AD4A7E02A45A0C100CF7CFC /* UIColor+HexConverterExtension.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -267,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				6AD6CDFB2A160505002B7548 /* LocationTextViewComponent.swift */,
+				6AB4EE852A36DDE200A3AB94 /* LocationTextView.swift */,
 			);
 			path = CommonComponents;
 			sourceTree = "<group>";
@@ -298,6 +318,7 @@
 				6AA1645C2A29AF8A00EFDFBC /* VehiclesDataModel.swift */,
 				6AA164612A29ED7800EFDFBC /* RidesSearchModel.swift */,
 				6AA164682A2A0D9400EFDFBC /* PlacesDataModel.swift */,
+				6AB093402A39D2B500CAFF52 /* BookRideModel.swift */,
 			);
 			path = ResponseDataModels;
 			sourceTree = "<group>";
@@ -354,6 +375,7 @@
 			children = (
 				6A1BDD382A2082E800459FF2 /* SearchInputFieldView.swift */,
 				6A1BDD3A2A208EB500459FF2 /* DrawSearchComponent.swift */,
+				6AB4EE872A37009A00A3AB94 /* LoadImageView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -361,8 +383,8 @@
 		6AA164642A29EEC500EFDFBC /* InnerViews */ = {
 			isa = PBXGroup;
 			children = (
+				6AB4EE8D2A37117700A3AB94 /* RideDetail */,
 				6A1BDD3E2A20B65300459FF2 /* SearchResultsView.swift */,
-				6A1BDD402A20BD6200459FF2 /* RideDetailView.swift */,
 			);
 			path = InnerViews;
 			sourceTree = "<group>";
@@ -538,16 +560,45 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		6AB0DA4D2A0D0836001F7B9C /* ViewModels */ = {
+		6AB0933F2A39BBE500CAFF52 /* BaseViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				6AA008E92A2B4C1B006A7DF3 /* BaseViewModel+Extensions */,
+				6A32BAD92A1777FF00866706 /* BaseViewModel.swift */,
+			);
+			path = BaseViewModel;
+			sourceTree = "<group>";
+		};
+		6AB0DA4D2A0D0836001F7B9C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6AB0933F2A39BBE500CAFF52 /* BaseViewModel */,
 				6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */,
 				6A32BAD72A17775A00866706 /* DetailsViewModel.swift */,
 				6AEEF3FD2A161ACD0012FE65 /* SearchViewModel.swift */,
-				6A32BAD92A1777FF00866706 /* BaseViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6AB4EE8D2A37117700A3AB94 /* RideDetail */ = {
+			isa = PBXGroup;
+			children = (
+				6AB4EE8E2A37119B00A3AB94 /* Components */,
+				6A1BDD402A20BD6200459FF2 /* RideDetailView.swift */,
+				6ACFA2852A3740DB00F07573 /* RideSummary.swift */,
+				6AB093422A39E69000CAFF52 /* RideBookSuccess.swift */,
+			);
+			path = RideDetail;
+			sourceTree = "<group>";
+		};
+		6AB4EE8E2A37119B00A3AB94 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6AB4EE892A3702CF00A3AB94 /* RideDetailsButtonsView.swift */,
+				6AB4EE8B2A37040B00A3AB94 /* RideDetailsInformationView.swift */,
+				6AB4EE8F2A3713B200A3AB94 /* RideDetailVehicleInformation.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		6AD8A6D42A27867200BD8FEE /* Extensions */ = {
@@ -701,6 +752,7 @@
 				6A1BDD3D2A209CF200459FF2 /* StepperInputField.swift in Sources */,
 				6AA1645D2A29AF8A00EFDFBC /* VehiclesDataModel.swift in Sources */,
 				6A3FB3432A1B891F0069673A /* VehicleModel.swift in Sources */,
+				6AD4A7E12A45A0C100CF7CFC /* UIColor+HexConverterExtension.swift in Sources */,
 				6A12E84F2A0E51830061333A /* TabViewIdentifier.swift in Sources */,
 				6AD6CDF92A160175002B7548 /* InputFieldsWithIcons.swift in Sources */,
 				6A32BAD02A174CB500866706 /* EditDetailsView.swift in Sources */,
@@ -709,10 +761,12 @@
 				6AAB53DF2A0B9CC200138024 /* DefaultInputField.swift in Sources */,
 				6A33EACF2A0E1AB300620993 /* Validations.swift in Sources */,
 				6A32BAD82A17775A00866706 /* DetailsViewModel.swift in Sources */,
+				6AB4EE8A2A3702CF00A3AB94 /* RideDetailsButtonsView.swift in Sources */,
 				6AAE83CC2A1CA0A9000CD679 /* PickerView.swift in Sources */,
 				6ACCFFA12A0CA7BE00524F17 /* UserModel.swift in Sources */,
 				6A32BADE2A17963300866706 /* EditProfileIdentifier.swift in Sources */,
 				6A12E8522A0E57EF0061333A /* YourRidesView.swift in Sources */,
+				6AB4EE902A3713B200A3AB94 /* RideDetailVehicleInformation.swift in Sources */,
 				6AA164622A29ED7800EFDFBC /* RidesSearchModel.swift in Sources */,
 				6A3FB3322A1B48550069673A /* ApiManager.swift in Sources */,
 				6A32BADC2A17940C00866706 /* AddProfileOptionView.swift in Sources */,
@@ -730,6 +784,7 @@
 				6AAB53FA2A0BCB6500138024 /* SignInModel.swift in Sources */,
 				6AAB53BE2A0B7C5800138024 /* OnboardingView.swift in Sources */,
 				6A33EAD42A0E4D9700620993 /* DashboardView.swift in Sources */,
+				6AB4EE8C2A37040B00A3AB94 /* RideDetailsInformationView.swift in Sources */,
 				6AA008E82A2B3405006A7DF3 /* ApiErrors.swift in Sources */,
 				6A12E85F2A0E6A630061333A /* MessagesListItem.swift in Sources */,
 				6A32BADA2A1777FF00866706 /* BaseViewModel.swift in Sources */,
@@ -744,7 +799,9 @@
 				6A12E85A2A0E58380061333A /* ProfileView.swift in Sources */,
 				6A12E8612A0E6D550061333A /* RidesListItem.swift in Sources */,
 				6AA008EB2A2B4C4A006A7DF3 /* BaseViewModel+ToggleViews.swift in Sources */,
+				6ACFA2862A3740DB00F07573 /* RideSummary.swift in Sources */,
 				6AAB53DD2A0B9C8400138024 /* DefaultButtonLabel.swift in Sources */,
+				6AB4EE862A36DDE200A3AB94 /* LocationTextView.swift in Sources */,
 				6AA1645B2A29A81700EFDFBC /* AddedVehicleItem.swift in Sources */,
 				6AEEF3FE2A161ACD0012FE65 /* SearchViewModel.swift in Sources */,
 				6A3FB33D2A1B611F0069673A /* CircleProgressView.swift in Sources */,
@@ -752,6 +809,8 @@
 				6A12E85C2A0E62CA0061333A /* PlaceholderView.swift in Sources */,
 				6A3FB3452A1B8DB80069673A /* ListConstants.swift in Sources */,
 				6A3FB3472A1B9B0B0069673A /* ShowPickerText.swift in Sources */,
+				6AB093432A39E69000CAFF52 /* RideBookSuccess.swift in Sources */,
+				6AB4EE882A37009A00A3AB94 /* LoadImageView.swift in Sources */,
 				6AEEF4002A164AA70012FE65 /* ProfileViewItem.swift in Sources */,
 				6A33EAD12A0E294700620993 /* ToastMessageView.swift in Sources */,
 				6AAB53BC2A0B7C5800138024 /* CarPoolApp.swift in Sources */,
@@ -759,6 +818,7 @@
 				6AAB53F62A0BC14400138024 /* InputFieldIdentifier.swift in Sources */,
 				6AEEF4052A1656A90012FE65 /* ProfileTabViewAccount.swift in Sources */,
 				6A3FB32E2A1B3D500069673A /* HttpMethod.swift in Sources */,
+				6AB093412A39D2B500CAFF52 /* BookRideModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

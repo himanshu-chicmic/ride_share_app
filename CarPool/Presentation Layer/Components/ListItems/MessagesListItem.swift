@@ -69,7 +69,7 @@ struct MessagesListItem: View {
 struct ContactItem_Previews: PreviewProvider {
     static var previews: some View {
         MessagesListItem(
-            image   : Constants.Images.introImage,
+            image   : Constants.Images.carpool,
             name    : "Himanshu",
             message : "message message message...",
             time    : "12:38"

@@ -11,9 +11,6 @@ struct SearchResultsView: View {
     
     // MARK: - properties
     
-    // variable tp navigate to rides details view
-    @State var navigate = false
-    
     // variable to contain current clicked or default value
     // of data related to search model
     @State var selectedTile: Datum?
@@ -23,10 +20,10 @@ struct SearchResultsView: View {
     
     var body: some View {
         VStack {
-            // app bar at the top
+            // app bar
             HStack {
                 
-                // button to pop view
+                // back button
                 Button(action: {
                     searchViewModel.showSearchResults.toggle()
                 }, label: {
@@ -52,7 +49,7 @@ struct SearchResultsView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.leading)
                 
-                // button to pop view
+                // filter button
                 Button(action: {
                     // toggle filter view
                 }, label: {
@@ -69,25 +66,26 @@ struct SearchResultsView: View {
             }
             
             ScrollView {
+                
                 ForEach($searchViewModel.searchResults, id: \.self) { $data in
                     RidesListItem(
                         startLoction    : data.publish.source,
-                        startTime       : data.publish.time,
+                        startTime       : Globals.getFormattedDate(date: data.publish.time),
                         endLocation     : data.publish.destination,
-                        endTime         : data.publish.time,
-                        price           : "\(data.publish.setPrice)",
-                        dateOfDeparture : data.publish.date,
-                        numberOfSeats   : "\(data.publish.passengersCount)",
-                        driverImage     : Constants.Images.introImage,
+                        endTime         : Globals.getFormattedDate(date: data.reachTime),
+                        date            : "\(data.publish.date ?? Constants.Placeholders.defaultTime)",
+                        price           : Globals.getPrice(price: data.publish.setPrice),
+                        driverImage     : data.imageURL ?? "",
                         driverName      : data.name,
-                        driverRating    : "\(data.averageRating)"
+                        driverRating    : Globals.getRatings(ratings: data.averageRating ?? 0)
                     )
                     .foregroundColor(.black)
                     .onTapGesture {
-                        navigate.toggle()
+                        selectedTile = data
+                        searchViewModel.showRideDetailView.toggle()
                     }
                 }
-                .navigationDestination(isPresented: $navigate) {
+                .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {
                     RideDetailView(data: selectedTile ?? nil)
                         .navigationBarBackButtonHidden()
                 }
@@ -95,6 +93,7 @@ struct SearchResultsView: View {
                 
             }
         }
+        .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
     }
 }
 

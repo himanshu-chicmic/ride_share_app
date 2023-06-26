@@ -77,6 +77,8 @@ extension BaseViewModel {
                 requestType : .getVehicles,
                 data        : [:]
             )
+        case .getVehicleById:
+            singleVehicleData = vehiclesData
         default:
             break
         }

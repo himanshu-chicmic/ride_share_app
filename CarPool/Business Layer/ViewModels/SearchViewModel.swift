@@ -31,6 +31,12 @@ class SearchViewModel: ObservableObject {
     @Published var activeSearchView: Bool = false
     // boolean to open close search results view
     @Published var showSearchResults: Bool = false
+    // boolean to open ride detail view
+    @Published var showRideDetailView: Bool = false
+    // boolean to show ride book summary view
+    @Published var openSummaryView: Bool = false
+    
+    @Published var bookedSuccess: Bool = false
     
     // variable to store type of input field in search view
     // used to know type of input given by user in a same view
@@ -129,6 +135,52 @@ class SearchViewModel: ObservableObject {
             }
             // toggle searchShowResults to open search results view
             self?.showSearchResults.toggle()
+        }
+    }
+    
+    /// method to send api request for ride book
+    /// - Parameters:
+    ///   - httpMethod: http method for sending api request
+    ///   - requestType: type of request ex .login, .signup etc.
+    func sendRequestForRideBook(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        
+        baseViewModel.inProgess = true
+        openSummaryView = false
+        
+        // call getSearchResults in ApiManager class
+        anyCancellable = ApiManager.shared.createApiRequestForRides(
+            httpMethod  : httpMethod,
+            data        : data,
+            requestType : requestType
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            // switch completion to handle
+            // failure and finished cases
+            switch completion {
+            case .failure(let error):
+                print("ERROR: \(error)")
+            case .finished:
+                print("success")
+            }
+            
+            self.baseViewModel.disableProgress()
+        } receiveValue: { [weak self] response in
+            print(response)
+            if response.code == 201 {
+                self?.baseViewModel.toastMessage = "Ride booked successfully"
+                
+                self?.bookedSuccess.toggle()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
+                    self?.showRideDetailView.toggle()
+                    self?.showSearchResults.toggle()
+                }
+            } else {
+                self?.baseViewModel.toastMessage = response.error ?? ""
+            }
+            
+            self?.baseViewModel.disableProgress()
         }
     }
     

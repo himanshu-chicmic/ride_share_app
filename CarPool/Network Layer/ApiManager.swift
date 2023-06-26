@@ -127,7 +127,8 @@ class ApiManager {
                     // or otherwise throw any error
                     return try self.decodeVehiclesRequestData(
                         httpMethod  : httpMethod,
-                        data        : data
+                        data        : data,
+                        requestType : requestType
                     )
                 } catch {
                     // thrown decoding error message
@@ -218,7 +219,55 @@ class ApiManager {
                 // initialize json decoder
                 let decoder = JSONDecoder()
                 do {
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                        print(json)
+                    }
                     return try decoder.decode(RidesSearchModel.self, from: data)
+                } catch {
+                    throw APIErrors.decodingError(error)
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    /// method for ride booking and publishing
+    /// - Parameters:
+    ///   - httpMethod: method for api request
+    ///   - data: data that needs to be sent with api
+    ///   - requestType: type of api request
+    /// - Returns: any published with either response as PlacesDataModel or Error
+    func createApiRequestForRides(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<BookRideModel, Error> {
+        // get url request from setUpApiRequest method
+        guard let request = setUpApiRequest(
+            httpMethod  : httpMethod,
+            data        : data,
+            requestType : requestType
+        ) else {
+            // return error if request is nil
+            return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
+                .eraseToAnyPublisher()
+        }
+        
+        // use dataTaskPublisher to call the api for url request
+        return URLSession.shared.dataTaskPublisher(for: request)
+            // mapping error related to invalid format or key values or data limitations
+            .mapError { error -> Error in
+                return APIErrors.transportError(error)
+            }
+            // map data and reponse and return
+            // after getting response as HTTPURLResponse
+            .tryMap { (data, response) -> (data: Data, response: URLResponse) in
+                return try self.getHttpURLResponse(requestType: requestType, response: response, data: data)
+            }
+            .map(\.data)
+            .tryMap { data in
+                // initialize json decoder
+                let decoder = JSONDecoder()
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                        print(json)
+                    }
+                    return try decoder.decode(BookRideModel.self, from: data)
                 } catch {
                     throw APIErrors.decodingError(error)
                 }

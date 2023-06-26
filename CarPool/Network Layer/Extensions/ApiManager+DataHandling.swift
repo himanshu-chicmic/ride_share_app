@@ -116,7 +116,7 @@ extension ApiManager {
         // check if request type equals any one of .getDetails, .signUp, .updateProfile
         // to set data in user defaults
         if requestType == .getDetails || requestType == .signUp || requestType == .updateProfile {
-            // if response is success set data to user defaults
+            // if response is success set data to user default
             if response.status.code == 200 {
                 UserDefaults.standard.set(data, forKey: Constants.UserDefaultKeys.profileData)
             }
@@ -134,10 +134,6 @@ extension ApiManager {
     ///   - error: throwable error from catch block
     /// - Returns: instance of SignInAndProfileModel
     func decodeSignInRequestAdditionalData(requestType: RequestType, data: Data, error: Error) throws -> SignInAndProfileModel {
-        // serialize data to get json dictionary of response returned from api
-        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-            throw APIErrors.decodingError(error)
-        }
         // initialize status struct instance with code 404
         var status = Status(code: 404, error: nil, errors: nil, data: nil, imageURL: nil)
         
@@ -147,6 +143,10 @@ extension ApiManager {
             // and available for signup
             status.code = data.count
         case .logOut:
+            // serialize data to get json dictionary of response returned from api
+            guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+                throw APIErrors.decodingError(error)
+            }
             // set status code and message for logout
             status.code = json[Constants.JsonKeys.status] as? Int ?? 0
             status.message = json[Constants.JsonKeys.message] as? String
@@ -162,7 +162,20 @@ extension ApiManager {
     ///   - httpMethod: http request method type
     ///   - data: data returned from api
     /// - Returns: data in form of VehiclesDataModel
-    func decodeVehiclesRequestData(httpMethod: HttpMethod, data: Data) throws -> VehiclesDataModel {
+    func decodeVehiclesRequestData(httpMethod: HttpMethod, data: Data, requestType: RequestType) throws -> VehiclesDataModel {
+        
+        if requestType == .getVehicleById {
+            let json = try JSONDecoder().decode(VehiclesDataClass.self, from: data)
+            // return the response
+            return VehiclesDataModel(
+                status: VehiclesStatus(
+                    code    : 200,
+                    message : nil,
+                    data    : [json]
+                )
+            )
+        }
+        
         // get json by serializing json data in [String: Any] format
         let json = try JSONSerialization.jsonObject(
             with    : data,

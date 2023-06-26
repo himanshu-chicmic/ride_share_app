@@ -21,6 +21,9 @@ struct DrawSearchComponent: View {
     // environment object for search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
     
+    // state object for progress bar view
+    @State var showProgressView = false
+    
     // MARK: - body
     
     var body: some View {
@@ -63,6 +66,7 @@ struct DrawSearchComponent: View {
                     displayedComponents : .date
                 )
                 .datePickerStyle(.graphical)
+                .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
                 .padding()
             case .numberOfPersons:
                 StepperInputField()
@@ -77,6 +81,7 @@ struct DrawSearchComponent: View {
                 .onChange(of: textField) { text in
                     // call google place api
                     searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
+                    showProgressView = !text.isEmpty
                 }
                 .onAppear {
                     // empty search view when this view appears
@@ -116,12 +121,15 @@ struct DrawSearchComponent: View {
                 } else {
                     // loader will be visible once the text field
                     // containts atleast one character
-                    if !textField.isEmpty {
+                    if showProgressView {
                         ProgressView()
                             .padding()
                     }
                 }
             }
+        }
+        .onDisappear {
+            showProgressView = false
         }
     }
 }

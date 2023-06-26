@@ -42,6 +42,7 @@ struct StepperInputField: View {
             .disabled(number == 8)
             .padding()
         }
+        .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
         .onChange(of: number, perform: { num in
             searchViewModel.numberOfPersons = String(num)
         })
