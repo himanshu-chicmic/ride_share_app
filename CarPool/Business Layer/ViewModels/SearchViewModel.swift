@@ -26,6 +26,10 @@ class SearchViewModel: ObservableObject {
     @Published var dateOfDeparture: Date = Globals.defaultDateCurrent
     // number of persons
     @Published var numberOfPersons: String = Constants.Placeholders.one
+    // vehicle
+    @Published var selectedVehicle: String = ""
+    // price
+    @Published var pricePerSeat: String = ""
     
     // boolean to open close active search view
     @Published var activeSearchView: Bool = false
@@ -40,10 +44,12 @@ class SearchViewModel: ObservableObject {
     
     // variable to store type of input field in search view
     // used to know type of input given by user in a same view
-    @Published var searchComponentType: SearchInputsIdentifier = .startLocation
+    @Published var searchComponentType: SearchInputsIdentifier = .price
     
     // array to store places suggestions
     @Published var suggestions: [Candidate] = []
+    // array to store searchHistory
+    @Published var searchHistory: [Candidate] = []
     // array to store search results
     @Published var searchResults: [Datum] = []
     
@@ -59,7 +65,8 @@ class SearchViewModel: ObservableObject {
     @Published var recenltyViewedRides: [Datum] = []
     
     init() {
-        getRecentlyViewedRides()
+        getRecentlyViewed(key: Constants.UserDefaultKeys.recentViewedRides)
+        getRecentlyViewed(key: Constants.UserDefaultKeys.recentSearches)
     }
     
     // MARK: - method
@@ -229,7 +236,6 @@ class SearchViewModel: ObservableObject {
     /// update recent searches in user defaults
     /// - Parameter data: search result data
     func updateRecentlyViewedRides(data: Datum?) {
-        
         var recentlyViewed: [Data] = []
         
         let encoder = JSONEncoder()
@@ -241,36 +247,76 @@ class SearchViewModel: ObservableObject {
             recentlyViewed = data
         }
         
-        for data in recentlyViewed {
-            if encoded == data {
-                return
-            }
+        for data in recentlyViewed where encoded == data {
+            return
         }
         
         if recentlyViewed.count >= 10 {
             recentlyViewed.removeSubrange(9..<recentlyViewed.count)
         }
-        
         recentlyViewed.insert(encoded, at: 0)
         
         UserDefaults.standard.set(recentlyViewed, forKey: Constants.UserDefaultKeys.recentViewedRides)
-        
-        getRecentlyViewedRides()
+        getRecentlyViewed(key: Constants.UserDefaultKeys.recentViewedRides)
     }
     
-    func getRecentlyViewedRides() {
-        guard let savedData = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentViewedRides) as? [Data] else {
+    /// method to update recent searches data
+    /// - Parameters:
+    ///   - data: data to be added or removed
+    ///   - delete: boolean to check if request's for deltion or addition
+    func updateRecentSearched(data: Candidate, delete: Bool) {
+        var recentlySearched: [Data] = []
+        
+        let encoder = JSONEncoder()
+        guard let encoded = try? encoder.encode(data) else {
             return
         }
         
-        var recents: [Datum] = []
-        
-        for data in savedData {
-            if let jsonData = try? JSONDecoder().decode(Datum.self, from: data) {
-                recents.append(jsonData)
-            }
+        if let data = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.recentSearches) as? [Data] {
+            recentlySearched = data
         }
         
-        self.recenltyViewedRides = recents
+        if delete {
+            for (index, data) in recentlySearched.enumerated() where encoded == data {
+                recentlySearched.remove(at: index)
+            }
+        } else {
+            for data in recentlySearched where encoded == data {
+                return
+            }
+            if recentlySearched.count >= 5 {
+                recentlySearched.removeSubrange(4..<recentlySearched.count)
+            }
+            recentlySearched.insert(encoded, at: 0)
+        }
+        
+        UserDefaults.standard.set(recentlySearched, forKey: Constants.UserDefaultKeys.recentSearches)
+        getRecentlyViewed(key: Constants.UserDefaultKeys.recentSearches)
+    }
+    
+    /// get recent searches and rides history
+    /// - Parameter key: key for user defaults
+    func getRecentlyViewed(key: String) {
+        guard let savedData = UserDefaults.standard.object(forKey: key) as? [Data] else {
+            return
+        }
+        
+        if key == Constants.UserDefaultKeys.recentSearches {
+            var recents: [Candidate] = []
+            for data in savedData {
+                if let jsonData = try? JSONDecoder().decode(Candidate.self, from: data) {
+                    recents.append(jsonData)
+                }
+            }
+            self.searchHistory = recents
+        } else if key == Constants.UserDefaultKeys.recentViewedRides {
+            var recents: [Datum] = []
+            for data in savedData {
+                if let jsonData = try? JSONDecoder().decode(Datum.self, from: data) {
+                    recents.append(jsonData)
+                }
+            }
+            self.recenltyViewedRides = recents
+        }
     }
 }

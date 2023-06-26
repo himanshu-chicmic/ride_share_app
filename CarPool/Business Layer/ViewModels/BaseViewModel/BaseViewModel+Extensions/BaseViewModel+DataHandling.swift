@@ -78,7 +78,7 @@ extension BaseViewModel {
                 data        : [:]
             )
         case .getVehicleById:
-            singleVehicleData = vehiclesData
+            self.singleVehicleData = vehiclesData
         default:
             break
         }

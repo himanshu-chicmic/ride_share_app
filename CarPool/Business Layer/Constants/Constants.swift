@@ -114,6 +114,8 @@ struct Constants {
         static let inputLocation    = "Enter a location"
         static let today            = "Today"
         static let one              = "1"
+        static let price              = "Enter price per seat"
+        static let vehicle              = "Select vehicle"
         
         static let fullAddress      = "Enter full address"
         
@@ -148,8 +150,10 @@ struct Constants {
         
         static let pickUp = "Pick-up"
         static let dropOff = "Drop-off"
-        static let seatsToBook = "Number of seats to book"
+        static let seatsToBook = "Number of seats"
         static let whenAreYouGoing = "When are you going?"
+        static let selectVehicle = "Select a vehicle"
+        static let pricePerSeat = "Set price"
     }
     
     struct RideDetails {
@@ -280,6 +284,7 @@ struct Constants {
         static let confirm = "Confirm Ride"
         static let update         = "Update"
         static let clear         = "Clear"
+        static let currentLocation = "Set current location"
     }
     
     struct JsonKeys {
@@ -327,6 +332,7 @@ struct Constants {
         static let profileData = "UserProfileData"
         static let vehiclesData = "VehiclesData"
         static let recentViewedRides = "recentRideSearch"
+        static let recentSearches = "recentSearches"
     }
     
     // MARK: - alert dialog strings
@@ -382,12 +388,18 @@ struct Constants {
         static let person           = "person"
         static let calendar         = "calendar"
         
+        static let car = "car.rear"
+        
+        static let rupee = "indianrupeesign"
+        
         static let enter            = "arrow.up.left"
         
         static let arrowsLeftRight  = "arrow.left.arrow.right"
         
         static let mapMark = "mappin.and.ellipse"
         static let location = "location.fill"
+        
+        static let history = "clock"
     }
     
     // MARK: - search view

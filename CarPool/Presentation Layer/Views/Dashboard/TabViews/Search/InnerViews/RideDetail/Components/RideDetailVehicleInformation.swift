@@ -40,7 +40,10 @@ struct RideDetailVehicleInformation: View {
             .padding(.horizontal)
         }
         .onAppear {
-            baseViewModel.sendVehiclesRequestToApi(httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: vehicleId])
+            baseViewModel
+                .sendVehiclesRequestToApi(
+                    httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: vehicleId]
+            )
         }
     }
 }

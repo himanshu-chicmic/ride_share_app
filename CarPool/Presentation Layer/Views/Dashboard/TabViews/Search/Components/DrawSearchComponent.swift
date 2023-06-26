@@ -21,6 +21,8 @@ struct DrawSearchComponent: View {
     // search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
     
+    @StateObject var locationViewModel = LocationViewModel()
+    
     // progress bar view
     @State var showProgressView = false
     
@@ -72,14 +74,24 @@ struct DrawSearchComponent: View {
                     inputFieldType : inputField,
                     placeholder    : placeholder,
                     text           : $textField,
-                    keyboard       : .default
+                    keyboard       : placeholder == Constants.Placeholders.price ? .numberPad : .default
                 )
                 .lineLimit(1)
                 .onChange(of: textField) { text in
-                    // call google place api
-                    searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
-                    withAnimation {
-                        showProgressView = !text.isEmpty
+                    if searchViewModel.searchComponentType != .price {
+                        // call google place api
+                        searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
+                        withAnimation {
+                            showProgressView = !text.isEmpty
+                        }
+                    } else {
+                        if text.rangeOfCharacter(from: NSCharacterSet.decimalDigits) == nil {
+                            textField = ""
+                        }
+                        
+                        if text.count > 5 {
+                            textField = String(text.prefix(5))
+                        }
                     }
                 }
                 .onAppear {
@@ -109,6 +121,9 @@ struct DrawSearchComponent: View {
                             else if searchViewModel.searchComponentType == .endLocation {
                                 searchViewModel.endLocationVal = suggestion
                             }
+                            
+                            searchViewModel.updateRecentSearched(data: suggestion, delete: false)
+                            
                             searchViewModel.activeSearchView.toggle()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -119,6 +134,43 @@ struct DrawSearchComponent: View {
                         ProgressView()
                             .padding()
                     }
+                }
+                
+                // search history is not empty
+                if searchViewModel.searchComponentType != .price && !showProgressView && searchViewModel.suggestions.isEmpty && !searchViewModel.searchHistory.isEmpty {
+                    
+                    List(searchViewModel.searchHistory, id: \.self) { suggestion in
+                        HStack {
+                            HStack {
+                                Image(systemName: Constants.Icon.history)
+                                    .padding(.trailing)
+                                Text(suggestion.formattedAddress)
+                            }
+                            .onTapGesture {
+                                // set text field value to suggestion on tap
+                                textField = suggestion.formattedAddress
+                                // if search component type is start location
+                                if searchViewModel.searchComponentType == .startLocation {
+                                    searchViewModel.startLocationVal = suggestion
+                                }
+                                // else set value for end location
+                                else if searchViewModel.searchComponentType == .endLocation {
+                                    searchViewModel.endLocationVal = suggestion
+                                }
+                                
+                                searchViewModel.activeSearchView.toggle()
+                            }
+                            Spacer()
+                            Image(systemName: Constants.Icon.close)
+                                .padding()
+                                .onTapGesture {
+                                    searchViewModel.updateRecentSearched(data: suggestion, delete: true)
+                                }
+                        }
+                        .font(.system(size: 14))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    }
+                    .listStyle(.plain)
                 }
             }
             Spacer()
@@ -135,21 +187,35 @@ struct DrawSearchComponent: View {
                             .padding(.trailing, showProgressView ? 18 : 0)
                         
                         if !showProgressView {
-                            Text("Set current location")
+                            Text(Constants.Others.currentLocation)
                                 .fontWeight(.light)
                                 .padding(.trailing)
                         }
-                        
                     }
                     .font(.system(size: 13))
                     .background(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary, alpha: 0.15)))
                     .cornerRadius(8)
                     .padding()
+                    .onTapGesture {
+                        switch locationViewModel.authorizationStatus {
+                        case .authorizedAlways, .authorizedWhenInUse:
+                            locationViewModel.startLocationUpdation()
+                        default:
+                            locationViewModel.requestPermission()
+                        }
+                    }
                 }
             }
         }
+        .onChange(of: locationViewModel.currentLocation, perform: { newValue in
+            if searchViewModel.searchComponentType == .startLocation {
+                searchViewModel.startLocation = newValue
+                locationViewModel.stopLocationUpdation()
+            }
+        })
         .onDisappear {
             showProgressView = false
+            locationViewModel.stopLocationUpdation()
         }
     }
 }

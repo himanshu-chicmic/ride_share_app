@@ -13,4 +13,5 @@ enum SearchInputsIdentifier {
     case endLocation
     case date
     case numberOfPersons
+    case price
 }

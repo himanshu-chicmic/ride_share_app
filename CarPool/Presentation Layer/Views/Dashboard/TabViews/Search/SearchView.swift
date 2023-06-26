@@ -57,18 +57,23 @@ struct SearchView: View {
                                 .padding(.horizontal, 44)
                                 .background(findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
                                 .foregroundColor(findRide ? .white : .gray)
+                                .onTapGesture {
+                                    withAnimation {
+                                        findRide = true
+                                    }
+                                }
                             Text(Constants.Search.offerARide)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 44)
                                 .background(!findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
                                 .foregroundColor(!findRide ? .white : .gray)
+                                .onTapGesture {
+                                    withAnimation {
+                                        findRide = false
+                                    }
+                                }
                         }
                         .cornerRadius(100)
-                        .onTapGesture {
-                            withAnimation {
-                                findRide.toggle()
-                            }
-                        }
                         .font(.system(size: 14))
                         .fontWeight(.medium)
                         
@@ -114,6 +119,21 @@ struct SearchView: View {
                     }
                     .padding(.horizontal)
                     
+                    if findRide {
+                        // date
+                        GetPickers(pickerType: .vehicle, dateRange: Globals.defaultDateMin...Globals.defaultDate, date: .constant(.now))
+                        .padding()
+                        
+                        InputFieldsWithIcons(
+                            icon        : Constants.Icon.rupee,
+                            placeholder : Constants.Placeholders.price,
+                            text        : $searchViewModel.pricePerSeat,
+                            inputType   : .price
+                        )
+                        .padding(.horizontal)
+                        
+                    }
+                    
                     // search rides
                     Button(action: {
                         searchViewModel.validateSearchInput()
@@ -139,32 +159,6 @@ struct SearchView: View {
                         .foregroundColor(.gray.opacity(0.05))
                         .background(.gray.opacity(0.05))
                     
-                    //                    ScrollView(.horizontal) {
-                    //                        HStack {
-                    //                            ForEach(0..<2) { index in
-                    //                                Text("Don't make advance payments to driver to avoid any inconveniences.")
-                    //                                    .padding(.vertical, 24)
-                    //                                    .padding(.horizontal, 44)
-                    //                                    .background(colorsListForBanners[index])
-                    //                                    .foregroundColor(.white)
-                    //                                    .font(.system(size: 14, design: .rounded))
-                    //                                    .fontWeight(.medium)
-                    //                                    .frame(width: 360)
-                    //                                    .cornerRadius(4)
-                    //                                    .padding(.leading, ((index == 0) ? 16 : 0))
-                    //                                    .padding(.trailing, ((index == 1) ? 16 : 0))
-                    //                            }
-                    //                        }
-                    //                    }
-                    //                    .scrollIndicators(.never)
-                    //                    .padding(.vertical)
-                    //
-                    //                    Rectangle()
-                    //                        .frame(height: 4)
-                    //                        .foregroundColor(.gray.opacity(0.05))
-                    //                        .background(.gray.opacity(0.05))
-                    
-                    
                     if !searchViewModel.recenltyViewedRides.isEmpty {
                         
                         HStack(alignment: .center) {
@@ -178,7 +172,7 @@ struct SearchView: View {
                             Button {
                                 withAnimation {
                                     UserDefaults.standard.set([], forKey: Constants.UserDefaultKeys.recentViewedRides)
-                                    searchViewModel.getRecentlyViewedRides()
+                                    searchViewModel.getRecentlyViewed(key: Constants.UserDefaultKeys.recentViewedRides)
                                 }
                             } label: {
                                 Text(Constants.Others.clear)

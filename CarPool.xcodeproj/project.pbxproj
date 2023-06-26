@@ -23,6 +23,7 @@
 		6A1BDD3F2A20B65300459FF2 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BDD3E2A20B65300459FF2 /* SearchResultsView.swift */; };
 		6A1BDD412A20BD6200459FF2 /* RideDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1BDD402A20BD6200459FF2 /* RideDetailView.swift */; };
 		6A32656C2A49502E00D1D4DC /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32656B2A49502E00D1D4DC /* NetworkConnection.swift */; };
+		6A32656E2A498AC500D1D4DC /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32656D2A498AC500D1D4DC /* LocationViewModel.swift */; };
 		6A32BACC2A17414800866706 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACB2A17414800866706 /* ForgotPasswordView.swift */; };
 		6A32BAD02A174CB500866706 /* EditDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BACF2A174CB500866706 /* EditDetailsView.swift */; };
 		6A32BAD82A17775A00866706 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A32BAD72A17775A00866706 /* DetailsViewModel.swift */; };
@@ -107,6 +108,7 @@
 		6A1BDD3E2A20B65300459FF2 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		6A1BDD402A20BD6200459FF2 /* RideDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailView.swift; sourceTree = "<group>"; };
 		6A32656B2A49502E00D1D4DC /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
+		6A32656D2A498AC500D1D4DC /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		6A32BACB2A17414800866706 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		6A32BACF2A174CB500866706 /* EditDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailsView.swift; sourceTree = "<group>"; };
 		6A32BAD72A17775A00866706 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
@@ -579,6 +581,7 @@
 				6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */,
 				6A32BAD72A17775A00866706 /* DetailsViewModel.swift */,
 				6AEEF3FD2A161ACD0012FE65 /* SearchViewModel.swift */,
+				6A32656D2A498AC500D1D4DC /* LocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				6AAB53DD2A0B9C8400138024 /* DefaultButtonLabel.swift in Sources */,
 				6AB4EE862A36DDE200A3AB94 /* LocationTextView.swift in Sources */,
 				6AA1645B2A29A81700EFDFBC /* AddedVehicleItem.swift in Sources */,
+				6A32656E2A498AC500D1D4DC /* LocationViewModel.swift in Sources */,
 				6AEEF3FE2A161ACD0012FE65 /* SearchViewModel.swift in Sources */,
 				6A3FB33D2A1B611F0069673A /* CircleProgressView.swift in Sources */,
 				6AA164692A2A0D9400EFDFBC /* PlacesDataModel.swift in Sources */,
@@ -957,6 +961,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CarPool/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Fetch Current Location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -990,6 +995,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CarPool/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Fetch Current Location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

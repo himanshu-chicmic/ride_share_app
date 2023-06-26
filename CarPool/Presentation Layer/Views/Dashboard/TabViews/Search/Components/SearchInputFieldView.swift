@@ -36,6 +36,13 @@ struct SearchInputFieldView: View {
                     placeholder : Constants.Placeholders.inputLocation,
                     textField   : $searchViewModel.endLocation
                 )
+            case .price:
+                DrawSearchComponent(
+                    heading     : Constants.Headings.pricePerSeat,
+                    inputField  : .text,
+                    placeholder : Constants.Placeholders.price,
+                    textField   : $searchViewModel.pricePerSeat
+                )
             case .date:
                 DrawSearchComponent(
                     heading     : Constants.Headings.whenAreYouGoing,

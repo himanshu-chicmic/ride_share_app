@@ -95,7 +95,7 @@ class BaseViewModel: ObservableObject {
             // first convert to dictionary of type [String: Any]
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                 
-                // convert json["data'] into Data
+                // convert json["data"] into Data
                 let data = try JSONSerialization.data(withJSONObject: json[Constants.JsonKeys.data]!, options: .fragmentsAllowed)
                 
                 // decode the encoded data in an array of VehiclesDataClass

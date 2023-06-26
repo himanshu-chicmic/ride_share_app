@@ -159,7 +159,7 @@ struct DefaultInputField: View {
         .keyboardType(keyboard)
         .padding()
         .frame(height: 50)
-        .background(background.opacity(0.15))
+        .background(background.opacity(0.05))
         .cornerRadius(4)
         .padding(.horizontal)
         .overlay {

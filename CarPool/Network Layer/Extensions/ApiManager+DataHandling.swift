@@ -59,10 +59,13 @@ extension ApiManager {
     ///   - requestType: type of api request
     ///   - response: response from the api
     func setSessionToken(requestType: RequestType, response: HTTPURLResponse) {
-        // if sign out it attempted the clear the user defaults
-        // by setting the authoriztion value of SessionAuthToken to empty ""
         if requestType == .logOut {
+            // remove all data from user defaults
             UserDefaults.standard.set("", forKey: Constants.UserDefaultKeys.session)
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.profileData)
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.vehiclesData)
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.recentViewedRides)
+            UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.recentSearches)
         }
         // else for request type login or signin get the bearer token from the reponse and
         // set the user default for SessionAuthToken
