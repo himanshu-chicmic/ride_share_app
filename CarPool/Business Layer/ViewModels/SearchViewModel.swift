@@ -18,6 +18,7 @@ class SearchViewModel: ObservableObject {
     
     // MARK: published properties
     // properties for search fields
+    @Published var findRide: Bool = true
     // start location
     @Published var startLocation: String = ""
     // end location
@@ -28,6 +29,7 @@ class SearchViewModel: ObservableObject {
     @Published var numberOfPersons: String = Constants.Placeholders.one
     // vehicle
     @Published var selectedVehicle: String = ""
+    @Published var selectedVehicleId: Int = 0
     // price
     @Published var pricePerSeat: String = ""
     
@@ -37,6 +39,7 @@ class SearchViewModel: ObservableObject {
     @Published var showSearchResults: Bool = false
     // boolean to open ride detail view
     @Published var showRideDetailView: Bool = false
+    @Published var showRideDetailViewFromRecents: Bool = false
     // boolean to show ride book summary view
     @Published var openSummaryView: Bool = false
     
@@ -53,6 +56,8 @@ class SearchViewModel: ObservableObject {
     // array to store search results
     @Published var searchResults: [Datum] = []
     
+    @Published var ridePublishOrBook: RidePublishedOrBook = RidePublishedOrBook(title: "", caption: "")
+    
     // MARK: instance variables
     // shared instance of base view model
     var baseViewModel = BaseViewModel.shared
@@ -63,6 +68,10 @@ class SearchViewModel: ObservableObject {
     @Published var endLocationVal: Candidate?
     
     @Published var recenltyViewedRides: [Datum] = []
+    
+    var buttonText: String {
+        findRide ? Constants.Search.search : Constants.Search.proceed
+    }
     
     init() {
         getRecentlyViewed(key: Constants.UserDefaultKeys.recentViewedRides)
@@ -98,21 +107,50 @@ class SearchViewModel: ObservableObject {
             // check if startLocation and endLocation are not nil
             if let startLocationVal, let endLocationVal {
                 print(startLocationVal.formattedAddress, endLocationVal.formattedAddress)
-                // create data using all properties
-                let data : [String : Any] = [
-                    Constants.JsonKeys.sourceLongitude      : startLocationVal.geometry.location.lng,
-                    Constants.JsonKeys.sourceLatitude       : startLocationVal.geometry.location.lat,
-                    Constants.JsonKeys.destinationLongitude : endLocationVal.geometry.location.lng,
-                    Constants.JsonKeys.destinationLatitude  : endLocationVal.geometry.location.lat,
-                    Constants.JsonKeys.passengersCount      : numberOfPersons,
-                    Constants.JsonKeys.date                 : Globals.dateFormatter.string(from: dateOfDeparture)
-                ]
-                // send request for search
-                sendRequestForSearch(
-                    httpMethod  : .GET,
-                    requestType : .searchRides,
-                    data        : data
-                )
+                
+                if findRide {
+                    // create data using all properties
+                    let data : [String : Any] = [
+                        Constants.JsonKeys.sourceLongitude      : startLocationVal.geometry.location.lng,
+                        Constants.JsonKeys.sourceLatitude       : startLocationVal.geometry.location.lat,
+                        Constants.JsonKeys.destinationLongitude : endLocationVal.geometry.location.lng,
+                        Constants.JsonKeys.destinationLatitude  : endLocationVal.geometry.location.lat,
+                        Constants.JsonKeys.passengersCount      : numberOfPersons,
+                        Constants.JsonKeys.date                 : Globals.dateFormatter.string(from: dateOfDeparture)
+                    ]
+                    // send request for search
+                    sendRequestForSearch(
+                        httpMethod  : .GET,
+                        requestType : .searchRides,
+                        data        : data
+                    )
+                } else {
+                    // create data using all properties
+                    let data : [String : Any] = [
+                        "source": startLocationVal.formattedAddress,
+                        "destination": endLocationVal.formattedAddress,
+                        "source_longitude": startLocationVal.geometry.location.lng,
+                        "source_latitude": startLocationVal.geometry.location.lat,
+                        "destination_longitude": endLocationVal.geometry.location.lng,
+                        "destination_latitude": endLocationVal.geometry.location.lat,
+                        "passengers_count": numberOfPersons,
+                        "date": Globals.dateFormatter.string(from: dateOfDeparture),
+                        "time": Globals.timeFormatter.string(from: dateOfDeparture),
+                        "set_price": pricePerSeat,
+                        "about_ride": "",
+                        "vehicle_id": selectedVehicleId,
+                        "book_instantly": true,
+                        "mid_seat": false,
+                        "estimate_time": "2 hours",
+                        "select_route": []
+                    ]
+                    // send request for search
+                    sendRequestForSearch(
+                        httpMethod  : .POST,
+                        requestType : .publishRides,
+                        data        : ["publish" : data]
+                    )
+                }
             }
         }
     }
@@ -138,16 +176,28 @@ class SearchViewModel: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("ERROR: \(error)")
+                self.baseViewModel.toastMessage = error.localizedDescription
             case .finished:
                 print("success")
             }
         } receiveValue: { [weak self] response in
             // add response data in searchResults array
-            for result in response.data {
-                self?.searchResults.append(result)
+            if requestType == .publishRides {
+                self?.baseViewModel.toastMessage = "Ride created successfully"
+                self?.ridePublishOrBook = RidePublishedOrBook(title: "You'r ride is successfully published. ✅", caption: "Relax, sit back and wait for people to book your ride.")
+                self?.bookedSuccess.toggle()
+                self?.resetData()
+                
+            } else {
+                if let data = response.data {
+                    for result in data {
+                        self?.searchResults.append(result)
+                    }
+                }
+                
+                // toggle searchShowResults to open search results view
+                self?.showSearchResults.toggle()
             }
-            // toggle searchShowResults to open search results view
-            self?.showSearchResults.toggle()
         }
     }
     
@@ -182,17 +232,20 @@ class SearchViewModel: ObservableObject {
             print(response)
             if response.code == 201 {
                 self?.baseViewModel.toastMessage = "Ride booked successfully"
-                
+                self?.ridePublishOrBook = RidePublishedOrBook(title: "You'r ride is successfully booked. ✅", caption: "Relax, we've sent information about your ride to the ride publisher.")
                 self?.bookedSuccess.toggle()
-                
-                self?.startLocation = ""
-                self?.endLocation = ""
-                self?.dateOfDeparture = Globals.defaultDateCurrent
-                self?.numberOfPersons = Constants.Placeholders.one
+                self?.resetData()
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-                    self?.showRideDetailView.toggle()
-                    self?.showSearchResults.toggle()
+                    if self?.showRideDetailView == true {
+                        self?.showRideDetailView.toggle()
+                    }
+                    if self?.showRideDetailViewFromRecents == true {
+                        self?.showRideDetailViewFromRecents.toggle()
+                    }
+                    if self?.showSearchResults == true {
+                        self?.showSearchResults.toggle()
+                    }
                 }
             } else {
                 self?.baseViewModel.toastMessage = response.error ?? ""
@@ -200,6 +253,19 @@ class SearchViewModel: ObservableObject {
             
             self?.baseViewModel.disableProgress()
         }
+    }
+    
+    func resetData() {
+        
+        self.startLocation = ""
+        self.endLocation = ""
+        self.dateOfDeparture = Globals.defaultDateCurrent
+        self.numberOfPersons = Constants.Placeholders.one
+        self.selectedVehicle = ""
+        self.selectedVehicleId = 0
+        self.pricePerSeat = ""
+        
+        
     }
     
     /// method to send api request for getting places data using google places api
@@ -255,7 +321,6 @@ class SearchViewModel: ObservableObject {
             recentlyViewed.removeSubrange(9..<recentlyViewed.count)
         }
         recentlyViewed.insert(encoded, at: 0)
-        
         UserDefaults.standard.set(recentlyViewed, forKey: Constants.UserDefaultKeys.recentViewedRides)
         getRecentlyViewed(key: Constants.UserDefaultKeys.recentViewedRides)
     }
@@ -266,7 +331,6 @@ class SearchViewModel: ObservableObject {
     ///   - delete: boolean to check if request's for deltion or addition
     func updateRecentSearched(data: Candidate, delete: Bool) {
         var recentlySearched: [Data] = []
-        
         let encoder = JSONEncoder()
         guard let encoded = try? encoder.encode(data) else {
             return
@@ -289,7 +353,6 @@ class SearchViewModel: ObservableObject {
             }
             recentlySearched.insert(encoded, at: 0)
         }
-        
         UserDefaults.standard.set(recentlySearched, forKey: Constants.UserDefaultKeys.recentSearches)
         getRecentlyViewed(key: Constants.UserDefaultKeys.recentSearches)
     }
@@ -300,7 +363,6 @@ class SearchViewModel: ObservableObject {
         guard let savedData = UserDefaults.standard.object(forKey: key) as? [Data] else {
             return
         }
-        
         if key == Constants.UserDefaultKeys.recentSearches {
             var recents: [Candidate] = []
             for data in savedData {
@@ -318,5 +380,15 @@ class SearchViewModel: ObservableObject {
             }
             self.recenltyViewedRides = recents
         }
+    }
+}
+
+class RidePublishedOrBook {
+    let title: String
+    let caption: String
+    
+    init(title: String, caption: String) {
+        self.title = title
+        self.caption = caption
     }
 }

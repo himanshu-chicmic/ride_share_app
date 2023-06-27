@@ -14,4 +14,5 @@ enum SearchInputsIdentifier {
     case date
     case numberOfPersons
     case price
+    case vehicle
 }

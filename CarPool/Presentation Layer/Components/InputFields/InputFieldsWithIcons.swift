@@ -30,7 +30,7 @@ struct InputFieldsWithIcons: View {
     
     var foregroundColor: Color {
         switch inputType {
-        case .startLocation, .endLocation, .price:
+        case .startLocation, .endLocation, .price, .vehicle:
             return text.isEmpty ? .gray : .black
         case .date, .numberOfPersons:
             return .black

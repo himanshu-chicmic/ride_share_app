@@ -11,6 +11,8 @@ struct RideBookSuccess: View {
     
     @Environment(\.dismiss) var dismiss
     
+    @EnvironmentObject var searchViewModel: SearchViewModel
+    
     var body: some View {
         VStack {
             // image view
@@ -20,7 +22,7 @@ struct RideBookSuccess: View {
                 .padding()
             
             // title text
-            Text("You'r ride is successfully booked. ✅")
+            Text(searchViewModel.ridePublishOrBook.title)
                 .font(
                     .system(
                         size   : 22,
@@ -31,7 +33,7 @@ struct RideBookSuccess: View {
                 .padding(.top, 14)
             
             // caption text
-            Text("Relax, we've sent information about your ride to the ride publisher.")
+            Text(searchViewModel.ridePublishOrBook.caption)
                 .font(.system(size: 14, design: .rounded))
                 .padding(.top, 2)
                 .foregroundColor(.gray)
@@ -53,6 +55,7 @@ struct RideBookSuccess: View {
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, 44)
+        .environmentObject(SearchViewModel())
     }
 }
 

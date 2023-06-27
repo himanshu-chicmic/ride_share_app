@@ -14,10 +14,7 @@ struct SearchView: View {
     // environment objects
     @EnvironmentObject var baseViewModel: BaseViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
-    
-    // state variables
-    @State var findRide: Bool = true
-    
+        
     // data of selected result
     @State var selectedTile: Datum?
     
@@ -55,21 +52,21 @@ struct SearchView: View {
                             Text(Constants.Search.findARide)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 44)
-                                .background(findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
-                                .foregroundColor(findRide ? .white : .gray)
+                                .background(searchViewModel.findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
+                                .foregroundColor(searchViewModel.findRide ? .white : .gray)
                                 .onTapGesture {
                                     withAnimation {
-                                        findRide = true
+                                        searchViewModel.findRide = true
                                     }
                                 }
                             Text(Constants.Search.offerARide)
                                 .padding(.vertical, 12)
                                 .padding(.horizontal, 44)
-                                .background(!findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
-                                .foregroundColor(!findRide ? .white : .gray)
+                                .background(!searchViewModel.findRide ? Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) : .gray.opacity(0.05))
+                                .foregroundColor(!searchViewModel.findRide ? .white : .gray)
                                 .onTapGesture {
                                     withAnimation {
-                                        findRide = false
+                                        searchViewModel.findRide = false
                                     }
                                 }
                         }
@@ -119,7 +116,16 @@ struct SearchView: View {
                     }
                     .padding(.horizontal)
                     
-                    if findRide {
+                    if !searchViewModel.findRide {
+                        
+                        InputFieldsWithIcons(
+                            icon        : Constants.Icon.car,
+                            placeholder : Constants.Placeholders.vehicle,
+                            text        : $searchViewModel.selectedVehicle,
+                            inputType   : .vehicle
+                        )
+                        .padding(.horizontal)
+                        
                         InputFieldsWithIcons(
                             icon        : Constants.Icon.rupee,
                             placeholder : Constants.Placeholders.price,
@@ -134,7 +140,7 @@ struct SearchView: View {
                     Button(action: {
                         searchViewModel.validateSearchInput()
                     }, label: {
-                        Text(Constants.Search.search)
+                        Text(searchViewModel.buttonText)
                             .frame(maxWidth: .infinity)
                             .padding()
                             .font(.system(size: 16))
@@ -188,7 +194,7 @@ struct SearchView: View {
                                         endLocation     : recentSearch.publish.destination,
                                         endTime         : Globals.getFormattedDate(date: recentSearch.reachTime),
                                         date            : "\(recentSearch.publish.date ?? Constants.Placeholders.defaultTime)",
-                                        price           : Globals.getPrice(price: recentSearch.publish.setPrice),
+                                        price           : Globals.getPrice(price: Int(recentSearch.publish.setPrice)),
                                         driverImage     : recentSearch.imageURL ?? "",
                                         driverName      : recentSearch.name,
                                         driverRating    : Globals.getRatings(ratings: recentSearch.averageRating ?? 0)
@@ -199,12 +205,18 @@ struct SearchView: View {
                                     .padding(.trailing, ((index == searchViewModel.recenltyViewedRides.count-1) ? 16 : 0))
                                     .onTapGesture {
                                         selectedTile = recentSearch
-                                        searchViewModel.showRideDetailView.toggle()
+                                        searchViewModel.showRideDetailViewFromRecents.toggle()
+                                        baseViewModel
+                                            .sendVehiclesRequestToApi(
+                                                httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: recentSearch.publish.vehicleID!]
+                                        )
                                     }
                                 }
-                                .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {
-                                    RideDetailView(data: selectedTile ?? nil)
-                                        .navigationBarBackButtonHidden()
+                                .navigationDestination(isPresented: $searchViewModel.showRideDetailViewFromRecents) {
+                                    if let selectedTile {
+                                        RideDetailView(data: selectedTile)
+                                            .navigationBarBackButtonHidden()
+                                    }
                                 }
                             }
                         }

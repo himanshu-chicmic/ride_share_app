@@ -22,6 +22,8 @@ struct ProfileTabViewAbout: View {
     // photos picker item
     @State private var photosPicker: PhotosPickerItem?
     
+    @State private var isImageLoading: Bool = true
+    
     // MARK: - body
     
     var body: some View {
@@ -31,24 +33,7 @@ struct ProfileTabViewAbout: View {
                 
                 // profile can be changed
                 // by clicking on it
-                AsyncImage(url: baseViewModel.userData?.status.imageURL) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    if baseViewModel.userData?.status.imageURL != nil {
-                        ZStack {
-                            Color.gray.opacity(0.1)
-                            ProgressView()
-                        }
-                    } else {
-                        Image(Constants.Images.carpool)
-                            .resizable()
-                            .scaledToFill()
-                    }
-                }
-                .frame(width: 124, height: 124)
-                .clipShape(Circle())
+                LoadImageView(driverImage: "\(String(describing: baseViewModel.userData?.status.imageURL))", defaultSize: 124)
                 .onTapGesture {
                     // toggle edit profile button
                     detailsViewModel.editPhoto.toggle()
@@ -130,6 +115,11 @@ struct ProfileTabViewAbout: View {
             .padding()
             .overlay (alignment: .bottom) {
                 CircleProgressView()
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now()+5) {
+                    self.isImageLoading = false
+                }
             }
         }
     }

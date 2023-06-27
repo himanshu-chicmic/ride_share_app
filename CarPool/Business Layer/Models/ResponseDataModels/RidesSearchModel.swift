@@ -11,7 +11,8 @@ import Foundation
 struct RidesSearchModel: Codable {
     let code: Int
     let message: String?
-    let data: [Datum]
+    let data: [Datum]?
+    let publish: Publish?
 }
 
 // MARK: - Datum
@@ -27,7 +28,7 @@ struct Datum: Codable, Hashable {
     
     func getDetailsArray(data: Datum) -> [String] {
         return [
-            "Distance (in Kms) \(Globals.getDistanceInKms(distance: data.publish.distance))",
+            "Distance (in Kms) \(Globals.getDistanceInKms(distance: data.publish.distance ?? 0))",
             "\(data.publish.passengersCount) Passengers",
             "Estimated Time \(Globals.getEstimatedTime(date: data.publish.estimateTime ?? ""))"
         ]
@@ -58,7 +59,7 @@ struct Publish: Codable {
     let passengersCount: Int
     let addCity: String?
     let date, time: String?
-    let setPrice: Int
+    let setPrice: Double
     let aboutRide: String
     let userID: Int
     let createdAt, updatedAt: String
@@ -69,8 +70,8 @@ struct Publish: Codable {
     let status: String
     let estimateTime: String?
     let addCityLongitude, addCityLatitude: Double?
-    let distance: Double
-    let bearing: String
+    let distance: Double?
+    let bearing: String?
 
     enum CodingKeys: String, CodingKey {
         case id, source, destination

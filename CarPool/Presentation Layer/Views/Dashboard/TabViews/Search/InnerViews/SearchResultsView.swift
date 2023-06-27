@@ -16,6 +16,7 @@ struct SearchResultsView: View {
     
     // search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     var body: some View {
         VStack {
@@ -64,33 +65,47 @@ struct SearchResultsView: View {
                     .padding(8)
             }
             
-            ScrollView {
+            if searchViewModel.searchResults.isEmpty {
                 
-                ForEach($searchViewModel.searchResults, id: \.self) { $data in
-                    RidesListItem(
-                        startLoction    : data.publish.source,
-                        startTime       : Globals.getFormattedDate(date: data.publish.time),
-                        endLocation     : data.publish.destination,
-                        endTime         : Globals.getFormattedDate(date: data.reachTime),
-                        date            : "\(data.publish.date ?? Constants.Placeholders.defaultTime)",
-                        price           : Globals.getPrice(price: data.publish.setPrice),
-                        driverImage     : data.imageURL ?? "",
-                        driverName      : data.name,
-                        driverRating    : Globals.getRatings(ratings: data.averageRating ?? 0)
-                    )
-                    .foregroundColor(.black)
-                    .onTapGesture {
-                        selectedTile = data
-                        searchViewModel.showRideDetailView.toggle()
-                        searchViewModel.updateRecentlyViewedRides(data: data)
+                Spacer()
+                
+                PlaceholderView(image: Constants.EmptyRidesView.image, title: "No Rides Found!", caption: "Currently, there are no matching rides found. Try again after sometime.")
+                
+                Spacer()
+                
+            } else {
+                ScrollView {
+                    
+                    ForEach($searchViewModel.searchResults, id: \.self) { $data in
+                        RidesListItem(
+                            startLoction    : data.publish.source,
+                            startTime       : Globals.getFormattedDate(date: data.publish.time),
+                            endLocation     : data.publish.destination,
+                            endTime         : Globals.getFormattedDate(date: data.reachTime),
+                            date            : "\(data.publish.date ?? Constants.Placeholders.defaultTime)",
+                            price           : Globals.getPrice(price: Int(data.publish.setPrice)),
+                            driverImage     : data.imageURL ?? "",
+                            driverName      : data.name,
+                            driverRating    : Globals.getRatings(ratings: data.averageRating ?? 0)
+                        )
+                        .foregroundColor(.black)
+                        .onTapGesture {
+                            selectedTile = data
+                            searchViewModel.showRideDetailView.toggle()
+                            searchViewModel.updateRecentlyViewedRides(data: data)
+                            baseViewModel
+                                .sendVehiclesRequestToApi(
+                                    httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: data.publish.vehicleID!]
+                            )
+                        }
                     }
+                    .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {
+                        RideDetailView(data: selectedTile ?? nil)
+                            .navigationBarBackButtonHidden()
+                    }
+                    .padding()
+                    
                 }
-                .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {
-                    RideDetailView(data: selectedTile ?? nil)
-                        .navigationBarBackButtonHidden()
-                }
-                .padding()
-                
             }
         }
         .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
@@ -101,5 +116,6 @@ struct SearchResultsView_Previews: PreviewProvider {
     static var previews: some View {
         SearchResultsView()
             .environmentObject(SearchViewModel())
+            .environmentObject(BaseViewModel())
     }
 }

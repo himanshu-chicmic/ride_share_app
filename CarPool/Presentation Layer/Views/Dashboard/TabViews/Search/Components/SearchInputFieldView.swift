@@ -43,6 +43,13 @@ struct SearchInputFieldView: View {
                     placeholder : Constants.Placeholders.price,
                     textField   : $searchViewModel.pricePerSeat
                 )
+            case .vehicle:
+                DrawSearchComponent(
+                    heading     : Constants.Headings.vehicle,
+                    inputField  : .text,
+                    placeholder : Constants.Placeholders.vehicle,
+                    textField   : $searchViewModel.selectedVehicle
+                )
             case .date:
                 DrawSearchComponent(
                     heading     : Constants.Headings.whenAreYouGoing,
@@ -59,7 +66,7 @@ struct SearchInputFieldView: View {
                 )
             }
             
-            if searchViewModel.searchComponentType == .numberOfPersons || searchViewModel.searchComponentType == .date {
+            if searchViewModel.searchComponentType == .numberOfPersons || searchViewModel.searchComponentType == .date || searchViewModel.searchComponentType == .price {
                 // button for saving details
                 Button {
                     searchViewModel.activeSearchView.toggle()

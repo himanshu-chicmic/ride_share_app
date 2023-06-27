@@ -142,7 +142,7 @@ struct Constants {
         static let email = "What's your email?"
         static let mobile = "What's your mobile number?"
         static let bio = "What would you like other members to know about you?"
-        static let vehicle = "Add vehicle"
+        static let vehicle = "Select a vehicle"
         
         static let rideDetails = "Ride Details"
         
@@ -407,6 +407,7 @@ struct Constants {
         
         static let title    = "Where To?"
         static let search   = "Search"
+        static let proceed = "Proceed"
         
         static let rideDetails = "Ride Details"
         

@@ -98,7 +98,7 @@ struct RideDetailView: View {
                         Text(Constants.RideDetails.totalPrice)
                         Spacer()
                         
-                        Text(Globals.getPrice(price: data.publish.setPrice))
+                        Text(Globals.getPrice(price: Int(data.publish.setPrice)))
                             .font(.system(size: 18, weight: .semibold))
                     }
                     .padding()
@@ -138,9 +138,7 @@ struct RideDetailView: View {
                     .padding()
                     
                     // vehicle info
-                    if let vehicleId = data.publish.vehicleID {
-                        RideDetailVehicleInformation(vehicleId: vehicleId)
-                    }
+                    RideDetailVehicleInformation()
                     
                     // buttons view
                     RideDetailsButtonsView(data: data)
@@ -156,7 +154,7 @@ struct RideDetailView: View {
             }
         }
         .fullScreenCover(isPresented: $searchViewModel.openSummaryView) {
-            RideSummary(data: data)
+            RideSummary(data: data!)
         }
         // overlay for progress bar view
         .overlay {
@@ -168,7 +166,7 @@ struct RideDetailView: View {
 
 struct RideDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        RideDetailView(data: Datum(id: 256, name: "Himanshu", reachTime: "2023-06-15T11:14:58.000Z", imageURL: nil, averageRating: nil, aboutRide: "", publish: Publish(id: 373, source: "Business & Industrial Park 1, Chandigarh", destination: "Sector 118, Mohali", passengersCount: 4, addCity: nil, date: "2023-06-15", time: "2000-01-01T10:41:00.000Z", setPrice: Int(200.0), aboutRide: "", userID: 256, createdAt: "2023-06-12T05:12:43.252Z", updatedAt: "2023-06-12T05:12:43.252Z", sourceLatitude: 30.704758007382228, sourceLongitude: 76.801208, destinationLatitude: 30.737185, destinationLongitude: 76.678551, vehicleID: 218, bookInstantly: nil, midSeat: nil, selectRoute: SelectRoute(routes: []), status: "pending", estimateTime: "2000-01-01T00:33:58.000Z", addCityLongitude: nil, addCityLatitude: nil, distance: 0.08185672694379517, bearing: "183.744259068662")))
+        RideDetailView(data: Datum(id: 256, name: "Himanshu", reachTime: "2023-06-15T11:14:58.000Z", imageURL: nil, averageRating: nil, aboutRide: "", publish: Publish(id: 373, source: "Business & Industrial Park 1, Chandigarh", destination: "Sector 118, Mohali", passengersCount: 4, addCity: nil, date: "2023-06-15", time: "2000-01-01T10:41:00.000Z", setPrice: Double(Int(200.0)), aboutRide: "", userID: 256, createdAt: "2023-06-12T05:12:43.252Z", updatedAt: "2023-06-12T05:12:43.252Z", sourceLatitude: 30.704758007382228, sourceLongitude: 76.801208, destinationLatitude: 30.737185, destinationLongitude: 76.678551, vehicleID: 218, bookInstantly: nil, midSeat: nil, selectRoute: SelectRoute(routes: []), status: "pending", estimateTime: "2000-01-01T00:33:58.000Z", addCityLongitude: nil, addCityLatitude: nil, distance: 0.08185672694379517, bearing: "183.744259068662")))
             .environmentObject(BaseViewModel())
             .environmentObject(SearchViewModel())
     }

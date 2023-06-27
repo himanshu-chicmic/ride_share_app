@@ -35,12 +35,6 @@ struct VehicleModel {
         // values of input fields
         return [
             (
-                data?.country ?? "",
-                Constants.Vehicle.country,
-                InputFieldIdentifier.country,
-                UIKeyboardType.default
-            ),
-            (
                 data?.vehicleNumber ?? number,
                 Constants.Vehicle.number,
                 InputFieldIdentifier.vehicleNumber,

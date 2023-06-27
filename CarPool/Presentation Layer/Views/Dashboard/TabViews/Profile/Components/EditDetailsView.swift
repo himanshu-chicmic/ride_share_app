@@ -101,7 +101,7 @@ struct EditDetailsView: View {
                                     for item in textFieldValues {
                                         switch item.2 {
                                         case .country:
-                                            data[item.2.rawValue] = detailsViewModel.country
+                                            data[item.2.rawValue] = "India"
                                         case .vehicleColor:
                                             data[item.2.rawValue] = detailsViewModel.color
                                         case .vehicleModelYear:

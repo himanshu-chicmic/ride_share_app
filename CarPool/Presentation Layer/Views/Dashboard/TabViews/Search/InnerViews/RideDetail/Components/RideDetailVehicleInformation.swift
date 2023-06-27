@@ -8,9 +8,6 @@
 import SwiftUI
 
 struct RideDetailVehicleInformation: View {
-    
-    var vehicleId: Int
-    
     @EnvironmentObject var baseViewModel: BaseViewModel
     
     var body: some View {
@@ -39,18 +36,12 @@ struct RideDetailVehicleInformation: View {
             }
             .padding(.horizontal)
         }
-        .onAppear {
-            baseViewModel
-                .sendVehiclesRequestToApi(
-                    httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: vehicleId]
-            )
-        }
     }
 }
 
 struct RideDetailVehicleInformation_Previews: PreviewProvider {
     static var previews: some View {
-        RideDetailVehicleInformation(vehicleId: 218)
+        RideDetailVehicleInformation()
             .environmentObject(BaseViewModel())
     }
 }

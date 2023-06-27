@@ -7,6 +7,30 @@
 
 import SwiftUI
 
+struct VehicleTextView: View {
+    
+    var data: VehiclesDataClass
+    @EnvironmentObject var searchViewModel: SearchViewModel
+    
+    var body: some View {
+        HStack {
+            Text("\(data.vehicleName) - \(data.vehicleBrand)")
+            if data.id == searchViewModel.selectedVehicleId {
+                Image(systemName: Constants.Icon.check)
+                    .font(.system(size: 14))
+                    .foregroundColor(.accentColor)
+            }
+            
+            Spacer()
+        }
+        .onTapGesture {
+            searchViewModel.selectedVehicleId = data.id
+            searchViewModel.selectedVehicle = "\(data.vehicleName) - \(data.vehicleBrand)"
+            searchViewModel.activeSearchView.toggle()
+        }
+    }
+}
+
 struct DrawSearchComponent: View {
     
     // MARK: - properties
@@ -20,6 +44,7 @@ struct DrawSearchComponent: View {
     
     // search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
     
     @StateObject var locationViewModel = LocationViewModel()
     
@@ -62,13 +87,26 @@ struct DrawSearchComponent: View {
                     "",
                     selection           : $searchViewModel.dateOfDeparture,
                     in                  : Globals.defaultDateCurrent...Globals.defaultDateMax,
-                    displayedComponents : .date
+                    displayedComponents : searchViewModel.findRide ? .date : [.date, .hourAndMinute]
                 )
                 .datePickerStyle(.graphical)
                 .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
                 .padding()
             case .numberOfPersons:
                 StepperInputField()
+            case .vehicle:
+                List(
+                    baseViewModel.vehiclesData?.status.data ?? [],
+                    id: \.self
+                ) {
+                    VehicleTextView(data: $0)
+                }
+                .listStyle(.plain)
+                .onChange(of: textField) { newValue in
+                    if newValue.isEmpty {
+                        textField = Constants.Placeholders.vehicle
+                    }
+                }
             default:
                 DefaultInputField(
                     inputFieldType : inputField,
@@ -229,5 +267,6 @@ struct DrawSearchComponent_Previews: PreviewProvider {
             textField   : .constant("")
         )
         .environmentObject(SearchViewModel())
+        .environmentObject(BaseViewModel())
     }
 }

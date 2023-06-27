@@ -33,6 +33,8 @@ enum RequestType: RawRepresentable {
     
     case bookedPublishes
     
+    case publishRides
+    
     /// get raw values based on current
     /// value of the enum
     var rawValue: String {
@@ -65,6 +67,8 @@ enum RequestType: RawRepresentable {
             return ApiConstants.bookPubilsh
         case .bookedPublishes:
             return ApiConstants.bookedPublishes
+        case .publishRides:
+            return ApiConstants.publishRide
         }
     }
     
@@ -104,6 +108,8 @@ enum RequestType: RawRepresentable {
             self = .bookPublish
         case ApiConstants.bookedPublishes:
             self = .bookedPublishes
+        case ApiConstants.publishRide:
+            self = .publishRides
         default:
             return nil
         }

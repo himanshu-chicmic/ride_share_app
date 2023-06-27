@@ -11,6 +11,9 @@ struct LoadImageView: View {
     
     // image
     var driverImage: String
+    var defaultSize: CGFloat = 42
+    
+    @State var isLoading: Bool = true
     
     var body: some View {
         AsyncImage(url: URL(string: driverImage)) { image in
@@ -18,19 +21,23 @@ struct LoadImageView: View {
                 .resizable()
                 .scaledToFill()
         } placeholder: {
-            if driverImage.isEmpty {
-                Image(Constants.Images.carpool)
-                    .resizable()
-                    .scaledToFill()
-            } else {
+            if isLoading {
                 ZStack {
                     Color.gray.opacity(0.1)
                     ProgressView()
                 }
+            } else {
+                Image(Constants.Images.carpool)
+                    .resizable()
+                    .scaledToFill()
             }
         }
-        .frame(width: 42, height: 42)
-        .clipShape(Circle())
+        .frame(width: defaultSize, height: defaultSize)
+        .clipShape(Circle()).onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now()+5) {
+                isLoading = false
+            }
+        }
     }
 }
 
