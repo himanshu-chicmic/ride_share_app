@@ -77,11 +77,7 @@ struct Globals {
     // get default dat for date picker
     // set the date back 18 years from today
     static let defaultDateCurrent: Date = {
-        return Calendar.current.date(
-            byAdding: .year,
-            value   : 0,
-            to      : Date()
-        )!
+        return Date.now
     }()
     
     // number formatter for showing years without
@@ -216,5 +212,15 @@ struct Globals {
     /// - Returns: string with whitespaces replaced with `+`
     static func getTextQueryWithReplacedCharsWithPlus(text: String) -> String {
         return text.replacingOccurrences(of: " ", with: "+")
+    }
+    
+    static func convertSecondsToTime(seconds: Double) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.hour, .minute]
+        guard let time = formatter.string(from: seconds) else {
+            return ""
+        }
+        return time
     }
 }

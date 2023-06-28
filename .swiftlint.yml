@@ -7,3 +7,7 @@ disabled_rules: # rule identifiers turned on by default to exclude from running
   - nesting
   - line_length
   - no_space_in_method_call
+  - file_length
+  - type_body_length
+  - cyclomatic_complexity
+  - type_name

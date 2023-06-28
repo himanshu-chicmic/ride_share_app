@@ -233,6 +233,53 @@ struct SearchView: View {
                 SearchResultsView()
                     .navigationBarBackButtonHidden()
             })
+            .navigationDestination(isPresented: $searchViewModel.openMapView, destination: {
+                VStack {
+                    // app bar at the top
+                    ZStack(alignment: .leading) {
+                        
+                        // button to pop view
+                        Button(action: {
+                            searchViewModel.openMapView.toggle()
+                        }, label: {
+                            Image(systemName: Constants.Icon.back)
+                        })
+                        
+                        // title of app bar
+                        Text("Select route")
+                        .frame(maxWidth: .infinity)
+                        
+                    }
+                    .padding()
+                    
+                    Divider()
+                    
+                    ZStack (alignment: .bottom) {
+                        GoogleMapView()
+                            .ignoresSafeArea()
+                        
+                        Button(action: {
+                            searchViewModel.publishRide()
+                        }, label: {
+                            Text(searchViewModel.buttonText)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .font(.system(size: 16))
+                                .fontWeight(.semibold)
+                            // set background by checking `isPrimary` boolean
+                                .background(
+                                    Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
+                                )
+                            // set foreground by checking `isPrimary` boolean
+                                .foregroundColor(.white)
+                                .cornerRadius(4)
+                        })
+                        .padding(.vertical, 24)
+                        .padding(.horizontal)
+                    }
+                }
+                .navigationBarBackButtonHidden()
+            })
             // search input field
             .fullScreenCover(isPresented: $searchViewModel.activeSearchView) {
                 SearchInputFieldView()

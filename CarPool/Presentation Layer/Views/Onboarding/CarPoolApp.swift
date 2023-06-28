@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import GoogleMaps
+import GooglePlaces
 
 @main
 struct CarPoolApp: App {
 
-    // MARK: - properties
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    // MARK: - properties
     // state object of view models
     @StateObject var baseViewModel = BaseViewModel.shared
     @StateObject var detailsViewModel = DetailsViewModel()
@@ -45,4 +48,12 @@ struct CarPoolApp: App {
             .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
         }
     }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        GMSServices.provideAPIKey(Globals.fetchAPIKey())
+        GMSPlacesClient.provideAPIKey(Globals.fetchAPIKey())
+         return true
+     }
 }

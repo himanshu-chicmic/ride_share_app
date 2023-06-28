@@ -261,6 +261,8 @@ struct Constants {
         
         static let emptyStartLocation = "Enter a start location."
         static let emptyEndLocation = "Enter an end location."
+        static let pleaseSelectVehicle = "Please select a vehicle."
+        static let pleaseSetPrice = "Please set a price for per seat."
         
         static let invalidVehicleNumber = "Invalid vehicle registration number. Please input correct number."
         static let emptyVehicleNumber = "Please enter your vehicle's registration number."

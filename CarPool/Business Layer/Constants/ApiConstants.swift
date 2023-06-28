@@ -10,7 +10,7 @@ import Foundation
 struct ApiConstants {
     
     // base url for api
-    static let baseURL = "https://95c4-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "https://2f5f-112-196-113-2.ngrok-free.app/%@"
     static let placesURL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cgeometry&input="
     static let placesEndpoint = "&inputtype=textquery&key="
     

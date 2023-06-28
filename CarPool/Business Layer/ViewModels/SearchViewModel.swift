@@ -32,6 +32,8 @@ class SearchViewModel: ObservableObject {
     @Published var selectedVehicleId: Int = 0
     // price
     @Published var pricePerSeat: String = ""
+    // estimated time
+    @Published var estimatedTime: String = ""
     
     // boolean to open close active search view
     @Published var activeSearchView: Bool = false
@@ -68,6 +70,8 @@ class SearchViewModel: ObservableObject {
     @Published var endLocationVal: Candidate?
     
     @Published var recenltyViewedRides: [Datum] = []
+    
+    @Published var openMapView: Bool = false
     
     var buttonText: String {
         findRide ? Constants.Search.search : Constants.Search.proceed
@@ -116,7 +120,7 @@ class SearchViewModel: ObservableObject {
                         Constants.JsonKeys.destinationLongitude : endLocationVal.geometry.location.lng,
                         Constants.JsonKeys.destinationLatitude  : endLocationVal.geometry.location.lat,
                         Constants.JsonKeys.passengersCount      : numberOfPersons,
-                        Constants.JsonKeys.date                 : Globals.dateFormatter.string(from: dateOfDeparture)
+                        Constants.JsonKeys.date                 : dateOfDeparture.formatted(date: .numeric, time: .omitted)
                     ]
                     // send request for search
                     sendRequestForSearch(
@@ -125,33 +129,52 @@ class SearchViewModel: ObservableObject {
                         data        : data
                     )
                 } else {
-                    // create data using all properties
-                    let data : [String : Any] = [
-                        "source": startLocationVal.formattedAddress,
-                        "destination": endLocationVal.formattedAddress,
-                        "source_longitude": startLocationVal.geometry.location.lng,
-                        "source_latitude": startLocationVal.geometry.location.lat,
-                        "destination_longitude": endLocationVal.geometry.location.lng,
-                        "destination_latitude": endLocationVal.geometry.location.lat,
-                        "passengers_count": numberOfPersons,
-                        "date": Globals.dateFormatter.string(from: dateOfDeparture),
-                        "time": Globals.timeFormatter.string(from: dateOfDeparture),
-                        "set_price": pricePerSeat,
-                        "about_ride": "",
-                        "vehicle_id": selectedVehicleId,
-                        "book_instantly": true,
-                        "mid_seat": false,
-                        "estimate_time": "2 hours",
-                        "select_route": []
-                    ]
-                    // send request for search
-                    sendRequestForSearch(
-                        httpMethod  : .POST,
-                        requestType : .publishRides,
-                        data        : ["publish" : data]
-                    )
+                    validatePublishRidesInput()
+                    
+                    if baseViewModel.toastMessage.isEmpty {
+                        openMapView.toggle()
+                    }
                 }
             }
+        }
+    }
+    
+    func publishRide() {
+        
+        if let startLocationVal, let endLocationVal {
+            let data : [String : Any] = [
+                "source": startLocationVal.formattedAddress,
+                "destination": endLocationVal.formattedAddress,
+                "source_longitude": startLocationVal.geometry.location.lng,
+                "source_latitude": startLocationVal.geometry.location.lat,
+                "destination_longitude": endLocationVal.geometry.location.lng,
+                "destination_latitude": endLocationVal.geometry.location.lat,
+                "passengers_count": numberOfPersons,
+                "date": Globals.dateFormatter.string(from: dateOfDeparture),
+                "time": dateOfDeparture.formatted(date: .omitted, time: .shortened),
+                "set_price": pricePerSeat,
+                "about_ride": "",
+                "vehicle_id": selectedVehicleId,
+                "book_instantly": true,
+                "mid_seat": false,
+                "estimate_time": estimatedTime,
+                "select_route": []
+            ]
+            
+            // send request for search
+            sendRequestForSearch(
+                httpMethod  : .POST,
+                requestType : .publishRides,
+                data        : ["publish" : data]
+            )
+        }
+    }
+    
+    func validatePublishRidesInput() {
+        if selectedVehicle.isEmpty {
+            baseViewModel.toastMessage = Constants.ValidationMessages.pleaseSelectVehicle
+        } else if pricePerSeat.isEmpty {
+            baseViewModel.toastMessage = Constants.ValidationMessages.pleaseSetPrice
         }
     }
     
@@ -161,6 +184,7 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for sending api request
     ///   - requestType: type of request ex .login, .signup etc.
     func sendRequestForSearch(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        baseViewModel.inProgess = true
         // empty search results before sending api request
         searchResults = []
         // call getSearchResults in ApiManager class
@@ -183,8 +207,16 @@ class SearchViewModel: ObservableObject {
         } receiveValue: { [weak self] response in
             // add response data in searchResults array
             if requestType == .publishRides {
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    if self?.openMapView == true {
+                        self?.openMapView.toggle()
+                    }
+                }
+                
                 self?.baseViewModel.toastMessage = "Ride created successfully"
                 self?.ridePublishOrBook = RidePublishedOrBook(title: "You'r ride is successfully published. ✅", caption: "Relax, sit back and wait for people to book your ride.")
+                
                 self?.bookedSuccess.toggle()
                 self?.resetData()
                 
@@ -198,6 +230,7 @@ class SearchViewModel: ObservableObject {
                 // toggle searchShowResults to open search results view
                 self?.showSearchResults.toggle()
             }
+            self?.baseViewModel.inProgess = false
         }
     }
     
@@ -264,8 +297,6 @@ class SearchViewModel: ObservableObject {
         self.selectedVehicle = ""
         self.selectedVehicleId = 0
         self.pricePerSeat = ""
-        
-        
     }
     
     /// method to send api request for getting places data using google places api
@@ -375,7 +406,13 @@ class SearchViewModel: ObservableObject {
             var recents: [Datum] = []
             for data in savedData {
                 if let jsonData = try? JSONDecoder().decode(Datum.self, from: data) {
-                    recents.append(jsonData)
+                    let now = Date.now
+                    
+                    if let date = Globals.dateFormatter.date(from: jsonData.publish.date ?? "") {
+                        if now < date {
+                            recents.append(jsonData)
+                        }
+                    }
                 }
             }
             self.recenltyViewedRides = recents
