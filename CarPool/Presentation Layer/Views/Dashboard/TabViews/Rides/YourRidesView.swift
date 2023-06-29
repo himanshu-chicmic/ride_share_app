@@ -83,9 +83,6 @@ struct YourRidesView: View {
                         lineAlignment = .bottomLeading
                     }
                 }
-            }.onAppear {
-                searchViewModel.sendRequestToGetBooked(httpMethod: .GET, requestType: .bookedRides, data: [:])
-                searchViewModel.sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
             }
         }
     }

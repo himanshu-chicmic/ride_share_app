@@ -41,6 +41,7 @@
 		6A349EA62A4D632300FC54F8 /* SearchViewModel+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A349EA52A4D632300FC54F8 /* SearchViewModel+Data.swift */; };
 		6A349EA82A4D7C8A00FC54F8 /* BookedRidesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A349EA72A4D7C8A00FC54F8 /* BookedRidesView.swift */; };
 		6A349EAA2A4D826600FC54F8 /* RidePublishedOrBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A349EA92A4D826600FC54F8 /* RidePublishedOrBook.swift */; };
+		6A349EAC2A4DA93700FC54F8 /* RideStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A349EAB2A4DA93700FC54F8 /* RideStatus.swift */; };
 		6A3FB32C2A1B3CA70069673A /* ApiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB32B2A1B3CA70069673A /* ApiConstants.swift */; };
 		6A3FB32E2A1B3D500069673A /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB32D2A1B3D500069673A /* HttpMethod.swift */; };
 		6A3FB3322A1B48550069673A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3312A1B48550069673A /* ApiManager.swift */; };
@@ -135,6 +136,7 @@
 		6A349EA52A4D632300FC54F8 /* SearchViewModel+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewModel+Data.swift"; sourceTree = "<group>"; };
 		6A349EA72A4D7C8A00FC54F8 /* BookedRidesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookedRidesView.swift; sourceTree = "<group>"; };
 		6A349EA92A4D826600FC54F8 /* RidePublishedOrBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidePublishedOrBook.swift; sourceTree = "<group>"; };
+		6A349EAB2A4DA93700FC54F8 /* RideStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideStatus.swift; sourceTree = "<group>"; };
 		6A3FB32B2A1B3CA70069673A /* ApiConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConstants.swift; sourceTree = "<group>"; };
 		6A3FB32D2A1B3D500069673A /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
 		6A3FB3312A1B48550069673A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -579,6 +581,7 @@
 				6A64A6872A1F60EE001E48F9 /* ForApiRequest */,
 				6A64A6862A1F60DD001E48F9 /* ForViews */,
 				6A64A6852A1F605A001E48F9 /* ForInputFields */,
+				6A349EAB2A4DA93700FC54F8 /* RideStatus.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -860,6 +863,7 @@
 				6A12E84F2A0E51830061333A /* TabViewIdentifier.swift in Sources */,
 				6AD6CDF92A160175002B7548 /* InputFieldsWithIcons.swift in Sources */,
 				6A32BAD02A174CB500866706 /* EditDetailsView.swift in Sources */,
+				6A349EAC2A4DA93700FC54F8 /* RideStatus.swift in Sources */,
 				6A32656C2A49502E00D1D4DC /* NetworkMonitor.swift in Sources */,
 				6AAB53E12A0BA32F00138024 /* UserDetailsView.swift in Sources */,
 				6AAB53D02A0B839A00138024 /* Constants.swift in Sources */,

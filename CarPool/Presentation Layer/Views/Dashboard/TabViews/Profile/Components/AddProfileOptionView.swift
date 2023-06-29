@@ -112,7 +112,7 @@ struct AddProfileOptionView: View {
             }
             .onChange(of: baseViewModel.openAddProfile, perform: { value in
                 if !value {
-                    dismiss()
+	                    dismiss()
                 }
             })
             .navigationBarBackButtonHidden()

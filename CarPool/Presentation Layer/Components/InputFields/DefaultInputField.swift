@@ -100,6 +100,7 @@ struct DefaultInputField: View {
                  .vehicleName,
                  .vehicleType:
                 TextField(placeholder, text: $text)
+                    .textInputAutocapitalization(inputFieldType == .bio ? TextInputAutocapitalization.never : TextInputAutocapitalization.words)
                 
             case .phoneNumber:
                 TextField(placeholder, text: $text)

@@ -23,9 +23,7 @@ struct PublishedRidesView: View {
                             endTime         : Formatters.getFormattedDate(date: data.estimateTime),
                             date            : "\(data.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.setPrice)),
-                            driverImage     : "",
-                            driverName      : "",
-                            driverRating    : Formatters.getRatings(ratings: 0)
+                            rideStatus: data.status
                         )
                         .foregroundColor(.black)
                     }

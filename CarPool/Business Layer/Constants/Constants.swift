@@ -318,7 +318,7 @@ struct Constants {
         static let update         = "Update"
         static let clear         = "Clear"
         static let currentLocation = "Set current location"
-        static let viewRideDetails = "View Ride Details"
+        static let viewRideDetails = "Ride Details"
     }
     
     struct JsonKeys {
@@ -338,6 +338,8 @@ struct Constants {
         static let destinationLatitude = "destination_latitude"
         static let passengersCount = "passengers_count"
         static let date = "date"
+        
+        static let country = "country"
         
         static let places = "PLACES_API_KEY"
         

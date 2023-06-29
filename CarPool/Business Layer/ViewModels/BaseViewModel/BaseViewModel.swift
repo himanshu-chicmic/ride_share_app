@@ -47,7 +47,6 @@ class BaseViewModel: ObservableObject {
     // open edit details for vehicles or profile
     @Published var editProfile = false
     @Published var addVehicle = false
-    @Published var dismissUpdateVehicle = false
     
     // open forgot password view
     @Published var openForgotPasswordView: Bool = false

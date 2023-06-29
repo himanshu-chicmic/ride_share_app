@@ -19,11 +19,11 @@ extension SearchViewModel {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.openMapView.toggle()
             }
-            baseViewModel.toastMessage = Constants.InfoMessages.rideCreatedSuccessfuly
             ridePublishOrBook = RidePublishedOrBook(title: Constants.InfoMessages.successfullyPublished, caption: Constants.InfoMessages.successPubishedCaption)
             bookedSuccess.toggle()
             
             resetData()
+            sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
         } else {
             if let data = response.data {
                 for result in data {
@@ -47,11 +47,11 @@ extension SearchViewModel {
                 self.showRideDetailViewFromRecents = false
                 self.showSearchResults = false
             }
-            baseViewModel.toastMessage = Constants.InfoMessages.rideBookSuccess
             ridePublishOrBook = RidePublishedOrBook(title: Constants.InfoMessages.rideBookSuccessTitle, caption: Constants.InfoMessages.rideBookSuccessCaption)
             bookedSuccess.toggle()
             
             resetData()
+            sendRequestToGetBooked(httpMethod: .GET, requestType: .bookedRides, data: [:])
         } else {
             baseViewModel.toastMessage = response.error ?? ""
         }

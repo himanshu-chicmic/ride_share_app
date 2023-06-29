@@ -133,7 +133,7 @@ struct SearchView: View {
                     
                     // search rides
                     Button(action: {
-                        searchViewModel.validateInputFields()
+                        searchViewModel.callApiMethods()
                     }, label: {
                         Text(searchViewModel.buttonText)
                             .frame(maxWidth: .infinity)

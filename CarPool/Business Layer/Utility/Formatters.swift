@@ -104,7 +104,7 @@ struct Formatters {
         if ratings == 0 {
             return Constants.RideDetails.noRatings
         }
-        return String(format: "%.1f", ratings)
+        return "\(String(format: "%.1f", ratings)) ★"
     }
     
     /// method to get distance in kms
@@ -227,4 +227,3 @@ struct Formatters {
         return ""
     }
 }
-

@@ -14,7 +14,7 @@ struct LocationTextView: View {
     var location: String
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             Text(title)
                 .font(.system(size: 12))
                 .fontWeight(.light)

@@ -22,7 +22,7 @@ struct StepperInputField: View {
                     .resizable()
                     .frame(width: 34, height: 34)
             }
-            .disabled(number == 0)
+            .disabled(number == 1)
             .padding()
             
             Spacer()

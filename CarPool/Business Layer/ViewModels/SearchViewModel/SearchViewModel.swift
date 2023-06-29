@@ -13,6 +13,8 @@ class SearchViewModel: ObservableObject {
     // MARK: - properties
     
     private var anyCancellable: AnyCancellable?
+    private var anyCancellableBooked: AnyCancellable?
+    private var anyCancellablePublish: AnyCancellable?
     
     // MARK: booleans for presenting views
     
@@ -92,6 +94,9 @@ class SearchViewModel: ObservableObject {
     
     /// default initializer
     init() {
+        sendRequestToGetBooked(httpMethod: .GET, requestType: .bookedRides, data: [:])
+        sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
+        
         getRecentlyViewed(key: Constants.UserDefaultKeys.recentViewedRides)
         getRecentlyViewed(key: Constants.UserDefaultKeys.recentSearches)
     }
@@ -178,7 +183,7 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestToGetPublished(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        anyCancellablePublish = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {
@@ -198,7 +203,7 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestToGetBooked(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        anyCancellableBooked = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {

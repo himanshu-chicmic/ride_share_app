@@ -231,8 +231,6 @@ class DetailsViewModel: ObservableObject {
             
             for item in textFieldValues {
                 switch item.2 {
-                case .country:
-                    data[item.2.rawValue] = Constants.Defaults.country
                 case .vehicleColor:
                     data[item.2.rawValue] = color
                 case .vehicleModelYear:
@@ -241,7 +239,7 @@ class DetailsViewModel: ObservableObject {
                     data[item.2.rawValue] = item.0
                 }
             }
-            
+            data[Constants.JsonKeys.country] = Constants.Defaults.country
             if let vehiclesData {
                 baseViewModel.sendVehiclesRequestToApi(httpMethod: .PUT, requestType: .updateVehicle, data: [Constants.JsonKeys.vehicle : data, Constants.JsonKeys.id : vehiclesData.id])
             } else {

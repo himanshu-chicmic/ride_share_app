@@ -11,7 +11,7 @@ struct LoadImageView: View {
     
     // image
     var driverImage: String
-    var defaultSize: CGFloat = 42
+    var defaultSize: CGFloat = 44
     
     // bool to check image loading
     @State var isLoading: Bool = true

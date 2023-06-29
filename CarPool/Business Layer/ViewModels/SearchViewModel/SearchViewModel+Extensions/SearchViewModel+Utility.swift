@@ -68,7 +68,7 @@ extension SearchViewModel {
                     Constants.JsonKeys.destinationLongitude : endLocationVal.geometry.location.lng,
                     Constants.JsonKeys.destinationLatitude  : endLocationVal.geometry.location.lat,
                     Constants.JsonKeys.passengersCount      : numberOfPersons,
-                    Constants.JsonKeys.date                 : dateOfDeparture.formatted(date: .numeric, time: .omitted)
+                    Constants.JsonKeys.date                 : Formatters.dateFormatter.string(from: dateOfDeparture)
                 ]
                 sendRequestForSearchAndPublish(httpMethod: .GET, requestType: .searchRides, data: data)
             } else {

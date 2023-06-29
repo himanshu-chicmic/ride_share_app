@@ -23,9 +23,11 @@ struct BookedRidesView: View {
                             endTime         : Formatters.getFormattedDate(date: data.ride.estimateTime),
                             date            : "\(data.ride.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.ride.setPrice)),
+                            seats : data.seat,
                             driverImage     : "",
-                            driverName      : "",
-                            driverRating    : Formatters.getRatings(ratings: 0)
+                            driverName      : "\(Constants.Defaults.defaultUserF) \(Constants.Defaults.defaultUserL)",
+                            driverRating    : Formatters.getRatings(ratings: 0),
+                            rideStatus: data.ride.status
                         )
                         .foregroundColor(.black)
                     }
@@ -41,5 +43,6 @@ struct BookedRidesView: View {
 struct BookedRidesView_Previews: PreviewProvider {
     static var previews: some View {
         BookedRidesView()
+            .environmentObject(SearchViewModel())
     }
 }

@@ -103,10 +103,6 @@ struct EditDetailsView: View {
                     textFieldValues = detailsViewModel.userModel.getInputFields(data: baseViewModel.userData)
                     detailsViewModel.setPickerData()
                 } else {
-                    
-                    if vehiclesData != nil {
-                        baseViewModel.dismissUpdateVehicle = true
-                    }
                     textFieldValues = VehicleModel().getInputFields(data: vehiclesData ?? nil)
                     detailsViewModel.setPickerData(vehiclesData: vehiclesData ?? nil)
                 }
@@ -134,11 +130,6 @@ struct EditDetailsView: View {
                 }
                 Button(Constants.Others.dismiss, role: .cancel) {}
             }
-            .onChange(of: baseViewModel.dismissUpdateVehicle, perform: { newValue in
-                if !newValue {
-                    dismiss()
-                }
-            })
             .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(
                     pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date

@@ -62,7 +62,6 @@ struct ApiConstants {
     static let publishRide = "publishes"
     static let bookedRides = "booked_publishes"
     
-    
     // MARK: - HTTPHeaderFieldAndValues
     
     struct HTTPHeaderFieldAndValues {

@@ -65,8 +65,6 @@ extension BaseViewModel {
         case .vehicles, .updateVehicle, .deleteVehicle:
             // set add vehicles to false to close add vehicle view
             addVehicle = false
-            // if dismissUpdateVehicle is true set to false
-            if dismissUpdateVehicle {  dismissUpdateVehicle = false }
             // sent an api request to fetch vehicles data again
             sendVehiclesRequestToApi(
                 httpMethod  : .GET,
