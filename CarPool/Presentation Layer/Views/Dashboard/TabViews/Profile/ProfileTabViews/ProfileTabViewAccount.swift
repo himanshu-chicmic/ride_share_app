@@ -42,12 +42,9 @@ struct ProfileTabViewAccount: View {
             ForEach(navigationLinks, id: \.self) { link in
                 
                 ForEach(link, id: \.self) { value in
-                    // content view
                     HStack {
-                        // value of the text
                         Text(value)
                         Spacer()
-                        // icon view
                         Image(systemName: Constants.Icon.next)
                     }
                     .padding()
@@ -59,8 +56,6 @@ struct ProfileTabViewAccount: View {
                         }
                     }
                 }
-                
-                // divider for sections
                 Divider()
                     .padding(.horizontal)
             }
@@ -81,21 +76,21 @@ struct ProfileTabViewAccount: View {
 
         }
         .confirmationDialog(
+            "",
+            isPresented     : $openExternalLink,
+            titleVisibility : .hidden
+        ) {
+            Button(Constants.ButtonText.openInBrowser, role: nil) {
+                UIApplication.shared.open(URL(string: Constants.DefaultURLs.stackoverflow)!)
+            }
+        }
+        .confirmationDialog(
             Constants.AlertDialog.logout,
             isPresented     : $logOutConfirmation,
             titleVisibility : .visible
         ) {
             Button(Constants.ProfileAccount.logOut, role: .destructive) {
                 baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .logOut, data: [:])
-            }
-        }
-        .confirmationDialog(
-            "",
-            isPresented     : $openExternalLink,
-            titleVisibility : .hidden
-        ) {
-            Button("Open in Browser", role: nil) {
-                UIApplication.shared.open(URL(string: "https://stackoverflow.com")!)
             }
         }
         

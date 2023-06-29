@@ -157,14 +157,14 @@ class ApiManager {
             .eraseToAnyPublisher()
     }
     
-    /// method to get places data from using google places api
+    /// method for fetching google places data
     /// - Parameters:
-    ///   - httpMethod: method type of request
-    ///   - text: text description of place
-    ///   - requestType: type of request
-    /// - Returns: any published with either response as PlacesDataModel or Error
+    ///   - httpMethod: type of http method used
+    ///   - text: name of city or place
+    ///   - requestType: type of api call
+    /// - Returns: response from api call
     func getPlacesData(httpMethod: HttpMethod, text: String, requestType: RequestType) -> AnyPublisher<PlacesDataModel, Error> {
-        
+        // check internet connection
         NetworkMonitor.shared.startMonitoring()
         if NetworkMonitor.shared.isReachable {
             NetworkMonitor.shared.stopMonitoring()
@@ -172,30 +172,21 @@ class ApiManager {
                 .eraseToAnyPublisher()
         }
         NetworkMonitor.shared.stopMonitoring()
-        
-        // create a base url
-        let baseURL = ApiConstants.placesURL + Globals.getTextQueryWithReplacedCharsWithPlus(text: text) + ApiConstants.placesEndpoint + Globals.fetchAPIKey()
-        // get the url from base url string
+        // set up api request url
+        let baseURL = ApiConstants.placesURL + Formatters.getTextQueryWithReplacedCharsWithPlus(text: text) + ApiConstants.placesEndpoint + Formatters.fetchAPIKey()
         guard let url = URL(string: baseURL) else {
-            // return nil if url is invalid
             return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
-        // initialize url request
         var request = URLRequest(url: url)
-        // set the http method
         request.httpMethod = httpMethod.rawValue.trimmingCharacters(in: .whitespaces)
         
-        // use dataTaskPublisher to call the api for url request
+        // return response
         return URLSession.shared.dataTaskPublisher(for: request)
-            // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
                 return APIErrors.transportError(error)
             }
-            // map data and reponse and return
-            // after getting response as HTTPURLResponse
             .tryMap { (data, response) -> (data: Data, response: URLResponse) in
-                // get httpurl response
                 return try self.getHttpURLResponse(
                     requestType : requestType,
                     response    : response,
@@ -213,14 +204,14 @@ class ApiManager {
             .eraseToAnyPublisher()
     }
     
-    /// method to get search results for ride search
+    /// method for api requests related to search and rides
     /// - Parameters:
-    ///   - httpMethod: method for api request
-    ///   - data: data that needs to be sent with api
-    ///   - requestType: type of api request
-    /// - Returns: any published with either response as PlacesDataModel or Error
-    func getSearchResults(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<RidesSearchModel, Error> {
-        
+    ///   - httpMethod: type of http method used
+    ///   - data: any data to be sent
+    ///   - requestType: type of api call
+    /// - Returns: response from api call
+    func apiRequestSearchAndRides<T: Decodable>(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<T, Error> {
+        // check internet connection
         NetworkMonitor.shared.startMonitoring()
         if NetworkMonitor.shared.isReachable {
             NetworkMonitor.shared.stopMonitoring()
@@ -228,92 +219,27 @@ class ApiManager {
                 .eraseToAnyPublisher()
         }
         NetworkMonitor.shared.stopMonitoring()
-        
-        // get url request from setUpApiRequest method
+        // get url request
         guard let request = setUpApiRequest(
             httpMethod  : httpMethod,
             data        : data,
             requestType : requestType
         ) else {
-            // return error if request is nil
             return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
-        
-        // use dataTaskPublisher to call the api for url request
+        // return response
         return URLSession.shared.dataTaskPublisher(for: request)
-            // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
                 return APIErrors.transportError(error)
             }
-            // map data and reponse and return
-            // after getting response as HTTPURLResponse
             .tryMap { (data, response) -> (data: Data, response: URLResponse) in
                 return try self.getHttpURLResponse(requestType: requestType, response: response, data: data)
             }
             .map(\.data)
             .tryMap { data in
-                // initialize json decoder
-                let decoder = JSONDecoder()
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                        print(json)
-                    }
-                    return try decoder.decode(RidesSearchModel.self, from: data)
-                } catch {
-                    throw APIErrors.decodingError(error)
-                }
-            }
-            .eraseToAnyPublisher()
-    }
-    
-    /// method for ride booking and publishing
-    /// - Parameters:
-    ///   - httpMethod: method for api request
-    ///   - data: data that needs to be sent with api
-    ///   - requestType: type of api request
-    /// - Returns: any published with either response as PlacesDataModel or Error
-    func createApiRequestForRides(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<BookRideModel, Error> {
-        
-        NetworkMonitor.shared.startMonitoring()
-        if NetworkMonitor.shared.isReachable {
-            NetworkMonitor.shared.stopMonitoring()
-            return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
-                .eraseToAnyPublisher()
-        }
-        NetworkMonitor.shared.stopMonitoring()
-        
-        // get url request from setUpApiRequest method
-        guard let request = setUpApiRequest(
-            httpMethod  : httpMethod,
-            data        : data,
-            requestType : requestType
-        ) else {
-            // return error if request is nil
-            return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
-                .eraseToAnyPublisher()
-        }
-        
-        // use dataTaskPublisher to call the api for url request
-        return URLSession.shared.dataTaskPublisher(for: request)
-            // mapping error related to invalid format or key values or data limitations
-            .mapError { error -> Error in
-                return APIErrors.transportError(error)
-            }
-            // map data and reponse and return
-            // after getting response as HTTPURLResponse
-            .tryMap { (data, response) -> (data: Data, response: URLResponse) in
-                return try self.getHttpURLResponse(requestType: requestType, response: response, data: data)
-            }
-            .map(\.data)
-            .tryMap { data in
-                // initialize json decoder
-                let decoder = JSONDecoder()
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                        print(json)
-                    }
-                    return try decoder.decode(BookRideModel.self, from: data)
+                    return try JSONDecoder().decode(T.self, from: data)
                 } catch {
                     throw APIErrors.decodingError(error)
                 }

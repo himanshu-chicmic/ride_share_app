@@ -7,30 +7,6 @@
 
 import SwiftUI
 
-struct VehicleTextView: View {
-    
-    var data: VehiclesDataClass
-    @EnvironmentObject var searchViewModel: SearchViewModel
-    
-    var body: some View {
-        HStack {
-            Text("\(data.vehicleName) - \(data.vehicleBrand)")
-            if data.id == searchViewModel.selectedVehicleId {
-                Image(systemName: Constants.Icon.check)
-                    .font(.system(size: 14))
-                    .foregroundColor(.accentColor)
-            }
-            
-            Spacer()
-        }
-        .onTapGesture {
-            searchViewModel.selectedVehicleId = data.id
-            searchViewModel.selectedVehicle = "\(data.vehicleName) - \(data.vehicleBrand)"
-            searchViewModel.activeSearchView.toggle()
-        }
-    }
-}
-
 struct DrawSearchComponent: View {
     
     // MARK: - properties
@@ -47,9 +23,6 @@ struct DrawSearchComponent: View {
     @EnvironmentObject var baseViewModel: BaseViewModel
     
     @StateObject var locationViewModel = LocationViewModel()
-    
-    // progress bar view
-    @State var showProgressView = false
     
     // MARK: - body
     
@@ -86,7 +59,7 @@ struct DrawSearchComponent: View {
                 DatePicker(
                     "",
                     selection           : $searchViewModel.dateOfDeparture,
-                    in                  : Globals.defaultDateCurrent...Globals.defaultDateMax,
+                    in                  : Formatters.defaultDateCurrent...Formatters.defaultDateMax,
                     displayedComponents : searchViewModel.findRide ? .date : [.date, .hourAndMinute]
                 )
                 .datePickerStyle(.graphical)
@@ -117,16 +90,11 @@ struct DrawSearchComponent: View {
                 .lineLimit(1)
                 .onChange(of: textField) { text in
                     if searchViewModel.searchComponentType != .price {
-                        // call google place api
                         searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
-                        withAnimation {
-                            showProgressView = !text.isEmpty
-                        }
                     } else {
                         if text.rangeOfCharacter(from: NSCharacterSet.decimalDigits) == nil {
                             textField = ""
                         }
-                        
                         if text.count > 5 {
                             textField = String(text.prefix(5))
                         }
@@ -137,7 +105,7 @@ struct DrawSearchComponent: View {
                 }
                 
                 // show loader if suggestion list is empty
-                if !searchViewModel.suggestions.isEmpty {
+                if !searchViewModel.suggestions.isEmpty && searchViewModel.searchComponentType != .price {
                     List(searchViewModel.suggestions, id: \.self) { suggestion in
                         HStack {
                             Image(systemName: Constants.Icon.mapMark)
@@ -160,22 +128,21 @@ struct DrawSearchComponent: View {
                                 searchViewModel.endLocationVal = suggestion
                             }
                             
-                            searchViewModel.updateRecentSearched(data: suggestion, delete: false)
-                            
+                            searchViewModel.updateRecents(dataRecentSearches: suggestion)
                             searchViewModel.activeSearchView.toggle()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     }
                     .listStyle(.plain)
                 } else {
-                    if showProgressView {
+                    if searchViewModel.showProgressView {
                         ProgressView()
                             .padding()
                     }
                 }
                 
                 // search history is not empty
-                if searchViewModel.searchComponentType != .price && !showProgressView && searchViewModel.suggestions.isEmpty && !searchViewModel.searchHistory.isEmpty {
+                if searchViewModel.searchComponentType != .price && !searchViewModel.showProgressView && searchViewModel.suggestions.isEmpty && !searchViewModel.searchHistory.isEmpty {
                     
                     List(searchViewModel.searchHistory, id: \.self) { suggestion in
                         HStack {
@@ -202,7 +169,7 @@ struct DrawSearchComponent: View {
                             Image(systemName: Constants.Icon.close)
                                 .padding()
                                 .onTapGesture {
-                                    searchViewModel.updateRecentSearched(data: suggestion, delete: true)
+                                    searchViewModel.updateRecents(dataRecentSearches: suggestion, delete: true)
                                 }
                         }
                         .font(.system(size: 14))
@@ -222,9 +189,9 @@ struct DrawSearchComponent: View {
                         Image(systemName: Constants.Icon.location)
                             .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
                             .padding([.vertical, .leading])
-                            .padding(.trailing, showProgressView ? 18 : 0)
+                            .padding(.trailing, searchViewModel.showProgressView ? 18 : 0)
                         
-                        if !showProgressView {
+                        if !searchViewModel.showProgressView {
                             Text(Constants.Others.currentLocation)
                                 .fontWeight(.light)
                                 .padding(.trailing)
@@ -235,12 +202,7 @@ struct DrawSearchComponent: View {
                     .cornerRadius(8)
                     .padding()
                     .onTapGesture {
-                        switch locationViewModel.authorizationStatus {
-                        case .authorizedAlways, .authorizedWhenInUse:
-                            locationViewModel.startLocationUpdation()
-                        default:
-                            locationViewModel.requestPermission()
-                        }
+                        locationViewModel.checkPermissionAndGetLocation()
                     }
                 }
             }
@@ -252,7 +214,7 @@ struct DrawSearchComponent: View {
             }
         })
         .onDisappear {
-            showProgressView = false
+            searchViewModel.showProgressView = false
             locationViewModel.stopLocationUpdation()
         }
     }

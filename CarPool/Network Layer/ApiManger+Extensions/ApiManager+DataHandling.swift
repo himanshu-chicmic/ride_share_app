@@ -71,7 +71,7 @@ extension ApiManager {
         // set the user default for SessionAuthToken
         else if requestType == .signUp || requestType == .logIn {
             // get token from response header
-            let bearer = response.value(forHTTPHeaderField: ApiConstants.authorization)
+            let bearer = response.value(forHTTPHeaderField: ApiConstants.HTTPHeaderFieldAndValues.authorization)
             if let bearer {
                 UserDefaults.standard.set(bearer, forKey: Constants.UserDefaultKeys.session)
             }

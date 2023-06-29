@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import GoogleMaps
-import GooglePlaces
 
 @main
 struct CarPoolApp: App {
@@ -15,11 +13,11 @@ struct CarPoolApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     // MARK: - properties
-    // state object of view models
+    // view models
     @StateObject var baseViewModel = BaseViewModel.shared
     @StateObject var detailsViewModel = DetailsViewModel()
     
-    // state variable to change the views
+    // state variables
     @State var toggleDashboardContentView: Bool = false
     
     // MARK: - body
@@ -27,8 +25,6 @@ struct CarPoolApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                // if toggleDashboardContentView is set to true
-                // then show dashboard else show onboarding
                 if toggleDashboardContentView {
                     DashboardView()
                 } else {
@@ -38,8 +34,6 @@ struct CarPoolApp: App {
             .onChange(of: baseViewModel.switchToDashboard) { value in
                 toggleDashboardContentView = value
             }
-            // set baseViewModel and detailsViewModel
-            // in environment object for later use
             .environmentObject(baseViewModel)
             .environmentObject(detailsViewModel)
             .onAppear {
@@ -48,12 +42,4 @@ struct CarPoolApp: App {
             .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
         }
     }
-}
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        GMSServices.provideAPIKey(Globals.fetchAPIKey())
-        GMSPlacesClient.provideAPIKey(Globals.fetchAPIKey())
-         return true
-     }
 }

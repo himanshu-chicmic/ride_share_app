@@ -18,12 +18,6 @@ struct SearchView: View {
     // data of selected result
     @State var selectedTile: Datum?
     
-    // colors array
-    private var colorsListForBanners: [Color] = [
-        Color(uiColor: UIColor(hexString: "#9699BE")),
-        Color(uiColor: UIColor(hexString: "#90BAA8"))
-    ]
-    
     // MARK: - body
     
     var body: some View {
@@ -117,7 +111,7 @@ struct SearchView: View {
                     .padding(.horizontal)
                     
                     if !searchViewModel.findRide {
-                        
+                        // vehicle
                         InputFieldsWithIcons(
                             icon        : Constants.Icon.car,
                             placeholder : Constants.Placeholders.vehicle,
@@ -126,6 +120,7 @@ struct SearchView: View {
                         )
                         .padding(.horizontal)
                         
+                        // price
                         InputFieldsWithIcons(
                             icon        : Constants.Icon.rupee,
                             placeholder : Constants.Placeholders.price,
@@ -138,18 +133,18 @@ struct SearchView: View {
                     
                     // search rides
                     Button(action: {
-                        searchViewModel.validateSearchInput()
+                        searchViewModel.validateInputFields()
                     }, label: {
                         Text(searchViewModel.buttonText)
                             .frame(maxWidth: .infinity)
                             .padding()
                             .font(.system(size: 16))
                             .fontWeight(.semibold)
-                        // set background by checking `isPrimary` boolean
+                            // set background by checking `isPrimary` boolean
                             .background(
                                 Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
                             )
-                        // set foreground by checking `isPrimary` boolean
+                            // set foreground by checking `isPrimary` boolean
                             .foregroundColor(.white)
                             .cornerRadius(4)
                     })
@@ -190,14 +185,14 @@ struct SearchView: View {
                                 ForEach(Array(zip(searchViewModel.recenltyViewedRides.indices, searchViewModel.recenltyViewedRides)), id: \.0) { (index, recentSearch) in
                                     RidesListItem(
                                         startLoction    : recentSearch.publish.source,
-                                        startTime       : Globals.getFormattedDate(date: recentSearch.publish.time),
+                                        startTime       : Formatters.getFormattedDate(date: recentSearch.publish.time),
                                         endLocation     : recentSearch.publish.destination,
-                                        endTime         : Globals.getFormattedDate(date: recentSearch.reachTime),
+                                        endTime         : Formatters.getFormattedDate(date: recentSearch.reachTime),
                                         date            : "\(recentSearch.publish.date ?? Constants.Placeholders.defaultTime)",
-                                        price           : Globals.getPrice(price: Int(recentSearch.publish.setPrice)),
+                                        price           : Formatters.getPrice(price: Int(recentSearch.publish.setPrice)),
                                         driverImage     : recentSearch.imageURL ?? "",
                                         driverName      : recentSearch.name,
-                                        driverRating    : Globals.getRatings(ratings: recentSearch.averageRating ?? 0)
+                                        driverRating    : Formatters.getRatings(ratings: recentSearch.averageRating ?? 0)
                                     )
                                     .frame(width: 300)
                                     .foregroundColor(.black)
@@ -246,7 +241,7 @@ struct SearchView: View {
                         })
                         
                         // title of app bar
-                        Text("Select route")
+                        Text(Constants.Search.route)
                         .frame(maxWidth: .infinity)
                         
                     }
@@ -259,7 +254,7 @@ struct SearchView: View {
                             .ignoresSafeArea()
                         
                         Button(action: {
-                            searchViewModel.publishRide()
+                            searchViewModel.callApiForPublish()
                         }, label: {
                             Text(searchViewModel.buttonText)
                                 .frame(maxWidth: .infinity)

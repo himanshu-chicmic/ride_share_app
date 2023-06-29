@@ -8,46 +8,39 @@
 import Foundation
 import SwiftUI
 
-/// view model for signin properties and methods
 class SignInViewModel: ObservableObject {
     
     // MARK: - properties
     
     // MARK: published properties
-    // variable that determines sign up or log in
-    @Published var isNewUser: Bool = false
     
-    // variable to navigate to login signup
+    // sign up or log in
+    @Published var isNewUser: Bool = false
+    // navigate to login signup
     @Published var navigate: Bool = false
     
-    // signInModel for email, password and,
-    // confirm password properties
+    // signInModel instance
     @Published var signInModel = SignInModel()
     
-    // array to store the values
-    // neccessary for the input fields
+    // array to store input fields
     @Published var textFieldValues: Constants.TypeAliases.InputFieldArrayType = []
     
     // MARK: instance variables
     var baseViewModel = BaseViewModel.shared
     
     // MARK: computed properties
-    // returns appbar title
-    // for sign in view
+    
+    // appbar title
     var appBarTitle: String {
         isNewUser ? Constants.SignUp.signUp : Constants.LogIn.logIn
     }
     
-    // returns text for showing if
-    // user is already a member
-    // or a new user
+    // returns text for already a member or a new user
     var alreadyOrNotAMember: String {
         isNewUser ? Constants.SignUp.alreadyAMember : Constants.LogIn.notAMember
     }
     
-    // returns sign up or log in
-    // string for switching the
-    // states between signup and login
+    // returns sign up or log in string
     var signUpOrLogIn: String {
         isNewUser ? Constants.LogIn.logIn : Constants.SignUp.signUp
     }
@@ -55,16 +48,12 @@ class SignInViewModel: ObservableObject {
     // MARK: - methods
     
     // MARK: api calling methods
+    
     /// method to initiate sign in process
-    /// by checking the validations first
-    /// and then sending the request to api
     func initiateSignIn() {
         withAnimation {
-            // check for textfield validations
             baseViewModel.toastMessage = isNewUser
             ?
-            // if new user check for confirm password
-            // matches original password entered
             baseViewModel
                 .validationsInstance
                 .validateTextFields(
@@ -72,24 +61,16 @@ class SignInViewModel: ObservableObject {
                     count      : textFieldValues.count - 2
                 )
             :
-            // else check without confirm password
             baseViewModel
                 .validationsInstance
                 .validateTextFields(textFields: textFieldValues)
         }
         
-        // if toast message is empty
-        // there no error in validations and verification
-        // then navigate to new view
         if baseViewModel.toastMessage.isEmpty {
-            // http method
             let httpMethod: HttpMethod = isNewUser ? .GET : .POST
-            // request type
             let requestType: RequestType = isNewUser ? .emailCheck : .logIn
-            // get data in dictionary
             let data = baseViewModel.getDataInDictionary(values: textFieldValues, type: requestType)
-            
-            // call sendRequestToApi method
+        
             baseViewModel.sendRequestToApi(
                 httpMethod  : httpMethod,
                 requestType : requestType,
@@ -98,7 +79,30 @@ class SignInViewModel: ObservableObject {
         }
     }
     
+    /// method to initiate fogot password
+    /// - Parameters:
+    ///   - textFieldValues: input field values
+    ///   - isNavigated: bool to check if the view is navigated, used for validation of fields
+    func initiateForgotPassword(textFieldValues: Constants.TypeAliases.InputFieldArrayType, isNavigated: Bool) {
+        withAnimation {
+            // validate text fields
+            baseViewModel.toastMessage = navigate
+            ? baseViewModel.validationsInstance.validateTextFields(
+                textFields : textFieldValues,
+                count      : textFieldValues.count - 2
+            )
+            : baseViewModel.validationsInstance.validateTextFields(textFields: textFieldValues)
+        }
+        
+        if baseViewModel.toastMessage.isEmpty {
+            let requestTypeForValidation: RequestType = isNavigated ? .resetPassword : .emailCheck
+            let data = baseViewModel.getDataInDictionary(values: textFieldValues, type: requestTypeForValidation)
+            baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .forgotPassword, data: data)
+        }
+    }
+    
     // MARK: utility methods
+    
     /// method to update text fields
     /// when login signup modes are switched
     func resetTextFields() {

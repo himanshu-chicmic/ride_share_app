@@ -48,7 +48,7 @@ struct RideBookSuccess: View {
                 Button {
                     dismiss()
                 } label: {
-                    DefaultButtonLabel(text: "View Ride Details")
+                    DefaultButtonLabel(text: Constants.Others.viewRideDetails)
                 }
             }
             .padding(.vertical)

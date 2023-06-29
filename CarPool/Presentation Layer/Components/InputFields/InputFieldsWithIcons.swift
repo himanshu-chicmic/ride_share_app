@@ -45,7 +45,7 @@ struct InputFieldsWithIcons: View {
             Image(systemName: icon)
                 .foregroundColor(.gray)
             // text value
-            Text(inputType == .date ? Globals.dateFormatter.string(from: searchViewModel.dateOfDeparture) : text.isEmpty ? placeholder : text)
+            Text(inputType == .date ? Formatters.dateFormatter.string(from: searchViewModel.dateOfDeparture) : text.isEmpty ? placeholder : text)
                 .frame(
                     maxWidth  : .infinity,
                     alignment : .leading

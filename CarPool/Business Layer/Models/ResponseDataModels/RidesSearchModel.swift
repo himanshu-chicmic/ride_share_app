@@ -7,7 +7,33 @@
 
 import Foundation
 
-// MARK: - Welcome
+struct PublishedRidesModel: Codable {
+    let code: Int
+    let data: [Publish]
+}
+
+struct BookedRidesModel: Codable {
+    let code: Int
+    var rides: [BookedRidesData]
+}
+
+struct BookedRidesData: Codable {
+    let ride: Publish
+    let bookingID, seat: Int
+    var status: String
+    let reachTime: String?
+    var totalPrice: Double
+
+    enum CodingKeys: String, CodingKey {
+        case ride
+        case bookingID = "booking_id"
+        case seat, status
+        case reachTime = "reach_time"
+        case totalPrice = "total_price"
+    }
+}
+
+// MARK: - RidesSearchModel
 struct RidesSearchModel: Codable {
     let code: Int
     let message: String?
@@ -28,9 +54,9 @@ struct Datum: Codable, Hashable {
     
     func getDetailsArray(data: Datum) -> [String] {
         return [
-            "Distance (in Kms) \(Globals.getDistanceInKms(distance: data.publish.distance ?? 0))",
+            "Distance (in Kms) \(Formatters.getDistanceInKms(distance: data.publish.distance ?? 0))",
             "\(data.publish.passengersCount) Passengers",
-            "Estimated Time \(Globals.getEstimatedTime(date: data.publish.estimateTime ?? ""))"
+            "Estimated Time \(Formatters.getEstimatedTime(date: data.publish.estimateTime ?? ""))"
         ]
     }
     

@@ -17,12 +17,8 @@ extension BaseViewModel {
     ///   - response: response returned from api call
     ///   - type: type of api request
     func handleDataResponse(userData: SignInAndProfileModel? = nil, vehiclesData: VehiclesDataModel? = nil, type: RequestType) {
-        // check the type of the request and handle the response
-        // accroding to the type of request
         switch type {
-        case .logIn,
-             .signUp,
-             .logOut:
+        case .logIn, .signUp, .logOut:
             // handle response for signup, login and logout
             switchDashboardOnboarding(
                 response : userData!,
@@ -155,7 +151,7 @@ extension BaseViewModel {
                 case .gender:
                     data[innerValue.2.rawValue] = viewModel.gender
                 case .dateOfBirth:
-                    data[innerValue.2.rawValue] = Globals.dateFormatter.string(from: viewModel.date)
+                    data[innerValue.2.rawValue] = Formatters.dateFormatter.string(from: viewModel.date)
                 default:
                     data[innerValue.2.rawValue] = innerValue.0
                 }

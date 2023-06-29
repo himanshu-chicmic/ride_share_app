@@ -10,6 +10,29 @@ import UIKit
 
 struct Constants {
     
+    struct ButtonText {
+        static let openInBrowser = "Open in Browser"
+    }
+    
+    struct Network {
+        static let monitor = "NetworkMonitor"
+    }
+    
+    struct Defaults {
+        static let defaultUserF = "No"
+        static let defaultUserL = "Name"
+        
+        static let country = "India"
+    }
+    
+    struct DefaultURLs {
+        static let stackoverflow = "https://stackoverflow.com"
+    }
+    
+    struct Responses {
+        static let profileUpdated = "Profile picture updated!"
+    }
+    
     struct TabView {
         static let search = "Search"
         static let searchIcon = "magnifyingglass"
@@ -123,6 +146,8 @@ struct Constants {
         static let bio              = "Add bio"
         
         static let vehicleTitles    = ["Country", "Number", "Brand", "Name of Vehicle", "Vehicle Type", "Color", "Model Year"]
+        
+        static let passcode = "Enter 4-digit passcode"
     }
     
     struct Vehicle {
@@ -134,7 +159,7 @@ struct Constants {
         static let color            = "Select color"
         static let modelYear        = "Select year"
         
-        static let headings             = ["Country", "Vehicle number", "Brand", "Model", "Type of vehicle", "Color", "Model year"]
+        static let headings             = ["Vehicle number", "Brand", "Model", "Type of vehicle", "Color", "Model year"]
     }
     
     struct Headings {
@@ -204,6 +229,12 @@ struct Constants {
         static let image    = "empty-your-ride-view"
         static let title    = "Your future travel plans will appear here."
         static let caption  = "Find the perfect ride from thousands of destinations, or publish to share your travel costs."
+    }
+    
+    struct NoSearchResults{
+        static let image    = "empty-your-ride-view"
+        static let title    = "No Rides Found!"
+        static let caption  = "Currently, there are no matching rides found. Try again after sometime."
     }
     
     // MARK: - predicates
@@ -287,6 +318,7 @@ struct Constants {
         static let update         = "Update"
         static let clear         = "Clear"
         static let currentLocation = "Set current location"
+        static let viewRideDetails = "View Ride Details"
     }
     
     struct JsonKeys {
@@ -311,9 +343,30 @@ struct Constants {
         
         static let id = "id"
         
+        static let vehicle = "vehicle"
+        static let publish = "publish"
+        
         static let passengers = "passenger"
         static let publishId = "publish_id"
         static let seats = "seats"
+        
+        static let routes = "routes"
+        static let overviewPolyline = "overview_polyline"
+        static let points = "points"
+        static let legs = "legs"
+        static let duration = "duration"
+        static let value = "value"
+        
+        static let source = "source"
+        static let destination = "destination"
+        static let time = "time"
+        static let setPrice = "set_price"
+        static let aboutRide = "about_ride"
+        static let vehicleId = "vehicle_id"
+        static let bookInstantly = "book_instantly"
+        static let midSeat = "mid_seat"
+        static let estimateTime = "estimate_time"
+        static let selectRoute = "select_route"
     }
     
     struct ErrorsMessages {
@@ -327,6 +380,13 @@ struct Constants {
     
     struct InfoMessages {
         static let pictureUpdated = "Profile picture updated!"
+        static let rideCreatedSuccessfuly = "Ride created successfully"
+        static let successfullyPublished = "You'r ride is successfully published. ✅"
+        static let successPubishedCaption = "Relax, sit back and wait for people to book your ride."
+        
+        static let rideBookSuccess = "Ride booked successfully"
+        static let rideBookSuccessTitle = "You'r ride is successfully booked. ✅"
+        static let rideBookSuccessCaption = "Relax, we've sent information about your ride to the ride publisher."
     }
     
     struct UserDefaultKeys {
@@ -419,6 +479,8 @@ struct Constants {
         static let offerARide = "Offer a ride"
         
         static let recentlyViewed = "Recently viewed"
+        
+        static let route = "Route"
     }
     
     // MARK: - type aliases
@@ -431,6 +493,9 @@ struct Constants {
     struct RidesData {
         
         static let info = "%@ | %@ Seats"
+        
+        static let booked = "Booked"
+        static let published = "Published"
     }
     
     // MARK: - profile buttons

@@ -52,7 +52,7 @@ extension ApiManager {
         if let tokenValue = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.session) {
             if !tokenValue.isEmpty {
                 // set token value necessary for authentication of session created by user on login
-                request.setValue(tokenValue, forHTTPHeaderField: ApiConstants.authorization)
+                request.setValue(tokenValue, forHTTPHeaderField: ApiConstants.HTTPHeaderFieldAndValues.authorization)
             }
         }
         
@@ -122,13 +122,13 @@ extension ApiManager {
         // set content type
         // if request is type of upload image set content type as mutlipart-formdata
         if requestType == .uploadImage {
-            request.setValue(ApiConstants.StringForDataBody.multipartFormData, forHTTPHeaderField: ApiConstants.contentType)
+            request.setValue(ApiConstants.StringForDataBody.multipartFormData, forHTTPHeaderField: ApiConstants.HTTPHeaderFieldAndValues.contentType)
             // get data for image upload from create data body method
             request.httpBody = createDataBody(withParameters: data)
         }
         // else set application/json as the content type
         else {
-            request.setValue(ApiConstants.json, forHTTPHeaderField: ApiConstants.contentType)
+            request.setValue(ApiConstants.HTTPHeaderFieldAndValues.applicationJson, forHTTPHeaderField: ApiConstants.HTTPHeaderFieldAndValues.contentType)
             request.httpBody = try? JSONSerialization.data(withJSONObject: data, options: .fragmentsAllowed)
         }
     }

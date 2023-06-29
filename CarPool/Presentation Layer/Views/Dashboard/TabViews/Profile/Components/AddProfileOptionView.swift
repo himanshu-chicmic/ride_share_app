@@ -70,64 +70,26 @@ struct AddProfileOptionView: View {
                 
                 // text field for user input
                 DefaultInputField(
-                    inputFieldType  : inputField,
-                    placeholder     : placeholder,
-                    text            : $textField,
-                    keyboard        : keyboardType
+                    inputFieldType : inputField,
+                    placeholder    : placeholder,
+                    text           : $textField,
+                    keyboard       : keyboardType
                 )
                 .disabled(baseViewModel.viewOtpField)
                 
                 if baseViewModel.viewOtpField {
                     // text field for user input
                     DefaultInputField(
-                        inputFieldType  : .passcode,
-                        placeholder     : "Enter 4-digit passcode",
-                        text            : $otp,
-                        keyboard        : .numberPad
+                        inputFieldType : .passcode,
+                        placeholder    : Constants.Placeholders.passcode,
+                        text           : $otp,
+                        keyboard       : .numberPad
                     )
                 }
                     
                 // button for saving details
                 Button {
-                    
-                    withAnimation {
-                        // check for textfield validations
-                        baseViewModel.toastMessage = baseViewModel
-                            .validationsInstance
-                            .validateTextFields(
-                                textFields: [(
-                                    textField,
-                                    placeholder,
-                                    inputField,
-                                    keyboardType
-                                )]
-                            )
-                    }
-                    
-                    // if toast message is empty
-                    // there no error in validations and verification
-                    if baseViewModel.toastMessage.isEmpty {
-                        // set new password
-                        // if new password is set
-                        // then dismiss the view
-                        
-                        if !textField.isEmpty {
-                            switch inputField {
-                            case .email:
-                                baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmEmail, data: [inputField.rawValue : textField])
-                            case .phoneNumber:
-                                if baseViewModel.viewOtpField {
-                                    baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmOtp, data: [inputField.rawValue : textField, InputFieldIdentifier.passcode.rawValue : otp])
-                                } else {
-                                    baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmPhone, data: [inputField.rawValue : textField])
-                                }
-                            case .bio:
-                                baseViewModel.sendRequestToApi(httpMethod: .PUT, requestType: .updateProfile, data: [Constants.JsonKeys.user:[inputField.rawValue : textField]])
-                            default:
-                                break
-                            }
-                        }
-                    }
+                    detailsViewModel.validateAddProfileOptions(textField: textField, placeholder: placeholder, inputField: inputField, keyboardType: keyboardType, otp: otp)
                     
                 } label: {
                     DefaultButtonLabel(text: Constants.LogIn.submit)
@@ -138,16 +100,7 @@ struct AddProfileOptionView: View {
                 Spacer()
             }
             .onAppear {
-                switch heading {
-                case Constants.Headings.email:
-                    textField = baseViewModel.userData?.status.data?.email ?? ""
-                case Constants.Headings.mobile:
-                    textField = baseViewModel.userData?.status.data?.phoneNumber ?? ""
-                case Constants.Headings.bio:
-                    textField = baseViewModel.userData?.status.data?.bio ?? ""
-                default:
-                    textField = ""
-                }
+                textField = detailsViewModel.setAddOptionsData(heading: heading)
             }
             .sheet(isPresented: $detailsViewModel.showPicker) {
                 DefaultPickers(

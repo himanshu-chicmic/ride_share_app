@@ -42,7 +42,7 @@ struct SearchResultsView: View {
                     .truncationMode(.tail)
                     .font(.system(size: 13))
                     
-                    Text(String(format: Constants.Search.searchBarCaption, Globals.dateFormatter.string(from: searchViewModel.dateOfDeparture), searchViewModel.numberOfPersons))
+                    Text(String(format: Constants.Search.searchBarCaption, Formatters.dateFormatter.string(from: searchViewModel.dateOfDeparture), searchViewModel.numberOfPersons))
                     .fontWeight(.light)
                     .font(.system(size: 12))
                 }
@@ -69,7 +69,7 @@ struct SearchResultsView: View {
                 
                 Spacer()
                 
-                PlaceholderView(image: Constants.EmptyRidesView.image, title: "No Rides Found!", caption: "Currently, there are no matching rides found. Try again after sometime.")
+                PlaceholderView(image: Constants.NoSearchResults.image, title: Constants.NoSearchResults.title, caption: Constants.NoSearchResults.caption)
                 
                 Spacer()
                 
@@ -79,24 +79,19 @@ struct SearchResultsView: View {
                     ForEach($searchViewModel.searchResults, id: \.self) { $data in
                         RidesListItem(
                             startLoction    : data.publish.source,
-                            startTime       : Globals.getFormattedDate(date: data.publish.time),
+                            startTime       : Formatters.getFormattedDate(date: data.publish.time),
                             endLocation     : data.publish.destination,
-                            endTime         : Globals.getFormattedDate(date: data.reachTime),
+                            endTime         : Formatters.getFormattedDate(date: data.reachTime),
                             date            : "\(data.publish.date ?? Constants.Placeholders.defaultTime)",
-                            price           : Globals.getPrice(price: Int(data.publish.setPrice)),
+                            price           : Formatters.getPrice(price: Int(data.publish.setPrice)),
                             driverImage     : data.imageURL ?? "",
                             driverName      : data.name,
-                            driverRating    : Globals.getRatings(ratings: data.averageRating ?? 0)
+                            driverRating    : Formatters.getRatings(ratings: data.averageRating ?? 0)
                         )
                         .foregroundColor(.black)
                         .onTapGesture {
                             selectedTile = data
-                            searchViewModel.showRideDetailView.toggle()
-                            searchViewModel.updateRecentlyViewedRides(data: data)
-                            baseViewModel
-                                .sendVehiclesRequestToApi(
-                                    httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: data.publish.vehicleID!]
-                            )
+                            searchViewModel.searchItemClicked(data: data)
                         }
                     }
                     .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {

@@ -10,7 +10,7 @@ import SwiftUI
 
 /// this struct contains globally used
 /// utility methods or properties
-struct Globals {
+struct Formatters {
     
     // get a date using this format
     static let dateFormatter: DateFormatter = {
@@ -189,21 +189,12 @@ struct Globals {
         // loop over range start...current
         // and append values to years array
         for year in start...current {
-            years.append(Globals.yearString(at: year))
+            years.append(Formatters.yearString(at: year))
         }
         
         // return years array reversed
         // to show most recent years on top
         return years.reversed()
-    }
-    
-    /// method to fetch api key from project
-    /// - Returns: api key as string
-    static func fetchAPIKey() -> String {
-        if let apikey = Bundle.main.infoDictionary?[Constants.JsonKeys.places] as? String {
-            return apikey
-        }
-        return ""
     }
     
     /// method to get text query by replacing whitespaces with `+` sign
@@ -214,6 +205,9 @@ struct Globals {
         return text.replacingOccurrences(of: " ", with: "+")
     }
     
+    /// method to convert seconds to time
+    /// - Parameter seconds: time in seconds
+    /// - Returns: a string value for time
     static func convertSecondsToTime(seconds: Double) -> String {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
@@ -223,4 +217,14 @@ struct Globals {
         }
         return time
     }
+    
+    /// method to fetch api key from project
+    /// - Returns: api key as string
+    static func fetchAPIKey() -> String {
+        if let apikey = Bundle.main.infoDictionary?[Constants.JsonKeys.places] as? String {
+            return apikey
+        }
+        return ""
+    }
 }
+

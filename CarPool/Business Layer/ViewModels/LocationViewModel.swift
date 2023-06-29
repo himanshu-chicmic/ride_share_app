@@ -2,7 +2,7 @@
 //  LocationViewModel.swift
 //  CarPool
 //
-//  Created by Nitin on 6/26/23.
+//  Created by Himanshu on 6/26/23.
 //
 
 import Foundation
@@ -10,11 +10,15 @@ import CoreLocation
 import MapKit
 
 class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var authorizationStatus: CLAuthorizationStatus
     
+    // MARK: - properties
+    
+    @Published var authorizationStatus: CLAuthorizationStatus
     @Published var currentLocation: String = ""
     
     private let locationManager: CLLocationManager
+    
+    // MARK: - initializers
     
     override init() {
         locationManager = CLLocationManager()
@@ -25,11 +29,23 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
+    // MARK: - methods
+    
+    func checkPermissionAndGetLocation() {
+        switch authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            startLocationUpdation()
+        default:
+            requestPermission()
+        }
+    }
+    
     func requestPermission() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
 
+    
     func startLocationUpdation() {
         locationManager.startUpdatingLocation()
     }

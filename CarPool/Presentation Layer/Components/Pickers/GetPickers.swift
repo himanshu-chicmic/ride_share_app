@@ -62,7 +62,7 @@ struct GetPickers: View {
             case .modelYear:
                 PickerView(
                     value            : $detailsViewModel.year,
-                    selectableValues : Globals.getYearsList(),
+                    selectableValues : Formatters.getYearsList(),
                     placeholder      : Constants.Vehicle.modelYear
                 )
             }
@@ -74,7 +74,7 @@ struct GetPickers_Previews: PreviewProvider {
     static var previews: some View {
         GetPickers(
             pickerType : .modelYear,
-            dateRange  : Globals.defaultDateMin...Globals.defaultDate, date: .constant(.now)
+            dateRange  : Formatters.defaultDateMin...Formatters.defaultDate, date: .constant(.now)
         )
         .environmentObject(DetailsViewModel())
     }

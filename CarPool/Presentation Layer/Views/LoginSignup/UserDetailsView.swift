@@ -85,14 +85,10 @@ struct UserDetailsView: View {
                         HStack {
                             if detailsViewModel.index > 0 {
                                 // back button
-                                BackAndContinueButtons(
-                                    increment : false
-                                )
+                                BackAndContinueButtons(increment : false)
                             }
                             // continue button
-                            BackAndContinueButtons(
-                                increment : true
-                            )
+                            BackAndContinueButtons(increment : true)
                         }
                         .padding()
                     }

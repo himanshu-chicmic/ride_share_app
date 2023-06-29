@@ -2,7 +2,7 @@
 //  PlacesDataModel.swift
 //  CarPool
 //
-//  Created by Nitin on 6/2/23.
+//  Created by Himanshu on 6/2/23.
 //
 
 import Foundation

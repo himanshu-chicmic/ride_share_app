@@ -14,12 +14,15 @@ class BaseViewModel: ObservableObject {
     // MARK: - properties
     
     // MARK: static shared instance
+    
     static let shared = BaseViewModel()
     
     // MARK: private properties
+    
     private var cancellables: AnyCancellable?
     
     // MARK: published properties
+    
     // var for error/validaton messages
     // to be shown on a error dialog box
     @Published var toastMessage: String = "" {
@@ -113,6 +116,7 @@ class BaseViewModel: ObservableObject {
     // MARK: - methods
     
     // MARK: method to send api requests
+    
     /// method to send api request and observe changes
     /// - Parameters:
     ///   - httpMethod: http method for sending api request

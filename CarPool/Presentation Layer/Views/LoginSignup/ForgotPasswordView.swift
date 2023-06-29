@@ -13,6 +13,7 @@ struct ForgotPasswordView: View {
     
     // environment objects
     @EnvironmentObject var baseViewModel: BaseViewModel
+    @EnvironmentObject var signInViewModel: SignInViewModel
     
     // state variables
     @State var navigate: Bool = true
@@ -80,22 +81,7 @@ struct ForgotPasswordView: View {
 
                 // submit button
                 Button {
-                    withAnimation {
-                        // validate text fields
-                        baseViewModel.toastMessage = navigate
-                        ? baseViewModel.validationsInstance.validateTextFields(
-                            textFields : textFieldValues,
-                            count      : textFieldValues.count - 2
-                        )
-                        : baseViewModel.validationsInstance.validateTextFields(textFields: textFieldValues)
-                    }
-                    
-                    // call api if no error in validation
-                    if baseViewModel.toastMessage.isEmpty {
-                        let requestTypeForValidation: RequestType = navigate ? .resetPassword : .emailCheck
-                        let data = baseViewModel.getDataInDictionary(values: textFieldValues, type: requestTypeForValidation)
-                        baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .forgotPassword, data: data)
-                    }
+                    signInViewModel.initiateForgotPassword(textFieldValues: textFieldValues, isNavigated: navigate)
                     
                 } label: {
                     DefaultButtonLabel(text: Constants.LogIn.submit)
@@ -115,12 +101,10 @@ struct ForgotPasswordView: View {
                 // populate text field values
                 textFieldValues = signInModel.getInputFields(isNewUser: val)
                 if val {
-                    // removing first value email as we only
-                    // need password and confirm password
+                    // removing first we need password and confirm password
                     textFieldValues.removeFirst()
                 } else {
-                    // removing last value of password
-                    // as we only need email address
+                    // removing last we need email address
                     textFieldValues.removeLast()
                 }
             }

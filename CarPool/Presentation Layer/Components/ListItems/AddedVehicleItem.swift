@@ -21,7 +21,7 @@ struct AddedVehicleItem: View {
                 VStack (alignment: .leading) {
                     Text("\(data.vehicleName) | \(data.vehicleBrand)")
                         .font(.system(size: 16))
-                    Text("\(data.vehicleType) | \(data.vehicleColor) | \(Globals.yearString(at: data.vehicleModelYear))")
+                    Text("\(data.vehicleType) | \(data.vehicleColor) | \(Formatters.yearString(at: data.vehicleModelYear))")
                         .font(.system(size: 14, weight: .light))
                 }
                 

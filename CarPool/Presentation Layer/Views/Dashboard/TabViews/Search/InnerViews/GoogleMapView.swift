@@ -2,7 +2,7 @@
 //  GoogleMapView.swift
 //  CarPool
 //
-//  Created by Nitin on 6/28/23.
+//  Created by Himanshu on 6/28/23.
 //
 
 import SwiftUI
@@ -26,31 +26,31 @@ struct GoogleMapView: UIViewRepresentable {
         
         let sourceLocation = "\(sourceLat),\(sourceLng)"
         let destinationLocation = "\(destinationLat),\(destinationLng)"
-        let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(sourceLocation)&destination=\(destinationLocation)&mode=driving&key=\(Globals.fetchAPIKey())"
+        let url = String(format: ApiConstants.googleMaps, sourceLocation, destinationLocation)
         
         let camera = GMSCameraPosition.camera(withLatitude: sourceLat, longitude: sourceLng, zoom: 10)
         let mapView = GMSMapView(frame: CGRect.zero)
         // MARK: Request for response from the google
         
-        AF.request(url).responseJSON { (reseponse) in
-            guard let data = reseponse.data else {
+        AF.request(url).responseJSON { (response) in
+            guard let data = response.data else {
                 return
             }
             
             do {
                 let jsonData = try JSON(data: data)
-                let routes = jsonData["routes"].arrayValue
+                let routes = jsonData[Constants.JsonKeys.routes].arrayValue
                 
                 for route in routes {
-                    let overview_polyline = route["overview_polyline"].dictionary
-                    let points = overview_polyline?["points"]?.string
+                    let overview_polyline = route[Constants.JsonKeys.overviewPolyline].dictionary
+                    let points = overview_polyline?[Constants.JsonKeys.points]?.string
                     let path = GMSPath.init(fromEncodedPath: points ?? "")
                     let polyline = GMSPolyline.init(path: path)
                     polyline.strokeColor = .systemBlue
                     polyline.strokeWidth = 5
                     polyline.map = mapView
                     
-                    searchViewModel.estimatedTime = Globals.convertSecondsToTime(seconds: route["legs"][0]["duration"]["value"].rawValue as? Double ?? 0)
+                    searchViewModel.estimatedTime = Formatters.convertSecondsToTime(seconds: route[Constants.JsonKeys.legs][0][Constants.JsonKeys.duration][Constants.JsonKeys.value].rawValue as? Double ?? 0)
                     
                 }
             } catch let error {

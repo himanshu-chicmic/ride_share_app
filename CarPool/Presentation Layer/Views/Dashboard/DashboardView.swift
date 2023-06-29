@@ -11,12 +11,10 @@ struct DashboardView: View {
     
     // MARK: - properties
     
-    // state arrays
+    // state
     @State var tabViewData: [TabViewIdentifier] = [
         .search, .rides, .inbox, .profile
     ]
-    
-    // state variables
     @State private var selection = TabViewIdentifier.search
     
     // state objects
@@ -32,7 +30,6 @@ struct DashboardView: View {
         NavigationStack {
             TabView(selection: $selection) {
                 ForEach(tabViewData, id: \.self) { value in
-                    
                     Group {
                         // tab views
                         switch value {
@@ -56,8 +53,7 @@ struct DashboardView: View {
         .environmentObject(searchViewModel)
         .overlay (alignment: .bottom) {
             if !baseViewModel.toastMessage.isEmpty {
-                
-                if baseViewModel.toastMessage == "Profile picture updated!" {
+                if baseViewModel.toastMessage == Constants.Responses.profileUpdated {
                     ToastMessageView(backgroundColor: .green)
                 } else {
                     ToastMessageView()

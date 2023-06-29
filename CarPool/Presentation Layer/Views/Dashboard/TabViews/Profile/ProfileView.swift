@@ -11,11 +11,8 @@ struct ProfileView: View {
     
     // MARK: - properties
     
-    // state variable to get the current tab
     @State var currentTab = 0
     
-    // state variable for alignment of bottom line
-    // on the tab bars
     @State var lineAlignment: Alignment = .bottomLeading
         
     // MARK: - body
@@ -24,8 +21,7 @@ struct ProfileView: View {
 
         VStack(spacing: 0) {
             
-            // top bar for changing
-            // the tab views
+            // tab bar
             HStack {
                 Group {
                     // about view
@@ -49,22 +45,20 @@ struct ProfileView: View {
             }
             .fontWeight(.semibold)
             .overlay(alignment: lineAlignment) {
-                // overlay for bottom line
-                // that indicates which tab
-                // is currenlty active
+                // tab bar bottom line
                 Rectangle()
                     .frame(height: 1)
                     .frame(maxWidth: 210)
             }
             
-            // tab views for about and account
+            // tab views
             TabView(selection: $currentTab) {
                 
-                // profile about view
+                // profile about
                 ProfileTabViewAbout()
                     .tag(0)
                 
-                // profile account view
+                // profile account
                 ProfileTabViewAccount()
                     .tag(1)
             }

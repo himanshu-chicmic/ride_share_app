@@ -67,7 +67,7 @@ struct DefaultInputField: View {
             case .dateOfBirth:
                 HStack {
                     Text(
-                        Globals
+                        Formatters
                             .dateFormatter
                             .string(from: detailsViewModel.date)
                     )

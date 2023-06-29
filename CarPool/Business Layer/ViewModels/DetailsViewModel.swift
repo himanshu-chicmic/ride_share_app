@@ -13,13 +13,14 @@ class DetailsViewModel: ObservableObject {
     // MARK: - properties
     
     // MARK: published properties
+    
     @Published var showPicker = false
     @Published var pickerType: PickerFieldIdentifier = .date
     
     // variable to store date
     // set the default date by
     // difference of 18 years from now
-    @Published var date: Date = Globals.defaultDate
+    @Published var date: Date = Formatters.defaultDate
     // variable to store gender
     @Published var gender: String = Constants.Placeholders.selectGender
     
@@ -48,6 +49,7 @@ class DetailsViewModel: ObservableObject {
     @Published var openPhotosPicker = false
     
     // MARK: computed properties
+    
     // property to get the index value
     // from profileCompletion state var
     // this index is used to get the value
@@ -57,6 +59,7 @@ class DetailsViewModel: ObservableObject {
     }
     
     // MARK: arrays
+    
     // array for buttons
     var buttonsArray: [[EditProfileIdentifier]] = [
         [.email, .mobile],
@@ -72,11 +75,13 @@ class DetailsViewModel: ObservableObject {
     ]
     
     // MARK: instance variables
+    
     var baseViewModel = BaseViewModel.shared
     
     // MARK: - methods
     
     // MARK: api calling methods
+    
     /// method to validate profile input data
     /// - Parameters:
     ///   - increment: bool value to check whether the next button is clicked (true) or back button is clicked (false)
@@ -139,12 +144,119 @@ class DetailsViewModel: ObservableObject {
         }
     }
     
+    /// method to validate add profile options
+    /// - Parameters:
+    ///   - textField: string value
+    ///   - placeholder: placeholder text
+    ///   - inputField: input field type
+    ///   - keyboardType: type of keyboard used
+    ///   - otp: otp value
+    func validateAddProfileOptions(textField: String, placeholder: String, inputField: InputFieldIdentifier, keyboardType: UIKeyboardType, otp: String) {
+        withAnimation {
+            // check for textfield validations
+            baseViewModel.toastMessage = baseViewModel
+                .validationsInstance
+                .validateTextFields(
+                    textFields: [(
+                        textField,
+                        placeholder,
+                        inputField,
+                        keyboardType
+                    )]
+                )
+        }
+        
+        // if toast message is empty
+        // there no error in validations and verification
+        if baseViewModel.toastMessage.isEmpty {
+            // set new password
+            // if new password is set
+            // then dismiss the view
+            
+            if !textField.isEmpty {
+                switch inputField {
+                case .email:
+                    baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmEmail, data: [inputField.rawValue : textField])
+                case .phoneNumber:
+                    if baseViewModel.viewOtpField {
+                        baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmOtp, data: [inputField.rawValue : textField, InputFieldIdentifier.passcode.rawValue : otp])
+                    } else {
+                        baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .confirmPhone, data: [inputField.rawValue : textField])
+                    }
+                case .bio:
+                    baseViewModel.sendRequestToApi(httpMethod: .PUT, requestType: .updateProfile, data: [Constants.JsonKeys.user:[inputField.rawValue : textField]])
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    /// method to validate and call api for vehicle data
+    /// - Parameters:
+    ///   - textFieldValues: text input values array
+    ///   - vehiclesData: data for VehiclesDataClass
+    func validateCompleteVehicleInfo(textFieldValues: Constants.TypeAliases.InputFieldArrayType, vehiclesData: VehiclesDataClass?) {
+        // check for textfield validations
+        if baseViewModel.toastMessage.isEmpty {
+            baseViewModel.toastMessage = baseViewModel.validationsInstance
+                .validatePickerSelectedValue(
+                    value       : country,
+                    placeholder : Constants.Vehicle.country,
+                    error       : Constants.ValidationMessages.noCountrySelection
+                )
+        }
+        if baseViewModel.toastMessage.isEmpty {
+            baseViewModel.toastMessage = baseViewModel.validationsInstance
+                .validatePickerSelectedValue(
+                    value       : color,
+                    placeholder : Constants.Vehicle.color,
+                    error       : Constants.ValidationMessages.noColorSelected
+                )
+        }
+        if baseViewModel.toastMessage.isEmpty {
+            baseViewModel.toastMessage = baseViewModel.validationsInstance
+                .validatePickerSelectedValue(
+                    value       : year,
+                    placeholder : Constants.Vehicle.modelYear,
+                    error       : Constants.ValidationMessages.noYearSelected
+                )
+        }
+        baseViewModel.toastMessage = baseViewModel
+            .validationsInstance
+            .validateTextFields(textFields: textFieldValues)
+        
+        if baseViewModel.toastMessage.isEmpty {
+            var data: [String: Any] = [:]
+            
+            for item in textFieldValues {
+                switch item.2 {
+                case .country:
+                    data[item.2.rawValue] = Constants.Defaults.country
+                case .vehicleColor:
+                    data[item.2.rawValue] = color
+                case .vehicleModelYear:
+                    data[item.2.rawValue] = year
+                default:
+                    data[item.2.rawValue] = item.0
+                }
+            }
+            
+            if let vehiclesData {
+                baseViewModel.sendVehiclesRequestToApi(httpMethod: .PUT, requestType: .updateVehicle, data: [Constants.JsonKeys.vehicle : data, Constants.JsonKeys.id : vehiclesData.id])
+            } else {
+                baseViewModel.sendVehiclesRequestToApi(httpMethod: .POST, requestType: .vehicles, data: [Constants.JsonKeys.vehicle : data])
+            }
+        }
+    }
+    
+    /// validate profile data and send api request
+    /// - Parameter textFieldValues: array containing text field values
     func validateCompleteProfile(textFieldValues: Constants.TypeAliases.InputFieldArrayType) {
         withAnimation {
             // check for textfield validations
             baseViewModel.toastMessage = baseViewModel.validationsInstance
                 .validateTextFields(textFields: textFieldValues)
-            
             if baseViewModel.toastMessage.isEmpty {
                 baseViewModel.toastMessage = baseViewModel.validationsInstance
                     .validatePickerSelectedValue(
@@ -161,9 +273,7 @@ class DetailsViewModel: ObservableObject {
         // then navigate to new view
         if baseViewModel.toastMessage.isEmpty {
             // get data in dictionary
-           
             let data = baseViewModel.getDataInDictionary(emailPassword: [], values: [textFieldValues], viewModel: self)
-            
             // call signin method
             baseViewModel.sendRequestToApi(
                 httpMethod  : .PUT,
@@ -174,23 +284,34 @@ class DetailsViewModel: ObservableObject {
     }
     
     // MARK: utility methods
+    
+    /// set data for add options
+    /// - Parameter heading: heading of page in string
+    /// - Returns: a string value of data
+    func setAddOptionsData(heading: String) -> String {
+        switch heading {
+        case Constants.Headings.email:
+            return baseViewModel.userData?.status.data?.email ?? ""
+        case Constants.Headings.mobile:
+            return baseViewModel.userData?.status.data?.phoneNumber ?? ""
+        case Constants.Headings.bio:
+            return baseViewModel.userData?.status.data?.bio ?? ""
+        default:
+            return ""
+        }
+    }
+    
     /// set picker data if userData is not nil
     func setPickerData(vehiclesData: VehiclesDataClass? = nil) {
         if let data = baseViewModel.userData {
             gender = data.status.data?.title ?? Constants.Placeholders.selectGender
-            date = Globals.dateFormatter.date(from: data.status.data?.dob ?? "") ?? Globals.defaultDate
+            date = Formatters.dateFormatter.date(from: data.status.data?.dob ?? "") ?? Formatters.defaultDate
         }
-        
         if let data = vehiclesData {
             country = data.country
             color = data.vehicleColor
-            year = Globals.yearString(at: data.vehicleModelYear)
+            year = Formatters.yearString(at: data.vehicleModelYear)
         }
-    }
-    
-    /// method to reset text fields array
-    func resetTextFields() {
-        textFieldValues = userModel.getInputFields2dArray()
     }
     
     /// method to set the type of picker and toggle value of show picker
@@ -221,11 +342,16 @@ class DetailsViewModel: ObservableObject {
     func resetPickerData() {
         profileCompletion = 0.0
         showPicker = false
-        date = Globals.defaultDate
+        date = Formatters.defaultDate
         gender = Constants.Placeholders.selectGender
         country = Constants.Vehicle.country
         color = Constants.Vehicle.color
         year = Constants.Vehicle.modelYear
+    }
+    
+    /// method to reset text fields array
+    func resetTextFields() {
+        textFieldValues = userModel.getInputFields2dArray()
     }
     
 }

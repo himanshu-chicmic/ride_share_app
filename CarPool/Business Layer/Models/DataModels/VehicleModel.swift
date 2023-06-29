@@ -65,7 +65,7 @@ struct VehicleModel {
                 UIKeyboardType.default
             ),
             (
-                Globals.yearString(at: data?.vehicleModelYear ?? 0),
+                Formatters.yearString(at: data?.vehicleModelYear ?? 0),
                 Constants.Vehicle.modelYear,
                 InputFieldIdentifier.vehicleModelYear,
                 UIKeyboardType.default

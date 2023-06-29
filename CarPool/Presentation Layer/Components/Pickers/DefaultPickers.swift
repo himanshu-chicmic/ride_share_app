@@ -18,7 +18,7 @@ struct DefaultPickers: View {
     
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     
-    var dateRange: ClosedRange<Date> = Globals.defaultDateMin...Globals.defaultDate
+    var dateRange: ClosedRange<Date> = Formatters.defaultDateMin...Formatters.defaultDate
     
     @Binding var date: Date
     

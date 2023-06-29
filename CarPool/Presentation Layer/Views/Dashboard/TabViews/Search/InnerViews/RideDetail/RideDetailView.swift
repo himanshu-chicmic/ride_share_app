@@ -47,7 +47,7 @@ struct RideDetailView: View {
                 ScrollView {
                     
                     // departure date
-                    Text(Globals.getLongDate(date: data.publish.date ?? Constants.Placeholders.defaultTime))
+                    Text(Formatters.getLongDate(date: data.publish.date ?? Constants.Placeholders.defaultTime))
                         .font(.system(size: 20, weight: .bold))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
@@ -68,12 +68,12 @@ struct RideDetailView: View {
                         
                         VStack (alignment: .leading) {
                             
-                            LocationTextView(title: Globals.getFormattedDate(date: data.publish.time), location: data.publish.source)
+                            LocationTextView(title: Formatters.getFormattedDate(date: data.publish.time), location: data.publish.source)
                             
                             Divider()
                                 .padding(.bottom)
                             
-                            LocationTextView(title: Globals.getFormattedDate(date: data.reachTime), location: data.publish.destination)
+                            LocationTextView(title: Formatters.getFormattedDate(date: data.reachTime), location: data.publish.destination)
                         }
                         .padding(.leading, 8)
                     }
@@ -98,7 +98,7 @@ struct RideDetailView: View {
                         Text(Constants.RideDetails.totalPrice)
                         Spacer()
                         
-                        Text(Globals.getPrice(price: Int(data.publish.setPrice)))
+                        Text(Formatters.getPrice(price: Int(data.publish.setPrice)))
                             .font(.system(size: 18, weight: .semibold))
                     }
                     .padding()
@@ -128,7 +128,7 @@ struct RideDetailView: View {
                                         width  : 13,
                                         height : 13
                                     )
-                                Text(Globals.getRatings(ratings: data.averageRating ?? 0))
+                                Text(Formatters.getRatings(ratings: data.averageRating ?? 0))
                             }.font(.system(size: 13))
                             .foregroundColor(.gray)
                         }

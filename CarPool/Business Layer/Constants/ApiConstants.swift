@@ -9,68 +9,62 @@ import Foundation
 
 struct ApiConstants {
     
+    // MARK: - urls
+    
     // base url for api
-    static let baseURL = "https://2f5f-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "https://f1ce-112-196-113-2.ngrok-free.app/%@"
+    // google places
     static let placesURL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cgeometry&input="
     static let placesEndpoint = "&inputtype=textquery&key="
+    // google maps view
+    static let googleMaps = "https://maps.googleapis.com/maps/api/directions/json?origin=%@&destination=%@&mode=driving&key=\(Formatters.fetchAPIKey())"
     
-    static let getRequestEmailCheck = "?email=%@"
     static let query = "?%@=%@"
     static let addToQuery = "&%@=%@"
     
-    // this endpoint is used for following type of request
-    // Post - to sign up
-    // Delete - for account deletion
-    // Get - to get information of current user
-    // Put - to update information of user
     static let commonEndpoint = "users"
     
-    // check if email exists on signup
+    // MARK: - email
+    
+    static let getRequestEmailCheck = "?email=%@"
     static let checkEmail = "email_check"
-    
-    // sign in existing user
-    static let signIn = "users/sign_in"
-    
-    // sign out current user
-    static let signOut = "users/sign_out"
-    
-    // email confirmation
     static let emailConfirmation = "account_activations"
     
-    // phone number verfication
+    // MARK: - signin
+    
+    static let signIn = "users/sign_in"
+    static let signOut = "users/sign_out"
+    
+    // MARK: - phone & otp
+    
     static let phoneConfirmation = "phone"
-    // otp verification
     static let otpVerification = "verify"
     
-    // MARK: vehicles
-    // get or add vehicles
-    static let vehicles = "vehicles"
+    // MARK: - passwords
     
-    static let vehicleById = "show_by_id"
-    
-    // used to send two api requests
-    // one for sending email and generating
-    // a token for reset password
-    // second for sending new password with
-    // the token to change password
     static let resetPassword = "users/password"
     
-    static let searchRides = "search"
-    
-    static let bookPubilsh = "book_publish"
-    
-    static let bookedPublishes = "booked_publishes"
-    
-    // add image to user profile
+    // MARK: - profile
+
     static let addImage = "user_images"
     
+    // MARK: - vehicles
+    
+    static let vehicles = "vehicles"
+    static let vehicleById = "show_by_id"
+    
+    // MARK: - rides
+    
+    static let searchRides = "search"
+    static let bookPubilsh = "book_publish"
+    static let bookedPublishes = "booked_publishes"
+    
     static let publishRide = "publishes"
+    static let bookedRides = "booked_publishes"
     
-    static let authorization = "Authorization"
-    static let contentType = "Content-Type"
-    static let json = "application/json"
     
-    // MARK: - https header fields and values
+    // MARK: - HTTPHeaderFieldAndValues
+    
     struct HTTPHeaderFieldAndValues {
         // values
         static let mutlpartFormData = "multipart/form-data"
@@ -81,7 +75,8 @@ struct ApiConstants {
         static let authorization    = "Authorization"
     }
     
-    // MARK: - string format
+    // MARK: - StringForDataBody
+    
     struct StringForDataBody {
         
         static let lineBreak                        = "\r\n"
