@@ -202,6 +202,9 @@ struct Constants {
         static let timeUnavailable = "No time mentioned"
         static let estimateTimeUnavailable = "couldn't get estimated time."
         static let noRatings = "No ratings"
+        
+        static let seat = "Seat"
+        static let seats = "Seats"
     }
     
     struct UserInfo {
