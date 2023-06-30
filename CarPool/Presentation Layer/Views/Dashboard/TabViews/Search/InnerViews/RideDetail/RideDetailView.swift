@@ -156,10 +156,6 @@ struct RideDetailView: View {
         .fullScreenCover(isPresented: $searchViewModel.openSummaryView) {
             RideSummary(data: data!)
         }
-        // overlay for progress bar view
-        .overlay {
-            CircleProgressView()
-        }
         .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
     }
 }

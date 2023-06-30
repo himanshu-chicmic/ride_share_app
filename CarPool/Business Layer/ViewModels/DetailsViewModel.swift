@@ -189,6 +189,8 @@ class DetailsViewModel: ObservableObject {
                     break
                 }
             }
+            
+            baseViewModel.openAddProfile = false
         }
     }
     

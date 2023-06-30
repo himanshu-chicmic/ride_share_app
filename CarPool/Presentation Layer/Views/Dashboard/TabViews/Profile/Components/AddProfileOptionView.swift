@@ -107,12 +107,9 @@ struct AddProfileOptionView: View {
                     pickerType: detailsViewModel.pickerType, date: $detailsViewModel.date
                 )
             }
-            .overlay {
-                CircleProgressView()
-            }
             .onChange(of: baseViewModel.openAddProfile, perform: { value in
                 if !value {
-	                    dismiss()
+                    dismiss()
                 }
             })
             .navigationBarBackButtonHidden()

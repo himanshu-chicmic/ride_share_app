@@ -121,9 +121,6 @@ struct ProfileTabViewAbout: View {
                 }
             }
             .padding()
-            .overlay (alignment: .bottom) {
-                CircleProgressView()
-            }
         }
     }
 }

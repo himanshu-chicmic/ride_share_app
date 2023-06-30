@@ -51,13 +51,14 @@ struct DashboardView: View {
             }
         }
         .environmentObject(searchViewModel)
+        .overlay {
+            CircleProgressView()
+        }
+        
         .overlay (alignment: .bottom) {
+            // toast message for validation or errors
             if !baseViewModel.toastMessage.isEmpty {
-                if baseViewModel.toastMessage == Constants.Responses.profileUpdated {
-                    ToastMessageView(backgroundColor: .green)
-                } else {
-                    ToastMessageView()
-                }
+                ToastMessageView()
             }
         }
     }

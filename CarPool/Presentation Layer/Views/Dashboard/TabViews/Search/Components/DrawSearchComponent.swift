@@ -92,9 +92,6 @@ struct DrawSearchComponent: View {
                     if searchViewModel.searchComponentType != .price {
                         searchViewModel.sendRequestForGettingPlacesData(httpMethod: .GET, requestType: .searchRides, data: text)
                     } else {
-                        if text.rangeOfCharacter(from: NSCharacterSet.decimalDigits) == nil {
-                            textField = ""
-                        }
                         if text.count > 5 {
                             textField = String(text.prefix(5))
                         }

@@ -51,6 +51,7 @@ struct DefaultInputField: View {
                     text        : $detailsViewModel.country,
                     placeholder : Constants.Vehicle.country
                 )
+
             case .vehicleColor:
                 ShowPickerText(
                     text        : $detailsViewModel.color,
@@ -75,6 +76,8 @@ struct DefaultInputField: View {
                 }
                 .onTapGesture {
                     detailsViewModel.setPickerTypeAndTogglePicker(placeholder: placeholder)
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
+                    
                 }
                 .onAppear {
                     detailsViewModel.showPicker = false
@@ -101,6 +104,14 @@ struct DefaultInputField: View {
                  .vehicleType:
                 TextField(placeholder, text: $text)
                     .textInputAutocapitalization(inputFieldType == .bio ? TextInputAutocapitalization.never : TextInputAutocapitalization.words)
+                    .disableAutocorrection(true)
+                    .onChange(of: text) { value in
+                        if inputFieldType == .vehicleNumber {
+                            if value.count > 10 {
+                                text = String(text.prefix(10))
+                            }
+                        }
+                    }
                 
             case .phoneNumber:
                 TextField(placeholder, text: $text)

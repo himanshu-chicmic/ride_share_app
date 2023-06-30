@@ -18,18 +18,20 @@ extension BaseViewModel {
         // then get details of the user
         // to get image and other data
         if type == .logIn {
+            switchToDashboard = true
             sendRequestToApi(
                 httpMethod  : .GET,
                 requestType : .getDetails,
                 data        : [:]
             )
         }
+        if type == .logOut {
+            switchToDashboard = false
+        }
         // if user details is open then close it first
         if openUserDetailsView {
             openUserDetailsView.toggle()
         }
-        // then toggle switch to dashboard
-        switchToDashboard.toggle()
     }
     
     /// method to dismiss toast message by

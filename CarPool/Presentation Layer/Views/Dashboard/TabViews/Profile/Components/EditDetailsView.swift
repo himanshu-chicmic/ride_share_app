@@ -93,9 +93,6 @@ struct EditDetailsView: View {
                     }
                 }
             }
-            .overlay {
-                CircleProgressView()
-            }
             .onAppear {
                 // populate text field values
                 // array when the view appears

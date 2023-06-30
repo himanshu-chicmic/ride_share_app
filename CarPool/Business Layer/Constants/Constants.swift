@@ -152,7 +152,7 @@ struct Constants {
     
     struct Vehicle {
         static let country          = "Select country"
-        static let number           = "Registration number"
+        static let number           = "XXXXXXXXXX"
         static let brand            = "Ex: Toyota"
         static let name             = "Ex: Etios"
         static let type             = "Ex: Sedan, Hatchback etc."
@@ -253,6 +253,7 @@ struct Constants {
         static let password     = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
         static let name         = "[A-Za-z, ]+"
         static let phone        = "^[6-9]\\d{9}$"
+        static let price = "^[0-9]*$"
         
         static let vechileRegistrationNumber = """
 ^[A-Z]{2}[\\ -]{0,1}[0-9]{2}[\\ ""-]{0,1}[A-Z]{1,2}[\\ -]{0,1}[0-9]{4}$
@@ -297,9 +298,12 @@ struct Constants {
         static let emptyEndLocation = "Enter an end location."
         static let pleaseSelectVehicle = "Please select a vehicle."
         static let pleaseSetPrice = "Please set a price for per seat."
+        static let invalidPrice = "Invalid price for per seat."
         
         static let invalidVehicleNumber = "Invalid vehicle registration number. Please input correct number."
         static let emptyVehicleNumber = "Please enter your vehicle's registration number."
+        
+        static let emptyBio = "You're bio is empty!"
     }
     
     // MARK: - other common strings
@@ -380,6 +384,8 @@ struct Constants {
         static let invalidUrl = "URL Invalid"
         
         static let noInternetConnection = "No internet connection available."
+        
+        static let noDate = "No Date"
         
     }
     

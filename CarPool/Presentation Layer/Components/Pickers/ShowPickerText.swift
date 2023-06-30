@@ -43,6 +43,7 @@ struct ShowPickerText: View {
             // accordingly to open/show the
             // picker of the clicked item
             detailsViewModel.setPickerTypeAndTogglePicker(placeholder: placeholder)
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, for:nil)
         }
         .onAppear {
             detailsViewModel.showPicker = false

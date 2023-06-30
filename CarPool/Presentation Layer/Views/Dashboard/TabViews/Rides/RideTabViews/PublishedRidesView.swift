@@ -18,7 +18,7 @@ struct PublishedRidesView: View {
                     ForEach($searchViewModel.publishedRidesData, id: \.id) { $data in
                         RidesListItem(
                             startLoction    : data.source,
-                            startTime       : Formatters.getFormattedDate(date: data.time),
+                            startTime       : "\(Formatters.getFormattedDate(date: data.time)) • \(String(describing: data.date ?? Constants.ErrorsMessages.noDate))",
                             endLocation     : data.destination,
                             endTime         : Formatters.getFormattedDate(date: data.estimateTime),
                             date            : "\(data.date ?? Constants.Placeholders.defaultTime)",

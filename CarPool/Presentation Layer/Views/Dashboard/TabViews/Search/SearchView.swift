@@ -51,6 +51,7 @@ struct SearchView: View {
                                 .onTapGesture {
                                     withAnimation {
                                         searchViewModel.findRide = true
+                                        searchViewModel.resetData()
                                     }
                                 }
                             Text(Constants.Search.offerARide)
@@ -61,6 +62,7 @@ struct SearchView: View {
                                 .onTapGesture {
                                     withAnimation {
                                         searchViewModel.findRide = false
+                                        searchViewModel.resetData()
                                     }
                                 }
                         }

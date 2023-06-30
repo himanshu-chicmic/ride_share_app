@@ -102,7 +102,6 @@ struct UserDetailsView: View {
             }
             .onDisappear {
                 detailsViewModel.resetPickerData()
-                baseViewModel.toastMessage = ""
             }
             // pickers
             .sheet(isPresented: $detailsViewModel.showPicker) {

@@ -53,6 +53,10 @@ extension SearchViewModel {
             baseViewModel.toastMessage = Constants.ValidationMessages.pleaseSelectVehicle
         } else if !findRide && pricePerSeat.isEmpty {
             baseViewModel.toastMessage = Constants.ValidationMessages.pleaseSetPrice
+        } else if !findRide && pricePerSeat.range(
+            of: Constants.ValidationRegex.price,
+            options: .regularExpression) == nil {
+            baseViewModel.toastMessage = Constants.ValidationMessages.invalidPrice
         }
     }
     

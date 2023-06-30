@@ -45,7 +45,6 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
     }
 
-    
     func startLocationUpdation() {
         locationManager.startUpdatingLocation()
     }

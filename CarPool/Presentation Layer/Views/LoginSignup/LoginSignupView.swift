@@ -105,14 +105,10 @@ struct LoginSignupView: View {
             .onAppear {
                 signInViewModel.resetTextFields()
             }
-            .onDisappear {
-                baseViewModel.toastMessage = ""
-            }
             // progress bar
             .overlay {
                 CircleProgressView()
             }
-            
             // toast message for validation or errors
             if !baseViewModel.toastMessage.isEmpty {
                 ToastMessageView()
