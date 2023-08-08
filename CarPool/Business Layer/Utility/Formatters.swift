@@ -226,4 +226,17 @@ struct Formatters {
         }
         return ""
     }
+    
+    static func returnStatusColor(rideStatus: String) -> Color {
+        switch rideStatus {
+        case RideStatus.completed.rawValue:
+            return .green
+        case RideStatus.cancelled.rawValue:
+            return .red
+        case RideStatus.missed.rawValue:
+            return .gray
+        default:
+            return .yellow
+        }
+    }
 }

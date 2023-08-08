@@ -11,6 +11,9 @@ struct BookedRidesView: View {
     
     @EnvironmentObject var searchViewModel: SearchViewModel
     
+    // data of selected result
+    @State var selectedTile: BookedRidesData?
+    
     var body: some View {
         VStack {
             if !searchViewModel.bookedRidesData.isEmpty {
@@ -24,12 +27,17 @@ struct BookedRidesView: View {
                             date            : "\(data.ride.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.ride.setPrice)),
                             seats : data.seat,
-                            driverImage     : "",
-                            driverName      : "\(Constants.Defaults.defaultUserF) \(Constants.Defaults.defaultUserL)",
-                            driverRating    : Formatters.getRatings(ratings: 0),
                             rideStatus: data.ride.status
                         )
                         .foregroundColor(.black)
+                        .onTapGesture {
+                            selectedTile = data
+                            searchViewModel.searchItemClicked(data: data)
+                        }
+                    }
+                    .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {
+                        RideDetailView(data: selectedTile ?? nil)
+                            .navigationBarBackButtonHidden()
                     }
                     .padding()
                 }

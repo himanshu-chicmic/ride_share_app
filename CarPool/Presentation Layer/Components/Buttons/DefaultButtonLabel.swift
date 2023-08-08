@@ -18,6 +18,8 @@ struct DefaultButtonLabel: View {
     // by default set to `true`
     var isPrimary: Bool = true
     
+    var color: Color = Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
+    
     // MARK: - body
     
     var body: some View {
@@ -31,19 +33,18 @@ struct DefaultButtonLabel: View {
             // set background by checking `isPrimary` boolean
             .background(
                 isPrimary ?
-                Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)) :
-                    Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)).opacity(0)
+                color : color.opacity(0)
             )
             // set foreground by checking `isPrimary` boolean
             .foregroundColor(
-                isPrimary ? .white : Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
+                isPrimary ? .white : color
             )
             .cornerRadius(8)
             .overlay {
                 // shown when value of `isPrimary` is set to `false`
                 if !isPrimary {
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)), lineWidth: 1)
+                        .stroke(color, lineWidth: 1)
                 }
             }
     }

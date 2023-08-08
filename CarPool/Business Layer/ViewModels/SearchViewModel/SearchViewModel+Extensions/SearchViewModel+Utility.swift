@@ -111,11 +111,22 @@ extension SearchViewModel {
     /// method to update recetly viewed rides and  call api
     ///  to get vehicle data when clicked on search item
     /// - Parameter data: data for rides
-    func searchItemClicked(data: Datum) {
+    func searchItemClicked<T: Any>(data: T) {
         showRideDetailView.toggle()
-        updateRecents(dataRecentRides: data)
+        
+        var vehicleId: Int? = nil
+        
+        if let data = data as? Datum {
+            updateRecents(dataRecentRides: data)
+            vehicleId = data.publish.vehicleID!
+        }
+        
+        if let data = data as? BookedRidesData {
+            vehicleId = data.ride.vehicleID!
+        }
+        
         baseViewModel.sendVehiclesRequestToApi(
-                httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: data.publish.vehicleID!]
+                httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: vehicleId!]
         )
     }
 }

@@ -52,14 +52,6 @@ struct Datum: Codable, Hashable {
         lhs.hashValue == rhs.hashValue
     }
     
-    func getDetailsArray(data: Datum) -> [String] {
-        return [
-            "Distance (in Kms) \(Formatters.getDistanceInKms(distance: data.publish.distance ?? 0))",
-            "\(data.publish.passengersCount) Passengers",
-            "Estimated Time (hh:mm) \(Formatters.getEstimatedTime(date: data.publish.estimateTime ?? ""))"
-        ]
-    }
-    
     let id: Int
     let name: String
     let reachTime: String?
@@ -98,6 +90,14 @@ struct Publish: Codable {
     let addCityLongitude, addCityLatitude: Double?
     let distance: Double?
     let bearing: String?
+    
+    func getDetailsArray(data: Publish) -> [String] {
+        return [
+            "Distance (in Kms) \(Formatters.getDistanceInKms(distance: data.distance ?? 0))",
+            "\(data.passengersCount) Passengers",
+            "Estimated Time (hh:mm) \(Formatters.getEstimatedTime(date: data.estimateTime ?? ""))"
+        ]
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, source, destination

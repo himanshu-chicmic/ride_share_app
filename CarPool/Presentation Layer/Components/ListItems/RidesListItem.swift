@@ -38,19 +38,7 @@ struct RidesListItem: View {
     var rideStatus: String?
     
     var rideStatusBackground: Color {
-        if let rideStatus {
-            switch rideStatus {
-            case RideStatus.completed.rawValue:
-                return .green
-            case RideStatus.cancelled.rawValue:
-                return .red
-            case RideStatus.missed.rawValue:
-                return .gray
-            default:
-                return .yellow
-            }
-        }
-        return .yellow
+        return Formatters.returnStatusColor(rideStatus: rideStatus!)
     }
     
     // MARK: - body

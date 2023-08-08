@@ -198,7 +198,8 @@ struct Constants {
         
         static let bookRide = "Book Ride"
         static let bookRideForPrice = "Book for %@"
-        static let messageDriver = "Message driver"
+        static let messageDriver = "Message Driver"
+        static let cancelRide = "Cancel Ride"
         
         static let timeUnavailable = "No time mentioned"
         static let estimateTimeUnavailable = "couldn't get estimated time."

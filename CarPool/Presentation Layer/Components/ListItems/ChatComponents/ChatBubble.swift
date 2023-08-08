@@ -11,21 +11,30 @@ struct ChatBubble: View {
     
     var isReceived: Bool = false
     var message: String = "hey !!!!"
+    var time: String = "12:00 pm"
     
     var body: some View {
-        ZStack (alignment: isReceived ? .bottomLeading : .bottomTrailing) {
+        VStack(alignment: isReceived ? .leading : .trailing, spacing: 4) {
+            ZStack (alignment: isReceived ? .bottomLeading : .bottomTrailing) {
+                
+                Rectangle()
+                    .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
+                    .frame(width: 18, height: 18)
+                
+                Text(message)
+                    .font(.system(size: 14))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .background(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+            }
             
-            Text(message)
-                .font(.system(size: 14))
-                .padding(.horizontal, 24)
-                .padding(.vertical, 12)
-                .background(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
-                .foregroundColor(.white)
-                .cornerRadius(24)
+            Text(time)
+                .font(.system(size: 9))
+                .fontWeight(.light)
+                .foregroundColor(.gray)
             
-            Rectangle()
-                .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
-                .frame(width: 20, height: 20)
         }
     }
 }

@@ -9,8 +9,6 @@ import SwiftUI
 
 struct RideDetailsButtonsView: View {
     
-    var data: Datum
-    
     var body: some View {
         VStack {
             
