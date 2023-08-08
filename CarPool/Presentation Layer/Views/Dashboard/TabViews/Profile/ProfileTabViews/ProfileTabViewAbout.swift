@@ -30,26 +30,33 @@ struct ProfileTabViewAbout: View {
             VStack {
                 
                 // profile
-                AsyncImage(url: baseViewModel.userData?.status.imageURL) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    if isLoading {
-                        ZStack {
-                            Color.gray.opacity(0.1)
-                            ProgressView()
-                        }
-                    } else {
-                        Image(Constants.Images.carpool)
+                ZStack (alignment: .center) {
+                    AsyncImage(url: baseViewModel.userData?.status.imageURL) { image in
+                        image
                             .resizable()
                             .scaledToFill()
+                    } placeholder: {
+                        if isLoading {
+                            ZStack {
+                                Color.gray.opacity(0.1)
+                                ProgressView()
+                            }
+                        } else {
+                            Image(Constants.Images.carpool)
+                                .resizable()
+                                .scaledToFill()
+                        }
                     }
-                }
-                .frame(width: 124, height: 124)
-                .clipShape(Circle()).onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now()+5) {
-                        isLoading = false
+                    .frame(width: 124, height: 124)
+                    .clipShape(Circle()).onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now()+5) {
+                            isLoading = false
+                        }
+                    }
+                    
+                    if !isLoading {
+                        Image(systemName: "camera.fill")
+                            .foregroundColor(.white.opacity(0.75))
                     }
                 }
                 .onTapGesture {

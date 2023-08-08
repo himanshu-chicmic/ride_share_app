@@ -61,12 +61,12 @@ extension SearchViewModel {
     /// method to fetch published rides
     /// - Parameter response: PublishedRidesModel data
     func getPublishedRides(response: PublishedRidesModel) {
-        publishedRidesData = response.data
+        publishedRidesData = response.data.reversed()
     }
     
     /// method to fetch booked rides
     /// - Parameter response: BookedRidesModel data
     func getBookedRides(response: BookedRidesModel) {
-        bookedRidesData = response.rides
+        bookedRidesData = response.rides.reversed()
     }
 }

@@ -56,7 +56,7 @@ struct Datum: Codable, Hashable {
         return [
             "Distance (in Kms) \(Formatters.getDistanceInKms(distance: data.publish.distance ?? 0))",
             "\(data.publish.passengersCount) Passengers",
-            "Estimated Time \(Formatters.getEstimatedTime(date: data.publish.estimateTime ?? ""))"
+            "Estimated Time (hh:mm) \(Formatters.getEstimatedTime(date: data.publish.estimateTime ?? ""))"
         ]
     }
     

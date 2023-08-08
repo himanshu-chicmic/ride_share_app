@@ -192,12 +192,13 @@ struct Constants {
         static let passengers = "Passengers"
         static let departureTime = "Departure time"
         static let reachTime = "Reach time"
-        static let estimatedTime = "Estimated time"
+        static let estimatedTime = "Estimated time (hh:mm)"
         static let aboutRide = "About ride"
         static let status = "Ride status"
         
         static let bookRide = "Book Ride"
         static let bookRideForPrice = "Book for %@"
+        static let messageDriver = "Message driver"
         
         static let timeUnavailable = "No time mentioned"
         static let estimateTimeUnavailable = "couldn't get estimated time."
@@ -234,7 +235,7 @@ struct Constants {
         static let caption  = "Find the perfect ride from thousands of destinations, or publish to share your travel costs."
     }
     
-    struct NoSearchResults{
+    struct NoSearchResults {
         static let image    = "empty-your-ride-view"
         static let title    = "No Rides Found!"
         static let caption  = "Currently, there are no matching rides found. Try again after sometime."

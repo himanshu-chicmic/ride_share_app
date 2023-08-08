@@ -67,5 +67,6 @@ struct DashboardView: View {
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         DashboardView()
+            .environmentObject(BaseViewModel())
     }
 }

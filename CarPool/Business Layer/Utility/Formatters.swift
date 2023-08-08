@@ -111,7 +111,7 @@ struct Formatters {
     /// - Parameter distance: distance in double
     /// - Returns: a string value of distance in kms
     static func getDistanceInKms(distance: Double) -> String {
-        return String(format: "%.2f", distance)
+        return String(format: "%.2f", (distance*10))
     }
     
     /// method to get date in formate EEEE, MMMM dd YYYY

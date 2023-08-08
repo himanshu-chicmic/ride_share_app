@@ -15,7 +15,7 @@ struct ToastMessageView: View {
     
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    var backgroundColor: Color = .red
+    var backgroundColor: Color = Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
     
     // MARK: - body
     

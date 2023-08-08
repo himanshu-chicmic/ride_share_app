@@ -12,7 +12,7 @@ struct ApiConstants {
     // MARK: - urls
     
     // base url for api
-    static let baseURL = "https://a802-112-196-113-2.ngrok-free.app/%@"
+    static let baseURL = "http://192.180.2.134:3001/%@"
     // google places
     static let placesURL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cgeometry&input="
     static let placesEndpoint = "&inputtype=textquery&key="

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RideStatus {
+enum RideStatus: String {
     case upcoming
     case completed
     case cancelled

@@ -37,6 +37,22 @@ struct RidesListItem: View {
     
     var rideStatus: String?
     
+    var rideStatusBackground: Color {
+        if let rideStatus {
+            switch rideStatus {
+            case RideStatus.completed.rawValue:
+                return .green
+            case RideStatus.cancelled.rawValue:
+                return .red
+            case RideStatus.missed.rawValue:
+                return .gray
+            default:
+                return .yellow
+            }
+        }
+        return .yellow
+    }
+    
     // MARK: - body
     
     var body: some View {
@@ -68,10 +84,10 @@ struct RidesListItem: View {
                                 Text(rideStatus.capitalized)
                                     .font(.system(size: 13))
                                     .fontWeight(.medium)
-                                    .foregroundColor(.green)
+                                    .foregroundColor(rideStatusBackground)
                                     .padding(.vertical, 4)
                                     .padding(.horizontal, 16)
-                                    .background(.green.opacity(0.1))
+                                    .background(rideStatusBackground.opacity(0.1))
                                     .padding(.leading)
                                 
                                 Spacer()
