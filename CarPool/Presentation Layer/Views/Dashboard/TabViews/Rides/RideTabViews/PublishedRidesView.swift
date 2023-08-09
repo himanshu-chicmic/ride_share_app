@@ -11,6 +11,9 @@ struct PublishedRidesView: View {
     
     @EnvironmentObject var searchViewModel: SearchViewModel
     
+    // data of selected result
+    @State var selectedTile: Publish?
+    
     var body: some View {
         VStack {
             if !searchViewModel.publishedRidesData.isEmpty {
@@ -23,9 +26,18 @@ struct PublishedRidesView: View {
                             endTime         : Formatters.getFormattedDate(date: data.estimateTime),
                             date            : "\(data.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.setPrice)),
-                            rideStatus: data.status
+                            rideStatus: Helpers.getRideStatus(status: data.status.lowercased())
                         )
                         .foregroundColor(.black)
+                        .onTapGesture {
+                            selectedTile = data
+                                searchViewModel.showPublishedRideView.toggle()
+                            searchViewModel.searchItemClicked(data: data)
+                        }
+                    }
+                    .navigationDestination(isPresented: $searchViewModel.showPublishedRideView) {
+                        PublishedRideView(data: selectedTile ?? nil)
+                            .navigationBarBackButtonHidden()
                     }
                     .padding()
                 }

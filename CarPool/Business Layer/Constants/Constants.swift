@@ -171,6 +171,8 @@ struct Constants {
         
         static let rideDetails = "Ride Details"
         
+        static let editRide = "Edit Ride"
+        
         static let summary = "Summary"
         
         static let pickUp = "Pick-up"
@@ -199,7 +201,9 @@ struct Constants {
         static let bookRide = "Book Ride"
         static let bookRideForPrice = "Book for %@"
         static let messageDriver = "Message Driver"
+        static let editRide = "Edit Ride"
         static let cancelRide = "Cancel Ride"
+        static let cancelBooking = "Cancel Booking"
         
         static let timeUnavailable = "No time mentioned"
         static let estimateTimeUnavailable = "couldn't get estimated time."
@@ -389,9 +393,11 @@ struct Constants {
         
         static let noDate = "No Date"
         
+        static let rideUpdate = "Unabel to update ride, please try again later!"
     }
     
     struct InfoMessages {
+        static let rideUpdate = "Ride updated successfully!"
         static let pictureUpdated = "Profile picture updated!"
         static let rideCreatedSuccessfuly = "Ride created successfully"
         static let successfullyPublished = "You'r ride is successfully published. ✅"

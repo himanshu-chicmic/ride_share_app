@@ -15,8 +15,6 @@ struct ToastMessageView: View {
     
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    var backgroundColor: Color = Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
-    
     // MARK: - body
     
     var body: some View {
@@ -40,7 +38,7 @@ struct ToastMessageView: View {
         .fontWeight(.semibold)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(backgroundColor)
+        .background(baseViewModel.toastMessageBackground)
         .foregroundColor(.white)
         .cornerRadius(12)
         .padding()

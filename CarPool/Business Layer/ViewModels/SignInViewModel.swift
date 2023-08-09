@@ -51,6 +51,7 @@ class SignInViewModel: ObservableObject {
     
     /// method to initiate sign in process
     func initiateSignIn() {
+        baseViewModel.toastMessageBackground = .red
         withAnimation {
             baseViewModel.toastMessage = isNewUser
             ?
@@ -84,6 +85,7 @@ class SignInViewModel: ObservableObject {
     ///   - textFieldValues: input field values
     ///   - isNavigated: bool to check if the view is navigated, used for validation of fields
     func initiateForgotPassword(textFieldValues: Constants.TypeAliases.InputFieldArrayType, isNavigated: Bool) {
+        baseViewModel.toastMessageBackground = .red
         withAnimation {
             // validate text fields
             baseViewModel.toastMessage = navigate

@@ -217,26 +217,4 @@ struct Formatters {
         }
         return time
     }
-    
-    /// method to fetch api key from project
-    /// - Returns: api key as string
-    static func fetchAPIKey() -> String {
-        if let apikey = Bundle.main.infoDictionary?[Constants.JsonKeys.places] as? String {
-            return apikey
-        }
-        return ""
-    }
-    
-    static func returnStatusColor(rideStatus: String) -> Color {
-        switch rideStatus {
-        case RideStatus.completed.rawValue:
-            return .green
-        case RideStatus.cancelled.rawValue:
-            return .red
-        case RideStatus.missed.rawValue:
-            return .gray
-        default:
-            return .yellow
-        }
-    }
 }

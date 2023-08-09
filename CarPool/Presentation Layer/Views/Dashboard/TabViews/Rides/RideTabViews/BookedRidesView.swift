@@ -27,7 +27,7 @@ struct BookedRidesView: View {
                             date            : "\(data.ride.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.ride.setPrice)),
                             seats : data.seat,
-                            rideStatus: data.ride.status
+                            rideStatus: Helpers.getRideStatus(status: data.status.lowercased())
                         )
                         .foregroundColor(.black)
                         .onTapGesture {

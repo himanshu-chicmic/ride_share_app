@@ -11,6 +11,7 @@ import SwiftUI
 extension BaseViewModel {
     
     // MARK: data handling methods
+    
     /// base method to handle data response returned from api. this method checks the type of request
     /// and calls methods, assign variables and toggle navigation variables for changing view
     /// - Parameters:
@@ -42,6 +43,7 @@ extension BaseViewModel {
             openAddProfile = false
         case .uploadImage:
             // set message for success in image updation
+            toastMessageBackground = .green
             toastMessage = Constants.InfoMessages.pictureUpdated
             // send request to fetch user details to get updated data
             sendRequestToApi(

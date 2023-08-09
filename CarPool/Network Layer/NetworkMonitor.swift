@@ -12,6 +12,7 @@ class NetworkMonitor {
     
     // MARK: - properties
     
+    // shared instance for NetworkMonitor
     static let shared = NetworkMonitor()
     
     let monitor = NWPathMonitor()

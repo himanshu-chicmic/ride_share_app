@@ -38,7 +38,7 @@ struct RidesListItem: View {
     var rideStatus: String?
     
     var rideStatusBackground: Color {
-        return Formatters.returnStatusColor(rideStatus: rideStatus!)
+        return Helpers.returnStatusColor(rideStatus: rideStatus!)
     }
     
     // MARK: - body

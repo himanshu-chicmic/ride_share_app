@@ -36,6 +36,7 @@ class BaseViewModel: ObservableObject {
             }
         }
     }
+    @Published var toastMessageBackground: Color = .red
     
     // var to know if the screen is processing
     // information and show a progress view
@@ -121,8 +122,6 @@ class BaseViewModel: ObservableObject {
     ///   - httpMethod: http method for sending api request
     ///   - requestType: type of request ex .login, .signup etc.
     func sendRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        // set in progress to true for showing loader
-        inProgess = true
         // call createApiRequest in ApiManager class
         cancellables = ApiManager.shared.createApiRequest(
             httpMethod     : httpMethod,
@@ -135,6 +134,7 @@ class BaseViewModel: ObservableObject {
             switch completion {
             case .failure(let error):
                 // show failure info in form of toast
+                self.toastMessageBackground = .red
                 self.toastMessage = error.localizedDescription
                 print("ERROR: \(error)")
             case .finished:
@@ -154,18 +154,17 @@ class BaseViewModel: ObservableObject {
                 )
             } else {
                 // check and assign if error or message exists
+                self?.toastMessageBackground = .red
                 self?.toastMessage = response.status.error ?? response.status.message ?? ""
             }
         }
     }
     
-    /// method to send api request and observe changes
+    /// method to send api request for vehicles
     /// - Parameters:
     ///   - httpMethod: http method for sending api request
     ///   - requestType: type of request ex .login, .signup etc.
     func sendVehiclesRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        // set in progress to true for showing loader
-        inProgess = true
         // call createVehiclesApiRequest in ApiManager class
         cancellables = ApiManager.shared.createVehiclesApiRequest(
             httpMethod     : httpMethod,
@@ -178,6 +177,7 @@ class BaseViewModel: ObservableObject {
             // failure and finished cases
             switch completion {
             case .failure(let error):
+                self.toastMessageBackground = .red
                 self.toastMessage = error.localizedDescription
                 print("ERROR: \(error)")
             case .finished:
@@ -197,6 +197,7 @@ class BaseViewModel: ObservableObject {
                 )
             } else {
                 // check and assign if error message exists
+                self?.toastMessageBackground = .red
                 self?.toastMessage = response.status.message ?? ""
             }
         }

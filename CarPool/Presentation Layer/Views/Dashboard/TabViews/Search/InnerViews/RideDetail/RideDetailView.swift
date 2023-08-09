@@ -23,6 +23,17 @@ struct RideDetailView<T: Any>: View {
         return nil
     }
     
+    var rideStatus: String {
+        var status: String = ""
+        if let data = data as? Datum {
+            status = data.publish.status
+        } else if let data = data as? BookedRidesData {
+            status = data.status
+        }
+        
+        return Helpers.getRideStatus(status: status.lowercased())
+    }
+    
     var reachTime: String {
         var time: String = ""
         if let data = data as? Datum {
@@ -72,13 +83,13 @@ struct RideDetailView<T: Any>: View {
                             .padding([.vertical, .leading])
                         
                         if data as? BookedRidesData != nil {
-                            Text(rideData.status.capitalized)
+                            Text(rideStatus.capitalized)
                                 .font(.system(size: 13))
                                 .fontWeight(.medium)
-                                .foregroundColor(Formatters.returnStatusColor(rideStatus: rideData.status.lowercased()))
+                                .foregroundColor(Helpers.returnStatusColor(rideStatus: rideStatus))
                                 .padding(.vertical, 4)
                                 .padding(.horizontal, 16)
-                                .background(Formatters.returnStatusColor(rideStatus: rideData.status.lowercased()).opacity(0.1))
+                                .background(Helpers.returnStatusColor(rideStatus: rideStatus).opacity(0.1))
                         }
                         
                         Spacer()
@@ -197,13 +208,15 @@ struct RideDetailView<T: Any>: View {
                     }
                     .padding(.horizontal)
                     .padding(.top)
-                    .padding(.bottom, rideData.status.lowercased() == "pending" ? 0 : 10)
+                    .padding(.bottom, rideStatus.lowercased() == "pending" ? 0 : 10)
                     
-                    if rideData.status.lowercased() == "pending" {
+                    if rideStatus.lowercased() == "pending" {
                         Button {
-                            // cancel ride
+                            if let data = data as? BookedRidesData {
+                                searchViewModel.cancelRideBooking(httpMethod: .POST, requestType: .cancelBooking, data: [Constants.JsonKeys.id: data.bookingID])
+                            }
                         } label: {
-                            DefaultButtonLabel(text: Constants.RideDetails.cancelRide, isPrimary: false, color: .red.opacity(0.8))
+                            DefaultButtonLabel(text: Constants.RideDetails.cancelBooking, isPrimary: false, color: .red.opacity(0.8))
                         }
                         .padding(.horizontal)
                         .padding(.bottom)

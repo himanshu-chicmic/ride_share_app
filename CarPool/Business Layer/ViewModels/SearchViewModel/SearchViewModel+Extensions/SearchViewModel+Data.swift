@@ -32,7 +32,6 @@ extension SearchViewModel {
             }
             showSearchResults.toggle()
         }
-        baseViewModel.inProgess = false
     }
     
     /// method to handle booked ride response data
@@ -53,9 +52,9 @@ extension SearchViewModel {
             resetData()
             sendRequestToGetBooked(httpMethod: .GET, requestType: .bookedRides, data: [:])
         } else {
+            self.baseViewModel.toastMessageBackground = .red
             baseViewModel.toastMessage = response.error ?? ""
         }
-        baseViewModel.inProgess = false
     }
     
     /// method to fetch published rides
@@ -68,5 +67,28 @@ extension SearchViewModel {
     /// - Parameter response: BookedRidesModel data
     func getBookedRides(response: BookedRidesModel) {
         bookedRidesData = response.rides.reversed()
+    }
+    
+    /// method to update ride's data
+    /// - Parameter response: response of api request for data change
+    func updateRide(response: RidesSearchModel) {
+        if response.code == 200 {
+            if showRideDetailView {
+                showRideDetailView.toggle()
+            } else {
+                editRideView = false
+                // close current views
+                showPublishedRideView.toggle()
+            }
+            // reset global data
+            resetData()
+            // call api to fetch latest data for published rides
+            sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
+            self.baseViewModel.toastMessageBackground = .green
+            baseViewModel.toastMessage = Constants.InfoMessages.rideUpdate
+        } else {
+            self.baseViewModel.toastMessageBackground = .red
+            baseViewModel.toastMessage = Constants.ErrorsMessages.rideUpdate
+        }
     }
 }

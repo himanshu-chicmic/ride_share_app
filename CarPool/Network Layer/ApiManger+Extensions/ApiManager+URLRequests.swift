@@ -67,10 +67,6 @@ extension ApiManager {
             )
         }
         
-        // MARK: DEBUG MESSAGES
-        print("DEBUG REQUEST TYPE: ------- \(requestType)")
-        print("DEBUG URL: --------- \(url)")
-        
         // return url request
         return request
     }
@@ -89,7 +85,7 @@ extension ApiManager {
         }
         // if requesst type is of delete vehicle or update send delete or update request
         // which needs id of vehicle as parameters in url
-        else if requestType == .deleteVehicle || requestType == .updateVehicle || requestType == .getVehicleById {
+        else if requestType == .deleteVehicle || requestType == .updateVehicle || requestType == .getVehicleById || requestType == .updateRide {
             if let endpoint = data[Constants.JsonKeys.id] {
                 baseURL += "/\(endpoint)"
             }

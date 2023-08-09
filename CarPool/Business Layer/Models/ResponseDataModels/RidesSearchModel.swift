@@ -98,6 +98,37 @@ struct Publish: Codable {
             "Estimated Time (hh:mm) \(Formatters.getEstimatedTime(date: data.estimateTime ?? ""))"
         ]
     }
+    
+    func getDictData(delegate: SearchViewModel) -> [String: Any] {
+        return [
+            "id": id,
+            "source": delegate.startLocationVal?.formattedAddress ?? source,
+            "destination": delegate.endLocationVal?.formattedAddress ?? destination,
+            "passengers_count": delegate.numberOfPersons,
+            "add_city": addCity,
+            "date": Formatters.dateFormatter.string(from: delegate.dateOfDeparture),
+            "time": delegate.dateOfDeparture.formatted(date: .omitted, time: .shortened),
+            "set_price": delegate.pricePerSeat,
+            "about_ride": aboutRide,
+            "user_id": userID,
+            "created_at": createdAt,
+            "updated_at": updatedAt,
+            "source_latitude": delegate.startLocationVal?.geometry.location.lat ?? sourceLatitude,
+            "source_longitude": delegate.startLocationVal?.geometry.location.lng ?? sourceLongitude,
+            "destination_latitude": delegate.endLocationVal?.geometry.location.lat ?? destinationLatitude,
+            "destination_longitude": delegate.endLocationVal?.geometry.location.lng ?? destinationLongitude,
+            "vehicle_id": delegate.selectedVehicleId == 0 ? vehicleID : delegate.selectedVehicleId,
+            "book_instantly": bookInstantly,
+            "mid_seat": midSeat,
+            "select_route": selectRoute,
+            "status": status,
+            "estimate_time": delegate.estimatedTime.isEmpty ? estimateTime : delegate.estimatedTime,
+            "addCity_longitude": addCityLongitude,
+            "addCity_latitude": addCityLatitude,
+            "distance": distance,
+            "bearing": bearing
+        ]
+    }
 
     enum CodingKeys: String, CodingKey {
         case id, source, destination

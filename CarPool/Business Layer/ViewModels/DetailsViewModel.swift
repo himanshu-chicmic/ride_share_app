@@ -87,6 +87,7 @@ class DetailsViewModel: ObservableObject {
     ///   - increment: bool value to check whether the next button is clicked (true) or back button is clicked (false)
     ///   - emailPassword: email and password value needed for sign up / creating a new user in database
     func validateProfileData(increment: Bool, emailPassword: Constants.TypeAliases.InputFieldArrayType) {
+        baseViewModel.toastMessageBackground = .red
         withAnimation {
             // check validations while incrementing
             // the complete profile steps
@@ -152,6 +153,7 @@ class DetailsViewModel: ObservableObject {
     ///   - keyboardType: type of keyboard used
     ///   - otp: otp value
     func validateAddProfileOptions(textField: String, placeholder: String, inputField: InputFieldIdentifier, keyboardType: UIKeyboardType, otp: String) {
+        baseViewModel.toastMessageBackground = .red
         withAnimation {
             // check for textfield validations
             baseViewModel.toastMessage = baseViewModel
@@ -199,6 +201,7 @@ class DetailsViewModel: ObservableObject {
     ///   - textFieldValues: text input values array
     ///   - vehiclesData: data for VehiclesDataClass
     func validateCompleteVehicleInfo(textFieldValues: Constants.TypeAliases.InputFieldArrayType, vehiclesData: VehiclesDataClass?) {
+        baseViewModel.toastMessageBackground = .red
         // check for textfield validations
         if baseViewModel.toastMessage.isEmpty {
             baseViewModel.toastMessage = baseViewModel.validationsInstance
@@ -253,6 +256,7 @@ class DetailsViewModel: ObservableObject {
     /// validate profile data and send api request
     /// - Parameter textFieldValues: array containing text field values
     func validateCompleteProfile(textFieldValues: Constants.TypeAliases.InputFieldArrayType) {
+        baseViewModel.toastMessageBackground = .red
         withAnimation {
             // check for textfield validations
             baseViewModel.toastMessage = baseViewModel.validationsInstance

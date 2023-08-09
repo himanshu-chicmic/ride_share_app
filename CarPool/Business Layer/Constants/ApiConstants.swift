@@ -17,7 +17,7 @@ struct ApiConstants {
     static let placesURL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cgeometry&input="
     static let placesEndpoint = "&inputtype=textquery&key="
     // google maps view
-    static let googleMaps = "https://maps.googleapis.com/maps/api/directions/json?origin=%@&destination=%@&mode=driving&key=\(Formatters.fetchAPIKey())"
+    static let googleMaps = "https://maps.googleapis.com/maps/api/directions/json?origin=%@&destination=%@&mode=driving&key=\(Helpers.fetchAPIKey())"
     
     static let query = "?%@=%@"
     static let addToQuery = "&%@=%@"
@@ -61,6 +61,10 @@ struct ApiConstants {
     
     static let publishRide = "publishes"
     static let bookedRides = "booked_publishes"
+    static let updateRide = "publishes"
+    
+    static let cancelBooking = "cancel_booking"
+    static let cancelPublished = "cancel_publish"
     
     // MARK: - HTTPHeaderFieldAndValues
     

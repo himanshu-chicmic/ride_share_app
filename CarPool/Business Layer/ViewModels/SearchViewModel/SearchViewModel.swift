@@ -35,6 +35,10 @@ class SearchViewModel: ObservableObject {
     @Published var openMapView: Bool = false
     // progress bar view
     @Published var showProgressView = false
+    // edit ride view
+    @Published var editRideView = false
+    // show published ride view
+    @Published var showPublishedRideView: Bool = false
     
     // MARK: instance variables
     
@@ -108,7 +112,6 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestForGettingPlacesData(httpMethod: HttpMethod, requestType: RequestType, data: String) {
-        showProgressView = true
         suggestions = []
         
         anyCancellable = ApiManager.shared.getPlacesData(
@@ -121,12 +124,11 @@ class SearchViewModel: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
                 self.baseViewModel.toastMessage = error.localizedDescription
             case .finished:
                 print("success")
             }
-            
-            self.showProgressView = false
         } receiveValue: { [weak self] response in
             self?.suggestions = response.candidates
         }
@@ -137,7 +139,6 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestForSearchAndPublish(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        baseViewModel.inProgess = true
         searchResults = []
         
         anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
@@ -146,6 +147,7 @@ class SearchViewModel: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
                 self.baseViewModel.toastMessage = error.localizedDescription
             case .finished:
                 print("success")
@@ -160,7 +162,6 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestForRideBook(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        baseViewModel.inProgess = true
         openSummaryView = false
         
         anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
@@ -169,6 +170,7 @@ class SearchViewModel: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
                 self.baseViewModel.toastMessage = error.localizedDescription
             case .finished:
                 print("success")
@@ -189,6 +191,7 @@ class SearchViewModel: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
                 self.baseViewModel.toastMessage = error.localizedDescription
             case .finished:
                 print("success")
@@ -209,12 +212,59 @@ class SearchViewModel: ObservableObject {
             switch completion {
             case .failure(let error):
                 print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
                 self.baseViewModel.toastMessage = error.localizedDescription
             case .finished:
                 print("success")
             }
         } receiveValue: { [weak self] response in
             self?.getBookedRides(response: response)
+        }
+    }
+    
+    /// method to cance ride booking or published rides
+    /// - Parameters:
+    ///   - httpMethod: http method for api
+    ///   - requestType: type of api request
+    ///   - data: data contaning id of ride
+    func cancelRideBooking(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .failure(let error):
+                print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
+                self.baseViewModel.toastMessage = error.localizedDescription
+            case .finished:
+                print("success")
+            }
+        } receiveValue: { [weak self] response in
+            // ride book success
+            self?.updateRide(response: response)
+        }
+    }
+    
+    /// method to update ride details
+    /// - Parameters:
+    ///   - httpMethod: http method for api
+    ///   - requestType: type of api request
+    ///   - data: data of ride to be updated
+    func updateRideDetails(httpMethod: HttpMethod, requestType: RequestType, data: Publish) {
+        let updateData = data.getDictData(delegate: self)
+        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: updateData, requestType: requestType)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .failure(let error):
+                print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
+                self.baseViewModel.toastMessage = error.localizedDescription
+            case .finished:
+                print("success")
+            }
+        } receiveValue: { [weak self] response in
+            self?.updateRide(response: response)
         }
     }
 }

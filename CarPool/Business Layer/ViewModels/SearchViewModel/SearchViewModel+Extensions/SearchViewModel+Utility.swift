@@ -45,6 +45,7 @@ extension SearchViewModel {
     
     /// method to validate search input fields
     func validateInputFields() {
+        baseViewModel.toastMessageBackground = .red
         if startLocation.isEmpty {
             baseViewModel.toastMessage = Constants.ValidationMessages.emptyStartLocation
         } else if endLocation.isEmpty {
@@ -63,7 +64,6 @@ extension SearchViewModel {
     /// method used to call api
     func callApiMethods() {
         validateInputFields()
-        
         if baseViewModel.toastMessage.isEmpty, let startLocationVal, let endLocationVal {
             if findRide {
                 let data : [String : Any] = [
@@ -112,17 +112,21 @@ extension SearchViewModel {
     ///  to get vehicle data when clicked on search item
     /// - Parameter data: data for rides
     func searchItemClicked<T: Any>(data: T) {
-        showRideDetailView.toggle()
-        
-        var vehicleId: Int? = nil
+        var vehicleId: Int?
         
         if let data = data as? Datum {
+            showRideDetailView.toggle()
             updateRecents(dataRecentRides: data)
             vehicleId = data.publish.vehicleID!
         }
         
         if let data = data as? BookedRidesData {
+            showRideDetailView.toggle()
             vehicleId = data.ride.vehicleID!
+        }
+        
+        if let data = data as? Publish {
+            vehicleId = data.vehicleID!
         }
         
         baseViewModel.sendVehiclesRequestToApi(

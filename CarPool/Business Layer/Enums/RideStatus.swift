@@ -8,8 +8,11 @@
 import Foundation
 
 enum RideStatus: String {
-    case upcoming
-    case completed
+    case cancel
     case cancelled
-    case missed
+    
+    case active
+    
+    case completed
+    case confirmed
 }
