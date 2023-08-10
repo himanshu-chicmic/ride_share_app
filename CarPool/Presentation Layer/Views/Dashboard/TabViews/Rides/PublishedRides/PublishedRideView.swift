@@ -19,6 +19,8 @@ struct PublishedRideView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    @State var confirmBeforeCancel: Bool = false
+    
     var rideStatus: String {
         return Helpers.getRideStatus(status: data?.status.lowercased() ?? "")
     }
@@ -137,7 +139,7 @@ struct PublishedRideView: View {
                     
                     Button {
                         // cancel ride
-                        searchViewModel.cancelRideBooking(httpMethod: .POST, requestType: .cancelPublished, data: [Constants.JsonKeys.id : rideData.id])
+                        confirmBeforeCancel.toggle()
                     } label: {
                         DefaultButtonLabel(text: Constants.RideDetails.cancelRide, isPrimary: false, color: .red.opacity(0.8))
                     }
@@ -145,6 +147,18 @@ struct PublishedRideView: View {
                     .padding(.bottom)
                 }
             }
+        }
+        .confirmationDialog(
+            Constants.AlertDialog.areYouSure,
+            isPresented     : $confirmBeforeCancel,
+            titleVisibility : .visible
+        ) {
+            Button(Constants.Others.continue_, role: .destructive) {
+                if let rideData = data {
+                    searchViewModel.cancelRideBooking(httpMethod: .POST, requestType: .cancelPublished, data: [Constants.JsonKeys.id : rideData.id])
+                }
+            }
+            Button(Constants.Others.dismiss, role: .cancel) {}
         }
         .fullScreenCover(isPresented: $searchViewModel.editRideView) {
             EditPublishedRide(data: data)

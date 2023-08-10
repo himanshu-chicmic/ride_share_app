@@ -2,16 +2,16 @@
 //  ChatBubble.swift
 //  CarPool
 //
-//  Created by Nitin on 8/8/23.
+//  Created by Himanshu on 8/8/23.
 //
 
 import SwiftUI
 
 struct ChatBubble: View {
     
-    var isReceived: Bool = false
-    var message: String = "hey !!!!"
-    var time: String = "12:00 pm"
+    var isReceived: Bool
+    var message: String
+    var time: String
     
     var body: some View {
         VStack(alignment: isReceived ? .leading : .trailing, spacing: 4) {
@@ -36,11 +36,14 @@ struct ChatBubble: View {
                 .foregroundColor(.gray)
             
         }
+        .frame(maxWidth: .infinity, alignment: isReceived ? .leading : .trailing)
+        .padding()
+        .padding(isReceived ? .trailing : .leading, 64)
     }
 }
 
 struct ChatBubble_Previews: PreviewProvider {
     static var previews: some View {
-        ChatBubble()
+        ChatBubble(isReceived: false, message: "I drive!!!", time: "00:00 am")
     }
 }

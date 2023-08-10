@@ -18,7 +18,7 @@ struct CarPoolApp: App {
     @StateObject var detailsViewModel = DetailsViewModel()
     
     // state variables
-    @State var toggleDashboardContentView: Bool = false
+    @State var toggleDashboardContentView: Bool = true
     
     // MARK: - body
     

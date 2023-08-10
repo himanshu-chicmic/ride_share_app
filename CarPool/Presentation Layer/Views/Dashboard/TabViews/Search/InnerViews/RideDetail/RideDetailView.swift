@@ -49,6 +49,8 @@ struct RideDetailView<T: Any>: View {
     
     @Environment(\.dismiss) var dismiss
     
+    @State var cancelRideConfirmation: Bool = false
+    
     // MARK: - body
     
     var body: some View {
@@ -212,9 +214,7 @@ struct RideDetailView<T: Any>: View {
                     
                     if rideStatus.lowercased() == "pending" {
                         Button {
-                            if let data = data as? BookedRidesData {
-                                searchViewModel.cancelRideBooking(httpMethod: .POST, requestType: .cancelBooking, data: [Constants.JsonKeys.id: data.bookingID])
-                            }
+                            cancelRideConfirmation.toggle()
                         } label: {
                             DefaultButtonLabel(text: Constants.RideDetails.cancelBooking, isPrimary: false, color: .red.opacity(0.8))
                         }
@@ -223,6 +223,18 @@ struct RideDetailView<T: Any>: View {
                     }
                 }
             }
+        }
+        .confirmationDialog(
+            Constants.AlertDialog.areYouSure,
+            isPresented     : $cancelRideConfirmation,
+            titleVisibility : .visible
+        ) {
+            Button(Constants.Others.continue_, role: .destructive) {
+                if let data = data as? BookedRidesData {
+                    searchViewModel.cancelRideBooking(httpMethod: .POST, requestType: .cancelBooking, data: [Constants.JsonKeys.id: data.bookingID])
+                }
+            }
+            Button(Constants.Others.dismiss, role: .cancel) {}
         }
         .fullScreenCover(isPresented: $searchViewModel.openSummaryView) {
             RideSummary(data: (data as? Datum)!)
