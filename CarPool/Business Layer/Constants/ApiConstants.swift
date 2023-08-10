@@ -66,6 +66,10 @@ struct ApiConstants {
     static let cancelBooking = "cancel_booking"
     static let cancelPublished = "cancel_publish"
     
+    // MARK: - messages
+    static let chatRoom = "chats"
+    static let chatMessages = "chats/%@/messages"
+    
     // MARK: - HTTPHeaderFieldAndValues
     
     struct HTTPHeaderFieldAndValues {

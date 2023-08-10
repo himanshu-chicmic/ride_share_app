@@ -141,8 +141,6 @@ class BaseViewModel: ObservableObject {
                 // show success info in form of toast
                 print("success")
             }
-            // disable the progress view once the completion has received
-            self.disableProgress()
         } receiveValue: { [weak self] response in
             // check if response status code is 200 or 0 or show error message
             if response.status.code == 200 || response.status.code == 0 {
@@ -183,9 +181,6 @@ class BaseViewModel: ObservableObject {
             case .finished:
                 print("success")
             }
-            
-            // disable the progress view once the completion has received
-            self.disableProgress()
         } receiveValue: { [weak self] response in
             // check if response status code is 200 or show error message
             if response.status.code == 200 || response.status.code == 201 {

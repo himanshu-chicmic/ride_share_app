@@ -257,9 +257,6 @@ class ApiManager {
             .tryMap { data in
                 DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                        print(json)
-                    }
                     return try JSONDecoder().decode(T.self, from: data)
                 } catch {
                     throw APIErrors.decodingError(error)

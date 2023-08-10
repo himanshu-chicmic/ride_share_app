@@ -42,6 +42,9 @@ enum RequestType: RawRepresentable {
     case cancelBooking
     case cancelPublished
     
+    case chatRooms
+    case chatMessages
+    
     /// get raw values based on current
     /// value of the enum
     var rawValue: String {
@@ -84,6 +87,10 @@ enum RequestType: RawRepresentable {
             return ApiConstants.cancelBooking
         case .cancelPublished:
             return ApiConstants.cancelPublished
+        case .chatRooms:
+            return ApiConstants.chatRoom
+        case .chatMessages:
+            return ApiConstants.chatMessages
         }
     }
     
@@ -133,6 +140,10 @@ enum RequestType: RawRepresentable {
             self = .cancelBooking
         case ApiConstants.cancelPublished:
             self = .cancelPublished
+        case ApiConstants.chatRoom:
+            self = .chatRooms
+        case ApiConstants.chatMessages:
+            self = .chatMessages
         default:
             return nil
         }

@@ -16,8 +16,8 @@ struct MessagesListItem: View {
     // contact item properties
     var image: String
     var name: String
-    var message: String
-    var time: String
+    var pickupLocation: String
+    var dropLocation: String
     
     // MARK: - body
     
@@ -30,8 +30,8 @@ struct MessagesListItem: View {
                 .resizable()
                 .scaledToFill()
                 .frame(
-                    width  : 44,
-                    height : 44
+                    width  : 64,
+                    height : 64
                 )
                 .clipShape(Circle())
             
@@ -41,27 +41,29 @@ struct MessagesListItem: View {
                     
                     // person name
                     Text(name)
-                        .font(.system(size: 16))
+                        .font(.system(size: 15, design: .rounded))
                         .fontWeight(.regular)
                     
                     // last message received
-                    Text(message)
-                        .font(.system(size: 12))
-                        .fontWeight(.light)
+                    HStack {
+                        Text(pickupLocation)
+                        Image(systemName: Constants.Icon.arrowLeft)
+                        Text(dropLocation)
+                        
+                        Spacer()
+                    }
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .font(.system(size: 13))
+                    .foregroundColor(.gray)
                 }
                 
                 Spacer()
-                
-                // time of message received
-                Text(time)
-                    .font(.system(size: 10))
-                    .foregroundColor(.gray)
-                    .fontWeight(.light)
             }
         }
         .padding(.horizontal)
         .padding(.vertical, 14)
-        .background(.gray.opacity(0.05))
+        .background(.gray.opacity(0.025))
         .cornerRadius(12)
     }
 }
@@ -71,8 +73,8 @@ struct ContactItem_Previews: PreviewProvider {
         MessagesListItem(
             image   : Constants.Images.carpool,
             name    : "Himanshu",
-            message : "message message message...",
-            time    : "12:38"
+            pickupLocation: "Meerut",
+            dropLocation: "Gurgaon"
         )
     }
 }
