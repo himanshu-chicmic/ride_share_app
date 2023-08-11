@@ -81,6 +81,11 @@ extension ApiManager {
             )
         }
         
+        print("DEBUG URL: \(baseURL)")
+        print("DEBUG HTTP: \(httpMethod.rawValue)")
+        print("DEBUG DATA: \(data)")
+        print("DEBUG TYPE: \(requestType)")
+        
         // return url request
         return request
     }
@@ -128,8 +133,6 @@ extension ApiManager {
                 }
             }
         }
-        
-        print("DEBUG URL: \(baseURL)")
     }
     
     /// method to set content type and http body for url request

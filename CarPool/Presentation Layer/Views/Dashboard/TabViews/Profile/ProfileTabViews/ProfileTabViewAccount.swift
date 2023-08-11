@@ -49,18 +49,11 @@ struct ProfileTabViewAccount: View {
                     }
                     .padding()
                     .onTapGesture {
-                        if value == Constants.ProfileAccount.details[0] {
-                            baseViewModel.openForgotPasswordView.toggle()
-                        } else if link == Constants.ProfileAccount.additionalOptions {
-                            openExternalLink.toggle()
-                        }
+                        openExternalLink.toggle()
                     }
                 }
                 Divider()
                     .padding(.horizontal)
-            }
-            .fullScreenCover(isPresented: $baseViewModel.openForgotPasswordView) {
-                ForgotPasswordView()
             }
             
             Button {
@@ -93,10 +86,6 @@ struct ProfileTabViewAccount: View {
                 baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .logOut, data: [:])
             }
         }
-        
-        // title of app bar
-        Text(Constants.LogIn.resetPassword)
-        .frame(maxWidth: .infinity)
     }
 }
 

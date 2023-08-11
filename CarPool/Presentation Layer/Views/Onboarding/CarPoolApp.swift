@@ -17,9 +17,6 @@ struct CarPoolApp: App {
     @StateObject var baseViewModel = BaseViewModel.shared
     @StateObject var detailsViewModel = DetailsViewModel()
     
-    // state variables
-    @State var toggleDashboardContentView: Bool = true
-    
     // MARK: - body
     
     var body: some Scene {
