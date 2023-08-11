@@ -122,7 +122,7 @@ struct Constants {
         static let dateOfBirth      = "yyyy-MM-dd"
         static let timeFormatter      = "hh:mm a"
         static let dateFormat      = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        static let localeIdentifier = "en_US_POSIX"
+        static let localeIdentifier = "en_IN"
         static let defaultTime = "00:00"
         
         // price

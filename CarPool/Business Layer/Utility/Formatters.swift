@@ -30,7 +30,7 @@ struct Formatters {
         // set the date format as "h:mm a" as stored
         // in constants's placeholder struct as timeFormatter
         formatter.dateFormat = Constants.Placeholders.timeFormatter
-        formatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+        formatter.timeZone = NSTimeZone(name: "IST") as TimeZone?
         // return the formatter
         return formatter
     }()
@@ -148,16 +148,15 @@ struct Formatters {
     /// - Parameter date: date returned from api response
     /// - Returns: a string of time in "h:mm a" format
     static func getFormattedDate(date: String?) -> String {
+        
         guard let date else {
             return Constants.RideDetails.timeUnavailable
         }
-        // change into date accroding to the
-        // returned date format
-        // which is "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: Constants.Placeholders.localeIdentifier)
-        dateFormatter.dateFormat = Constants.Placeholders.dateFormat
-        // get date in required format
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.timeZone = NSTimeZone(name: "IST") as? TimeZone
+        dateFormatter.locale = Locale.current
         guard let dateRes = dateFormatter.date(from: date) else {
             return Constants.RideDetails.timeUnavailable
         }

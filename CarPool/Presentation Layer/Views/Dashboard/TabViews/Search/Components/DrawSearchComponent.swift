@@ -24,6 +24,14 @@ struct DrawSearchComponent: View {
     
     @StateObject var locationViewModel = LocationViewModel()
     
+    var showAlert: Bool {
+        get {
+            return baseViewModel.vehiclesData == nil
+        }
+    }
+    
+    @State var showNoVehiclesAlert: Bool = false
+    
     // MARK: - body
     
     var body: some View {
@@ -68,16 +76,24 @@ struct DrawSearchComponent: View {
             case .numberOfPersons:
                 StepperInputField()
             case .vehicle:
-                List(
-                    baseViewModel.vehiclesData?.status.data ?? [],
-                    id: \.self
-                ) {
-                    VehicleTextView(data: $0)
-                }
-                .listStyle(.plain)
-                .onChange(of: textField) { newValue in
-                    if newValue.isEmpty {
-                        textField = Constants.Placeholders.vehicle
+                if (baseViewModel.vehiclesData?.status.data == []) {
+                    Text("You don't have any vehicles. Add vehicles in profile first to proceed.")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                        .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
+                    
+                } else {
+                    List(
+                        baseViewModel.vehiclesData?.status.data ?? [],
+                        id: \.self
+                    ) {
+                        VehicleTextView(data: $0)
+                    }
+                    .listStyle(.plain)
+                    .onChange(of: textField) { newValue in
+                        if newValue.isEmpty {
+                            textField = Constants.Placeholders.vehicle
+                        }
                     }
                 }
             default:

@@ -141,7 +141,7 @@ class SearchViewModel: ObservableObject {
     func sendRequestForSearchAndPublish(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         searchResults = []
         
-        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        anyCancellable = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {
@@ -164,7 +164,7 @@ class SearchViewModel: ObservableObject {
     func sendRequestForRideBook(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         openSummaryView = false
         
-        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        anyCancellable = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {
@@ -185,7 +185,7 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestToGetPublished(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        anyCancellablePublish = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        anyCancellablePublish = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {
@@ -206,7 +206,7 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestToGetBooked(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        anyCancellableBooked = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        anyCancellableBooked = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {
@@ -228,7 +228,7 @@ class SearchViewModel: ObservableObject {
     ///   - requestType: type of api request
     ///   - data: data contaning id of ride
     func cancelRideBooking(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: data, requestType: requestType)
+        anyCancellable = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {
@@ -252,7 +252,7 @@ class SearchViewModel: ObservableObject {
     ///   - data: data of ride to be updated
     func updateRideDetails(httpMethod: HttpMethod, requestType: RequestType, data: Publish) {
         let updateData = data.getDictData(delegate: self)
-        anyCancellable = ApiManager.shared.apiRequestSearchAndRides(httpMethod: httpMethod, data: updateData, requestType: requestType)
+        anyCancellable = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: updateData, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
             switch completion {

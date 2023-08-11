@@ -10,6 +10,11 @@ import SwiftUI
 struct MessageInput: View {
     
     @State var inputText: String = ""
+    @State var disableSendButton = true
+    
+    var data: Chat
+    
+    @EnvironmentObject var chatViewModel: ChatViewModel
     
     var body: some View {
         HStack {
@@ -19,24 +24,29 @@ struct MessageInput: View {
                 .background(.gray.opacity(0.05))
                 .cornerRadius(1000)
                 .font(.system(size: 15))
+                .keyboardType(.default)
+                .onChange(of: inputText) { newValue in
+                    withAnimation {
+                        disableSendButton = inputText.isEmpty
+                    }
+                }
             
-            Button(action: {
-                // do something
-            }, label: {
-                Image(systemName: "paperplane.fill")
-                    .padding()
-                    .background(.blue.opacity(0.6))
-                    .foregroundColor(.white)
-                    .cornerRadius(1000)
-            })
+            
+            if !disableSendButton {
+                Button(action: {
+                    chatViewModel.createChatApiCall(httpMethod: .POST, requestType: .chatMessages, data: ["id": data.id, "message": ["content" : inputText, "receiver_id" : data.receiverID]])
+                    // on success
+                    inputText = ""
+                }, label: {
+                    Image(systemName: "paperplane.fill")
+                        .padding()
+                        .background(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
+                        .foregroundColor(.white)
+                        .cornerRadius(1000)
+                })
+            }
             
         }
         .padding(.horizontal)
-    }
-}
-
-struct MessageInput_Previews: PreviewProvider {
-    static var previews: some View {
-        MessageInput()
     }
 }

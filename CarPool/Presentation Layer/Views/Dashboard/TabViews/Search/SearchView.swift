@@ -121,6 +121,11 @@ struct SearchView: View {
                             inputType   : .vehicle
                         )
                         .padding(.horizontal)
+                        .onAppear {
+                            if baseViewModel.vehiclesData?.status.data == [] {
+                                searchViewModel.selectedVehicle = ""
+                            }
+                        }
                         
                         // price
                         InputFieldsWithIcons(

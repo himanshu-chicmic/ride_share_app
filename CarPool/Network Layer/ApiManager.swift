@@ -223,7 +223,7 @@ class ApiManager {
     ///   - data: any data to be sent
     ///   - requestType: type of api call
     /// - Returns: response from api call
-    func apiRequestSearchAndRides<T: Decodable>(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<T, Error> {
+    func apiRequestCall<T: Decodable>(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<T, Error> {
         // check internet connection
         DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
         NetworkMonitor.shared.startMonitoring()
@@ -257,6 +257,8 @@ class ApiManager {
             .tryMap { data in
                 DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
                 do {
+                    let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                    print(json)
                     return try JSONDecoder().decode(T.self, from: data)
                 } catch {
                     throw APIErrors.decodingError(error)

@@ -23,7 +23,7 @@ struct BookedRidesView: View {
                             startLoction    : data.ride.source,
                             startTime       : "\(Formatters.getFormattedDate(date: data.ride.time)) • \(String(describing: data.ride.date ?? Constants.ErrorsMessages.noDate))",
                             endLocation     : data.ride.destination,
-                            endTime         : Formatters.getFormattedDate(date: data.ride.estimateTime),
+                            endTime         : Formatters.getFormattedDate(date: data.reachTime),
                             date            : "\(data.ride.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.ride.setPrice)),
                             seats : data.seat,

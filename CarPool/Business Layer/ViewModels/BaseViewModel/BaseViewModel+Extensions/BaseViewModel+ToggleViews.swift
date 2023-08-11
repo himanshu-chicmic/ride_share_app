@@ -25,6 +25,9 @@ extension BaseViewModel {
                 data        : [:]
             )
         }
+        if type == .signUp {
+            switchToDashboard = true
+        }
         if type == .logOut {
             switchToDashboard = false
         }
@@ -57,6 +60,8 @@ extension BaseViewModel {
         if let token = UserDefaults.standard.value(forKey: Constants.UserDefaultKeys.session) as? String {
             // return false if not found
             switchToDashboard = !token.isEmpty
+        } else {
+            switchToDashboard = false
         }
     }
 }

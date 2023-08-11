@@ -35,6 +35,20 @@ extension ApiManager {
                 baseURL     : &baseURL,
                 data        : &data
             )
+        } else {
+            if requestType == .chatMessages {
+                if let endpoint = data[Constants.JsonKeys.id] {
+                    
+                    if requestType == .chatMessages {
+                        baseURL = String(format: baseURL, "\(endpoint)")
+                    } 
+                    
+                    // remove id from data in case of delete vehicle this doesn't matter
+                    // becaues no additional data will be send for delete request
+                    // and in case of update vehicle we don't need to update id of vehicle.
+                    data.removeValue(forKey: Constants.JsonKeys.id)
+                }
+            }
         }
         
         // get the url from base url string
@@ -85,9 +99,16 @@ extension ApiManager {
         }
         // if requesst type is of delete vehicle or update send delete or update request
         // which needs id of vehicle as parameters in url
-        else if requestType == .deleteVehicle || requestType == .updateVehicle || requestType == .getVehicleById || requestType == .updateRide {
+        else if requestType == .deleteVehicle || requestType == .updateVehicle || requestType == .getVehicleById || requestType == .updateRide || requestType == .chatMessages {
+            
             if let endpoint = data[Constants.JsonKeys.id] {
-                baseURL += "/\(endpoint)"
+                
+                if requestType == .chatMessages {
+                    baseURL = String(format: baseURL, "\(endpoint)")
+                } else {
+                    baseURL += "/\(endpoint)"
+                }
+                
             }
             // remove id from data in case of delete vehicle this doesn't matter
             // becaues no additional data will be send for delete request
@@ -107,6 +128,8 @@ extension ApiManager {
                 }
             }
         }
+        
+        print("DEBUG URL: \(baseURL)")
     }
     
     /// method to set content type and http body for url request

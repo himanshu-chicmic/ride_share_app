@@ -19,6 +19,7 @@ struct DashboardView: View {
     
     // state objects
     @StateObject var searchViewModel = SearchViewModel()
+    @StateObject var chatViewModel: ChatViewModel = ChatViewModel()
     
     @EnvironmentObject var baseViewModel: BaseViewModel
     
@@ -51,6 +52,7 @@ struct DashboardView: View {
             }
         }
         .environmentObject(searchViewModel)
+        .environmentObject(chatViewModel)
         .overlay {
             CircleProgressView()
         }

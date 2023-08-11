@@ -115,9 +115,10 @@ extension SearchViewModel {
         var vehicleId: Int?
         
         if let data = data as? Datum {
+            vehicleId = data.publish.vehicleID!
             showRideDetailView.toggle()
             updateRecents(dataRecentRides: data)
-            vehicleId = data.publish.vehicleID!
+
         }
         
         if let data = data as? BookedRidesData {

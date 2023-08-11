@@ -17,11 +17,13 @@ struct ChatViewTopBar: View {
     var pickupLocation: String
     var dropLocation: String
     
+    @EnvironmentObject var chatViewModel: ChatViewModel
+    
     var body: some View {
         VStack {
             HStack (alignment: .center) {
                 Button {
-                    // do something
+                    chatViewModel.openChatView.toggle()
                 } label: {
                     Image(systemName: "chevron.left")
                 }

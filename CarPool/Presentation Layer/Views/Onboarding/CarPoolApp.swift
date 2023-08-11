@@ -25,14 +25,11 @@ struct CarPoolApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if toggleDashboardContentView {
+                if baseViewModel.switchToDashboard {
                     DashboardView()
                 } else {
                     OnboardingView()
                 }
-            }
-            .onChange(of: baseViewModel.switchToDashboard) { value in
-                toggleDashboardContentView = value
             }
             .environmentObject(baseViewModel)
             .environmentObject(detailsViewModel)

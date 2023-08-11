@@ -11,6 +11,8 @@ struct RideDetailView<T: Any>: View {
     
     // MARK: - properties
     
+    @EnvironmentObject var chatViewModel: ChatViewModel
+    
     // selected ride data
     var data: T?
     
@@ -204,15 +206,20 @@ struct RideDetailView<T: Any>: View {
                     .padding()
                 } else {
                     Button {
-                        // message driver
+                        chatViewModel.createChatApiCall(httpMethod: .POST, requestType: .chatRooms, data: [
+                            "chat": [
+                                "receiver_id": rideData.userID,
+                                "publish_id": rideData.id
+                            ]
+                        ])
                     } label: {
                         DefaultButtonLabel(text: Constants.RideDetails.messageDriver)
                     }
                     .padding(.horizontal)
                     .padding(.top)
-                    .padding(.bottom, rideStatus.lowercased() == "pending" ? 0 : 10)
+                    .padding(.bottom, rideStatus == "cancelled" ? 10 : 0)
                     
-                    if rideStatus.lowercased() == "pending" {
+                    if rideStatus != "cancelled" {
                         Button {
                             cancelRideConfirmation.toggle()
                         } label: {
