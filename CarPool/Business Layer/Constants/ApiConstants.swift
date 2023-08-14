@@ -28,7 +28,7 @@ struct ApiConstants {
     
     static let getRequestEmailCheck = "?email=%@"
     static let checkEmail = "email_check"
-    static let emailConfirmation = "account_activations"
+    static let emailActivation = "account_activations"
     
     // MARK: - signin
     
@@ -39,10 +39,6 @@ struct ApiConstants {
     
     static let phoneConfirmation = "phone"
     static let otpVerification = "verify"
-    
-    // MARK: - passwords
-    
-    static let resetPassword = "users/password"
     
     // MARK: - profile
 

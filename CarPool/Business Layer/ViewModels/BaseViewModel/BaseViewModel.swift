@@ -38,6 +38,14 @@ class BaseViewModel: ObservableObject {
     }
     @Published var toastMessageBackground: Color = .red
     
+    // tab views array
+    @Published var tabViewData: [TabViewIdentifier] = [
+        .search, .rides, .inbox, .profile
+    ]
+    
+    // state
+    @Published var selection = TabViewIdentifier.search
+    
     // var to know if the screen is processing
     // information and show a progress view
     @Published var inProgess: Bool = false
@@ -48,9 +56,6 @@ class BaseViewModel: ObservableObject {
     // open edit details for vehicles or profile
     @Published var editProfile = false
     @Published var addVehicle = false
-    
-    // open forgot password view
-    @Published var openForgotPasswordView: Bool = false
     
     // update single profile item
     @Published var openAddProfile: Bool = false

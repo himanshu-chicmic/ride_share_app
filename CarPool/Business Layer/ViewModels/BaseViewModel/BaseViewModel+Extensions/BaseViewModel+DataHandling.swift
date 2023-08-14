@@ -25,6 +25,17 @@ extension BaseViewModel {
                 response : userData!,
                 type     : type
             )
+        case .emailCheck:
+            // open details view for getting user information
+            openUserDetailsView.toggle()
+        case .confirmPhone:
+            // show otp field on completino of api call for sending passcode
+            withAnimation {
+                viewOtpField.toggle()
+            }
+        case .confirmOtp, .confirmEmail:
+            // close add profile view
+            openAddProfile.toggle()
         case .getDetails:
             if vehiclesData == nil {
                 sendVehiclesRequestToApi(
@@ -33,14 +44,11 @@ extension BaseViewModel {
                     data        : [:]
                 )
             }
-        case .emailCheck:
-            // open details view for getting user information
-            openUserDetailsView.toggle()
         case .updateProfile:
             // set bools related to open edit profile
             // and open add profile false
             editProfile = false
-            openAddProfile = false
+            openAddProfile.toggle()
         case .uploadImage:
             // set message for success in image updation
             toastMessageBackground = .green
@@ -51,19 +59,6 @@ extension BaseViewModel {
                 requestType : .getDetails,
                 data        : [:]
             )
-        case .confirmPhone, .confirmOtp:
-            // show otp field on completion of api call for sending passcode
-            withAnimation { viewOtpField.toggle() }
-            if type == .confirmOtp {
-                // close add profile view
-                openAddProfile.toggle()
-                // send request to fetch user details to get updated data
-                sendRequestToApi(
-                    httpMethod  : .GET,
-                    requestType : .getDetails,
-                    data        : [:]
-                )
-            }
         case .vehicles, .updateVehicle, .deleteVehicle:
             // set add vehicles to false to close add vehicle view
             addVehicle = false
@@ -89,17 +84,7 @@ extension BaseViewModel {
         // initialize empty dictionary
         var data: [String: Any] = [:]
         
-        // if type is of reset password type
-        if type == .resetPassword {
-            // return dictinary according to
-            // reset password
-            // needs reset password token and new password
-            return [Constants.JsonKeys.user : [
-                Constants.JsonKeys.resetPasswordToken   : "returned from api",
-                values[1].2.rawValue                    : values[1].0,
-                Constants.JsonKeys.passwordConfirmation : values[1].0
-            ]]
-        } else if type == .emailCheck || type == .forgotPassword {
+        if type == .emailCheck {
             // if type is email check
             // then we only need email
             // in format:

@@ -11,12 +11,6 @@ struct DashboardView: View {
     
     // MARK: - properties
     
-    // state
-    @State var tabViewData: [TabViewIdentifier] = [
-        .search, .rides, .inbox, .profile
-    ]
-    @State private var selection = TabViewIdentifier.search
-    
     // state objects
     @StateObject var searchViewModel = SearchViewModel()
     @StateObject var chatViewModel: ChatViewModel = ChatViewModel()
@@ -29,8 +23,8 @@ struct DashboardView: View {
         
         // tab bar view
         NavigationStack {
-            TabView(selection: $selection) {
-                ForEach(tabViewData, id: \.self) { value in
+            TabView(selection: $baseViewModel.selection) {
+                ForEach(baseViewModel.tabViewData, id: \.self) { value in
                     Group {
                         // tab views
                         switch value {
@@ -56,7 +50,9 @@ struct DashboardView: View {
         .overlay {
             CircleProgressView()
         }
-        
+        .onAppear {
+            searchViewModel.resetData()
+        }
         .overlay (alignment: .bottom) {
             // toast message for validation or errors
             if !baseViewModel.toastMessage.isEmpty {

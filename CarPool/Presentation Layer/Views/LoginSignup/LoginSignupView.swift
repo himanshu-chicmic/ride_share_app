@@ -50,20 +50,6 @@ struct LoginSignupView: View {
                             keyboard       : signInViewModel.textFieldValues[index].3
                         )
                     }
-                    
-                    // forgot password for login only
-                    if !signInViewModel.isNewUser {
-                        Button {
-                            baseViewModel.openForgotPasswordView.toggle()
-                        } label: {
-                            Text(Constants.LogIn.forgotPassword)
-                                .font(.system(size: 15))
-                                .fontWeight(.medium)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding(.top, 6)
-                        .padding(.horizontal, 20)
-                    }
 
                     // continue button
                     Button {
@@ -96,11 +82,6 @@ struct LoginSignupView: View {
             // opened when sign up is attempted
             .fullScreenCover(isPresented: $baseViewModel.openUserDetailsView) {
                 UserDetailsView()
-            }
-            // forgot password view
-            // opened when forgot password is clicked
-            .fullScreenCover(isPresented: $baseViewModel.openForgotPasswordView) {
-                ForgotPasswordView()
             }
             .onAppear {
                 signInViewModel.resetTextFields()

@@ -69,10 +69,6 @@ struct Constants {
         static let logIn                    = "Log In"
         static let login                    = "Log in"
         
-        static let forgotPassword           = "Forgot password?"
-        static let resetPassword            = "Reset Password"
-        static let resetPasswordDescription = "Please enter the email you signed up with to confirm reset password"
-        static let enterNewPassword         = "Enter a new password"
         
         static let notAMember               = "Not a member yet?"
         
@@ -342,7 +338,6 @@ struct Constants {
         static let status = "status"
         static let message = "message"
 
-        static let resetPasswordToken = "reset_password_token"
         static let passwordConfirmation = "password_confirmation"
         
         static let sourceLongitude = "source_longitude"
@@ -420,8 +415,6 @@ struct Constants {
     struct AlertDialog {
         
         static let exitCompleteProfile  = "Your account won't be created. Are you sure to exit?"
-        
-        static let exitPasswordReset    = "You didn't reset your password. Are you sure to go back?"
         
         static let logout    = "Are you sure you want to log out?"
         

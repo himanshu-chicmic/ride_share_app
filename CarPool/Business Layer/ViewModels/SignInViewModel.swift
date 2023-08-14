@@ -80,29 +80,6 @@ class SignInViewModel: ObservableObject {
         }
     }
     
-    /// method to initiate fogot password
-    /// - Parameters:
-    ///   - textFieldValues: input field values
-    ///   - isNavigated: bool to check if the view is navigated, used for validation of fields
-    func initiateForgotPassword(textFieldValues: Constants.TypeAliases.InputFieldArrayType, isNavigated: Bool) {
-        baseViewModel.toastMessageBackground = .red
-        withAnimation {
-            // validate text fields
-            baseViewModel.toastMessage = navigate
-            ? baseViewModel.validationsInstance.validateTextFields(
-                textFields : textFieldValues,
-                count      : textFieldValues.count - 2
-            )
-            : baseViewModel.validationsInstance.validateTextFields(textFields: textFieldValues)
-        }
-        
-        if baseViewModel.toastMessage.isEmpty {
-            let requestTypeForValidation: RequestType = isNavigated ? .resetPassword : .emailCheck
-            let data = baseViewModel.getDataInDictionary(values: textFieldValues, type: requestTypeForValidation)
-            baseViewModel.sendRequestToApi(httpMethod: .POST, requestType: .forgotPassword, data: data)
-        }
-    }
-    
     // MARK: utility methods
     
     /// method to update text fields

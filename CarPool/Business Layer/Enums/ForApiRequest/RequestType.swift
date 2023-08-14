@@ -10,38 +10,45 @@ import Foundation
 /// enum for checking for what kind of
 /// api request is sent
 enum RequestType: RawRepresentable {
+    
+    // MARK: - signin
     case signUp
     case emailCheck
     case logIn
     case logOut
-    case getDetails
-    case updateProfile
-    case uploadImage
+    
+    // MARK: - activations
     case confirmEmail
     case confirmPhone
     case confirmOtp
-    case forgotPassword
-    case resetPassword
+    
+    // MARK: - details
+    case getDetails
+    case updateProfile
+    case uploadImage
+    
+    // MARK: - vehicles
     case vehicles
     case getVehicles
     case updateVehicle
     case deleteVehicle
-    case searchRides
     case getVehicleById
     
+    // MARK: - rides
+    case searchRides
+    case updateRide
+    
     case bookPublish
-    
     case bookedPublishes
-    
-    case publishedRides
     case bookedRides
     
+    case publishedRides
     case publishedRideById
     
-    case updateRide
     case cancelBooking
     case cancelPublished
     
+    // MARK: - messaging
     case chatRooms
     case chatMessages
     
@@ -60,13 +67,11 @@ enum RequestType: RawRepresentable {
         case .logOut:
             return ApiConstants.signOut
         case .confirmEmail:
-            return ApiConstants.emailConfirmation
+            return ApiConstants.emailActivation
         case .confirmPhone:
             return ApiConstants.phoneConfirmation
         case .confirmOtp:
             return ApiConstants.otpVerification
-        case .forgotPassword, .resetPassword:
-            return ApiConstants.resetPassword
         case .vehicles, .getVehicles, .updateVehicle, .deleteVehicle:
             return ApiConstants.vehicles
         case .getVehicleById:
@@ -108,15 +113,12 @@ enum RequestType: RawRepresentable {
             self = .logIn
         case ApiConstants.signOut:
             self = .logOut
-        case ApiConstants.emailConfirmation:
+        case ApiConstants.emailActivation:
             self = .confirmEmail
         case ApiConstants.phoneConfirmation:
             self = .confirmPhone
         case ApiConstants.otpVerification:
             self = .confirmOtp
-        case ApiConstants.resetPassword:
-            self = .forgotPassword
-            self = .resetPassword
         case ApiConstants.vehicles:
             self = .vehicles
             self = .getVehicles

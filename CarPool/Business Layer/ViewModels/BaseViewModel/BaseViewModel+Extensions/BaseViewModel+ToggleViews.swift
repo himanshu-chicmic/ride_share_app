@@ -25,16 +25,25 @@ extension BaseViewModel {
                 data        : [:]
             )
         }
-        if type == .signUp {
+        else if type == .signUp {
+            // if user details is open then close it first
+            openUserDetailsView.toggle()
             switchToDashboard = true
         }
-        if type == .logOut {
+        else if type == .logOut {
+            resetUserDefaults()
+            selection = .search
             switchToDashboard = false
         }
-        // if user details is open then close it first
-        if openUserDetailsView {
-            openUserDetailsView.toggle()
-        }
+    }
+    
+    /// method to reset user defaults data
+    func resetUserDefaults() {
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.session)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.vehiclesData)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.profileData)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.recentSearches)
+        UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.recentViewedRides)
     }
     
     /// method to dismiss toast message by
