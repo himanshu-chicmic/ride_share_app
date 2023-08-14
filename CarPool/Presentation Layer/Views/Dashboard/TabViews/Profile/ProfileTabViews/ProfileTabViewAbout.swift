@@ -8,23 +8,6 @@
 import SwiftUI
 import PhotosUI
 
-
-//struct GetImage: View {
-//    var image: Image
-//
-//    var body: some View {
-//        if let image = phase.image {
-//            Image(Constants.Images.carpool)
-//                .resizable()
-//                .scaledToFill()
-//        } else {
-//            Image(Constants.Images.carpool)
-//                .resizable()
-//                .scaledToFill()
-//        }
-//    }
-//}
-
 struct ProfileTabViewAbout: View {
     
     // MARK: - properties
@@ -36,6 +19,8 @@ struct ProfileTabViewAbout: View {
     
     // MARK: private state variables
     @State private var photosPicker: PhotosPickerItem?
+    // bool to check image loading
+    @State var isLoading: Bool = true
     
     // MARK: - body
     
@@ -43,9 +28,40 @@ struct ProfileTabViewAbout: View {
         ScrollView {
             
             VStack {
-                AsyncImage(url: baseViewModel.userData?.status.imageURL, content: view)
+                
+                // profile
+                ZStack (alignment: .center) {
+                    AsyncImage(url: baseViewModel.userData?.status.imageURL) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .onAppear {
+                                isLoading = false
+                            }
+                    } placeholder: {
+                        if isLoading {
+                            ZStack {
+                                Color.gray.opacity(0.1)
+                                ProgressView()
+                            }
+                        } else {
+                            Image(Constants.Images.carpool)
+                                .resizable()
+                                .scaledToFill()
+                        }
+                    }
                     .frame(width: 124, height: 124)
-                    .clipShape(Circle())
+                    .clipShape(Circle()).onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now()+7) {
+                            isLoading = false
+                        }
+                    }
+                    
+                    if !isLoading {
+                        Image(systemName: "camera.fill")
+                            .foregroundColor(.white.opacity(0.75))
+                    }
+                }
                 .onTapGesture {
                     detailsViewModel.editPhoto.toggle()
                 }
@@ -115,31 +131,6 @@ struct ProfileTabViewAbout: View {
                 }
             }
             .padding()
-        }
-    }
-    
-    @ViewBuilder
-    private func view(for phase: AsyncImagePhase) -> some View {
-        switch phase {
-        case .empty:
-            ZStack {
-                Color.gray.opacity(0.1)
-                ProgressView()
-            }
-        case .success(let image):
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-        case .failure:
-            ZStack {
-                Color.gray.opacity(0.1)
-                Image(systemName: "person.circle.fill")
-            }
-        @unknown default:
-            ZStack {
-                Color.gray.opacity(0.1)
-                Image(systemName: "person.circle.fill")
-            }
         }
     }
 }
