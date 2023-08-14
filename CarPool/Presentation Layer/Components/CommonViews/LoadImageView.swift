@@ -21,6 +21,9 @@ struct LoadImageView: View {
             image
                 .resizable()
                 .scaledToFill()
+                .onAppear {
+                    isLoading = false
+                }
         } placeholder: {
             if isLoading {
                 ZStack {
@@ -35,7 +38,7 @@ struct LoadImageView: View {
         }
         .frame(width: defaultSize, height: defaultSize)
         .clipShape(Circle()).onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now()+5) {
+            DispatchQueue.main.asyncAfter(deadline: .now()+7) {
                 isLoading = false
             }
         }

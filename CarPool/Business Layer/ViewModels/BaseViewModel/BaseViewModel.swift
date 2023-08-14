@@ -136,6 +136,7 @@ class BaseViewModel: ObservableObject {
     ///   - httpMethod: http method for sending api request
     ///   - requestType: type of request ex .login, .signup etc.
     func sendRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        inProgess = true
         // call createApiRequest in ApiManager class
         cancellables = ApiManager.shared.createApiRequest(
             httpMethod     : httpMethod,
@@ -155,6 +156,7 @@ class BaseViewModel: ObservableObject {
                 // show success info in form of toast
                 print("success")
             }
+            self.inProgess = false
         } receiveValue: { [weak self] response in
             // check if response status code is 200 or 0 or show error message
             if response.status.code == 200 || response.status.code == 0 {
@@ -177,6 +179,7 @@ class BaseViewModel: ObservableObject {
     ///   - httpMethod: http method for sending api request
     ///   - requestType: type of request ex .login, .signup etc.
     func sendVehiclesRequestToApi(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        inProgess = true
         // call createVehiclesApiRequest in ApiManager class
         cancellables = ApiManager.shared.createVehiclesApiRequest(
             httpMethod     : httpMethod,
@@ -195,6 +198,7 @@ class BaseViewModel: ObservableObject {
             case .finished:
                 print("success")
             }
+            self.inProgess = false
         } receiveValue: { [weak self] response in
             // check if response status code is 200 or show error message
             if response.status.code == 200 || response.status.code == 201 {

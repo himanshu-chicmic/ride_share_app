@@ -30,11 +30,11 @@ class ApiManager {
     func createApiRequest(
         httpMethod: HttpMethod, dataDictionary: [String: Any], requestType: RequestType
     ) -> AnyPublisher<SignInAndProfileModel, Error> {
-        DispatchQueue.main.async { BaseViewModel.shared.inProgess = true }
+        
         NetworkMonitor.shared.startMonitoring()
         if NetworkMonitor.shared.isReachable {
             NetworkMonitor.shared.stopMonitoring()
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
                 .eraseToAnyPublisher()
         }
@@ -47,7 +47,7 @@ class ApiManager {
             requestType : requestType
         ) else {
             // return error if request is nil
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(
                 error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl)
             ).eraseToAnyPublisher()
@@ -57,7 +57,7 @@ class ApiManager {
         return URLSession.shared.dataTaskPublisher(for: request)
             // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 return APIErrors.transportError(error)
             }
             // map data and reponse and return
@@ -73,7 +73,7 @@ class ApiManager {
             }
             .map(\.data)
             .tryMap { data in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 do {
                     // call method to decode data and get response in SignInProfileModel type
                     return try self.decodeSignInRequestData(
@@ -106,11 +106,11 @@ class ApiManager {
     func createVehiclesApiRequest(
         httpMethod: HttpMethod, dataDictionary: [String: Any], requestType: RequestType
     ) -> AnyPublisher<VehiclesDataModel, Error> {
-        DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+        
         NetworkMonitor.shared.startMonitoring()
         if NetworkMonitor.shared.isReachable {
             NetworkMonitor.shared.stopMonitoring()
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
                 .eraseToAnyPublisher()
         }
@@ -123,7 +123,7 @@ class ApiManager {
             requestType : requestType
         ) else {
             // return error if request is nil
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
@@ -132,7 +132,7 @@ class ApiManager {
         return URLSession.shared.dataTaskPublisher(for: request)
             // mapping error related to invalid format or key values or data limitations
             .mapError { error -> Error in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 return APIErrors.transportError(error)
             }
             // map data and reponse and return
@@ -148,7 +148,7 @@ class ApiManager {
             .map(\.data)
             // decoding data
             .tryMap { data in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 do {
                     // call decodeVehiclesRequestData method to decode data and return response
                     // or otherwise throw any error
@@ -172,12 +172,10 @@ class ApiManager {
     ///   - requestType: type of api call
     /// - Returns: response from api call
     func getPlacesData(httpMethod: HttpMethod, text: String, requestType: RequestType) -> AnyPublisher<PlacesDataModel, Error> {
-        // check internet connection
-        BaseViewModel.shared.inProgess = true
         NetworkMonitor.shared.startMonitoring()
         if NetworkMonitor.shared.isReachable {
             NetworkMonitor.shared.stopMonitoring()
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
                 .eraseToAnyPublisher()
         }
@@ -185,7 +183,7 @@ class ApiManager {
         // set up api request url
         let baseURL = ApiConstants.placesURL + Formatters.getTextQueryWithReplacedCharsWithPlus(text: text) + ApiConstants.placesEndpoint + Helpers.fetchAPIKey()
         guard let url = URL(string: baseURL) else {
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
@@ -195,7 +193,7 @@ class ApiManager {
         // return response
         return URLSession.shared.dataTaskPublisher(for: request)
             .mapError { error -> Error in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 return APIErrors.transportError(error)
             }
             .tryMap { (data, response) -> (data: Data, response: URLResponse) in
@@ -207,7 +205,7 @@ class ApiManager {
             }
             .map(\.data)
             .tryMap { data in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 do {
                     return try JSONDecoder().decode(PlacesDataModel.self, from: data)
                 } catch {
@@ -225,11 +223,11 @@ class ApiManager {
     /// - Returns: response from api call
     func apiRequestCall<T: Decodable>(httpMethod: HttpMethod, data: [String: Any], requestType: RequestType) -> AnyPublisher<T, Error> {
         // check internet connection
-        DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+        
         NetworkMonitor.shared.startMonitoring()
         if NetworkMonitor.shared.isReachable {
             NetworkMonitor.shared.stopMonitoring()
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(error: APIErrors.noInternet(Constants.ErrorsMessages.noInternetConnection))
                 .eraseToAnyPublisher()
         }
@@ -240,14 +238,14 @@ class ApiManager {
             data        : data,
             requestType : requestType
         ) else {
-            DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+            
             return Fail(error: APIErrors.invalidRequestError(Constants.ErrorsMessages.invalidUrl))
                 .eraseToAnyPublisher()
         }
         // return response
         return URLSession.shared.dataTaskPublisher(for: request)
             .mapError { error -> Error in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 return APIErrors.transportError(error)
             }
             .tryMap { (data, response) -> (data: Data, response: URLResponse) in
@@ -255,10 +253,8 @@ class ApiManager {
             }
             .map(\.data)
             .tryMap { data in
-                DispatchQueue.main.async { BaseViewModel.shared.inProgess = false }
+                
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-                    print(json)
                     return try JSONDecoder().decode(T.self, from: data)
                 } catch {
                     throw APIErrors.decodingError(error)

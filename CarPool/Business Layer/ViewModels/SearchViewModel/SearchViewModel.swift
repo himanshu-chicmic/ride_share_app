@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class SearchViewModel: ObservableObject {
     
@@ -112,6 +113,10 @@ class SearchViewModel: ObservableObject {
     ///   - httpMethod: http method for api
     ///   - requestType: type of api request
     func sendRequestForGettingPlacesData(httpMethod: HttpMethod, requestType: RequestType, data: String) {
+        withAnimation {
+            showProgressView = true
+        }
+        showProgressView = true
         suggestions = []
         
         anyCancellable = ApiManager.shared.getPlacesData(
@@ -128,6 +133,9 @@ class SearchViewModel: ObservableObject {
                 self.baseViewModel.toastMessage = error.localizedDescription
             case .finished:
                 print("success")
+            }
+            withAnimation {
+                self.showProgressView = false
             }
         } receiveValue: { [weak self] response in
             self?.suggestions = response.candidates
