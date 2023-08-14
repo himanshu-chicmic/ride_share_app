@@ -38,6 +38,8 @@ struct DefaultInputField: View {
     
     var background: Color = .gray
     
+    @State var numberPlateFormatted: Bool = false
+    
     // MARK: - body
     
     var body: some View {
@@ -93,25 +95,44 @@ struct DefaultInputField: View {
             
             // show simple text field for
             // email, firstname, lastname and dob
+            case .vehicleNumber:
+                TextField(placeholder, text: $text)
+                    .textCase(.uppercase)
+                    .keyboardType(UIKeyboardType.namePhonePad)
+                    .onChange(of: text) { _ in
+                        
+                        if text.count < 7 {
+                            self.numberPlateFormatted = false
+                        }
+                        
+                        if text.count > 4 && text.count < 6 && text.last != "-" {
+                            let last = text.removeLast()
+                            text.append("-\(last)")
+                        }
+                        
+                        if !numberPlateFormatted && text.count > 6 && text.last != "-" {
+                            if let isLetter = text.last?.isLetter, !isLetter {
+                                let last = text.removeLast()
+                                if text.last != "-" {
+                                    text.append("-\(last)")
+                                    self.numberPlateFormatted = true
+                                } else {
+                                    text.append(last)
+                                }
+                            }
+                        }
+                    }
             case .email,
                  .firstName,
                  .lastName,
                  .text,
                  .bio,
-                 .vehicleNumber,
                  .vehicleBrand,
                  .vehicleName,
                  .vehicleType:
                 TextField(placeholder, text: $text)
                     .textInputAutocapitalization(inputFieldType == .bio ? TextInputAutocapitalization.never : TextInputAutocapitalization.words)
                     .disableAutocorrection(true)
-                    .onChange(of: text) { value in
-                        if inputFieldType == .vehicleNumber {
-                            if value.count > 10 {
-                                text = String(text.prefix(10))
-                            }
-                        }
-                    }
                 
             case .phoneNumber:
                 TextField(placeholder, text: $text)
@@ -195,7 +216,7 @@ struct DefaultInputField: View {
 struct DefaultTextField_Previews: PreviewProvider {
     static var previews: some View {
         DefaultInputField(
-            inputFieldType : .dateOfBirth,
+            inputFieldType : .vehicleNumber,
             placeholder    : Constants.Placeholders.dateOfBirth,
             text           : .constant(""),
             keyboard       : .default

@@ -27,11 +27,12 @@ struct AddedVehicleItem: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: {
-                    EditDetailsView(title: "Edit Vehicle", isProfile: false, vehiclesData: data)
-                }, label: {
+                Button {
+                    baseViewModel.editVehicleData = data
+                    baseViewModel.addVehicle.toggle()
+                } label: {
                     Image(systemName: Constants.Icon.edit)
-                })
+                }
                 .padding(.trailing)
                 
                 Button {

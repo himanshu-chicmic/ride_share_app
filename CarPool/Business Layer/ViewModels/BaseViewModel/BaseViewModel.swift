@@ -56,6 +56,8 @@ class BaseViewModel: ObservableObject {
     // open edit details for vehicles or profile
     @Published var editProfile = false
     @Published var addVehicle = false
+    // vehicle data to edit
+    @Published var editVehicleData: VehiclesDataClass?
     
     // update single profile item
     @Published var openAddProfile: Bool = false

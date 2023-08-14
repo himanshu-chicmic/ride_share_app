@@ -29,8 +29,6 @@ struct EditDetailsView: View {
     var title: String
     // to check if view for profile edit
     var isProfile: Bool = true
-    
-    var vehiclesData: VehiclesDataClass?
     // MARK: - body
     
     var body: some View {
@@ -57,7 +55,7 @@ struct EditDetailsView: View {
                             if isProfile {
                                 detailsViewModel.validateCompleteProfile(textFieldValues: textFieldValues)
                             } else {
-                                detailsViewModel.validateCompleteVehicleInfo(textFieldValues: textFieldValues, vehiclesData: vehiclesData)
+                                detailsViewModel.validateCompleteVehicleInfo(textFieldValues: textFieldValues, vehiclesData: baseViewModel.editVehicleData)
                             }
                         }
                         label: {
@@ -100,8 +98,8 @@ struct EditDetailsView: View {
                     textFieldValues = detailsViewModel.userModel.getInputFields(data: baseViewModel.userData)
                     detailsViewModel.setPickerData()
                 } else {
-                    textFieldValues = VehicleModel().getInputFields(data: vehiclesData ?? nil)
-                    detailsViewModel.setPickerData(vehiclesData: vehiclesData ?? nil)
+                    textFieldValues = VehicleModel().getInputFields(data: baseViewModel.editVehicleData ?? nil)
+                    detailsViewModel.setPickerData(vehiclesData: baseViewModel.editVehicleData ?? nil)
                 }
             }
             .onDisappear {
@@ -118,7 +116,7 @@ struct EditDetailsView: View {
                     if isProfile {
                         baseViewModel.editProfile.toggle()
                     } else {
-                        if vehiclesData != nil {
+                        if baseViewModel.editVehicleData != nil {
                             dismiss()
                         } else {
                             baseViewModel.addVehicle.toggle()
