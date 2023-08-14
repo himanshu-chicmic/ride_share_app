@@ -31,7 +31,7 @@ struct ChatView: View {
         }
     }
     
-    var firstName: String {
+    var name: String {
         if userID != data.receiverID {
             return "\(data.receiver.firstName) \(data.receiver.lastName)"
         }
@@ -45,13 +45,20 @@ struct ChatView: View {
         return "Passenger"
     }
     
+    var image: String {
+        if userID != data.receiverID {
+            return data.receiverImage
+        }
+        return data.senderImage
+    }
+    
     var data: Chat
     
     var body: some View {
         VStack {
             if let data {
                 
-                ChatViewTopBar(name: firstName, userType: userType, dateAndTime: "\(Formatters.getLongDate(date: data.publish.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish.time))", pickupLocation: data.publish.source, dropLocation: data.publish.destination)
+                ChatViewTopBar(name: name, userType: userType, dateAndTime: "\(Formatters.getLongDate(date: data.publish.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish.time))", pickupLocation: data.publish.source, dropLocation: data.publish.destination, image: image)
                 
                 ScrollViewReader { value in
                     ScrollView (showsIndicators: true) {

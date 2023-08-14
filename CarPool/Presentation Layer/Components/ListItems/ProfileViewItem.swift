@@ -78,6 +78,7 @@ struct ProfileViewItem: View {
                     Button {
                         if val == .vehicles {
                             baseViewModel.addVehicle.toggle()
+                            baseViewModel.editVehicleData = nil
                         } else {
                             baseViewModel.openAddProfile.toggle()
                             openEditView.toggle()

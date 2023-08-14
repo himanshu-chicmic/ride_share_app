@@ -19,6 +19,8 @@ struct MessagesListItem: View {
     var pickupLocation: String
     var dropLocation: String
     
+    @State var isLoading: Bool = false
+    
     // MARK: - body
     
     var body: some View {
@@ -26,14 +28,31 @@ struct MessagesListItem: View {
         HStack(spacing: 12) {
             
             // person profile
-            Image(image)
-                .resizable()
-                .scaledToFill()
-                .frame(
-                    width  : 64,
-                    height : 64
-                )
-                .clipShape(Circle())
+            AsyncImage(url: URL(string: image)) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+                    .onAppear {
+                        isLoading = false
+                    }
+            } placeholder: {
+                if isLoading {
+                    ZStack {
+                        Color.gray.opacity(0.1)
+                        ProgressView()
+                    }
+                } else {
+                    Image(Constants.Images.carpool)
+                        .resizable()
+                        .scaledToFill()
+                }
+            }
+            .frame(width: 64, height: 64)
+            .clipShape(Circle()).onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now()+7) {
+                    isLoading = false
+                }
+            }
             
             // horizontal stack for name, message and time
             HStack(alignment: .top) {

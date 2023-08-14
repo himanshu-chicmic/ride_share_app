@@ -38,7 +38,7 @@ struct InboxView: View {
                 
                 ScrollView {
                     ForEach($chatViewModel.chatData, id: \.self) { $data in
-                        MessagesListItem(image: Constants.EmptyRidesView.image, name: "\(data.receiver.firstName) \(data.receiver.lastName)", pickupLocation: data.publish.source, dropLocation: data.publish.destination)
+                        MessagesListItem(image: userID != data.receiverID ? data.receiverImage : data.senderImage, name: userID != data.receiverID ? "\(data.receiver.firstName) \(data.receiver.lastName)" : "\(data.sender.firstName) \(data.sender.lastName)", pickupLocation: data.publish.source, dropLocation: data.publish.destination)
                             .onTapGesture {
                                 chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": data.id])
                                 chatViewModel.openChatView.toggle()

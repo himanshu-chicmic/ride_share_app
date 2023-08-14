@@ -17,6 +17,8 @@ struct ChatViewTopBar: View {
     var pickupLocation: String
     var dropLocation: String
     
+    var image: String
+    
     @EnvironmentObject var chatViewModel: ChatViewModel
     
     var body: some View {
@@ -29,12 +31,7 @@ struct ChatViewTopBar: View {
                 }
                 
                 // person profile
-                Image(Constants.EmptyRidesView.image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width  : 44, height : 44)
-                    .clipShape(Circle())
-                    .padding(.horizontal, 4)
+                LoadImageView(driverImage: image, isLoading: true)
                 
                 VStack (alignment: .leading) {
                     Text(name)
@@ -74,6 +71,6 @@ struct ChatViewTopBar: View {
 
 struct ChatViewTopBar_Previews: PreviewProvider {
     static var previews: some View {
-        ChatViewTopBar(name: "Arjun Singh", userType: "Driver", dateAndTime: "15 May, 2023, 11:40 AM", pickupLocation: "Meerut", dropLocation: "Gurgaon")
+        ChatViewTopBar(name: "Arjun Singh", userType: "Driver", dateAndTime: "15 May, 2023, 11:40 AM", pickupLocation: "Meerut", dropLocation: "Gurgaon", image: "")
     }
 }
