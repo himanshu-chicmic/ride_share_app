@@ -134,4 +134,10 @@ extension SearchViewModel {
                 httpMethod: .GET, requestType: .getVehicleById, data: [Constants.JsonKeys.id: vehicleId!]
         )
     }
+    
+    func swapStartEndLocation() {
+        let temp = startLocation
+        startLocation = endLocation
+        endLocation = temp
+    }
 }

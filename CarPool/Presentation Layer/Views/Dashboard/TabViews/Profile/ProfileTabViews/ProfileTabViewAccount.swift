@@ -52,8 +52,11 @@ struct ProfileTabViewAccount: View {
                         openExternalLink.toggle()
                     }
                 }
-                Divider()
-                    .padding(.horizontal)
+
+                Rectangle()
+                    .frame(height: 4)
+                    .foregroundColor(.gray.opacity(0.05))
+                    .background(.gray.opacity(0.05))
             }
             
             Button {

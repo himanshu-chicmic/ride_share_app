@@ -13,6 +13,8 @@ struct RideSummary: View {
     
     @EnvironmentObject var searchViewModel: SearchViewModel
     
+    @State var rideBookConfirmation: Bool = false
+    
     var body: some View {
         VStack {
             
@@ -103,16 +105,25 @@ struct RideSummary: View {
             .scrollIndicators(.hidden)
             
             Button {
+                rideBookConfirmation.toggle()
+            } label: {
+                DefaultButtonLabel(text: Constants.Others.confirm)
+            }
+            .padding()
+        }
+        .confirmationDialog(
+            "Are you sure to book this ride?",
+            isPresented     : $rideBookConfirmation,
+            titleVisibility : .visible
+        ) {
+            Button("Book Ride", role: .none) {
                 searchViewModel.sendRequestForRideBook(httpMethod: .POST, requestType: .bookPublish, data: [
                     Constants.JsonKeys.passengers : [
                         Constants.JsonKeys.publishId : data.publish.id,
                         Constants.JsonKeys.seats : searchViewModel.numberOfPersons
                     ]
                 ])
-            } label: {
-                DefaultButtonLabel(text: Constants.Others.confirm)
             }
-            .padding()
         }
         .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
     }

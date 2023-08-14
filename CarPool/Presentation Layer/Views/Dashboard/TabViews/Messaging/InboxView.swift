@@ -13,6 +13,14 @@ struct InboxView: View {
     @State var selectedTile: Chat?
     
     @EnvironmentObject var chatViewModel: ChatViewModel
+    @EnvironmentObject var baseViewModel: BaseViewModel
+    
+    var userID: Int {
+        guard let id = baseViewModel.userData?.status.data?.id else {
+            return 0
+        }
+        return id
+    }
     
     var body: some View {
         
@@ -32,6 +40,7 @@ struct InboxView: View {
                     ForEach($chatViewModel.chatData, id: \.self) { $data in
                         MessagesListItem(image: Constants.EmptyRidesView.image, name: "\(data.receiver.firstName) \(data.receiver.lastName)", pickupLocation: data.publish.source, dropLocation: data.publish.destination)
                             .onTapGesture {
+                                chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": data.id])
                                 chatViewModel.openChatView.toggle()
                                 selectedTile = data
                             }
@@ -49,6 +58,8 @@ struct InboxView: View {
                 PlaceholderView(image: Constants.EmptyRidesView.image, title: Constants.EmptyInboxView.title, caption: Constants.EmptyInboxView.caption)
                 Spacer()
             }
+        }.onAppear {
+            chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatRooms, data: [:])
         }
     }
 }
@@ -56,5 +67,6 @@ struct InboxView: View {
 struct InboxView_Previews: PreviewProvider {
     static var previews: some View {
         InboxView()
+            .environmentObject(ChatViewModel())
     }
 }

@@ -12,16 +12,49 @@ struct ChatView: View {
     @EnvironmentObject var chatViewModel: ChatViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    var data: Chat?
+    var userID: Int {
+        guard let id = baseViewModel.userData?.status.data?.id else {
+            return 0
+        }
+        return id
+    }
+    
+    var checkReceiver: (Message) -> Bool {
+        { message in
+            if userID == data.senderID {
+                return data.senderID != message.senderID
+            }
+            if userID == data.receiverID {
+                return data.senderID != message.receiverID
+            }
+            return false
+        }
+    }
+    
+    var firstName: String {
+        if userID != data.receiverID {
+            return "\(data.receiver.firstName) \(data.receiver.lastName)"
+        }
+        return "\(data.sender.firstName) \(data.sender.lastName)"
+    }
+    
+    var userType: String {
+        if userID != data.receiverID {
+            return "Driver"
+        }
+        return "Passenger"
+    }
+    
+    var data: Chat
     
     var body: some View {
         VStack {
             if let data {
                 
-                ChatViewTopBar(name: "\(data.receiver.firstName) \(data.receiver.lastName)", userType: "Driver", dateAndTime: "\(Formatters.getLongDate(date: data.publish.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish.time))", pickupLocation: data.publish.source, dropLocation: data.publish.destination)
+                ChatViewTopBar(name: firstName, userType: userType, dateAndTime: "\(Formatters.getLongDate(date: data.publish.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish.time))", pickupLocation: data.publish.source, dropLocation: data.publish.destination)
                 
                 ScrollViewReader { value in
-                    ScrollView (showsIndicators: false) {
+                    ScrollView (showsIndicators: true) {
                         HStack {
                             Image(systemName: "info.circle")
                             
@@ -34,7 +67,7 @@ struct ChatView: View {
                         .padding(.bottom, 34)
                         
                         ForEach($chatViewModel.chatMessages, id: \.self) { $message in
-                            ChatBubble(isReceived: data.senderID != message.senderID, message: message.content, time: Formatters.getFormattedDate(date: message.updatedAt))
+                            ChatBubble(isReceived: checkReceiver(message), message: message.content, time: Formatters.getFormattedDate(date: message.updatedAt))
                                 .id(message.id)
                         }
                         .onAppear{
@@ -56,14 +89,9 @@ struct ChatView: View {
             
             if let data  {
                 if data.publish.status != "cancelled" {
-                    MessageInput(data: data)
+                    MessageInput(data: data, id: userID)
                         .padding(.bottom, 8)
                 }
-            }
-        }
-        .onAppear {
-            if let data {
-                chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": data.id])
             }
         }
     }
@@ -71,6 +99,8 @@ struct ChatView: View {
 
 struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView()
+        ChatView(data: Chat(id: 1, receiverID: 1, senderID: 2, publishID: 4, publish: Publish(id: 1, source: "", destination: "", passengersCount: 2, addCity: nil, date: nil, time: nil, setPrice: 3, aboutRide: "", userID: 2, createdAt: "", updatedAt: "", sourceLatitude: 3, sourceLongitude: 2, destinationLatitude: 3, destinationLongitude: 3, vehicleID: nil, bookInstantly: nil, midSeat: nil, selectRoute: nil, status: "", estimateTime: nil, addCityLongitude: nil, addCityLatitude: nil, distance: nil, bearing: nil), receiver: Receiver(id: 2, email: "", createdAt: "", updatedAt: "", jti: "", firstName: "", lastName: "", dob: "", title: "", phoneNumber: nil, bio: "", travelPreferences: nil, postalAddress: nil, activationDigest: "", activated: false, activatedAt: nil, activateToken: "", sessionKey: nil, averageRating: nil, otp: 2, phoneVerified: nil), sender: Receiver(id: 2, email: "", createdAt: "", updatedAt: "", jti: "", firstName: "", lastName: "", dob: "", title: "", phoneNumber: nil, bio: "", travelPreferences: nil, postalAddress: nil, activationDigest: "", activated: false, activatedAt: nil, activateToken: "", sessionKey: nil, averageRating: nil, otp: 2, phoneVerified: nil), receiverImage: "", senderImage: ""))
+            .environmentObject(BaseViewModel())
+            .environmentObject(ChatViewModel())
     }
 }

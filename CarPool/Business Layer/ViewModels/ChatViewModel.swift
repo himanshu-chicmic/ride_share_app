@@ -50,7 +50,6 @@ class ChatViewModel: ObservableObject {
     }
     
     func handleChatResponse(response: ChatData, httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
-        
         if httpMethod == .GET {
             if requestType == .chatMessages {
                 chatMessages = response.messages ?? []

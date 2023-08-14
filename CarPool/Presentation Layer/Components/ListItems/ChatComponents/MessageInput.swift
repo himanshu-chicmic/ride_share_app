@@ -13,6 +13,7 @@ struct MessageInput: View {
     @State var disableSendButton = true
     
     var data: Chat
+    var id: Int
     
     @EnvironmentObject var chatViewModel: ChatViewModel
     
@@ -34,7 +35,7 @@ struct MessageInput: View {
             
             if !disableSendButton {
                 Button(action: {
-                    chatViewModel.createChatApiCall(httpMethod: .POST, requestType: .chatMessages, data: ["id": data.id, "message": ["content" : inputText, "receiver_id" : data.receiverID]])
+                    chatViewModel.createChatApiCall(httpMethod: .POST, requestType: .chatMessages, data: ["id": data.id, "message": ["content" : inputText, "receiver_id" : id != data.receiverID ? data.receiverID : data.senderID]])
                     // on success
                     inputText = ""
                 }, label: {

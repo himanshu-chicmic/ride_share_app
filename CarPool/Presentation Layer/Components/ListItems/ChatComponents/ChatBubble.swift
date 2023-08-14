@@ -13,20 +13,25 @@ struct ChatBubble: View {
     var message: String
     var time: String
     
+    var colorBgSender: Color = Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary))
+    var colorFgSender: Color = .white
+    var colorBgReciver: Color = Color(uiColor: UIColor(hexString: Constants.DefaultColors.secondary))
+    var colorFgReciver: Color = .black
+    
     var body: some View {
         VStack(alignment: isReceived ? .leading : .trailing, spacing: 4) {
             ZStack (alignment: isReceived ? .bottomLeading : .bottomTrailing) {
                 
                 Rectangle()
-                    .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
+                    .foregroundColor(isReceived ? colorBgReciver : colorBgSender)
                     .frame(width: 18, height: 18)
                 
                 Text(message)
                     .font(.system(size: 14))
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
-                    .background(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
-                    .foregroundColor(.white)
+                    .background(isReceived ? colorBgReciver : colorBgSender)
+                    .foregroundColor(isReceived ? colorFgReciver : colorFgSender)
                     .cornerRadius(20)
             }
             
@@ -44,6 +49,6 @@ struct ChatBubble: View {
 
 struct ChatBubble_Previews: PreviewProvider {
     static var previews: some View {
-        ChatBubble(isReceived: false, message: "I drive!!!", time: "00:00 am")
+        ChatBubble(isReceived: true, message: "I drive!!!", time: "00:00 am")
     }
 }

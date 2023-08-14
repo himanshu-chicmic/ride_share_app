@@ -51,6 +51,7 @@ struct InputFieldsWithIcons: View {
                     alignment : .leading
                 )
                 .foregroundColor(foregroundColor)
+                .lineLimit(1)
         }
         .padding()
         .background(.gray.opacity(0.05))

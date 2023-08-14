@@ -432,6 +432,7 @@ struct Constants {
     
     struct DefaultColors {
         static let primary = "#4FB0F4"
+        static let secondary = "#f2f2f2"
     }
     
     // MARK: - default icons

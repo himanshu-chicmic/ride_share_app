@@ -116,7 +116,10 @@ struct ProfileTabViewAbout: View {
                     EditDetailsView(title: Constants.Headings.vehicle, isProfile: false)
                 }
                 
-                Divider()
+                Rectangle()
+                    .frame(height: 4)
+                    .foregroundColor(.gray.opacity(0.05))
+                    .background(.gray.opacity(0.05))
                     .padding(.vertical)
                 
                 ForEach(detailsViewModel.titles.indices, id: \.self) { index in
@@ -125,12 +128,15 @@ struct ProfileTabViewAbout: View {
                         title : $detailsViewModel.titles[index],
                         array : $detailsViewModel.buttonsArray[index]
                     )
+                    .padding(.horizontal)
                     
-                    Divider()
+                    Rectangle()
+                        .frame(height: 4)
+                        .foregroundColor(.gray.opacity(0.05))
+                        .background(.gray.opacity(0.05))
                         .padding(.bottom)
                 }
             }
-            .padding()
         }
     }
 }

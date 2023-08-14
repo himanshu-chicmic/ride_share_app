@@ -101,6 +101,8 @@ struct DefaultInputField: View {
                     .keyboardType(UIKeyboardType.namePhonePad)
                     .onChange(of: text) { _ in
                         
+                        text = text.uppercased()
+                        
                         if text.count < 7 {
                             self.numberPlateFormatted = false
                         }

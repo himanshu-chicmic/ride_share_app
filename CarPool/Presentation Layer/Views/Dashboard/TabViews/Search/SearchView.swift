@@ -18,6 +18,8 @@ struct SearchView: View {
     // data of selected result
     @State var selectedTile: Datum?
     
+    @State var ridePublishConfirmation: Bool = false
+    
     // MARK: - body
     
     var body: some View {
@@ -75,23 +77,34 @@ struct SearchView: View {
                     .padding(.vertical)
                     .padding(.horizontal)
                     
-                    // departure
-                    InputFieldsWithIcons(
-                        icon        : Constants.Icon.startLocation,
-                        placeholder : Constants.Placeholders.leavingFrom,
-                        text        : $searchViewModel.startLocation,
-                        inputType   : .startLocation
-                    )
-                    .padding(.horizontal)
-                    
-                    // destination
-                    InputFieldsWithIcons(
-                        icon        : Constants.Icon.endLocation,
-                        placeholder : Constants.Placeholders.goingTo,
-                        text        : $searchViewModel.endLocation,
-                        inputType   : .endLocation
-                    )
-                    .padding(.horizontal)
+                    VStack {
+                        // departure
+                        InputFieldsWithIcons(
+                            icon        : Constants.Icon.startLocation,
+                            placeholder : Constants.Placeholders.leavingFrom,
+                            text        : $searchViewModel.startLocation,
+                            inputType   : .startLocation
+                        )
+                        .padding(.horizontal)
+                        
+                        // destination
+                        InputFieldsWithIcons(
+                            icon        : Constants.Icon.endLocation,
+                            placeholder : Constants.Placeholders.goingTo,
+                            text        : $searchViewModel.endLocation,
+                            inputType   : .endLocation
+                        )
+                        .padding(.horizontal)
+                    }.overlay(alignment: .trailing) {
+                        Button {
+                            withAnimation {
+                                searchViewModel.swapStartEndLocation()
+                            }
+                        } label: {
+                            Image(systemName: "arrow.up.arrow.down")
+                        }
+                        .padding(.trailing, 34)
+                    }
                     
                     HStack {
                         // date
@@ -261,7 +274,7 @@ struct SearchView: View {
                             .ignoresSafeArea()
                         
                         Button(action: {
-                            searchViewModel.callApiForPublish()
+                            ridePublishConfirmation.toggle()
                         }, label: {
                             Text(searchViewModel.buttonText)
                                 .frame(maxWidth: .infinity)
@@ -278,6 +291,15 @@ struct SearchView: View {
                         })
                         .padding(.vertical, 24)
                         .padding(.horizontal)
+                    }
+                    .confirmationDialog(
+                        "Are you sure to publish this ride?",
+                        isPresented     : $ridePublishConfirmation,
+                        titleVisibility : .visible
+                    ) {
+                        Button("Publish", role: .none) {
+                            searchViewModel.callApiForPublish()
+                        }
                     }
                 }
                 .navigationBarBackButtonHidden()
