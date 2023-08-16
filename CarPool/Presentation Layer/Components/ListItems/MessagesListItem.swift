@@ -19,7 +19,7 @@ struct MessagesListItem: View {
     var pickupLocation: String
     var dropLocation: String
     
-    @State var isLoading: Bool = false
+    @State var isLoading: Bool = true
     
     // MARK: - body
     

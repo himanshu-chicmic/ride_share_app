@@ -95,12 +95,8 @@ struct ChatView: View {
             }
             
             if let data = data  {
-                if let status = data.publish?.status {
-                    if status != "cancelled" {
-                        MessageInput(data: data, id: userID)
-                            .padding(.bottom, 8)
-                    }
-                }
+                MessageInput(data: data, id: userID)
+                    .padding(.bottom, 8)
             }
         }
     }

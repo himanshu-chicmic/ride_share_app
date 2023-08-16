@@ -122,7 +122,7 @@ struct Publish: Codable {
             "mid_seat": midSeat,
             "select_route": selectRoute,
             "status": status,
-            "estimate_time": delegate.estimatedTime.isEmpty ? estimateTime : delegate.estimatedTime,
+            "estimate_time": delegate.estimatedTime,
             "addCity_longitude": addCityLongitude,
             "addCity_latitude": addCityLatitude,
             "distance": distance,

@@ -73,10 +73,10 @@ extension SearchViewModel {
     /// - Parameter response: response of api request for data change
     func updateRide(response: RidesSearchModel) {
         if response.code == 200 {
+            editRideView = false
             if showRideDetailView {
                 showRideDetailView.toggle()
             } else {
-                editRideView = false
                 // close current views
                 showPublishedRideView.toggle()
             }

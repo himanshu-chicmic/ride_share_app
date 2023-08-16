@@ -14,15 +14,27 @@ struct GoogleMapView: UIViewRepresentable {
     
     @EnvironmentObject var searchViewModel: SearchViewModel
     
+    var data: Publish?
+    
     func makeUIView(context: Self.Context) -> GMSMapView {
         
         // MARK: Define the source latitude and longitude
-        let sourceLat = searchViewModel.startLocationVal?.geometry.location.lat ?? 0
-        let sourceLng = searchViewModel.startLocationVal?.geometry.location.lng ?? 0
+        var sourceLat = searchViewModel.startLocationVal?.geometry.location.lat ?? 0
+        var sourceLng = searchViewModel.startLocationVal?.geometry.location.lng ?? 0
             
         // MARK: Define the destination latitude and longitude
-        let destinationLat = searchViewModel.endLocationVal?.geometry.location.lat ?? 0
-        let destinationLng = searchViewModel.endLocationVal?.geometry.location.lng ?? 0
+        var destinationLat = searchViewModel.endLocationVal?.geometry.location.lat ?? 0
+        var destinationLng = searchViewModel.endLocationVal?.geometry.location.lng ?? 0
+        
+        if let data {
+            // MARK: Define the source latitude and longitude
+            sourceLat = data.sourceLatitude
+            sourceLng = data.sourceLongitude
+                
+            // MARK: Define the destination latitude and longitude
+            destinationLat = data.destinationLatitude
+            destinationLng = data.destinationLongitude
+        }
         
         let sourceLocation = "\(sourceLat),\(sourceLng)"
         let destinationLocation = "\(destinationLat),\(destinationLng)"

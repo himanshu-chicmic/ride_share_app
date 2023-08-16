@@ -17,6 +17,8 @@ struct EditPublishedRide: View {
     
     @Environment(\.dismiss) var dismiss
     
+    @State var openMap: Bool = false
+    
     var data: Publish?
     
     // MARK: - body
@@ -43,7 +45,7 @@ struct EditPublishedRide: View {
                         
                         // update button
                         Button {
-                            searchViewModel.updateRideDetails(httpMethod: .PUT, requestType: .updateRide, data: data!)
+                            openMap.toggle()
                         }
                         label: {
                            Text(Constants.Others.update)
@@ -118,14 +120,22 @@ struct EditPublishedRide: View {
             .onChange(of: searchViewModel.activeSearchView) { _ in
                 searchViewModel.suggestions = []
             }
-            .navigationDestination(isPresented: $searchViewModel.openMapView, destination: {
+            // search input field
+            .fullScreenCover(isPresented: $searchViewModel.activeSearchView) {
+                SearchInputFieldView()
+            }
+            .fullScreenCover(isPresented: $openMap) {
                 VStack {
                     // app bar at the top
                     ZStack(alignment: .leading) {
                         
                         // button to pop view
                         Button(action: {
-                            searchViewModel.openMapView.toggle()
+                            if searchViewModel.openMapView {
+                                searchViewModel.openMapView.toggle()
+                            } else {
+                                openMap.toggle()
+                            }
                         }, label: {
                             Image(systemName: Constants.Icon.back)
                         })
@@ -140,13 +150,14 @@ struct EditPublishedRide: View {
                     Divider()
                     
                     ZStack (alignment: .bottom) {
-                        GoogleMapView()
+                        GoogleMapView(data: data)
                             .ignoresSafeArea()
                         
                         Button(action: {
-                            searchViewModel.callApiForPublish()
+                            searchViewModel.updateRideDetails(httpMethod: .PUT, requestType: .updateRide, data: data!)
+                            openMap.toggle()
                         }, label: {
-                            Text(searchViewModel.buttonText)
+                            Text("Update")
                                 .frame(maxWidth: .infinity)
                                 .padding()
                                 .font(.system(size: 16))
@@ -163,13 +174,9 @@ struct EditPublishedRide: View {
                         .padding(.horizontal)
                     }
                 }
-                .navigationBarBackButtonHidden()
-            })
-            // search input field
-            .fullScreenCover(isPresented: $searchViewModel.activeSearchView) {
-                SearchInputFieldView()
             }
             .onAppear {
+                searchViewModel.findRide = false
                 searchViewModel.startLocation = data?.source ?? ""
                 searchViewModel.endLocation = data?.destination ?? ""
                 searchViewModel.dateOfDeparture = Formatters.dateFormatter.date(from: data?.date ?? "21/07/2023") ?? .now
