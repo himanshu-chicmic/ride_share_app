@@ -16,6 +16,7 @@ struct Formatters {
     static let dateFormatter: DateFormatter = {
         // initialized data formatter class
         let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier: "UTC")
         // set the date format as "yyyy-MM-dd" as stored
         // in constants's placeholder struct as dateOfBirth
         formatter.dateFormat = Constants.Placeholders.dateOfBirth
@@ -27,6 +28,7 @@ struct Formatters {
     static let timeFormatter: DateFormatter = {
         // initialized date formatter class
         let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier: "UTC")
         // set the date format as "h:mm a" as stored
         // in constants's placeholder struct as timeFormatter
         formatter.dateFormat = Constants.Placeholders.timeFormatter

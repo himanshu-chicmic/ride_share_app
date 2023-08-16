@@ -107,7 +107,7 @@ struct Publish: Codable {
             "passengers_count": delegate.numberOfPersons,
             "add_city": addCity,
             "date": Formatters.dateFormatter.string(from: delegate.dateOfDeparture),
-            "time": delegate.dateOfDeparture.formatted(date: .omitted, time: .shortened),
+            "time": Formatters.timeFormatter.string(from: delegate.dateOfDeparture),
             "set_price": delegate.pricePerSeat,
             "about_ride": aboutRide,
             "user_id": userID,

@@ -105,7 +105,7 @@ extension SearchViewModel {
                 Constants.JsonKeys.destinationLatitude  : endLocationVal.geometry.location.lat,
                 Constants.JsonKeys.passengersCount      : persons,
                 Constants.JsonKeys.date                 : Formatters.dateFormatter.string(from: dateOfDeparture),
-                Constants.JsonKeys.time                 : dateOfDeparture.formatted(date: .omitted, time: .shortened),
+                Constants.JsonKeys.time                 : Formatters.timeFormatter.string(from: dateOfDeparture),
                 Constants.JsonKeys.setPrice             : price,
                 Constants.JsonKeys.aboutRide            : "",
                 Constants.JsonKeys.vehicleId            : selectedVehicleId,
