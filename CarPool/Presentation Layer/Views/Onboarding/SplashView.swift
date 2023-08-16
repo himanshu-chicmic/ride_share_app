@@ -11,15 +11,15 @@ struct SplashView: View {
     
     var body: some View {
         // ride share logo
-        VStack (spacing: 0) {
+        VStack {
             Image(Constants.Images.carpoolIcon)
                 .resizable()
-                .frame(width: 54, height: 54)
+                .frame(width: 94, height: 94)
             Text(Constants.Onboarding.rideShare)
                 .font(.system(size: 20, design: .rounded))
-                .fontWeight(.bold)
+                .fontWeight(.semibold)
+                .opacity(0.9)
         }
-        .padding(34)
     }
 }
 

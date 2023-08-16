@@ -179,7 +179,7 @@ struct EditPublishedRide: View {
                 searchViewModel.findRide = false
                 searchViewModel.startLocation = data?.source ?? ""
                 searchViewModel.endLocation = data?.destination ?? ""
-                searchViewModel.dateOfDeparture = Formatters.dateFormatter.date(from: data?.date ?? "21/07/2023") ?? .now
+                searchViewModel.dateOfDeparture = Formatters.dateFormatter.date(from: "\(String(describing: data?.date)) \(String(describing: data?.time))" ) ?? .now
                 searchViewModel.numberOfPersons = "\(String(describing: data?.passengersCount ?? 1))"
                 
                 if let data = baseViewModel.singleVehicleData?.status.data?.first {

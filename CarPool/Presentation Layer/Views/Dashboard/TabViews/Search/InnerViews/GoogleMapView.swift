@@ -27,11 +27,9 @@ struct GoogleMapView: UIViewRepresentable {
         var destinationLng = searchViewModel.endLocationVal?.geometry.location.lng ?? 0
         
         if let data {
-            // MARK: Define the source latitude and longitude
             sourceLat = data.sourceLatitude
             sourceLng = data.sourceLongitude
                 
-            // MARK: Define the destination latitude and longitude
             destinationLat = data.destinationLatitude
             destinationLng = data.destinationLongitude
         }

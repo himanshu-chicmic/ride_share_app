@@ -255,6 +255,10 @@ class ApiManager {
             .tryMap { data in
                 
                 do {
+                    let debugJSON = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                    if requestType == .chatRooms {
+                        print("JSON: \(debugJSON)")
+                    }
                     return try JSONDecoder().decode(T.self, from: data)
                 } catch {
                     throw APIErrors.decodingError(error)

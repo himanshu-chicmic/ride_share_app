@@ -68,9 +68,6 @@ extension SearchViewModel {
         if let data = UserDefaults.standard.object(forKey: key) as? [Data] {
             recents = data
         }
-        for data in recents where encodedData == data {
-            return
-        }
         
         if delete {
             for (index, data) in recents.enumerated() where encodedData == data {
