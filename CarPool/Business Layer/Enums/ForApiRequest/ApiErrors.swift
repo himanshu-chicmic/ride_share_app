@@ -31,14 +31,14 @@ enum APIErrors: LocalizedError {
         switch self {
         case .invalidRequestError(let message):
           return "Invalid request: \(message)"
-        case .transportError(let error):
-            return "Transport error: \(error.localizedDescription)"
+        case .transportError(_):
+            return "Couldn't connect to server. Please try again later or try restarting application."
         case .invalidResponse:
-          return "Invalid response"
+          return "Unable to get reponse. Check your internet connection."
         case .validationError(let reason):
           return "Validation Error: \(reason)"
         case .decodingError:
-          return "The server returned data in an unexpected format. Try updating the app."
+          return "Couldn't read data. Try updating the app."
         case .noInternet:
             return "No internet connection available."
         }

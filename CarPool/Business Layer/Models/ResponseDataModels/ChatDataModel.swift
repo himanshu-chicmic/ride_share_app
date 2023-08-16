@@ -92,10 +92,10 @@ struct Receiver: Codable {
     let email, createdAt, updatedAt, jti: String
     let firstName, lastName, dob, title: String
     let phoneNumber: String?
-    let bio: String
+    let bio: String?
     let travelPreferences, postalAddress: String?
     let activationDigest: String
-    let activated: Bool
+    let activated: Bool?
     let activatedAt: String?
     let activateToken: String
     let sessionKey: String?

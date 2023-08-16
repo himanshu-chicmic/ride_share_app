@@ -85,7 +85,7 @@ extension SearchViewModel {
     
     /// method to call api for publishing a ride
     func callApiForPublish() {
-        if let startLocationVal, let endLocationVal {
+        if let startLocationVal, let endLocationVal, let price = Double(pricePerSeat), let persons = Int(numberOfPersons) {
             let data : [String : Any] = [
                 Constants.JsonKeys.source               : startLocationVal.formattedAddress,
                 Constants.JsonKeys.destination          : endLocationVal.formattedAddress,
@@ -93,10 +93,10 @@ extension SearchViewModel {
                 Constants.JsonKeys.sourceLatitude       : startLocationVal.geometry.location.lat,
                 Constants.JsonKeys.destinationLongitude : endLocationVal.geometry.location.lng,
                 Constants.JsonKeys.destinationLatitude  : endLocationVal.geometry.location.lat,
-                Constants.JsonKeys.passengersCount      : numberOfPersons,
+                Constants.JsonKeys.passengersCount      : persons,
                 Constants.JsonKeys.date                 : Formatters.dateFormatter.string(from: dateOfDeparture),
                 Constants.JsonKeys.time                 : dateOfDeparture.formatted(date: .omitted, time: .shortened),
-                Constants.JsonKeys.setPrice             : pricePerSeat,
+                Constants.JsonKeys.setPrice             : price,
                 Constants.JsonKeys.aboutRide            : "",
                 Constants.JsonKeys.vehicleId            : selectedVehicleId,
                 Constants.JsonKeys.bookInstantly        : true,
@@ -106,6 +106,7 @@ extension SearchViewModel {
             ]
             sendRequestForSearchAndPublish(httpMethod: .POST, requestType: .publishedRides, data: [Constants.JsonKeys.publish : data])
         }
+        
     }
     
     /// method to update recetly viewed rides and  call api
