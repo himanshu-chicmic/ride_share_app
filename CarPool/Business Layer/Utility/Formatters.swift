@@ -30,7 +30,6 @@ struct Formatters {
         // set the date format as "h:mm a" as stored
         // in constants's placeholder struct as timeFormatter
         formatter.dateFormat = Constants.Placeholders.timeFormatter
-        formatter.timeZone = NSTimeZone(name: "IST") as TimeZone?
         // return the formatter
         return formatter
     }()
@@ -39,10 +38,9 @@ struct Formatters {
     static let estimatedTime: DateFormatter = {
         // initialized date formatter class
         let formatter = DateFormatter()
-        // set the date format as "h:mm a" as stored
+        // set the date format as "HH:mm" as stored
         // in constants's placeholder struct as timeFormatter
-        formatter.dateFormat = "HH:mm"
-        formatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+        formatter.dateFormat = Constants.Placeholders.estimateTimeFormat
         // return the formatter
         return formatter
     }()
@@ -119,13 +117,15 @@ struct Formatters {
     /// - Returns: date in string formate with required format
     static func getLongDate(date: String) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: Constants.Placeholders.localeIdentifier)
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         formatter.dateFormat = Constants.Placeholders.dateOfBirth
-        guard let dateFormat = formatter.date(from: date) else {
-            return Constants.Placeholders.defaultTime
+        
+        guard let dateObj = formatter.date(from: date) else {
+            return date
         }
+        formatter.timeZone = .current
         formatter.dateFormat = Constants.Placeholders.dateFormatterLong
-        return formatter.string(from: dateFormat)
+        return formatter.string(from: dateObj)
     }
     
     /// method to get estimated time for trip
@@ -133,14 +133,15 @@ struct Formatters {
     /// - Returns: estimated time with only hour and minutes
     static func getEstimatedTime(date: String) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: Constants.Placeholders.localeIdentifier)
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         dateFormatter.dateFormat = Constants.Placeholders.dateFormat
         // get date in required format
-        guard let dateRes = dateFormatter.date(from: date) else {
+        guard let dateObj = dateFormatter.date(from: date) else {
             return Constants.RideDetails.estimateTimeUnavailable
         }
         // return estimated time in string format
-        return estimatedTime.string(from: dateRes)
+        dateFormatter.dateFormat = Constants.Placeholders.estimateTimeFormat
+        return dateFormatter.string(from: dateObj)
     }
     
     /// method to convert date returned from api result
@@ -148,21 +149,21 @@ struct Formatters {
     /// - Parameter date: date returned from api response
     /// - Returns: a string of time in "h:mm a" format
     static func getFormattedDate(date: String?) -> String {
-        
         guard let date else {
             return Constants.RideDetails.timeUnavailable
         }
-        
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.timeZone = NSTimeZone(name: "IST") as? TimeZone
-        dateFormatter.locale = Locale.current
-        guard let dateRes = dateFormatter.date(from: date) else {
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.dateFormat = Constants.Placeholders.dateFormat
+        
+        // get date in required format
+        guard let dateObj = dateFormatter.date(from: date) else {
             return Constants.RideDetails.timeUnavailable
         }
-        
-        // convert the time into string in given time format
-        return timeFormatter.string(from: dateRes)
+        // return estimated time in string format
+        dateFormatter.timeZone = .current
+        dateFormatter.dateFormat = Constants.Placeholders.timeFormatter
+        return dateFormatter.string(from: dateObj)
         
     }
     

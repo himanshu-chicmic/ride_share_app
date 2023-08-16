@@ -31,8 +31,8 @@ struct PublishedRidesView: View {
                         .foregroundColor(.black)
                         .onTapGesture {
                             selectedTile = data
-                                searchViewModel.showPublishedRideView.toggle()
                             searchViewModel.searchItemClicked(data: data)
+                            searchViewModel.showPublishedRideView.toggle()
                         }
                     }
                     .navigationDestination(isPresented: $searchViewModel.showPublishedRideView) {

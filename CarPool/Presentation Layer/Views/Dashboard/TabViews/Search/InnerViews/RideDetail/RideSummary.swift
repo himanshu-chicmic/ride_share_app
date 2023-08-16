@@ -80,7 +80,7 @@ struct RideSummary: View {
                     .background(.gray.opacity(0.05))
                 
                 // ride info
-                RideDetailsInformationView(data: data.publish)
+                RideDetailsInformationView(details: data.publish.getDetailsArray(data: data.publish))
                     .padding()
                 
                 Rectangle()

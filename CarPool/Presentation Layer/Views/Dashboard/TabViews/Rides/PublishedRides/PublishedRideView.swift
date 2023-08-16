@@ -102,7 +102,7 @@ struct PublishedRideView: View {
                         .background(.gray.opacity(0.05))
                     
                     // ride info
-                    RideDetailsInformationView(data: rideData)
+                    RideDetailsInformationView(details: rideData.getDetailsArray(data: rideData))
                         .padding()
                     
                     Rectangle()
