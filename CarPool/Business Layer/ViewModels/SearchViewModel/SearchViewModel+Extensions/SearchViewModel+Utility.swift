@@ -13,6 +13,16 @@ extension SearchViewModel {
     
     // MARK: methods related to properties
     
+    /// reset loaded data
+    func resetArrayData() {
+        suggestions = []
+        searchHistory = []
+        searchResults = []
+        recenltyViewedRides = []
+        publishedRidesData = []
+        bookedRidesData = []
+    }
+    
     /// reset all input fields
     func resetData() {
         self.startLocation = ""

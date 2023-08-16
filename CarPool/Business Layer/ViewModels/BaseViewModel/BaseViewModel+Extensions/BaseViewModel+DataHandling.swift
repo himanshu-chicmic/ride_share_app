@@ -29,11 +29,17 @@ extension BaseViewModel {
             // open details view for getting user information
             openUserDetailsView.toggle()
         case .confirmPhone:
+            toastMessageBackground = .green
+            toastMessage = "You'll receive a call for otp."
             // show otp field on completino of api call for sending passcode
             withAnimation {
                 viewOtpField.toggle()
             }
         case .confirmOtp, .confirmEmail:
+            if type == .confirmOtp {
+                toastMessageBackground = .green
+                toastMessage = userData?.status.message ?? "Verified successfully!"
+            }
             // close add profile view
             openAddProfile.toggle()
         case .getDetails:

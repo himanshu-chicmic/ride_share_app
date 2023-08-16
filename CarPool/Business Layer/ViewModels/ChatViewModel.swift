@@ -28,6 +28,11 @@ class ChatViewModel: ObservableObject {
     
     // MARK: methods
     
+    func resetData() {
+        chatData = []
+        chatMessages = []
+    }
+    
     func createChatApiCall(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
         // call createApiRequest in ApiManager class
         cancellables = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)

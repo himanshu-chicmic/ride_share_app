@@ -70,10 +70,10 @@ struct Chat: Codable, Hashable {
     }
     
     let id, receiverID, senderID, publishID: Int
-    let publish: Publish
+    let publish: Publish?
     let receiver, sender: Receiver
-    let receiverImage: String
-    let senderImage: String
+    let receiverImage: String?
+    let senderImage: String?
 
     enum CodingKeys: String, CodingKey {
         case id

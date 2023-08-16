@@ -44,6 +44,8 @@ struct PublishedRidesView: View {
             } else {
                 PlaceholderView(image: Constants.EmptyRidesView.image, title: Constants.EmptyRidesView.title, caption: Constants.EmptyRidesView.caption)
             }
+        }.onAppear {
+            searchViewModel.sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
         }
     }
 }

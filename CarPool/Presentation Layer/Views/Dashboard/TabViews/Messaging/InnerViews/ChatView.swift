@@ -47,9 +47,9 @@ struct ChatView: View {
     
     var image: String {
         if userID != data.receiverID {
-            return data.receiverImage
+            return data.receiverImage ?? ""
         }
-        return data.senderImage
+        return data.senderImage ?? ""
     }
     
     var data: Chat
@@ -58,7 +58,7 @@ struct ChatView: View {
         VStack {
             if let data {
                 
-                ChatViewTopBar(name: name, userType: userType, dateAndTime: "\(Formatters.getLongDate(date: data.publish.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish.time))", pickupLocation: data.publish.source, dropLocation: data.publish.destination, image: image)
+                ChatViewTopBar(name: name, userType: userType, dateAndTime: "\(Formatters.getLongDate(date: data.publish?.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish?.time ?? ""))", pickupLocation: data.publish?.source ?? "", dropLocation: data.publish?.destination ?? "", image: image)
                 
                 ScrollViewReader { value in
                     ScrollView (showsIndicators: true) {
@@ -94,10 +94,12 @@ struct ChatView: View {
                 }
             }
             
-            if let data  {
-                if data.publish.status != "cancelled" {
-                    MessageInput(data: data, id: userID)
-                        .padding(.bottom, 8)
+            if let data = data  {
+                if let status = data.publish?.status {
+                    if status != "cancelled" {
+                        MessageInput(data: data, id: userID)
+                            .padding(.bottom, 8)
+                    }
                 }
             }
         }

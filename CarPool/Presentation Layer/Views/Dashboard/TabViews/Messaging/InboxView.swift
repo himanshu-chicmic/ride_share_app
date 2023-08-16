@@ -38,12 +38,14 @@ struct InboxView: View {
                 
                 ScrollView {
                     ForEach($chatViewModel.chatData, id: \.self) { $data in
-                        MessagesListItem(image: userID != data.receiverID ? data.receiverImage : data.senderImage, name: userID != data.receiverID ? "\(data.receiver.firstName) \(data.receiver.lastName)" : "\(data.sender.firstName) \(data.sender.lastName)", pickupLocation: data.publish.source, dropLocation: data.publish.destination)
-                            .onTapGesture {
-                                chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": data.id])
-                                chatViewModel.openChatView.toggle()
-                                selectedTile = data
-                            }
+                        if let publish = data.publish {
+                            MessagesListItem(image: (userID != data.receiverID ? data.receiverImage : data.senderImage) ?? "", name: userID != data.receiverID ? "\(data.receiver.firstName) \(data.receiver.lastName)" : "\(data.sender.firstName) \(data.sender.lastName)", pickupLocation: publish.source, dropLocation: publish.destination)
+                                .onTapGesture {
+                                    chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": data.id])
+                                    chatViewModel.openChatView.toggle()
+                                    selectedTile = data
+                                }
+                        }
                     }
                     .navigationDestination(isPresented: $chatViewModel.openChatView) {
                         if let selectedTile {

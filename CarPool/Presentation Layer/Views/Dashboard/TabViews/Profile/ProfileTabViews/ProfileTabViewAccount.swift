@@ -13,6 +13,8 @@ struct ProfileTabViewAccount: View {
     
     @EnvironmentObject var detailsViewModel: DetailsViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
+    @EnvironmentObject var searchViewModel: SearchViewModel
+    @EnvironmentObject var chatViewModel: ChatViewModel
     
     // array for buttons
     private var navigationLinks: [[String]]
@@ -86,6 +88,8 @@ struct ProfileTabViewAccount: View {
             titleVisibility : .visible
         ) {
             Button(Constants.ProfileAccount.logOut, role: .destructive) {
+                searchViewModel.resetArrayData()
+                chatViewModel.resetData()
                 baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .logOut, data: [:])
             }
         }
@@ -97,5 +101,6 @@ struct ProfileTabViewAccount_Previews: PreviewProvider {
         ProfileTabViewAccount()
             .environmentObject(BaseViewModel())
             .environmentObject(DetailsViewModel())
+            .environmentObject(SearchViewModel())
     }
 }
