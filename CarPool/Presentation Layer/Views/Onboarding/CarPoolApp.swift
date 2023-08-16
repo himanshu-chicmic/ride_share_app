@@ -17,21 +17,32 @@ struct CarPoolApp: App {
     @StateObject var baseViewModel = BaseViewModel.shared
     @StateObject var detailsViewModel = DetailsViewModel()
     
+    @State var showSplash = true
+    
     // MARK: - body
     
     var body: some Scene {
         WindowGroup {
             Group {
-                if baseViewModel.switchToDashboard {
-                    DashboardView()
+                if showSplash {
+                    SplashView()
                 } else {
-                    OnboardingView()
+                    if baseViewModel.switchToDashboard {
+                        DashboardView()
+                    } else {
+                        OnboardingView()
+                    }
                 }
             }
             .environmentObject(baseViewModel)
             .environmentObject(detailsViewModel)
             .onAppear {
                 baseViewModel.switchDashboardLogin()
+                DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+                    withAnimation {
+                        showSplash = false
+                    }
+                }
             }
             .accentColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
         }

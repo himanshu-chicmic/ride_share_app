@@ -94,6 +94,7 @@
 		6AB4EE8A2A3702CF00A3AB94 /* RideDetailsButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE892A3702CF00A3AB94 /* RideDetailsButtonsView.swift */; };
 		6AB4EE8C2A37040B00A3AB94 /* RideDetailsInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE8B2A37040B00A3AB94 /* RideDetailsInformationView.swift */; };
 		6AB4EE902A3713B200A3AB94 /* RideDetailVehicleInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB4EE8F2A3713B200A3AB94 /* RideDetailVehicleInformation.swift */; };
+		6AC28C7B2A8C860200409CAB /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC28C7A2A8C860200409CAB /* SplashView.swift */; };
 		6ACCFFA12A0CA7BE00524F17 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCFFA02A0CA7BE00524F17 /* UserModel.swift */; };
 		6ACCFFA32A0CD78400524F17 /* BackAndContinueButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACCFFA22A0CD78400524F17 /* BackAndContinueButtons.swift */; };
 		6ACFA2862A3740DB00F07573 /* RideSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACFA2852A3740DB00F07573 /* RideSummary.swift */; };
@@ -199,6 +200,7 @@
 		6AB4EE892A3702CF00A3AB94 /* RideDetailsButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailsButtonsView.swift; sourceTree = "<group>"; };
 		6AB4EE8B2A37040B00A3AB94 /* RideDetailsInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailsInformationView.swift; sourceTree = "<group>"; };
 		6AB4EE8F2A3713B200A3AB94 /* RideDetailVehicleInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideDetailVehicleInformation.swift; sourceTree = "<group>"; };
+		6AC28C7A2A8C860200409CAB /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		6ACCFFA02A0CA7BE00524F17 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		6ACCFFA22A0CD78400524F17 /* BackAndContinueButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackAndContinueButtons.swift; sourceTree = "<group>"; };
 		6ACFA2852A3740DB00F07573 /* RideSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideSummary.swift; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 			children = (
 				6AAB53BB2A0B7C5800138024 /* CarPoolApp.swift */,
 				6AAB53BD2A0B7C5800138024 /* OnboardingView.swift */,
+				6AC28C7A2A8C860200409CAB /* SplashView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -914,6 +917,7 @@
 				6A32BAD02A174CB500866706 /* EditDetailsView.swift in Sources */,
 				6A2DFAC92A824AB300BC394C /* ChatBubble.swift in Sources */,
 				6A349EAC2A4DA93700FC54F8 /* RideStatus.swift in Sources */,
+				6AC28C7B2A8C860200409CAB /* SplashView.swift in Sources */,
 				6A32656C2A49502E00D1D4DC /* NetworkMonitor.swift in Sources */,
 				6AAB53E12A0BA32F00138024 /* UserDetailsView.swift in Sources */,
 				6AAB53D02A0B839A00138024 /* Constants.swift in Sources */,
