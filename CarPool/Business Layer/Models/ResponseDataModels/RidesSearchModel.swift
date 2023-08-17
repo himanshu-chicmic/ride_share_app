@@ -12,6 +12,20 @@ struct PublishedRidesModel: Codable {
     let data: [Publish]
 }
 
+struct PublishedRidesSingleModel: Codable {
+    let code: Int
+    let data: Publish
+    let passengers: [Passenger]
+    let reachTime: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case code
+        case data
+        case passengers
+        case reachTime = "reach_time"
+    }
+}
+
 struct BookedRidesModel: Codable {
     let code: Int
     var rides: [BookedRidesData]

@@ -115,6 +115,11 @@ struct ChatView: View {
                         .padding(.bottom, 34)
                         
                         ForEach($chatViewModel.chatMessages, id: \.self) { $message in
+                            Text(Formatters.checkDate(date: message.updatedAt))
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .font(.system(size: 14))
+                                .foregroundColor(.gray)
+                            
                             ChatBubble(isReceived: checkReceiver(message), message: message.content, time: Formatters.getFormattedDate(date: message.updatedAt))
                                 .id(message.id)
                         }

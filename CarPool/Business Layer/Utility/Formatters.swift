@@ -130,6 +130,34 @@ struct Formatters {
         return formatter.string(from: dateObj)
     }
     
+    static var previousDate: String = ""
+    static func checkDate(date: String) -> String {
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        formatter.dateFormat = Constants.Placeholders.dateFormat
+        
+        guard let dateObj = formatter.date(from: date) else {
+            return ""
+        }
+        formatter.timeZone = .current
+        formatter.dateFormat = Constants.Placeholders.dateOfBirth
+        let currentDate = formatter.string(from: dateObj)
+        if previousDate != currentDate {
+            previousDate = currentDate
+            if currentDate == formatter.string(from: .now) {
+                return "Today"
+            } else if currentDate == formatter.string(from: Calendar.current.date(
+                byAdding: .day,
+                value   : -1,
+                to      : Date()
+            )!) {
+                return "Yesterday"
+            }
+            return currentDate
+        }
+        return ""
+    }
+    
     /// method to get estimated time for trip
     /// - Parameter date: estimated time
     /// - Returns: estimated time with only hour and minutes

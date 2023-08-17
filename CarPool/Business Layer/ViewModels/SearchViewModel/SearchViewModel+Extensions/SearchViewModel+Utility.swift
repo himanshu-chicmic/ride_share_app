@@ -139,6 +139,8 @@ extension SearchViewModel {
         
         if let data = data as? Publish {
             vehicleId = data.vehicleID!
+            let publishId = data.id
+            sendRequestToGetPublishedByID(httpMethod: .GET, requestType: .publishedRideById, data: [Constants.JsonKeys.id: publishId])
         }
         
         baseViewModel.sendVehiclesRequestToApi(

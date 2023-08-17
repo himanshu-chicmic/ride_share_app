@@ -92,6 +92,7 @@ class SearchViewModel: ObservableObject {
     @Published var recenltyViewedRides: [Datum] = []
     // published rides data
     @Published var publishedRidesData: [Publish] = []
+    @Published var publishedRideSingleData: PublishedRidesSingleModel?
     // booked rides data
     @Published var bookedRidesData: [BookedRidesData] = []
     
@@ -185,6 +186,23 @@ class SearchViewModel: ObservableObject {
             }
         } receiveValue: { [weak self] response in
             self?.handleBookRide(requestType: requestType, httpMethod: httpMethod, response: response)
+        }
+    }
+    
+    func sendRequestToGetPublishedByID(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        anyCancellablePublish = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
+        .receive(on: DispatchQueue.main)
+        .sink { completion in
+            switch completion {
+            case .failure(let error):
+                print("ERROR: \(error)")
+                self.baseViewModel.toastMessageBackground = .red
+                self.baseViewModel.toastMessage = error.localizedDescription
+            case .finished:
+                print("success")
+            }
+        } receiveValue: { [weak self] response in
+            self?.getPublishedSingleRide(response: response)
         }
     }
     

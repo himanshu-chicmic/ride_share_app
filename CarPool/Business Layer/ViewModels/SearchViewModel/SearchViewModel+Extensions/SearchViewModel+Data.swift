@@ -57,6 +57,12 @@ extension SearchViewModel {
         }
     }
     
+    /// method to assign single published ride data
+    /// - Parameter response: PublishedRidesSingleModel data
+    func getPublishedSingleRide(response: PublishedRidesSingleModel) {
+        publishedRideSingleData = response
+    }
+    
     /// method to fetch published rides
     /// - Parameter response: PublishedRidesModel data
     func getPublishedRides(response: PublishedRidesModel) {

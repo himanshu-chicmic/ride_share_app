@@ -123,6 +123,39 @@ struct PublishedRideView: View {
                     // vehicle info
                     RideDetailVehicleInformation()
                     
+                    Rectangle()
+                        .frame(height: 4)
+                        .foregroundColor(.gray.opacity(0.05))
+                        .background(.gray.opacity(0.05))
+                        .padding(.vertical)
+                    
+                    Text("Passengers")
+                        .padding(.bottom, 8)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                    
+                    // passengers info
+                    if let passengers = searchViewModel.publishedRideSingleData?.passengers {
+                        ForEach(passengers, id: \.userID) { passenger in
+                            HStack (alignment: .center) {
+                                LoadImageView(driverImage: passenger.image ?? "", isLoading: true)
+                                
+                                VStack (alignment: .leading) {
+                                    Text("\(passenger.firstName ?? "") \(passenger.lastName ?? "")")
+                                        .font(.system(size: 15))
+                                    Text("\(passenger.phoneNumber ?? "")")
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 13))
+                                }
+                                
+                                Spacer()
+                                
+                                Image(systemName: "chevron.right")
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    
                 }
                 .scrollIndicators(.hidden)
                 

@@ -53,5 +53,6 @@ struct PublishedRidesView: View {
 struct PublishedRidesView_Previews: PreviewProvider {
     static var previews: some View {
         PublishedRidesView()
+            .environmentObject(SearchViewModel())
     }
 }

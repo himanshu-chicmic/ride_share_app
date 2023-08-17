@@ -38,29 +38,21 @@ struct RideBookSuccess: View {
                 .padding(.top, 2)
                 .foregroundColor(.gray)
             
-            HStack {
-                Button {
-                    dismiss()
-                } label: {
-                    DefaultButtonLabel(text: Constants.Others.close, isPrimary: false)
-                }
-                
-                Button {
-                    dismiss()
-                } label: {
-                    DefaultButtonLabel(text: Constants.Others.viewRideDetails)
-                }
+            Button {
+                dismiss()
+            } label: {
+                DefaultButtonLabel(text: Constants.Others.close, isPrimary: false)
             }
             .padding(.vertical)
         }
         .multilineTextAlignment(.center)
         .padding(.horizontal, 44)
-        .environmentObject(SearchViewModel())
     }
 }
 
 struct RideBookSuccess_Previews: PreviewProvider {
     static var previews: some View {
         RideBookSuccess()
+            .environmentObject(SearchViewModel())
     }
 }

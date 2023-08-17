@@ -104,7 +104,7 @@ extension ApiManager {
         }
         // if requesst type is of delete vehicle or update send delete or update request
         // which needs id of vehicle as parameters in url
-        else if requestType == .deleteVehicle || requestType == .updateVehicle || requestType == .getVehicleById || requestType == .updateRide || requestType == .chatMessages {
+        else if requestType == .deleteVehicle || requestType == .updateVehicle || requestType == .getVehicleById || requestType == .updateRide || requestType == .chatMessages || requestType == .publishedRideById {
             
             if let endpoint = data[Constants.JsonKeys.id] {
                 

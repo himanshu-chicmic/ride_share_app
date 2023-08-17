@@ -49,6 +49,6 @@ struct ChatBubble: View {
 
 struct ChatBubble_Previews: PreviewProvider {
     static var previews: some View {
-        ChatBubble(isReceived: true, message: "I drive!!!", time: "00:00 am")
+        ChatBubble(isReceived: false, message: "I drive!!!", time: "00:00 am")
     }
 }
