@@ -15,6 +15,7 @@ struct ChatData: Codable {
     let chat: SingleChat?
     let chats: [Chat]?
     let messages: [Message]?
+    let error: String?
 }
 
 struct SingleChat: Codable {

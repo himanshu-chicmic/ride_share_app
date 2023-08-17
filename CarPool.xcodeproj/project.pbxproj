@@ -691,8 +691,8 @@
 				6A349E9F2A4D5D1A00FC54F8 /* SearchViewModel */,
 				6AB0933F2A39BBE500CAFF52 /* BaseViewModel */,
 				6AB0DA4B2A0D0832001F7B9C /* SignInViewModel.swift */,
-				6A32BAD72A17775A00866706 /* DetailsViewModel.swift */,
 				6A32656D2A498AC500D1D4DC /* LocationViewModel.swift */,
+				6A32BAD72A17775A00866706 /* DetailsViewModel.swift */,
 				6A5678822A85031E00534230 /* ChatViewModel.swift */,
 			);
 			path = ViewModels;

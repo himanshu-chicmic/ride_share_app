@@ -18,9 +18,11 @@ class ChatViewModel: ObservableObject {
     private var cancellables: AnyCancellable?
     
     @Published var chatData: [Chat] = []
+    @Published var chatDataSingle: Chat?
     @Published var chatMessages: [Message] = []
     
     @Published var openChatView: Bool = false
+    @Published var openChatViewFromDetails: Bool = false
     
     init() {
         createChatApiCall(httpMethod: .GET, requestType: .chatRooms, data: [:])
@@ -65,6 +67,16 @@ class ChatViewModel: ObservableObject {
                 chatData.reverse()
             }
         } else {
+            if response.code == 422, let id = response.chat?.id {
+                for chat in chatData {
+                    if chat.id == id {
+                        chatDataSingle = chat
+                        break
+                    }
+                }
+                createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": id])
+                openChatViewFromDetails.toggle()
+            }
             if requestType == .chatMessages, let id = data[Constants.JsonKeys.id] {
                 createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": id])
             }

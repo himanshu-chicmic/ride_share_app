@@ -10,27 +10,27 @@ import CoreLocation
 import MapKit
 
 class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
-    
+
     // MARK: - properties
-    
+
     @Published var authorizationStatus: CLAuthorizationStatus
     @Published var currentLocation: String = ""
-    
+
     private let locationManager: CLLocationManager
-    
+
     // MARK: - initializers
-    
+
     override init() {
         locationManager = CLLocationManager()
         authorizationStatus = locationManager.authorizationStatus
-        
+
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
-    
+
     // MARK: - methods
-    
+
     func checkPermissionAndGetLocation() {
         switch authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
@@ -39,7 +39,7 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
             requestPermission()
         }
     }
-    
+
     func requestPermission() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
@@ -48,15 +48,15 @@ class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     func startLocationUpdation() {
         locationManager.startUpdatingLocation()
     }
-    
+
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         authorizationStatus = manager.authorizationStatus
     }
-    
+
     func stopLocationUpdation() {
         locationManager.stopUpdatingLocation()
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         fetchCountryAndCity(for: locations.first)
     }

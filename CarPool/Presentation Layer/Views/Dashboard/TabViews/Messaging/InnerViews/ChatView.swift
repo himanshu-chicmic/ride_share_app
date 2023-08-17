@@ -12,6 +12,8 @@ struct ChatView: View {
     @EnvironmentObject var chatViewModel: ChatViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
+    @Environment(\.dismiss) var dismiss
+    
     var userID: Int {
         guard let id = baseViewModel.userData?.status.data?.id else {
             return 0
@@ -58,7 +60,46 @@ struct ChatView: View {
         VStack {
             if let data {
                 
-                ChatViewTopBar(name: name, userType: userType, dateAndTime: "\(Formatters.getLongDate(date: data.publish?.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish?.time ?? ""))", pickupLocation: data.publish?.source ?? "", dropLocation: data.publish?.destination ?? "", image: image)
+                HStack {
+                    
+                    Button {
+                        if chatViewModel.openChatView == true {
+                            chatViewModel.openChatView = false
+                        }
+                        if chatViewModel.openChatViewFromDetails == true {
+                            chatViewModel.openChatViewFromDetails = false
+                        }
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                    
+                    ChatViewTopBar(name: name, userType: userType, image: image)
+                }
+                .padding()
+                
+                VStack (alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(data.publish?.source ?? "")
+                        Image(systemName: Constants.Icon.arrowLeft)
+                        Text(data.publish?.destination ?? "")
+                        
+                        Spacer()
+                    }
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .font(.system(size: 13))
+                    
+                    Text("\(Formatters.getLongDate(date: data.publish?.date ?? Constants.Placeholders.defaultTime)) at \(Formatters.getFormattedDate(date: data.publish?.time ?? ""))")
+                    .fontWeight(.light)
+                    .font(.system(size: 12))
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(.gray.opacity(0.05))
+                .padding(.horizontal)
+                
+                Divider()
                 
                 ScrollViewReader { value in
                     ScrollView (showsIndicators: true) {
