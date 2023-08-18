@@ -45,7 +45,9 @@ struct BookedRidesView: View {
                 PlaceholderView(image: Constants.EmptyRidesView.image, title: Constants.EmptyRidesView.title, caption: Constants.EmptyRidesView.caption)
             }
         }.onAppear{
-            searchViewModel.sendRequestToGetBooked(httpMethod: .GET, requestType: .bookedRides, data: [:])
+            if BaseViewModel.shared.switchToDashboard {
+                searchViewModel.sendRequestToGetBooked(httpMethod: .GET, requestType: .bookedRides, data: [:])
+            }
         }
     }
 }

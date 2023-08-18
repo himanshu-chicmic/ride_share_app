@@ -61,7 +61,9 @@ struct InboxView: View {
                 Spacer()
             }
         }.onAppear {
-            chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatRooms, data: [:])
+            if BaseViewModel.shared.switchToDashboard {
+                chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatRooms, data: [:])
+            }
         }
     }
 }

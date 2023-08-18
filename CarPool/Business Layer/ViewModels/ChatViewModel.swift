@@ -36,7 +36,7 @@ class ChatViewModel: ObservableObject {
         chatMessages = []
     }
     
-    func    createChatApiCall(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any], chatViewFromDetails: Bool = true) {
+    func createChatApiCall(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any], chatViewFromDetails: Bool = true) {
         // call createApiRequest in ApiManager class
         cancellables = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)

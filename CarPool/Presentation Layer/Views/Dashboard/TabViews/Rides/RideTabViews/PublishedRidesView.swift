@@ -26,6 +26,7 @@ struct PublishedRidesView: View {
                             endTime         : Formatters.getFormattedDate(date: data.estimateTime),
                             date            : "\(data.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.setPrice)),
+                            seats           : data.passengersCount,
                             rideStatus: Helpers.getRideStatus(status: data.status.lowercased())
                         )
                         .foregroundColor(.black)
@@ -45,7 +46,9 @@ struct PublishedRidesView: View {
                 PlaceholderView(image: Constants.EmptyRidesView.image, title: Constants.EmptyRidesView.title, caption: Constants.EmptyRidesView.caption)
             }
         }.onAppear {
-            searchViewModel.sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
+            if BaseViewModel.shared.switchToDashboard {
+                searchViewModel.sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
+            }
         }
     }
 }

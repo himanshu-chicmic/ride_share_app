@@ -82,7 +82,7 @@ struct RidesListItem: View {
                                 
                                 if driverName == nil {
                                     VStack(alignment: .trailing, spacing: 2) {
-                                        Text("\(seats) \(seats == 1 ? Constants.RideDetails.seat : Constants.RideDetails.seats)")
+                                        Text("\(seats) \(seats == 1 ? Constants.RideDetails.seat : Constants.RideDetails.seats) Available")
                                             .font(.system(size: 12))
                                             .fontWeight(.light)
                                         Text(price)

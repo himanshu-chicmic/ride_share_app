@@ -210,6 +210,7 @@ struct SearchView: View {
                                         endTime         : Formatters.getFormattedDate(date: recentSearch.reachTime),
                                         date            : "\(recentSearch.publish.date ?? Constants.Placeholders.defaultTime)",
                                         price           : Formatters.getPrice(price: Int(recentSearch.publish.setPrice)),
+                                        seats           : recentSearch.publish.passengersCount,
                                         driverImage     : recentSearch.imageURL ?? "",
                                         driverName      : recentSearch.name,
                                         driverRating    : Formatters.getRatings(ratings: recentSearch.averageRating ?? 0)

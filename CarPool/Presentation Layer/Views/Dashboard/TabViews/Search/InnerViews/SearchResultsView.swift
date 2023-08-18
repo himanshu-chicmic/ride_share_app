@@ -84,6 +84,7 @@ struct SearchResultsView: View {
                             endTime         : Formatters.getFormattedDate(date: data.reachTime),
                             date            : "\(data.publish.date ?? Constants.Placeholders.defaultTime)",
                             price           : Formatters.getPrice(price: Int(data.publish.setPrice)),
+                            seats           : data.publish.passengersCount,
                             driverImage     : data.imageURL ?? "",
                             driverName      : data.name,
                             driverRating    : Formatters.getRatings(ratings: data.averageRating ?? 0)

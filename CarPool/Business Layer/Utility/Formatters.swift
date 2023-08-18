@@ -16,7 +16,6 @@ struct Formatters {
     static let dateFormatter: DateFormatter = {
         // initialized data formatter class
         let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(identifier: "UTC")
         // set the date format as "yyyy-MM-dd" as stored
         // in constants's placeholder struct as dateOfBirth
         formatter.dateFormat = Constants.Placeholders.dateOfBirth
@@ -28,7 +27,6 @@ struct Formatters {
     static let timeFormatter: DateFormatter = {
         // initialized date formatter class
         let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(identifier: "UTC")
         // set the date format as "h:mm a" as stored
         // in constants's placeholder struct as timeFormatter
         formatter.dateFormat = Constants.Placeholders.timeFormatter
@@ -125,7 +123,6 @@ struct Formatters {
         guard let dateObj = formatter.date(from: date) else {
             return date
         }
-        formatter.timeZone = .current
         formatter.dateFormat = Constants.Placeholders.dateFormatterLong
         return formatter.string(from: dateObj)
     }
@@ -191,7 +188,6 @@ struct Formatters {
             return Constants.RideDetails.timeUnavailable
         }
         // return estimated time in string format
-        dateFormatter.timeZone = .current
         dateFormatter.dateFormat = Constants.Placeholders.timeFormatter
         return dateFormatter.string(from: dateObj)
         
@@ -239,12 +235,10 @@ struct Formatters {
     /// - Parameter seconds: time in seconds
     /// - Returns: a string value for time
     static func convertSecondsToTime(seconds: Double) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .positional
-        formatter.allowedUnits = [.hour, .minute]
-        guard let time = formatter.string(from: seconds) else {
-            return ""
-        }
-        return time
+        let sec = Int(seconds)
+        let hh = sec / 3600
+        let mm = (sec % 3600) / 60
+        let ss = (sec % 3600) % 60
+        return "\(hh):\(mm):\(ss)"
     }
 }

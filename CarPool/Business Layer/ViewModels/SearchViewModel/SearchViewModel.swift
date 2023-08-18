@@ -267,7 +267,7 @@ class SearchViewModel: ObservableObject {
             }
         } receiveValue: { [weak self] response in
             // ride book success
-            self?.updateRide(response: response)
+            self?.updateRide(response: response, cancelRide: true)
         }
     }
     

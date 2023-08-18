@@ -108,7 +108,7 @@ struct Publish: Codable {
     func getDetailsArray(data: Publish) -> [String] {
         return [
             "Distance (in Kms) \(Formatters.getDistanceInKms(distance: data.distance ?? 0))",
-            "\(data.passengersCount) Passengers",
+            "\(data.passengersCount) Seats Available",
             "Estimated Time (hh:mm) \(Formatters.getEstimatedTime(date: data.estimateTime ?? ""))"
         ]
     }

@@ -1,5 +1,5 @@
 //
-//  RidesListItemCity.swift
+//  LocationTextViewComponent.swift
 //  CarPool
 //
 //  Created by Himanshu on 5/18/23.
@@ -44,7 +44,7 @@ struct LocationTextViewComponent: View {
     }
 }
 
-struct RidesListItemCity_Previews: PreviewProvider {
+struct LocationTextViewComponent_Previews: PreviewProvider {
     static var previews: some View {
         LocationTextViewComponent(
             icon     : Constants.Icon.startLocation,
