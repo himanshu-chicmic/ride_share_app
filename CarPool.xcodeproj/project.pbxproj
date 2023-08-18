@@ -46,6 +46,7 @@
 		6A383AED2A836C8900CAAB18 /* EditPublishedRide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A383AEC2A836C8900CAAB18 /* EditPublishedRide.swift */; };
 		6A383AEF2A83AA9000CAAB18 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A383AEE2A83AA9000CAAB18 /* Helpers.swift */; };
 		6A39958E2A8F260200501381 /* PersonProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A39958D2A8F260200501381 /* PersonProfileView.swift */; };
+		6A3995902A8F75B200501381 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A39958F2A8F75B200501381 /* ForgotPasswordView.swift */; };
 		6A3FB32C2A1B3CA70069673A /* ApiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB32B2A1B3CA70069673A /* ApiConstants.swift */; };
 		6A3FB32E2A1B3D500069673A /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB32D2A1B3D500069673A /* HttpMethod.swift */; };
 		6A3FB3322A1B48550069673A /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3FB3312A1B48550069673A /* ApiManager.swift */; };
@@ -151,6 +152,7 @@
 		6A383AEC2A836C8900CAAB18 /* EditPublishedRide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPublishedRide.swift; sourceTree = "<group>"; };
 		6A383AEE2A83AA9000CAAB18 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		6A39958D2A8F260200501381 /* PersonProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonProfileView.swift; sourceTree = "<group>"; };
+		6A39958F2A8F75B200501381 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		6A3FB32B2A1B3CA70069673A /* ApiConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConstants.swift; sourceTree = "<group>"; };
 		6A3FB32D2A1B3D500069673A /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
 		6A3FB3312A1B48550069673A /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
@@ -559,6 +561,7 @@
 			children = (
 				6AAB53CB2A0B82EF00138024 /* LoginSignupView.swift */,
 				6AAB53E02A0BA32F00138024 /* UserDetailsView.swift */,
+				6A39958F2A8F75B200501381 /* ForgotPasswordView.swift */,
 			);
 			path = LoginSignup;
 			sourceTree = "<group>";
@@ -967,6 +970,7 @@
 				6AD8A6D62A27868000BD8FEE /* Data+AppendString.swift in Sources */,
 				6AEEF4032A1655550012FE65 /* ProfileTabViewAbout.swift in Sources */,
 				6A383AEB2A8355EF00CAAB18 /* PublishedRideView.swift in Sources */,
+				6A3995902A8F75B200501381 /* ForgotPasswordView.swift in Sources */,
 				6A1BDD3B2A208EB500459FF2 /* DrawSearchComponent.swift in Sources */,
 				6AB0DA4C2A0D0832001F7B9C /* SignInViewModel.swift in Sources */,
 				6A12E85A2A0E58380061333A /* ProfileView.swift in Sources */,

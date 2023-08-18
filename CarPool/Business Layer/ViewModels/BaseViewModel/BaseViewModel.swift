@@ -59,6 +59,8 @@ class BaseViewModel: ObservableObject {
     // vehicle data to edit
     @Published var editVehicleData: VehiclesDataClass?
     
+    @Published var fogotPasswordData: ForgotPasswordModel?
+    
     // update single profile item
     @Published var openAddProfile: Bool = false
     
@@ -213,6 +215,27 @@ class BaseViewModel: ObservableObject {
                 self?.toastMessageBackground = .red
                 self?.toastMessage = response.status.message ?? ""
             }
+        }
+    }
+    
+    func createFogotPasswordApiCall(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        // call createApiRequest in ApiManager class
+        cancellables = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
+        .receive(on: DispatchQueue.main)
+        .sink { [self] completion in
+            // switch completion to handle failure and success
+            switch completion {
+            case .failure(let error):
+                // show failure info in form of toast
+                self.toastMessageBackground = .red
+                toastMessage = error.localizedDescription
+                print("ERROR: \(error)")
+            case .finished:
+                // show success info in form of toast
+                print("success")
+            }
+        } receiveValue: { [weak self] response in
+            self?.fogotPasswordData = response
         }
     }
     

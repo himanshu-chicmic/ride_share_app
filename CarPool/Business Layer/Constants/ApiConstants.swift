@@ -12,7 +12,7 @@ struct ApiConstants {
     // MARK: - urls
     
     // base url for api
-    static let baseURL = "http://192.180.3.154:4000/%@"
+    static let baseURL = "http://192.180.2.134:3001/%@"
     // google places
     static let placesURL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cgeometry&input="
     static let placesEndpoint = "&inputtype=textquery&key="
@@ -39,6 +39,12 @@ struct ApiConstants {
     
     static let phoneConfirmation = "phone"
     static let otpVerification = "verify"
+    
+    // MARK: - passwords
+    
+    static let sendOtpEmail = "send_otp"
+    static let emailOtpVerify = "verify_otp"
+    static let resetPassword = "password_reset"
     
     // MARK: - profile
 

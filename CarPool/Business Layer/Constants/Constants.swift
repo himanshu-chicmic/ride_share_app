@@ -338,6 +338,9 @@ struct Constants {
         static let image = "image"
         static let status = "status"
         static let message = "message"
+        static let email  = "email"
+        static let otp  = "otp"
+        static let password  = "password"
 
         static let passwordConfirmation = "password_confirmation"
         

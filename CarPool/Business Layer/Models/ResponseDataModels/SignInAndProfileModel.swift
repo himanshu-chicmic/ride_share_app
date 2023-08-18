@@ -8,6 +8,14 @@
 import Foundation
 
 // MARK: - SignInAndProfileModel
+
+struct ForgotPasswordModel: Codable {
+    var code: Int
+    var message: String?
+    var error: String?
+    var email: String?
+}
+
 struct SignInAndProfileModel: Codable {
     let status: Status
 }

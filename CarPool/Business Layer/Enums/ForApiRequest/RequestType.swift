@@ -17,6 +17,11 @@ enum RequestType: RawRepresentable {
     case logIn
     case logOut
     
+    // MARK: - password
+    case sendOtpEmail
+    case emailOtpVerify
+    case resetPassword
+    
     // MARK: - activations
     case confirmEmail
     case confirmPhone
@@ -56,6 +61,12 @@ enum RequestType: RawRepresentable {
     /// value of the enum
     var rawValue: String {
         switch self {
+        case .sendOtpEmail:
+            return ApiConstants.sendOtpEmail
+        case .emailOtpVerify:
+            return ApiConstants.emailOtpVerify
+        case .resetPassword:
+            return ApiConstants.resetPassword
         case .signUp, .getDetails, .updateProfile:
             return ApiConstants.commonEndpoint
         case .emailCheck:
@@ -146,6 +157,12 @@ enum RequestType: RawRepresentable {
             self = .chatRooms
         case ApiConstants.chatMessages:
             self = .chatMessages
+        case ApiConstants.resetPassword:
+            self = .resetPassword
+        case ApiConstants.emailOtpVerify:
+            self = .emailOtpVerify
+        case ApiConstants.sendOtpEmail:
+            self = .sendOtpEmail
         default:
             return nil
         }
