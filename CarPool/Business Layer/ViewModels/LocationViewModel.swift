@@ -5,69 +5,44 @@
 //  Created by Himanshu on 6/26/23.
 //
 
-import Foundation
 import CoreLocation
-import MapKit
 
-class LocationViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+class LocationViewModel: NSObject, ObservableObject {
 
-    // MARK: - properties
+    static let shared = LocationViewModel()
+    static let DefaultLocation = CLLocationCoordinate2D(latitude: 45.8827419, longitude: -1.1932383)
 
-    @Published var authorizationStatus: CLAuthorizationStatus
-    @Published var currentLocation: String = ""
+    static var currentLocation: String {
+        guard let location = shared.locationManager.location else {
+            return ""
+        }
+        let geocoder = CLGeocoder()
+        var loc = ""
+        geocoder.reverseGeocodeLocation(location) { (placemarks, _) in
+            loc = "\(placemarks?.first?.administrativeArea ?? "") \(placemarks?.first?.country ?? "")"
+        }
+        return loc
+    }
 
-    private let locationManager: CLLocationManager
+    private let locationManager = CLLocationManager()
 
-    // MARK: - initializers
-
-    override init() {
-        locationManager = CLLocationManager()
-        authorizationStatus = locationManager.authorizationStatus
-
+    private override init() {
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-
-    // MARK: - methods
-
-    func checkPermissionAndGetLocation() {
-        switch authorizationStatus {
-        case .authorizedAlways, .authorizedWhenInUse:
-            startLocationUpdation()
-        default:
-            requestPermission()
-        }
-    }
-
-    func requestPermission() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
+}
 
-    func startLocationUpdation() {
-        locationManager.startUpdatingLocation()
+extension LocationViewModel: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) { }
+
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location manager failed with error: \(error.localizedDescription)")
     }
 
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        authorizationStatus = manager.authorizationStatus
-    }
-
-    func stopLocationUpdation() {
-        locationManager.stopUpdatingLocation()
-    }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        fetchCountryAndCity(for: locations.first)
-    }
-
-    func fetchCountryAndCity(for location: CLLocation?) {
-        guard let location = location else {
-            return
-        }
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location) { (placemarks, _) in
-            self.currentLocation = "\(placemarks?.first?.administrativeArea ?? "") \(placemarks?.first?.country ?? "")"
-        }
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("Location manager changed the status: \(status)")
     }
 }

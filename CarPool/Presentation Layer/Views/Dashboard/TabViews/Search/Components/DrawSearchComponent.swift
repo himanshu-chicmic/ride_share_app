@@ -22,7 +22,7 @@ struct DrawSearchComponent: View {
     @EnvironmentObject var searchViewModel: SearchViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    @StateObject var locationViewModel = LocationViewModel()
+//    @StateObject var locationViewModel = LocationViewModel()
     
     var showAlert: Bool {
         get {
@@ -215,20 +215,13 @@ struct DrawSearchComponent: View {
                     .cornerRadius(8)
                     .padding()
                     .onTapGesture {
-                        locationViewModel.checkPermissionAndGetLocation()
+                        searchViewModel.startLocation = LocationViewModel.currentLocation
                     }
                 }
             }
         }
-        .onChange(of: locationViewModel.currentLocation, perform: { newValue in
-            if searchViewModel.searchComponentType == .startLocation {
-                searchViewModel.startLocation = newValue
-                locationViewModel.stopLocationUpdation()
-            }
-        })
         .onDisappear {
             searchViewModel.showProgressView = false
-            locationViewModel.stopLocationUpdation()
         }
     }
 }

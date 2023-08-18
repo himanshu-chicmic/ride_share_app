@@ -153,6 +153,8 @@ extension ApiManager {
             // set status code and message for logout
             status.code = json[Constants.JsonKeys.status] as? Int ?? 0
             status.message = json[Constants.JsonKeys.message] as? String
+        case .confirmEmail:
+            status.code = 0
         default:
             throw APIErrors.decodingError(error)
         }

@@ -29,19 +29,32 @@ extension BaseViewModel {
             // open details view for getting user information
             openUserDetailsView.toggle()
         case .confirmPhone:
-            toastMessageBackground = .green
-            toastMessage = "You'll receive a call for otp."
             // show otp field on completino of api call for sending passcode
             withAnimation {
                 viewOtpField.toggle()
             }
+            toastMessageBackground = .green
+            toastMessage = "You'll receive a call for otp."
         case .confirmOtp, .confirmEmail:
+            // close add profile view
+            openAddProfile.toggle()
+            
             if type == .confirmOtp {
                 toastMessageBackground = .green
                 toastMessage = userData?.status.message ?? "Verified successfully!"
+                viewOtpField = false
+                // send request to fetch user details to get updated data
+                sendRequestToApi(
+                    httpMethod  : .GET,
+                    requestType : .getDetails,
+                    data        : [:]
+                )
             }
-            // close add profile view
-            openAddProfile.toggle()
+            if userData?.status.code == 0 {
+                toastMessageBackground = .green
+                toastMessage = userData?.status.message ?? "Verification email sent on your registered email!"
+            }
+            
         case .getDetails:
             if vehiclesData == nil {
                 sendVehiclesRequestToApi(
@@ -55,6 +68,12 @@ extension BaseViewModel {
             // and open add profile false
             editProfile = false
             openAddProfile.toggle()
+            // send request to fetch user details to get updated data
+            sendRequestToApi(
+                httpMethod  : .GET,
+                requestType : .getDetails,
+                data        : [:]
+            )
         case .uploadImage:
             // set message for success in image updation
             toastMessageBackground = .green

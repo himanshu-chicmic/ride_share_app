@@ -140,49 +140,56 @@ struct PublishedRideView: View {
                     
                     // passengers info
                     if let passengers = searchViewModel.publishedRideSingleData?.passengers {
-                        ForEach(passengers, id: \.userID) { passenger in
-                            HStack (alignment: .center) {
-                                LoadImageView(driverImage: passenger.image ?? "", isLoading: true)
-                                    .frame(width: 42, height: 42)
-                                    .clipShape(Circle())
-                                
-                                VStack (alignment: .leading) {
-                                    Text("\(passenger.firstName ?? "") \(passenger.lastName ?? "")")
-                                        .font(.system(size: 15))
+                        if passengers.isEmpty {
+                            Text("Currently, this ride doesn't have any bookings.")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.system(size: 14))
+                                .padding([.horizontal, .bottom])
+                                .foregroundColor(Color(uiColor: UIColor(hexString: Constants.DefaultColors.primary)))
+                        } else {
+                            ForEach(passengers, id: \.userID) { passenger in
+                                HStack (alignment: .center) {
+                                    LoadImageView(driverImage: passenger.image ?? "", isLoading: true)
+                                        .frame(width: 42, height: 42)
+                                        .clipShape(Circle())
                                     
-                                    Text("\(passenger.phoneNumber ?? "")")
-                                        .foregroundColor(.gray)
-                                        .font(.system(size: 13))
-                                }
-                                
-                                Spacer()
-                                
-                                if let verified = passenger.phoneVerified {
-                                    if verified {
-                                        Link(destination: URL(string: "tel:\(passenger.phoneNumber ?? "")")!, label: {
-                                          Image(systemName: "phone")
-                                        }).padding([.vertical, .leading])
+                                    VStack (alignment: .leading) {
+                                        Text("\(passenger.firstName ?? "") \(passenger.lastName ?? "")")
+                                            .font(.system(size: 15))
+                                        
+                                        Text("\(passenger.phoneNumber ?? "")")
+                                            .foregroundColor(.gray)
+                                            .font(.system(size: 13))
                                     }
+                                    
+                                    Spacer()
+                                    
+                                    if let verified = passenger.phoneVerified {
+                                        if verified {
+                                            Link(destination: URL(string: "tel:\(passenger.phoneNumber ?? "")")!, label: {
+                                                Image(systemName: "phone")
+                                            }).padding([.vertical, .leading])
+                                        }
+                                    }
+                                    
+                                    Button {
+                                        chatViewModel.createChatApiCall(httpMethod: .POST, requestType: .chatRooms, data: [
+                                            "chat": [
+                                                "receiver_id": passenger.userID,
+                                                "publish_id": rideData.id
+                                            ]
+                                        ], chatViewFromDetails: false)
+                                    } label: {
+                                        Image(systemName: "message")
+                                    }
+                                }.onTapGesture {
+                                    selectedProfile = passenger
+                                    openProfileView.toggle()
                                 }
-                                
-                                Button {
-                                    chatViewModel.createChatApiCall(httpMethod: .POST, requestType: .chatRooms, data: [
-                                        "chat": [
-                                            "receiver_id": passenger.userID,
-                                            "publish_id": rideData.id
-                                        ]
-                                    ], chatViewFromDetails: false)
-                                } label: {
-                                    Image(systemName: "message")
-                                }
-                            }.onTapGesture {
-                                selectedProfile = passenger
-                                openProfileView.toggle()
                             }
+                            .padding(.horizontal)
                         }
-                        .padding(.horizontal)
                     }
-                    
                 }
                 .navigationDestination(isPresented: $chatViewModel.openChatViewFromPublished) {
                     if let data = chatViewModel.chatDataSingle {
