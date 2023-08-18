@@ -63,11 +63,14 @@ struct ChatView: View {
                 HStack {
                     
                     Button {
-                        if chatViewModel.openChatView == true {
+                        if chatViewModel.openChatView {
                             chatViewModel.openChatView = false
                         }
-                        if chatViewModel.openChatViewFromDetails == true {
+                        if chatViewModel.openChatViewFromDetails {
                             chatViewModel.openChatViewFromDetails = false
+                        }
+                        if chatViewModel.openChatViewFromPublished {
+                            chatViewModel.openChatViewFromPublished = false
                         }
                         dismiss()
                     } label: {

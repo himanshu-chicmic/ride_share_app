@@ -170,6 +170,7 @@ struct Constants {
         static let editRide = "Edit Ride"
         
         static let summary = "Summary"
+        static let profile = "Profile"
         
         static let pickUp = "Pick-up"
         static let dropOff = "Drop-off"

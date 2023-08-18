@@ -23,6 +23,7 @@ class ChatViewModel: ObservableObject {
     
     @Published var openChatView: Bool = false
     @Published var openChatViewFromDetails: Bool = false
+    @Published var openChatViewFromPublished: Bool = false
     
     init() {
         createChatApiCall(httpMethod: .GET, requestType: .chatRooms, data: [:])
@@ -35,7 +36,7 @@ class ChatViewModel: ObservableObject {
         chatMessages = []
     }
     
-    func createChatApiCall(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+    func    createChatApiCall(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any], chatViewFromDetails: Bool = true) {
         // call createApiRequest in ApiManager class
         cancellables = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
@@ -52,11 +53,11 @@ class ChatViewModel: ObservableObject {
                 print("success")
             }
         } receiveValue: { [weak self] response in
-            self?.handleChatResponse(response: response, httpMethod: httpMethod, requestType: requestType, data: data)
+            self?.handleChatResponse(response: response, httpMethod: httpMethod, requestType: requestType, data: data, chatViewFromDetails: chatViewFromDetails)
         }
     }
     
-    func handleChatResponse(response: ChatData, httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+    func handleChatResponse(response: ChatData, httpMethod: HttpMethod, requestType: RequestType, data: [String: Any], chatViewFromDetails: Bool) {
         if httpMethod == .GET {
             if requestType == .chatMessages {
                 chatMessages = response.messages ?? []
@@ -67,7 +68,7 @@ class ChatViewModel: ObservableObject {
                 chatData.reverse()
             }
         } else {
-            if response.code == 422, let id = response.chat?.id {
+            if response.code == 422 || response.code == 201, let id = response.chat?.id {
                 for chat in chatData {
                     if chat.id == id {
                         chatDataSingle = chat
@@ -75,7 +76,11 @@ class ChatViewModel: ObservableObject {
                     }
                 }
                 createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": id])
-                openChatViewFromDetails.toggle()
+                if chatViewFromDetails {
+                    openChatViewFromDetails.toggle()
+                } else {
+                    openChatViewFromPublished.toggle()
+                }
             }
             if requestType == .chatMessages, let id = data[Constants.JsonKeys.id] {
                 createChatApiCall(httpMethod: .GET, requestType: .chatMessages, data: ["id": id])

@@ -16,10 +16,14 @@ struct PublishedRideView: View {
     
     // search view model
     @EnvironmentObject var searchViewModel: SearchViewModel
+    @EnvironmentObject var chatViewModel: ChatViewModel
     
     @Environment(\.dismiss) var dismiss
     
     @State var confirmBeforeCancel: Bool = false
+    @State var openProfileView: Bool = false
+    
+    @State var selectedProfile: Passenger?
     
     var rideStatus: String {
         return Helpers.getRideStatus(status: data?.status.lowercased() ?? "")
@@ -139,10 +143,13 @@ struct PublishedRideView: View {
                         ForEach(passengers, id: \.userID) { passenger in
                             HStack (alignment: .center) {
                                 LoadImageView(driverImage: passenger.image ?? "", isLoading: true)
+                                    .frame(width: 42, height: 42)
+                                    .clipShape(Circle())
                                 
                                 VStack (alignment: .leading) {
                                     Text("\(passenger.firstName ?? "") \(passenger.lastName ?? "")")
                                         .font(.system(size: 15))
+                                    
                                     Text("\(passenger.phoneNumber ?? "")")
                                         .foregroundColor(.gray)
                                         .font(.system(size: 13))
@@ -150,12 +157,44 @@ struct PublishedRideView: View {
                                 
                                 Spacer()
                                 
-                                Image(systemName: "chevron.right")
+                                if let verified = passenger.phoneVerified {
+                                    if verified {
+                                        Link(destination: URL(string: "tel:\(passenger.phoneNumber ?? "")")!, label: {
+                                          Image(systemName: "phone")
+                                        }).padding([.vertical, .leading])
+                                    }
+                                }
+                                
+                                Button {
+                                    chatViewModel.createChatApiCall(httpMethod: .POST, requestType: .chatRooms, data: [
+                                        "chat": [
+                                            "receiver_id": passenger.userID,
+                                            "publish_id": rideData.id
+                                        ]
+                                    ], chatViewFromDetails: false)
+                                } label: {
+                                    Image(systemName: "message")
+                                }
+                            }.onTapGesture {
+                                selectedProfile = passenger
+                                openProfileView.toggle()
                             }
                         }
                         .padding(.horizontal)
                     }
                     
+                }
+                .navigationDestination(isPresented: $chatViewModel.openChatViewFromPublished) {
+                    if let data = chatViewModel.chatDataSingle {
+                        ChatView(data: data)
+                            .navigationBarBackButtonHidden()
+                    }
+                }
+                .navigationDestination(isPresented: $openProfileView) {
+                    if let data = selectedProfile {
+                        PersonProfileView(data: data)
+                            .navigationBarBackButtonHidden()
+                    }
                 }
                 .scrollIndicators(.hidden)
                 
@@ -188,7 +227,11 @@ struct PublishedRideView: View {
         ) {
             Button(Constants.Others.continue_, role: .destructive) {
                 if let rideData = data {
-                    searchViewModel.cancelRideBooking(httpMethod: .POST, requestType: .cancelPublished, data: [Constants.JsonKeys.id : rideData.id])
+                    searchViewModel.cancelRideBooking(
+                        httpMethod: .POST,
+                        requestType: .cancelPublished,
+                        data: [Constants.JsonKeys.id : rideData.id]
+                    )
                 }
             }
             Button(Constants.Others.dismiss, role: .cancel) {}
