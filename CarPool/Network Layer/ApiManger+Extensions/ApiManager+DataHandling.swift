@@ -59,7 +59,7 @@ extension ApiManager {
     ///   - requestType: type of api request
     ///   - response: response from the api
     func setSessionToken(requestType: RequestType, response: HTTPURLResponse) {
-        if requestType == .logOut || requestType == .deleteAccount {
+        if requestType == .logOut {
             // remove all data from user defaults
             UserDefaults.standard.set("", forKey: Constants.UserDefaultKeys.session)
             UserDefaults.standard.removeObject(forKey: Constants.UserDefaultKeys.profileData)
@@ -94,7 +94,7 @@ extension ApiManager {
         }
         // set sessino token for three types of request. signup, logi and logout
 
-        if requestType == .signUp || requestType == .logIn || requestType == .logOut || requestType == .deleteAccount {
+        if requestType == .signUp || requestType == .logIn || requestType == .logOut {
             // call set session token method to set authorization token
             // for login signup or logout requests
             self.setSessionToken(
@@ -145,7 +145,7 @@ extension ApiManager {
             // set status code with data count because data count will be 0 when the email doesn't exists
             // and available for signup
             status.code = data.count
-        case .logOut, .deleteAccount:
+        case .logOut:
             // serialize data to get json dictionary of response returned from api
             guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
                 throw APIErrors.decodingError(error)
