@@ -19,7 +19,7 @@ extension BaseViewModel {
     ///   - type: type of api request
     func handleDataResponse(userData: SignInAndProfileModel? = nil, vehiclesData: VehiclesDataModel? = nil, type: RequestType) {
         switch type {
-        case .logIn, .signUp, .logOut:
+        case .logIn, .signUp, .logOut, .deleteAccount:
             // handle response for signup, login and logout
             switchDashboardOnboarding(
                 response : userData!,

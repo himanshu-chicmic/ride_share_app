@@ -91,7 +91,6 @@ extension SearchViewModel {
             if showRideDetailViewFromBooked {
                 showRideDetailViewFromBooked.toggle()
             }
-
             // reset global data
             resetData()
             // call api to fetch latest data for published rides

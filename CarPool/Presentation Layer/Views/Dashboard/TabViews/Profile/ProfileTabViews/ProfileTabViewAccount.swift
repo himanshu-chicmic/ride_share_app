@@ -20,6 +20,7 @@ struct ProfileTabViewAccount: View {
     private var navigationLinks: [[String]]
     
     @State var logOutConfirmation: Bool = false
+    @State var deleteConfirmation: Bool = false
     
     @State var openExternalLink = false
     
@@ -65,12 +66,24 @@ struct ProfileTabViewAccount: View {
                 logOutConfirmation.toggle()
             } label: {
                 Text(Constants.ProfileAccount.logOut)
-                    .frame(
-                        maxWidth    : .infinity,
-                        alignment   : .leading
-                    )
             }
+            .frame(
+                maxWidth    : .infinity,
+                alignment   : .leading
+            )
             .padding()
+            
+            Button {
+                deleteConfirmation.toggle()
+            } label: {
+                Text(Constants.ProfileAccount.delete)
+            }
+            .frame(
+                maxWidth    : .infinity,
+                alignment   : .leading
+            )
+            .foregroundColor(.red)
+            .padding(.horizontal)
 
         }
         .confirmationDialog(
@@ -91,6 +104,17 @@ struct ProfileTabViewAccount: View {
                 searchViewModel.resetArrayData()
                 chatViewModel.resetData()
                 baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .logOut, data: [:])
+            }
+        }
+        .confirmationDialog(
+            Constants.AlertDialog.delete,
+            isPresented     : $deleteConfirmation,
+            titleVisibility : .visible
+        ) {
+            Button(Constants.ProfileAccount.delete, role: .destructive) {
+                searchViewModel.resetArrayData()
+                chatViewModel.resetData()
+                baseViewModel.sendRequestToApi(httpMethod: .DELETE, requestType: .deleteAccount, data: [:])
             }
         }
     }

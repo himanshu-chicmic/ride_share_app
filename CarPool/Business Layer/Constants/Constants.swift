@@ -421,6 +421,7 @@ struct Constants {
         static let exitCompleteProfile  = "Your account won't be created. Are you sure to exit?"
         
         static let logout    = "Are you sure you want to log out?"
+        static let delete    = "Are you sure you want delete your account? You'll loose all your data and this action is cannot be reversed."
         
         static let areYouSure           = "Are you sure?"
     }
@@ -537,6 +538,7 @@ struct Constants {
         static let details              = ["Change password"]
         
         static let logOut               = "Log out"
+        static let delete               = "Delete account"
         
         static let headings             = ["First name", "Last name", "Gender", "Date of birth", "Email address", "Mobile number"]
     }

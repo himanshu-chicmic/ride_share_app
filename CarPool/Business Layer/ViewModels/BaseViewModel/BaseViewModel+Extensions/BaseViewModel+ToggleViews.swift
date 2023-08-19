@@ -30,7 +30,15 @@ extension BaseViewModel {
             openUserDetailsView.toggle()
             switchToDashboard = true
         }
-        else if type == .logOut {
+        else {
+            
+            if type == .deleteAccount {
+                if let error = response.status.error {
+                    toastMessageBackground = .red
+                    toastMessage = error
+                }
+            }
+            
             resetUserDefaults()
             selection = .search
             switchToDashboard = false

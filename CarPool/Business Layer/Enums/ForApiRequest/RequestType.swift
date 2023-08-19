@@ -16,6 +16,7 @@ enum RequestType: RawRepresentable {
     case emailCheck
     case logIn
     case logOut
+    case deleteAccount
     
     // MARK: - password
     case sendOtpEmail
@@ -67,7 +68,7 @@ enum RequestType: RawRepresentable {
             return ApiConstants.emailOtpVerify
         case .resetPassword:
             return ApiConstants.resetPassword
-        case .signUp, .getDetails, .updateProfile:
+        case .signUp, .getDetails, .updateProfile, .deleteAccount:
             return ApiConstants.commonEndpoint
         case .emailCheck:
             return ApiConstants.checkEmail
@@ -118,6 +119,7 @@ enum RequestType: RawRepresentable {
             self = .signUp
             self = .getDetails
             self = .updateProfile
+            self = .deleteAccount
         case ApiConstants.checkEmail:
             self = .emailCheck
         case ApiConstants.signIn:
