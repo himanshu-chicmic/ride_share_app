@@ -83,7 +83,6 @@ extension SearchViewModel {
             if showRideDetailView {
                 showRideDetailView.toggle()
             }
-            
             if showPublishedRideView {
                 // close current views
                 showPublishedRideView.toggle()
