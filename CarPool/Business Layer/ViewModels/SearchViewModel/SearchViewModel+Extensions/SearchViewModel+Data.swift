@@ -82,9 +82,15 @@ extension SearchViewModel {
             editRideView = false
             if showRideDetailView {
                 showRideDetailView.toggle()
-            } else {
+            }
+            
+            if showPublishedRideView {
                 // close current views
                 showPublishedRideView.toggle()
+            }
+            
+            if showRideDetailViewFromBooked {
+                showRideDetailViewFromBooked.toggle()
             }
             // reset global data
             resetData()

@@ -31,6 +31,14 @@ extension BaseViewModel {
             switchToDashboard = true
         }
         else {
+            
+            if type == .deleteAccount {
+                if let error = response.status.error {
+                    toastMessageBackground = .red
+                    toastMessage = error
+                }
+            }
+            
             resetUserDefaults()
             selection = .search
             switchToDashboard = false
