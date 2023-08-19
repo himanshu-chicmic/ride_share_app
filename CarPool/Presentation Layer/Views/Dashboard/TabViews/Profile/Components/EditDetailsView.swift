@@ -73,18 +73,28 @@ struct EditDetailsView: View {
                     // which contains necessary information of the fields to add
                     ForEach($textFieldValues.indices, id: \.self) { index in
                         
-                        Text(isProfile ? Constants.ProfileAccount.headings[index] : Constants.Vehicle.headings[index])
-                            .foregroundColor(.gray)
-                            .font(.system(size: 15))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding([.horizontal, .top])
+                        HStack(alignment: .lastTextBaseline) {
+                            Text(isProfile ? Constants.ProfileAccount.headings[index] : Constants.Vehicle.headings[index])
+                                .foregroundColor(.gray)
+                                .font(.system(size: 15))
+                            
+                            if Helpers.disableTextFieldIfActivated(inputField: textFieldValues[index].2) {
+                                Text("✓ Verified")
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 12))
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding([.horizontal, .top])
+                        
                         
                         DefaultInputField(
                             inputFieldType  : textFieldValues[index].2,
                             placeholder     : textFieldValues[index].1,
                             text            : $textFieldValues[index].0,
                             keyboard        : textFieldValues[index].3,
-                            background: .white
+                            background      : .white
                         )
                         .padding(.bottom, 8)
                         

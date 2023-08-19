@@ -137,6 +137,12 @@ struct ProfileTabViewAbout: View {
                         .padding(.bottom)
                 }
             }
+        }.refreshable {
+            baseViewModel.sendRequestToApi(
+                httpMethod  : .GET,
+                requestType : .getDetails,
+                data        : [:]
+            )
         }
     }
 }

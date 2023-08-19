@@ -42,6 +42,9 @@ struct PublishedRidesView: View {
                     }
                     .padding()
                 }
+                .refreshable {
+                    searchViewModel.sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
+                }
             } else {
                 PlaceholderView(image: Constants.EmptyRidesView.image, title: Constants.EmptyRidesView.title, caption: Constants.EmptyRidesView.caption)
             }

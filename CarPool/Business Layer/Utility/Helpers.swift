@@ -52,6 +52,8 @@ struct Helpers {
         return status
     }
     
+    /// method to handle completion for api call result.
+    /// - Parameter completion: completion from api
     static func handleCompletion(completion: Subscribers.Completion<Error>) {
         switch completion {
         case .failure(let error):
@@ -62,5 +64,25 @@ struct Helpers {
             print("success")
         }
         BaseViewModel.shared.inProgess = false
+    }
+    
+    /// method to check if email or phone number are activated or verified
+    /// - Parameter inputField: type of input field
+    /// - Returns: bool value (true if verified else false)
+    static func disableTextFieldIfActivated(inputField: InputFieldIdentifier) -> Bool {
+        let userData = BaseViewModel.shared.userData?.status.data
+        if let activation = userData?.activated {
+            if inputField == .email && activation {
+                return true
+            }
+        }
+        
+        if let activation = userData?.phoneVerified {
+            if inputField == .phoneNumber && activation {
+                return true
+            }
+        }
+        
+        return false
     }
 }

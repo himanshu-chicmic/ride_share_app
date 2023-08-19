@@ -55,6 +55,9 @@ struct InboxView: View {
                     }
                     .padding()
                 }
+                .refreshable {
+                    chatViewModel.createChatApiCall(httpMethod: .GET, requestType: .chatRooms, data: [:])
+                }
             } else {
                 Spacer()
                 PlaceholderView(image: Constants.EmptyRidesView.image, title: Constants.EmptyInboxView.title, caption: Constants.EmptyInboxView.caption)

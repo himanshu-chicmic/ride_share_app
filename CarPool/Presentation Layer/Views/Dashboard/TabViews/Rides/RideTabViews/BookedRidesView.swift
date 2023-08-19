@@ -40,6 +40,8 @@ struct BookedRidesView: View {
                             .navigationBarBackButtonHidden()
                     }
                     .padding()
+                }.refreshable {
+                    searchViewModel.sendRequestToGetBooked(httpMethod: .GET, requestType: .bookedRides, data: [:])
                 }
             } else {
                 PlaceholderView(image: Constants.EmptyRidesView.image, title: Constants.EmptyRidesView.title, caption: Constants.EmptyRidesView.caption)
