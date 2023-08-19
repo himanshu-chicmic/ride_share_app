@@ -41,6 +41,8 @@ struct Helpers {
     static func getRideStatus(status: String) -> String {
         if status == "cancelled" {
             return status
+        } else if status == "cancelled_by_driver" {
+            return "cancel by driver"
         } else if status == "pending" {
             return "active"
         } else if status == "cancel booking" {
