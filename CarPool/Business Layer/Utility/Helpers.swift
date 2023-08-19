@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 /// struct containing common helper methods
 struct Helpers {
@@ -39,7 +40,7 @@ struct Helpers {
     /// - Returns: string
     static func getRideStatus(status: String) -> String {
         if status == "cancelled" {
-            return "cancel"
+            return status
         } else if status == "pending" {
             return "active"
         } else if status == "cancel booking" {
@@ -49,5 +50,17 @@ struct Helpers {
         }
         
         return status
+    }
+    
+    static func handleCompletion(completion: Subscribers.Completion<Error>) {
+        switch completion {
+        case .failure(let error):
+            print("ERROR: \(error)")
+            BaseViewModel.shared.toastMessageBackground = .red
+            BaseViewModel.shared.toastMessage = error.localizedDescription
+        case .finished:
+            print("success")
+        }
+        BaseViewModel.shared.inProgess = false
     }
 }

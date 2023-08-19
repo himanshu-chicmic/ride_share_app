@@ -100,6 +100,34 @@ extension BaseViewModel {
         }
     }
     
+    /// method to handle data from forgot password api response.
+    /// - Parameters:
+    ///   - response: response returned from api.
+    ///   - requestType: type of api request
+    func handleForgotPasswordData(response: ForgotPasswordModel, requestType: RequestType) {
+        withAnimation {
+            if response.code == 200 {
+                if requestType == .sendOtpEmail {
+                    self.requestTypeForgotPassword = .emailOtpVerify
+                }
+                if requestType == .emailOtpVerify {
+                    self.requestTypeForgotPassword = .resetPassword
+                }
+                if requestType == .resetPassword {
+                    self.openForgotPassword = false
+                }
+            }
+        }
+        if let message = response.message {
+            self.toastMessageBackground = .green
+            self.toastMessage = message
+        }
+        if let error = response.error {
+            self.toastMessageBackground = .red
+            self.toastMessage = error
+        }
+    }
+    
     // MARK: data creation methods
     /// method to get data in dictionary format
     /// this data is sent to api

@@ -154,8 +154,10 @@ struct EditPublishedRide: View {
                             .ignoresSafeArea()
                         
                         Button(action: {
-                            searchViewModel.updateRideDetails(httpMethod: .PUT, requestType: .updateRide, data: data!)
-                            openMap.toggle()
+                            if let data {
+                                searchViewModel.updateRideDetails(httpMethod: .PUT, requestType: .updateRide, data: data.getDictData(delegate: searchViewModel))
+                                openMap.toggle()
+                            }
                         }, label: {
                             Text("Update")
                                 .frame(maxWidth: .infinity)

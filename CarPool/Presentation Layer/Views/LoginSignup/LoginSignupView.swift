@@ -15,8 +15,6 @@ struct LoginSignupView: View {
     @EnvironmentObject var signInViewModel: SignInViewModel
     @EnvironmentObject var baseViewModel: BaseViewModel
     
-    @State var openForgotPassword: Bool = false
-    
     // MARK: - body
     
     var body: some View {
@@ -55,7 +53,8 @@ struct LoginSignupView: View {
                     
                     if !signInViewModel.isNewUser {
                         Button {
-                            openForgotPassword.toggle()
+                            baseViewModel.requestTypeForgotPassword = .sendOtpEmail
+                            baseViewModel.openForgotPassword.toggle()
                         } label: {
                             Text("Forgot Password?")
                         }
@@ -97,7 +96,7 @@ struct LoginSignupView: View {
             .fullScreenCover(isPresented: $baseViewModel.openUserDetailsView) {
                 UserDetailsView()
             }
-            .fullScreenCover(isPresented: $openForgotPassword) {
+            .fullScreenCover(isPresented: $baseViewModel.openForgotPassword) {
                 ForgotPasswordView()
             }
             .onAppear {

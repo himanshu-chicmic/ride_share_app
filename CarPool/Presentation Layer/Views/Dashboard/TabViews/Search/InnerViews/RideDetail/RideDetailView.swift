@@ -64,7 +64,21 @@ struct RideDetailView<T: Any>: View {
                 
                 // button to pop view
                 Button(action: {
+                    
                     dismiss()
+                    
+                    if searchViewModel.showRideDetailView {
+                        searchViewModel.showRideDetailView = false
+                    }
+                    
+                    if searchViewModel.showRideDetailViewFromRecents {
+                        searchViewModel.showRideDetailView = false
+                    }
+                    
+                    if searchViewModel.showRideDetailViewFromBooked {
+                        searchViewModel.showRideDetailView = false
+                    }
+                    
                 }, label: {
                     Image(systemName: Constants.Icon.back)
                 })
@@ -244,7 +258,7 @@ struct RideDetailView<T: Any>: View {
         ) {
             Button(Constants.Others.continue_, role: .destructive) {
                 if let data = data as? BookedRidesData {
-                    searchViewModel.cancelRideBooking(httpMethod: .POST, requestType: .cancelBooking, data: [Constants.JsonKeys.id: data.bookingID])
+                    searchViewModel.updateRideDetails(httpMethod: .POST, requestType: .cancelBooking, data: [Constants.JsonKeys.id: data.bookingID])
                 }
             }
             Button(Constants.Others.dismiss, role: .cancel) {}

@@ -162,6 +162,9 @@ struct Validations {
         return ""
     }
     
+    /// method to validate vehicle number
+    /// - Parameter value: string value containing vehicle number
+    /// - Returns: a string value for toast message
     func validateVehicleNumber(value: String) -> String {
         let predicate = getPredicate(type: .vehicleNumber)
         

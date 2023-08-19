@@ -23,6 +23,7 @@ struct VerifiedComponent: View {
                 .multilineTextAlignment(.leading)
                 .foregroundColor(.gray)
         }
+        .padding(.vertical, 4)
     }
 }
 

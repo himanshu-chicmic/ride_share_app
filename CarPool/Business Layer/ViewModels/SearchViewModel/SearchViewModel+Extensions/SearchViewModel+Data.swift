@@ -77,7 +77,7 @@ extension SearchViewModel {
     
     /// method to update ride's data
     /// - Parameter response: response of api request for data change
-    func updateRide(response: RidesSearchModel, cancelRide: Bool = false) {
+    func updateRide(response: RidesSearchModel, requestType: RequestType) {
         if response.code == 200 {
             editRideView = false
             if showRideDetailView {
@@ -90,7 +90,7 @@ extension SearchViewModel {
             resetData()
             // call api to fetch latest data for published rides
             sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
-            if !cancelRide {
+            if requestType == .updateRide {
                 self.baseViewModel.toastMessageBackground = .green
                 baseViewModel.toastMessage = Constants.InfoMessages.rideUpdate
             }

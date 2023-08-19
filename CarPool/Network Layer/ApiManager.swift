@@ -75,6 +75,8 @@ class ApiManager {
             .tryMap { data in
                 
                 do {
+                    let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                    print(json)
                     // call method to decode data and get response in SignInProfileModel type
                     return try self.decodeSignInRequestData(
                         requestType : requestType,
@@ -255,10 +257,6 @@ class ApiManager {
             .tryMap { data in
                 
                 do {
-                    let debugJSON = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-                    if requestType == .chatRooms {
-                        print("JSON: \(debugJSON)")
-                    }
                     return try JSONDecoder().decode(T.self, from: data)
                 } catch {
                     throw APIErrors.decodingError(error)

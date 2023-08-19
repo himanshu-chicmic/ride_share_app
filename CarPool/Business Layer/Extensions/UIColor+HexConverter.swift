@@ -1,5 +1,5 @@
 //
-//  UIColor+HexConverterExtension.swift
+//  UIColor+HexConverter.swift
 //  CarPool
 //
 //  Created by Himanshu on 6/23/23.

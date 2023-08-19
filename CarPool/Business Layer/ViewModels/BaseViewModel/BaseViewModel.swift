@@ -50,6 +50,12 @@ class BaseViewModel: ObservableObject {
     // information and show a progress view
     @Published var inProgess: Bool = false
     
+    // variable to check request type for forgot password
+    @Published var requestTypeForgotPassword: RequestType = .sendOtpEmail
+    
+    // variable to open forgot password view
+    @Published var openForgotPassword: Bool = false
+    
     // open view for user detials
     @Published var openUserDetailsView: Bool = false
     
@@ -58,8 +64,6 @@ class BaseViewModel: ObservableObject {
     @Published var addVehicle = false
     // vehicle data to edit
     @Published var editVehicleData: VehiclesDataClass?
-    
-    @Published var fogotPasswordData: ForgotPasswordModel?
     
     // update single profile item
     @Published var openAddProfile: Bool = false
@@ -147,18 +151,7 @@ class BaseViewModel: ObservableObject {
         )
         .receive(on: DispatchQueue.main)
         .sink { completion in
-            // switch completion to handle failure and success
-            switch completion {
-            case .failure(let error):
-                // show failure info in form of toast
-                self.toastMessageBackground = .red
-                self.toastMessage = error.localizedDescription
-                print("ERROR: \(error)")
-            case .finished:
-                // show success info in form of toast
-                print("success")
-            }
-            self.inProgess = false
+            Helpers.handleCompletion(completion: completion)
         } receiveValue: { [weak self] response in
             // check if response status code is 200 or 0 or show error message
             if response.status.code == 200 || response.status.code == 0 {
@@ -190,17 +183,7 @@ class BaseViewModel: ObservableObject {
         )
         .receive(on: DispatchQueue.main)
         .sink { completion in
-            // switch completion to handle
-            // failure and finished cases
-            switch completion {
-            case .failure(let error):
-                self.toastMessageBackground = .red
-                self.toastMessage = error.localizedDescription
-                print("ERROR: \(error)")
-            case .finished:
-                print("success")
-            }
-            self.inProgess = false
+            Helpers.handleCompletion(completion: completion)
         } receiveValue: { [weak self] response in
             // check if response status code is 200 or show error message
             if response.status.code == 200 || response.status.code == 201 {
@@ -218,29 +201,26 @@ class BaseViewModel: ObservableObject {
         }
     }
     
+    /// method to call api request for forgot password
+    /// - Parameters:
+    ///   - httpMethod: http method for sending api request
+    ///   - requestType: type of request ex .login, .signup etc.
+    ///   - data: data required for the request
     func createFogotPasswordApiCall(httpMethod: HttpMethod, requestType: RequestType, data: [String: Any]) {
+        BaseViewModel.shared.inProgess = true
         // call createApiRequest in ApiManager class
         cancellables = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
-        .sink { [self] completion in
-            // switch completion to handle failure and success
-            switch completion {
-            case .failure(let error):
-                // show failure info in form of toast
-                self.toastMessageBackground = .red
-                toastMessage = error.localizedDescription
-                print("ERROR: \(error)")
-            case .finished:
-                // show success info in form of toast
-                print("success")
-            }
+        .sink { completion in
+            Helpers.handleCompletion(completion: completion)
         } receiveValue: { [weak self] response in
-            self?.fogotPasswordData = response
+            self?.handleForgotPasswordData(response: response, requestType: requestType)
         }
     }
     
     // MARK: - keyboard management
     
+    /// method to observer when keyboard is shown/hidden
     private func listenForKeyboardNotifications() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification,
            object: nil,

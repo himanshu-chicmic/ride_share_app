@@ -133,7 +133,7 @@ extension SearchViewModel {
         }
         
         if let data = data as? BookedRidesData {
-            showRideDetailView.toggle()
+            showRideDetailViewFromBooked.toggle()
             vehicleId = data.ride.vehicleID!
         }
         
@@ -148,6 +148,7 @@ extension SearchViewModel {
         )
     }
     
+    /// method to swap start and end location in search view's text fields
     func swapStartEndLocation() {
         let temp = startLocation
         startLocation = endLocation

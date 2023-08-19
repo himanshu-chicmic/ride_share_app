@@ -234,7 +234,7 @@ struct PublishedRideView: View {
         ) {
             Button(Constants.Others.continue_, role: .destructive) {
                 if let rideData = data {
-                    searchViewModel.cancelRideBooking(
+                    searchViewModel.updateRideDetails(
                         httpMethod: .POST,
                         requestType: .cancelPublished,
                         data: [Constants.JsonKeys.id : rideData.id]

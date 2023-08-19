@@ -35,7 +35,7 @@ struct BookedRidesView: View {
                             searchViewModel.searchItemClicked(data: data)
                         }
                     }
-                    .navigationDestination(isPresented: $searchViewModel.showRideDetailView) {
+                    .navigationDestination(isPresented: $searchViewModel.showRideDetailViewFromBooked) {
                         RideDetailView(data: selectedTile ?? nil)
                             .navigationBarBackButtonHidden()
                     }

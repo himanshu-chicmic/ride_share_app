@@ -50,11 +50,11 @@ struct SearchResultsView: View {
                 .padding(.leading)
                 
                 // filter button
-                Button(action: {
-                    // toggle filter view
-                }, label: {
-                    Image(systemName: Constants.Icon.filters)
-                })
+//                Button(action: {
+//                    // toggle filter view
+//                }, label: {
+//                    Image(systemName: Constants.Icon.filters)
+//                })
             }
             .padding(22)
             .padding(.horizontal, 4)

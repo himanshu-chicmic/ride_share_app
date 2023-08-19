@@ -12,6 +12,8 @@ import SwiftUI
 /// utility methods or properties
 struct Formatters {
     
+    // MARK: - computed properties
+    
     // get a date using this format
     static let dateFormatter: DateFormatter = {
         // initialized data formatter class
@@ -85,6 +87,11 @@ struct Formatters {
         nf.usesGroupingSeparator = false
         return nf
     }()
+    
+    // MARK: - properties
+    
+    // variable to store previous date
+    static var previousDate: String = ""
 
     // MARK: - methods
     
@@ -127,7 +134,9 @@ struct Formatters {
         return formatter.string(from: dateObj)
     }
     
-    static var previousDate: String = ""
+    /// method to check date and return string value for chat data
+    /// - Parameter date: date in string format
+    /// - Returns: a string value for date
     static func checkDate(date: String) -> String {
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(abbreviation: "UTC")

@@ -41,17 +41,7 @@ class ChatViewModel: ObservableObject {
         cancellables = ApiManager.shared.apiRequestCall(httpMethod: httpMethod, data: data, requestType: requestType)
         .receive(on: DispatchQueue.main)
         .sink { completion in
-            // switch completion to handle failure and success
-            switch completion {
-            case .failure(let error):
-                // show failure info in form of toast
-                self.baseViewModel.toastMessageBackground = .red
-                self.baseViewModel.toastMessage = error.localizedDescription
-                print("ERROR: \(error)")
-            case .finished:
-                // show success info in form of toast
-                print("success")
-            }
+            Helpers.handleCompletion(completion: completion)
         } receiveValue: { [weak self] response in
             self?.handleChatResponse(response: response, httpMethod: httpMethod, requestType: requestType, data: data, chatViewFromDetails: chatViewFromDetails)
         }
