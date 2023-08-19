@@ -35,26 +35,25 @@ extension BaseViewModel {
             }
             toastMessageBackground = .green
             toastMessage = "You'll receive a call for otp."
-        case .confirmOtp, .confirmEmail:
+        case .confirmOtp:
             // close add profile view
             openAddProfile.toggle()
             
-            if type == .confirmOtp {
-                toastMessageBackground = .green
-                toastMessage = userData?.status.message ?? "Verified successfully!"
-                viewOtpField = false
-                // send request to fetch user details to get updated data
-                sendRequestToApi(
-                    httpMethod  : .GET,
-                    requestType : .getDetails,
-                    data        : [:]
-                )
-            }
-            if userData?.status.code == 0 {
-                toastMessageBackground = .green
-                toastMessage = userData?.status.message ?? "Verification email sent on your registered email!"
-            }
-            
+            toastMessageBackground = .green
+            toastMessage = userData?.status.message ?? "Verified successfully!"
+            viewOtpField = false
+            // send request to fetch user details to get updated data
+            sendRequestToApi(
+                httpMethod  : .GET,
+                requestType : .getDetails,
+                data        : [:]
+            )
+        case .confirmEmail:
+            // close add profile view
+            openAddProfile.toggle()
+            toastMessageBackground = .green
+            toastMessage = userData?.status.message ?? "Verification email sent on your registered email!"
+
         case .getDetails:
             if vehiclesData == nil {
                 sendVehiclesRequestToApi(
@@ -199,4 +198,28 @@ extension BaseViewModel {
         return [Constants.JsonKeys.user : data]
     }
     
+    
+    /// method to initiate set new password/reset password
+    /// - Parameter data: text field values
+    func setNewPassword(data: Constants.TypeAliases.InputFieldArrayType) {
+        toastMessageBackground = .red
+        
+        var values = data
+        values.removeFirst()
+        values.removeFirst()
+        
+        withAnimation {
+            toastMessage = validationsInstance.validateTextFields(
+                textFields : values
+            )
+        }
+        
+        if toastMessage.isEmpty {
+            createFogotPasswordApiCall(
+                httpMethod: .POST,
+                requestType: .resetPassword,
+                data: [Constants.JsonKeys.email: data[0].0.lowercased(), Constants.JsonKeys.password: data[2].0, Constants.JsonKeys.passwordConfirmation: data[3].0]
+            )
+        }
+    }
 }

@@ -10,7 +10,8 @@ import SwiftUI
 struct ForgotPasswordView: View {
     
     @EnvironmentObject var baseViewModel: BaseViewModel
-    
+    @State var closeConfirmation: Bool = false
+
     @State var textFieldValues: Constants.TypeAliases.InputFieldArrayType = [
         (
             "",
@@ -49,10 +50,7 @@ struct ForgotPasswordView: View {
                     
                     // button to pop view
                     Button(action: {
-                        if baseViewModel.viewOtpField {
-                            baseViewModel.viewOtpField.toggle()
-                        }
-                        dismiss()
+                        closeConfirmation.toggle()
                     }, label: {
                         Image(systemName: Constants.Icon.back)
                     })
@@ -121,11 +119,7 @@ struct ForgotPasswordView: View {
                             baseViewModel.createFogotPasswordApiCall(httpMethod: .POST, requestType: .emailOtpVerify, data: [Constants.JsonKeys.email: textFieldValues[0].0.lowercased(), Constants.JsonKeys.otp: textFieldValues[1].0])
                             break
                         default:
-                            baseViewModel.createFogotPasswordApiCall(
-                                httpMethod: .POST,
-                                requestType: .resetPassword,
-                                data: [Constants.JsonKeys.email: textFieldValues[0].0.lowercased(), Constants.JsonKeys.password: textFieldValues[2].0, Constants.JsonKeys.passwordConfirmation: textFieldValues[3].0]
-                            )
+                            baseViewModel.setNewPassword(data: textFieldValues)
                         }
                     }
                 } label: {
@@ -145,6 +139,18 @@ struct ForgotPasswordView: View {
                 ToastMessageView()
             }
         }
+        // ask a confirmation before exiting
+        .confirmationDialog(
+            Constants.AlertDialog.areYouSure,
+            isPresented     : $closeConfirmation,
+            titleVisibility : .visible
+        ) {
+            Button(Constants.Others.close, role: .destructive) {
+               dismiss()
+            }
+            Button(Constants.Others.dismiss, role: .cancel) {}
+        }
+
     }
 }
 
