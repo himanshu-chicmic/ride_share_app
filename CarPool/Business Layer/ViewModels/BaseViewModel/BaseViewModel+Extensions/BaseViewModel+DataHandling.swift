@@ -50,7 +50,7 @@ extension BaseViewModel {
             )
         case .confirmEmail:
             // close add profile view
-            openAddProfile.toggle()
+            openAddProfile = false
             toastMessageBackground = .green
             toastMessage = userData?.status.message ?? "Verification email sent on your registered email!"
 
