@@ -13,6 +13,6 @@ enum RideStatus: String {
     
     case active
     
-    case completed
+    case completed  
     case confirmed
 }
