@@ -16,14 +16,19 @@ extension SearchViewModel {
     ///   - response: data returned from api
     func handleSearchAndPublish(requestType: RequestType, httpMethod: HttpMethod, response: RidesSearchModel) {
         if requestType == .publishedRides && httpMethod != .GET {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.openMapView.toggle()
+            if response.code == 403 {
+                baseViewModel.toastMessageBackground = .red
+                baseViewModel.toastMessage = "\(response.message ?? "") Verify phone number to publish or book rides"
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.openMapView.toggle()
+                }
+                ridePublishOrBook = RidePublishedOrBook(title: Constants.InfoMessages.successfullyPublished, caption: Constants.InfoMessages.successPubishedCaption)
+                bookedSuccess.toggle()
+                
+                resetData()
+                sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
             }
-            ridePublishOrBook = RidePublishedOrBook(title: Constants.InfoMessages.successfullyPublished, caption: Constants.InfoMessages.successPubishedCaption)
-            bookedSuccess.toggle()
-            
-            resetData()
-            sendRequestToGetPublished(httpMethod: .GET, requestType: .publishedRides, data: [:])
         } else {
             if let data = response.data {
                 for result in data {
